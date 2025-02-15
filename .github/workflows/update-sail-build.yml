@@ -83,7 +83,6 @@ jobs:
         cd sail-riscv/build/model/Lean_RV64D_LEAN/
         (lake build | tee build_log.txt || true)
         cp README.md.template README.md
-        cp report.py sail-riscv/build/model/Lean_RV64D_LEAN/
         ./report.py >> README.md
         cd ../../../..
 
