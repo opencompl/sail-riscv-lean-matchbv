@@ -33,8 +33,8 @@ jobs:
       - name: Install RISCV
         run: |
           git clone https://github.com/RaitoBezarius/sail-riscv.git
-          git checkout lean
           cd sail-riscv
+          git checkout lean
           cmake -S . -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
           cmake --build build/ --target generated_lean_rv64d_lean
 
