@@ -79,6 +79,7 @@ jobs:
         bash install_debian.sh ; rm -f install_debian.sh
         source ~/.profile
         cp README.md.template sail-riscv/build/model/Lean_RV64D_LEAN/
+        cp report.py sail-riscv/build/model/Lean_RV64D_LEAN/
         cd sail-riscv/build/model/Lean_RV64D_LEAN/
         (lake build | tee build_log.txt || true)
         cp README.md.template README.md
