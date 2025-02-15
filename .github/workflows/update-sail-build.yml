@@ -1,6 +1,6 @@
 name: Build RISCV For Lean
 
-oon:
+on:
   schedule:
     - cron: "27 * * * *"
   push:
