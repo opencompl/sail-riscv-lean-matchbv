@@ -28,7 +28,7 @@ jobs:
       - name: Install Sail (develop)
         run: |
           git clone https://github.com/rems-project/sail.git
-          (cd sail ; make install)
+          opam pin add sail
 
       - name: Install RISCV
         run: |
