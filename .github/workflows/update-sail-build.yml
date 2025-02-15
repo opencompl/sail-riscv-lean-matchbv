@@ -13,13 +13,18 @@ jobs:
 
       - name: Install Sail
         run: |
-          sudo apt install build-essential libgmp-dev z3 cvc4
+          sudo apt install build-essential libgmp-dev z3 cvc4 cmake
           sudo apt install opam ocaml-dune menhir
           opam init --yes --no-setup --shell=sh
           opam install --yes sail
           git clone https://github.com/rems-project/sail.git
-          cd sail
-          make install
+          (cd sail ; make install)
 
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: Install RISCV
+        run: |
+          git clone https://github.com/RaitoBezarius/sail-riscv.git
+          git checkout lean
+	  cd sail-riscv
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
+          cmake --build build/ --target generated_lean_rv64d_lean
+
