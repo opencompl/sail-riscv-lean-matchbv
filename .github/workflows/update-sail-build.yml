@@ -20,6 +20,7 @@ jobs:
     - name: Checkout SAIL
       run: |
         git clone https://github.com/rems-project/sail.git
+        (cd sail; patch -p1 < ../.github/workflows/build-riscv-sail-workaround.patch)
 
     - name: System dependencies (ubuntu)
       if: startsWith(matrix.os, 'ubuntu')
