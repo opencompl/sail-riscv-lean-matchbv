@@ -16,7 +16,7 @@ jobs:
           sudo apt install build-essential libgmp-dev z3 cvc4 cmake
           sudo apt install opam ocaml-dune menhir
           opam init --yes --no-setup --shell=sh
-          opam install --yes lem sail omd base64 linenoise dynlink menhir ott
+          opam install --yes lem sail omd base64 linenoise menhir ott
           git clone https://github.com/rems-project/sail.git
           (cd sail ; make install)
 
