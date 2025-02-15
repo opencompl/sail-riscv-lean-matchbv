@@ -49,7 +49,7 @@ jobs:
     - name: Install Sail
       run: |
         eval $(opam env)
-        opam pin --yes --no-action add .
+        opam pin --yes --no-action add sail
         opam install sail --yes
 
     - name: Build the `Sail RISCV Model with Lean`
