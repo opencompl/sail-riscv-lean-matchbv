@@ -73,6 +73,13 @@ jobs:
         cmake --build build/ --target generated_lean_rv64d_lean
         cd ..
 
+    - name: Build the `Sail RISCV Model with Lean`
+      run: |
+        cp README.md.template sail-riscv/build/model/Lean_RV64D_LEAN/
+        cd sail-riscv/build/model/Lean_RV64D_LEAN/
+        cp README.md.template README.md
+        cd ../../../..
+
     - name: Deploy
       uses: s0/git-publish-subdir-action@develop
       env:
