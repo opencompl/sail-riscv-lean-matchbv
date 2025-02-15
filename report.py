@@ -29,21 +29,21 @@ errors.sort(reverse=True)
 
 print(f"# RISC-V Lean Statistics\n")
 
-print(f"Lines: {linecountmodel}")
-print(f"Definitions: {len(defcount)}")
-print(f"Inductive definitions: {len(inductivecount)}")
-print(f"Abbreviations: {len(abbrevcount)}")
+print(f"Lines: {linecountmodel}  ")
+print(f"Definitions: {len(defcount)}  ")
+print(f"Inductive definitions: {len(inductivecount)}  ")
+print(f"Abbreviations: {len(abbrevcount)}  ")
 
 print("")
 print("# Warnings and Errors\n")
 
-print(f"Errors found: {errorcount}")
-print(f"Warnings found: {warningcount}")
+print(f"Errors found: {errorcount}  ")
+print(f"Warnings found: {warningcount}  ")
 
 print("")
 print("## Error Classes\n")
 
 for error in errors:
-    print(f"{error[0]}x {error[1]}")
+    print(f"- {error[0]}x {error[1]}")
 
 
