@@ -63,3 +63,13 @@ jobs:
         # This patch is needed to work around https://github.com/rems-project/sail/issues/1003.
         patch -p1 < ../.github/workflows/build-riscv-lean-workaround-riscv.patch
         cmake --build build/ --target generated_lean_rv64d_lean
+        cd ..
+
+    - name: Deploy
+      uses: s0/git-publish-subdir-action@develop
+      env:
+        REPO: self
+        BRANCH: riscv-model
+        FOLDER: sail-riscv/build/model/Lean_RV64D_LEAN/
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TARGET_DIR: .
