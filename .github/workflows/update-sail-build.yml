@@ -75,8 +75,12 @@ jobs:
 
     - name: Build the `Sail RISCV Model with Lean`
       run: |
+	wget -q https://raw.githubusercontent.com/leanprover-community/mathlib4/master/scripts/install_debian.sh
+	bash install_debian.sh ; rm -f install_debian.sh
+	source ~/.profile
         cp README.md.template sail-riscv/build/model/Lean_RV64D_LEAN/
         cd sail-riscv/build/model/Lean_RV64D_LEAN/
+	lake build > build_log.txt
         cp README.md.template README.md
         cd ../../../..
 
