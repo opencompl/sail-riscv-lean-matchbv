@@ -51,7 +51,7 @@ jobs:
       run: |
         eval $(opam env)
         (cd sail; opam install . --deps-only --yes)
-        (cd sail; opam pin --yes --no-action --working-dir add sail .)
+        (cd sail; opam pin --yes --working-dir add sail .)
         (cd sail; opam install sail --yes)
 
     - name: Build the `Sail RISCV Model with Lean`
