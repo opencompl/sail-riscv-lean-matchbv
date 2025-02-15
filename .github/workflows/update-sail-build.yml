@@ -21,6 +21,7 @@ jobs:
       run: |
         git clone https://github.com/rems-project/sail.git
         (cd sail; patch -p1 < ../.github/workflows/build-riscv-sail-workaround.patch)
+        (cd sail; git commit -am "Workaround")
 
     - name: System dependencies (ubuntu)
       if: startsWith(matrix.os, 'ubuntu')
@@ -50,7 +51,7 @@ jobs:
     - name: Install Sail
       run: |
         eval $(opam env)
-        (cd sail; opam install . --deps-only --yes)
+        (cd sail; opam install sail --deps-only --yes)
         (cd sail; opam pin --yes --working-dir add sail .)
         (cd sail; opam install sail --yes)
 
