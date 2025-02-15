@@ -11,5 +11,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install Sail
+        run: |
+          sudo apt install opam
+          git clone git@github.com:rems-project/sail.git
+          cd sail
+          make install
+
       - name: Run a one-line script
         run: echo Hello, world!
