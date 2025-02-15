@@ -2,7 +2,7 @@ name: Build RISCV For Lean
 
 on:
   schedule:
-    - cron: "32 * * * *"
+    - cron: "42 * * * *"
   workflow_dispatch:
 
 env:
