@@ -19,16 +19,20 @@ jobs:
       - name: Install OPAM
         run: |
           opam init --yes --no-setup --shell=sh
-          opam install --yes lem omd base64 linenoise menhir ott omd base64
 
-      - name: Install Sail (release)
-        run: |
-          opam install --yes sail
-
-      - name: Install Sail (develop)
+      - name: Clone Sail
         run: |
           git clone https://github.com/rems-project/sail.git
-          opam pin add sail --yes
+
+      - name: Install Sail Dependences
+        run: |
+          opam install sail --deps-only
+
+      - name: Build and Install Sail
+        run: |
+          (cd sail ; dune build --release)
+          (cd sail ; dune install)
+
 
       - name: Install RISCV
         run: |
