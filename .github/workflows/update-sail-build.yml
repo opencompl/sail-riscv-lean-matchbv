@@ -7,6 +7,7 @@ on:
 
 env:
   OPAMVERBOSE: 1
+  CLEAR_GLOBS_FILE: .github/workflows/clear-globs.txt
 
 jobs:
   build:
