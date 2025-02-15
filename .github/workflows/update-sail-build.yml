@@ -11,12 +11,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Sail
+      - name: Install APT
         run: |
           sudo apt install build-essential libgmp-dev z3 cvc4 cmake
           sudo apt install opam ocaml-dune menhir
+
+      - name: Install OPAM
+        run: |
           opam init --yes --no-setup --shell=sh
-          opam install --yes lem sail omd base64 linenoise menhir ott
+          opam install --yes lem omd base64 linenoise menhir ott omd base64
+
+      - name: Install Sail (release)
+        run: |
+          opam install --yes sail
+
+      - name: Install Sail (develop)
+        run: |
           git clone https://github.com/rems-project/sail.git
           (cd sail ; make install)
 
