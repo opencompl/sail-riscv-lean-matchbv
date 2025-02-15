@@ -80,8 +80,10 @@ jobs:
         source ~/.profile
         cp README.md.template sail-riscv/build/model/Lean_RV64D_LEAN/
         cd sail-riscv/build/model/Lean_RV64D_LEAN/
-        lake build > build_log.txt
+        lake build | tee build_log.txt
         cp README.md.template README.md
+        cp report.py sail-riscv/build/model/Lean_RV64D_LEAN/
+        ./report.py >> README.md
         cd ../../../..
 
     - name: Deploy
