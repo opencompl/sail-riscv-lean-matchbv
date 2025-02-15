@@ -16,7 +16,7 @@ jobs:
           sudo apt install build-essential libgmp-dev z3 cvc4
           sudo apt install opam ocaml-dune menhir
           opam init --yes --no-setup --shell=sh
-          opam install sail
+          opam install --yes sail
           git clone https://github.com/rems-project/sail.git
           cd sail
           make install
