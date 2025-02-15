@@ -26,7 +26,7 @@ jobs:
 
       - name: Install Sail Dependences
         run: |
-          opam install sail --deps-only
+          opam install sail --deps-only --yes
 
       - name: Build and Install Sail
         run: |
