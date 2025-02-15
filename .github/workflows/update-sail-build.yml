@@ -1,6 +1,10 @@
 name: Build RISCV For Lean
 
-on: [push, workflow_dispatch]
+oon:
+  schedule:
+    - cron: "27 * * * *"
+  push:
+  workflow_dispatch:
 
 env:
   OPAMVERBOSE: 1
