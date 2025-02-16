@@ -8,50 +8,47 @@ is still work-in-progress. As a result, our semantics are still full of warnings
 and errors. Similarly, our output is not yet polished for readability.
 # RISC-V Lean Statistics
 
-Lines: 76657  
+Lines: 76836  
 Definitions: 3136  
 Inductive definitions: 129  
 Abbreviations: 92  
 
 # Warnings and Errors
 
-Errors found: 1384  
+Errors found: 1261  
 Warnings found: 1  
 
 ## Error Classes
 
-- 499x application type mismatch
-- 96x ambiguous, possible interpretations 
-- 79x unknown identifier 'pow2'
+- 477x application type mismatch
+- 81x unknown identifier 'pow2'
 - 69x unknown identifier '__id'
 - 50x unknown identifier 'print_endline'
 - 38x unknown identifier 'shiftl'
+- 35x type mismatch
 - 34x unknown identifier 'shiftr'
-- 28x type mismatch
 - 24x unexpected token 'match'; expected ')', ',' or ':'
+- 22x unknown identifier 'sys_enable_fdext'
 - 22x unknown identifier 'k_n'
-- 21x unknown identifier 'sys_enable_fdext'
 - 20x unknown identifier 'k_m'
 - 19x type mismatch, result value has type
 - 18x unexpected token 'if'; expected ')', ',' or ':'
 - 17x failed to synthesize
 - 14x invalid dotted identifier notation, expected type is not of the form (... → C ...) where C is a constant
+- 13x unknown identifier 'shift_bits_right'
 - 13x unexpected token '←'; expected ':=' or '|'
-- 12x unknown identifier 'shift_bits_right'
+- 12x unknown identifier 'sys_enable_zfinx'
 - 12x unknown identifier 'quot_positive_round_zero'
 - 12x unknown identifier 'VLEN'
 - 11x unknown identifier 'shift_bits_left'
-- 11x overloaded, errors 
 - 11x don't know how to synthesize placeholder for argument 'α'
+- 10x unknown identifier 'slice'
 - 9x unknown identifier 'sys_pmp_count'
-- 9x unknown identifier 'slice'
 - 9x unknown identifier 'quot_round_zero'
 - 9x unknown identifier 'emod_int'
 - 7x unknown identifier 'neq_bool'
 - 7x cannot lift `(<- ...)` over a binder, this error usually happens when you are trying to lift a method nested in a `fun`, `let`, or `match`-alternative, and it can often be fixed by adding a missing `do`
-- 6x unknown identifier 'vector_init'
 - 6x unknown identifier 'sys_writable_hpm_counters'
-- 6x unknown identifier 'sys_enable_zfinx'
 - 6x unknown identifier 'sub_vec'
 - 6x unknown identifier 'nzui5'
 - 6x unexpected token 'let'; expected 'else'
@@ -65,10 +62,10 @@ Warnings found: 1
 - 4x unexpected token '('; expected ':=', '_', 'rec' or identifier
 - 3x unknown identifier 'valid_hex_bits'
 - 3x unknown identifier 'sys_pmp_grain'
+- 3x unknown identifier 'sys_enable_rvc'
 - 3x unknown identifier 'k_o'
 - 3x unknown identifier 'hex_str'
 - 2x unknown identifier 'sys_enable_vext'
-- 2x unknown identifier 'sys_enable_rvc'
 - 2x unknown identifier 'rem_round_zero'
 - 2x unknown identifier 'rd'
 - 2x unknown identifier 'plat_cache_block_size_exp'
@@ -82,6 +79,7 @@ Warnings found: 1
 - 1x unknown identifier 'sys_enable_zicboz'
 - 1x unknown identifier 'sys_enable_zicbom'
 - 1x unknown identifier 'sys_enable_zcb'
+- 1x unknown identifier 'sys_enable_writable_misa'
 - 1x unknown identifier 'sys_enable_svinval'
 - 1x unknown identifier 'sys_enable_sstc'
 - 1x unknown identifier 'sys_enable_bext'
@@ -92,6 +90,7 @@ Warnings found: 1
 - 1x unknown identifier 'plat_ram_size'
 - 1x unknown identifier 'plat_ram_base'
 - 1x unknown identifier 'plat_mtval_has_illegal_inst_bits'
+- 1x unknown identifier 'plat_enable_misaligned_access'
 - 1x unknown identifier 'plat_clint_size'
 - 1x unknown identifier 'plat_clint_base'
 - 1x unknown identifier 'k_num_elem_single'
@@ -168,12 +167,3 @@ Warnings found: 1
 - 1x unexpected token 'if'; expected 'else'
 - 1x fail to show termination for
 - 1x Lean exited with code 134
-- 1x 'xlen_bytes' has already been declared
-- 1x 'xlen' has already been declared
-- 1x 'tlb_vpn_bits' has already been declared
-- 1x 'tlb_ppn_bits' has already been declared
-- 1x 'physaddrbits_len' has already been declared
-- 1x 'pagesize_bits' has already been declared
-- 1x 'flen_bytes' has already been declared
-- 1x 'flen' has already been declared
-- 1x 'asidlen' has already been declared
