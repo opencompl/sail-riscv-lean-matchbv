@@ -8,36 +8,35 @@ is still work-in-progress. As a result, our semantics are still full of warnings
 and errors. Similarly, our output is not yet polished for readability.
 # RISC-V Lean Statistics
 
-Lines: 76836  
-Definitions: 3136  
+Lines: 76892  
+Definitions: 3147  
 Inductive definitions: 129  
 Abbreviations: 92  
 
 # Warnings and Errors
 
-Errors found: 1261  
+Errors found: 1226  
 Warnings found: 1  
 
 ## Error Classes
 
-- 477x application type mismatch
+- 499x application type mismatch
 - 81x unknown identifier 'pow2'
-- 69x unknown identifier '__id'
 - 50x unknown identifier 'print_endline'
 - 38x unknown identifier 'shiftl'
 - 35x type mismatch
 - 34x unknown identifier 'shiftr'
+- 29x unknown identifier 'sys_enable_fdext'
 - 24x unexpected token 'match'; expected ')', ',' or ':'
-- 22x unknown identifier 'sys_enable_fdext'
 - 22x unknown identifier 'k_n'
+- 22x failed to synthesize
 - 20x unknown identifier 'k_m'
+- 19x unknown identifier 'sys_enable_zfinx'
 - 19x type mismatch, result value has type
 - 18x unexpected token 'if'; expected ')', ',' or ':'
-- 17x failed to synthesize
 - 14x invalid dotted identifier notation, expected type is not of the form (... → C ...) where C is a constant
-- 13x unknown identifier 'shift_bits_right'
 - 13x unexpected token '←'; expected ':=' or '|'
-- 12x unknown identifier 'sys_enable_zfinx'
+- 12x unknown identifier 'shift_bits_right'
 - 12x unknown identifier 'quot_positive_round_zero'
 - 12x unknown identifier 'VLEN'
 - 11x unknown identifier 'shift_bits_left'
@@ -46,7 +45,6 @@ Warnings found: 1
 - 9x unknown identifier 'sys_pmp_count'
 - 9x unknown identifier 'quot_round_zero'
 - 9x unknown identifier 'emod_int'
-- 7x unknown identifier 'neq_bool'
 - 7x cannot lift `(<- ...)` over a binder, this error usually happens when you are trying to lift a method nested in a `fun`, `let`, or `match`-alternative, and it can often be fixed by adding a missing `do`
 - 6x unknown identifier 'sys_writable_hpm_counters'
 - 6x unknown identifier 'sub_vec'
@@ -165,5 +163,6 @@ Warnings found: 1
 - 1x unknown identifier 'elf_tohost'
 - 1x unknown identifier 'cancel_reservation'
 - 1x unexpected token 'if'; expected 'else'
+- 1x overloaded, errors 
 - 1x fail to show termination for
 - 1x Lean exited with code 134
