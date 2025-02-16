@@ -8,48 +8,45 @@ is still work-in-progress. As a result, our semantics are still full of warnings
 and errors. Similarly, our output is not yet polished for readability.
 # RISC-V Lean Statistics
 
-Lines: 76629  
+Lines: 76657  
 Definitions: 3136  
 Inductive definitions: 129  
 Abbreviations: 92  
 
 # Warnings and Errors
 
-Errors found: 1563  
-Warnings found: 1460  
+Errors found: 1384  
+Warnings found: 1  
 
 ## Error Classes
 
-- 528x application type mismatch
-- 122x unknown identifier 'pow2'
-- 101x ambiguous, possible interpretations 
+- 499x application type mismatch
+- 96x ambiguous, possible interpretations 
+- 79x unknown identifier 'pow2'
 - 69x unknown identifier '__id'
-- 56x unknown identifier 'print_endline'
-- 48x type mismatch
+- 50x unknown identifier 'print_endline'
 - 38x unknown identifier 'shiftl'
 - 34x unknown identifier 'shiftr'
-- 27x unknown identifier 'early_return'
+- 28x type mismatch
 - 24x unexpected token 'match'; expected ')', ',' or ':'
 - 22x unknown identifier 'k_n'
 - 21x unknown identifier 'sys_enable_fdext'
 - 20x unknown identifier 'k_m'
 - 19x type mismatch, result value has type
 - 18x unexpected token 'if'; expected ')', ',' or ':'
-- 18x failed to synthesize
-- 16x unknown identifier 'shift_bits_right'
+- 17x failed to synthesize
+- 14x invalid dotted identifier notation, expected type is not of the form (... → C ...) where C is a constant
 - 13x unexpected token '←'; expected ':=' or '|'
+- 12x unknown identifier 'shift_bits_right'
 - 12x unknown identifier 'quot_positive_round_zero'
-- 12x unknown identifier 'addr'
 - 12x unknown identifier 'VLEN'
-- 12x overloaded, errors 
-- 12x don't know how to synthesize placeholder for argument 'α'
 - 11x unknown identifier 'shift_bits_left'
+- 11x overloaded, errors 
+- 11x don't know how to synthesize placeholder for argument 'α'
 - 9x unknown identifier 'sys_pmp_count'
 - 9x unknown identifier 'slice'
 - 9x unknown identifier 'quot_round_zero'
 - 9x unknown identifier 'emod_int'
-- 8x maximum recursion depth has been reached
-- 7x unknown identifier 'paddr'
 - 7x unknown identifier 'neq_bool'
 - 7x cannot lift `(<- ...)` over a binder, this error usually happens when you are trying to lift a method nested in a `fun`, `let`, or `match`-alternative, and it can often be fixed by adding a missing `do`
 - 6x unknown identifier 'vector_init'
@@ -60,33 +57,25 @@ Warnings found: 1460
 - 6x unexpected token 'let'; expected 'else'
 - 6x invalid use of `(<- ...)`, must be nested inside a 'do' expression
 - 6x don't know how to synthesize implicit argument 'n'
-- 5x unknown identifier 'print'
+- 5x unknown identifier 'early_return'
 - 4x unknown identifier 'rsd'
 - 4x unknown identifier 'rs2'
+- 4x unknown identifier 'print'
 - 4x unknown identifier 'parse_hex_bits'
-- 4x unknown identifier 'n'
-- 4x unknown identifier 'cancel_reservation'
 - 4x unexpected token '('; expected ':=', '_', 'rec' or identifier
-- 4x don't know how to synthesize placeholder
 - 3x unknown identifier 'valid_hex_bits'
 - 3x unknown identifier 'sys_pmp_grain'
 - 3x unknown identifier 'k_o'
 - 3x unknown identifier 'hex_str'
-- 3x unknown identifier 'csr_name_map_forwards'
-- 3x (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
 - 2x unknown identifier 'sys_enable_vext'
 - 2x unknown identifier 'sys_enable_rvc'
-- 2x unknown identifier 'sub_virtaddr_xlenbits'
-- 2x unknown identifier 'str'
 - 2x unknown identifier 'rem_round_zero'
 - 2x unknown identifier 'rd'
-- 2x unknown identifier 'print_bits'
 - 2x unknown identifier 'plat_cache_block_size_exp'
 - 2x unknown identifier 'length'
 - 2x unknown identifier 'imm17'
 - 2x unknown identifier 'imm1612'
 - 2x unexpected token ':'; expected ':=' or '←'
-- 1x unknown identifier 'vaddr'
 - 1x unknown identifier 'sys_vext_vl_use_ceil'
 - 1x unknown identifier 'sys_vector_vlen_exp'
 - 1x unknown identifier 'sys_vector_elen_exp'
@@ -97,8 +86,6 @@ Warnings found: 1460
 - 1x unknown identifier 'sys_enable_sstc'
 - 1x unknown identifier 'sys_enable_bext'
 - 1x unknown identifier 'speculate_conditional'
-- 1x unknown identifier 'sm4_sbox_table'
-- 1x unknown identifier 'print_string'
 - 1x unknown identifier 'plat_term_write'
 - 1x unknown identifier 'plat_rom_size'
 - 1x unknown identifier 'plat_rom_base'
@@ -107,8 +94,6 @@ Warnings found: 1460
 - 1x unknown identifier 'plat_mtval_has_illegal_inst_bits'
 - 1x unknown identifier 'plat_clint_size'
 - 1x unknown identifier 'plat_clint_base'
-- 1x unknown identifier 'load_reservation'
-- 1x unknown identifier 'k_width_bytes'
 - 1x unknown identifier 'k_num_elem_single'
 - 1x unknown identifier 'get_slice_int'
 - 1x unknown identifier 'get_16_random_bits'
@@ -178,15 +163,11 @@ Warnings found: 1460
 - 1x unknown identifier 'extern_f16Eq'
 - 1x unknown identifier 'extern_f16Div'
 - 1x unknown identifier 'extern_f16Add'
-- 1x unknown identifier 'encdec_compressed_backwards'
 - 1x unknown identifier 'elf_tohost'
-- 1x unknown identifier 'cycle_count'
-- 1x unknown identifier 'aes_sbox_inv_table'
-- 1x unknown identifier 'aes_sbox_fwd_table'
-- 1x unexpected token 'while'; expected ')' or term
+- 1x unknown identifier 'cancel_reservation'
 - 1x unexpected token 'if'; expected 'else'
 - 1x fail to show termination for
-- 1x Lean exited with code 1
+- 1x Lean exited with code 134
 - 1x 'xlen_bytes' has already been declared
 - 1x 'xlen' has already been declared
 - 1x 'tlb_vpn_bits' has already been declared
