@@ -8,25 +8,27 @@ is still work-in-progress. As a result, our semantics are still full of warnings
 and errors. Similarly, our output is not yet polished for readability.
 # RISC-V Lean Statistics
 
-Lines: 76892  
+Lines: 76930  
 Definitions: 3147  
 Inductive definitions: 129  
 Abbreviations: 92  
 
 # Warnings and Errors
 
-Errors found: 1226  
+Errors found: 1261  
 Warnings found: 1  
 
 ## Error Classes
 
-- 499x application type mismatch
+- 479x application type mismatch
 - 81x unknown identifier 'pow2'
 - 50x unknown identifier 'print_endline'
 - 38x unknown identifier 'shiftl'
-- 35x type mismatch
 - 34x unknown identifier 'shiftr'
+- 32x unsolved goals
+- 30x type mismatch
 - 29x unknown identifier 'sys_enable_fdext'
+- 29x could not synthesize default value for parameter 'hmn' using tactics
 - 24x unexpected token 'match'; expected ')', ',' or ':'
 - 22x unknown identifier 'k_n'
 - 22x failed to synthesize
@@ -34,8 +36,8 @@ Warnings found: 1
 - 19x unknown identifier 'sys_enable_zfinx'
 - 19x type mismatch, result value has type
 - 18x unexpected token 'if'; expected ')', ',' or ':'
-- 14x invalid dotted identifier notation, expected type is not of the form (... → C ...) where C is a constant
 - 13x unexpected token '←'; expected ':=' or '|'
+- 13x invalid dotted identifier notation, expected type is not of the form (... → C ...) where C is a constant
 - 12x unknown identifier 'shift_bits_right'
 - 12x unknown identifier 'quot_positive_round_zero'
 - 12x unknown identifier 'VLEN'
