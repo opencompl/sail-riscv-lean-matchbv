@@ -8,37 +8,37 @@ is still work-in-progress. As a result, our semantics are still full of warnings
 and errors. Similarly, our output is not yet polished for readability.
 # RISC-V Lean Statistics
 
-Lines: 77003  
+Lines: 76928  
 Definitions: 3147  
 Inductive definitions: 129  
 Abbreviations: 92  
 
 # Warnings and Errors
 
-Errors found: 1280  
+Errors found: 1335  
 Warnings found: 1  
 
 ## Error Classes
 
-- 508x application type mismatch
-- 87x unknown identifier 'pow2'
-- 49x unknown identifier 'print_endline'
+- 463x application type mismatch
+- 96x unknown identifier 'pow2'
+- 81x unsolved goals
+- 54x unknown identifier 'print_endline'
+- 54x could not synthesize default value for parameter 'hw' using tactics
 - 38x unknown identifier 'shiftl'
 - 34x unknown identifier 'shiftr'
-- 33x type mismatch
 - 29x unknown identifier 'sys_enable_fdext'
-- 29x could not synthesize default value for parameter 'hmn' using tactics
-- 28x unsolved goals
+- 27x could not synthesize default value for parameter 'hmn' using tactics
 - 24x unexpected token 'match'; expected ')', ',' or ':'
-- 22x failed to synthesize
-- 21x invalid dotted identifier notation, expected type is not of the form (... → C ...) where C is a constant
-- 19x unknown identifier 'sys_enable_zfinx'
+- 22x invalid dotted identifier notation, expected type is not of the form (... → C ...) where C is a constant
+- 21x unknown identifier 'k_n'
+- 20x unknown identifier 'sys_enable_zfinx'
 - 19x type mismatch, result value has type
-- 18x unexpected token 'if'; expected ')', ',' or ':'
-- 16x unknown identifier 'k_n'
-- 14x unknown identifier 'k_m'
+- 19x failed to synthesize
+- 17x unknown identifier 'k_m'
+- 17x type mismatch
+- 13x unknown identifier 'shift_bits_right'
 - 13x unexpected token '←'; expected ':=' or '|'
-- 12x unknown identifier 'shift_bits_right'
 - 12x unknown identifier 'quot_positive_round_zero'
 - 12x unknown identifier 'VLEN'
 - 11x unknown identifier 'shift_bits_left'
@@ -47,10 +47,10 @@ Warnings found: 1
 - 9x unknown identifier 'sys_pmp_count'
 - 9x unknown identifier 'quot_round_zero'
 - 9x unknown identifier 'emod_int'
+- 7x invalid use of `(<- ...)`, must be nested inside a 'do' expression
 - 6x unknown identifier 'sys_writable_hpm_counters'
 - 6x unknown identifier 'sub_vec'
 - 6x unknown identifier 'nzui5'
-- 6x invalid use of `(<- ...)`, must be nested inside a 'do' expression
 - 6x don't know how to synthesize implicit argument 'n'
 - 6x cannot lift `(<- ...)` over a binder, this error usually happens when you are trying to lift a method nested in a `fun`, `let`, or `match`-alternative, and it can often be fixed by adding a missing `do`
 - 4x unknown identifier 'rsd'
@@ -63,6 +63,7 @@ Warnings found: 1
 - 3x unknown identifier 'sys_enable_rvc'
 - 3x unknown identifier 'hex_str'
 - 3x invalid `do` notation, expected type is not a monad application
+- 2x unknown identifier 'sys_enable_writable_fiom'
 - 2x unknown identifier 'sys_enable_vext'
 - 2x unknown identifier 'rem_round_zero'
 - 2x unknown identifier 'rd'
@@ -71,7 +72,9 @@ Warnings found: 1
 - 2x unknown identifier 'k_o'
 - 2x unknown identifier 'imm17'
 - 2x unknown identifier 'imm1612'
+- 2x unexpected token 'if'; expected ')', ',' or ':'
 - 2x unexpected token ':'; expected ':=' or '←'
+- 2x function expected at
 - 1x unknown identifier 'sys_vext_vl_use_ceil'
 - 1x unknown identifier 'sys_vector_vlen_exp'
 - 1x unknown identifier 'sys_vector_elen_exp'
@@ -164,6 +167,6 @@ Warnings found: 1
 - 1x unknown identifier 'elf_tohost'
 - 1x unknown identifier 'cancel_reservation'
 - 1x overloaded, errors 
-- 1x function expected at
+- 1x invalid match-expression, type of pattern variable 'shamt' contains metavariables
 - 1x fail to show termination for
 - 1x Lean exited with code 134
