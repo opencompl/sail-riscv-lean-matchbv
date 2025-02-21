@@ -130,9 +130,16 @@ but is expected to have type
 error: ././././LeanRV64DLEAN.lean:17691:40: failed to synthesize
   HPow Nat Int (?m.1919323 x✝)
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
-error: ././././LeanRV64DLEAN.lean:17694:44: unknown identifier 'k_num_elem_single'
+error: ././././LeanRV64DLEAN.lean:17694:44: application type mismatch
+  Vector (BitVec SEW) num_elem_single
+argument
+  num_elem_single
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
 error: ././././LeanRV64DLEAN.lean:17696:30: failed to synthesize
-  HMul Nat Int ?m.1919720
+  HMul Nat Int ?m.1919839
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:17701:18: application type mismatch
   foreach_M loop_r_i_lower
@@ -143,7 +150,7 @@ has type
 but is expected to have type
   Nat : Type
 error: ././././LeanRV64DLEAN.lean:17703:30: failed to synthesize
-  HSub Nat Int ?m.1920146
+  HSub Nat Int ?m.1920251
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:17707:25: application type mismatch
   write_single_vreg (__id num_elem_single)
@@ -258,25 +265,25 @@ error: ././././LeanRV64DLEAN.lean:18492:12: unknown identifier 'extern_f64roundT
 error: ././././LeanRV64DLEAN.lean:18499:5: could not synthesize default value for parameter 'hmn' using tactics
 error: ././././LeanRV64DLEAN.lean:18499:5: unsolved goals
 n : Nat
-⊢ n = 1 + (?m.2102577 + (1 + ?m.2102590))
+⊢ n = 1 + (?m.2102682 + (1 + ?m.2102695))
 error: ././././LeanRV64DLEAN.lean:18502:5: could not synthesize default value for parameter 'hmn' using tactics
 error: ././././LeanRV64DLEAN.lean:18502:5: unsolved goals
 n : Nat
-⊢ n = 1 + (?m.2102617 + (1 + ?m.2102627))
+⊢ n = 1 + (?m.2102722 + (1 + ?m.2102732))
 error: ././././LeanRV64DLEAN.lean:18505:5: could not synthesize default value for parameter 'hmn' using tactics
 error: ././././LeanRV64DLEAN.lean:18505:5: unsolved goals
 n : Nat
-⊢ n = 1 + (?m.2102654 + (1 + ?m.2102664))
+⊢ n = 1 + (?m.2102759 + (1 + ?m.2102769))
 error: ././././LeanRV64DLEAN.lean:18508:5: could not synthesize default value for parameter 'hmn' using tactics
 error: ././././LeanRV64DLEAN.lean:18508:5: unsolved goals
 n : Nat
 x✝ : Int
-⊢ n = 1 + (?m.2102707 x✝ + (1 + ?m.2102709 x✝))
+⊢ n = 1 + (?m.2102812 x✝ + (1 + ?m.2102814 x✝))
 error: ././././LeanRV64DLEAN.lean:18525:3: could not synthesize default value for parameter 'hmn' using tactics
 error: ././././LeanRV64DLEAN.lean:18525:3: unsolved goals
 k_n n : Nat
 x : BitVec k_n
-⊢ n = ?m.2103423 + k_n
+⊢ n = ?m.2103528 + k_n
 error: ././././LeanRV64DLEAN.lean:18529:37: application type mismatch
   BitVec.length x == __id ↑m
 argument
@@ -385,10 +392,10 @@ error: ././././LeanRV64DLEAN.lean:19881:37: unknown identifier 'plat_rom_base'
 error: ././././LeanRV64DLEAN.lean:19882:37: unknown identifier 'plat_ram_size'
 error: ././././LeanRV64DLEAN.lean:19883:37: unknown identifier 'plat_rom_size'
 error: ././././LeanRV64DLEAN.lean:19885:15: failed to synthesize
-  HAdd Nat Int ?m.2336493
+  HAdd Nat Int ?m.2336598
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:19888:20: failed to synthesize
-  HAdd Nat Int ?m.2336679
+  HAdd Nat Int ?m.2336784
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:19891:15: unknown identifier 'print_endline'
 error: ././././LeanRV64DLEAN.lean:19895:15: unknown identifier 'print_endline'
@@ -398,7 +405,7 @@ error: ././././LeanRV64DLEAN.lean:19904:15: unknown identifier 'print_endline'
 error: ././././LeanRV64DLEAN.lean:19912:39: unknown identifier 'plat_clint_base'
 error: ././././LeanRV64DLEAN.lean:19913:39: unknown identifier 'plat_clint_size'
 error: ././././LeanRV64DLEAN.lean:19915:12: failed to synthesize
-  HAdd Nat Int ?m.2337196
+  HAdd Nat Int ?m.2337301
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:19942:31: unknown identifier 'plat_clint_base'
 error: ././././LeanRV64DLEAN.lean:19945:19: unknown identifier 'print_endline'
@@ -582,7 +589,7 @@ log_pte_size_bytes : Nat := if (__id ↑sv_width == 32) = true then 2 else 3
 pte_addr✝ : BitVec
   ((if sv_width = 32 then 22 else 44) +
     ((((level + 1) * if __id ↑sv_width = 32 then 10 else 9) - 1 - level * if __id ↑sv_width = 32 then 10 else 9) + 1 +
-      ?m.2665847)) :=
+      ?m.2665936)) :=
   BitVec.append' pt_base (BitVec.append' vpn_i zeros_implicit ⋯) ⋯
 x✝ : PUnit
 pte_addr : _root_.physaddr := physaddr.physaddr (zero_extend pte_addr✝)
@@ -670,7 +677,7 @@ has type
 but is expected to have type
   Nat : Type
 error: ././././LeanRV64DLEAN.lean:20984:51: application type mismatch
-  @BitVec.extractLsbUnif ?m.5407986 svAddr (sv_width - 1)
+  @BitVec.extractLsbUnif ?m.5408075 svAddr (sv_width - 1)
 argument
   sv_width - 1
 has type
@@ -700,7 +707,7 @@ error: ././././LeanRV64DLEAN.lean:22637:7: type mismatch
 has type
   Unit : Type
 but is expected to have type
-  SailM ?m.5517655 : Type
+  SailM ?m.5517744 : Type
 error: ././././LeanRV64DLEAN.lean:23259:60: unknown identifier 'shiftl'
 error: ././././LeanRV64DLEAN.lean:23347:51: application type mismatch
   BitVec.toNat __do_lift✝ == i
@@ -714,7 +721,7 @@ error: ././././LeanRV64DLEAN.lean:23356:11: failed to synthesize
   HPow Nat Int Nat
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:23360:11: failed to synthesize
-  HPow Nat Int (?m.5553790 x✝)
+  HPow Nat Int (?m.5553879 x✝)
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:23376:36: application type mismatch
   (fun x => 2 ^ x) (0 - EMUL_pow)
@@ -733,7 +740,7 @@ rs1 : BitVec 5
 SEW : Nat
 ⊢ SEW = SEW - 1 + 1
 error: ././././LeanRV64DLEAN.lean:23435:47: failed to synthesize
-  HSub Nat Int ?m.5558734
+  HSub Nat Int ?m.5558823
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:23451:74: application type mismatch
   undefined_bitvector (__id ↑SEW)
@@ -811,7 +818,7 @@ error: ././././LeanRV64DLEAN.lean:23624:11: failed to synthesize
   HPow Nat Int Int
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:23635:44: failed to synthesize
-  HMul Nat Int ?m.5571222
+  HMul Nat Int ?m.5571311
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:23648:17: unknown identifier 'shiftl'
 error: ././././LeanRV64DLEAN.lean:23655:58: application type mismatch
@@ -854,13 +861,13 @@ error: ././././LeanRV64DLEAN.lean:23689:14: unsolved goals
 k_n len : Nat
 elem : BitVec k_n
 x✝ : PUnit
-⊢ len = 1 + ?m.5577799 __do_lift✝ x✝
+⊢ len = 1 + ?m.5577888 __do_lift✝ x✝
 error: ././././LeanRV64DLEAN.lean:23693:19: could not synthesize default value for parameter 'hmn' using tactics
 error: ././././LeanRV64DLEAN.lean:23693:19: unsolved goals
 k_n len : Nat
 elem : BitVec k_n
 x✝ : PUnit
-⊢ len = 1 + ?m.5578798 __do_lift✝ x✝
+⊢ len = 1 + ?m.5578887 __do_lift✝ x✝
 error: ././././LeanRV64DLEAN.lean:23694:19: could not synthesize default value for parameter 'hw' using tactics
 error: ././././LeanRV64DLEAN.lean:23694:19: unsolved goals
 k_n len : Nat
@@ -1691,7 +1698,7 @@ v : BitVec 16
 __discr✝ : BitVec 5 × BitVec 32
 fst✝ : BitVec 5
 sig32 : BitVec 32
-⊢ 16 = 1 + ?m.8420195 __discr✝ fst✝ sig32
+⊢ 16 = 1 + ?m.8420287 __discr✝ fst✝ sig32
 error: ././././LeanRV64DLEAN.lean:24077:33: could not synthesize default value for parameter 'hmn' using tactics
 error: ././././LeanRV64DLEAN.lean:24077:33: unsolved goals
 rm : BitVec 3
@@ -1699,7 +1706,7 @@ v : BitVec 16
 __discr✝ : BitVec 5 × BitVec 32
 fst✝ : BitVec 5
 sig32 : BitVec 32
-⊢ 16 = 1 + ?m.8420200 __discr✝ fst✝ sig32
+⊢ 16 = 1 + ?m.8420292 __discr✝ fst✝ sig32
 error: ././././LeanRV64DLEAN.lean:24083:28: could not synthesize default value for parameter 'hmn' using tactics
 error: ././././LeanRV64DLEAN.lean:24083:28: unsolved goals
 rm : BitVec 3
@@ -1707,7 +1714,7 @@ v : BitVec 16
 __discr✝ : BitVec 5 × BitVec 32
 fst✝ : BitVec 5
 sig32 : BitVec 32
-⊢ 8 = 1 + ?m.8420925 __discr✝ fst✝ sig32
+⊢ 8 = 1 + ?m.8421017 __discr✝ fst✝ sig32
 error: ././././LeanRV64DLEAN.lean:24086:33: could not synthesize default value for parameter 'hmn' using tactics
 error: ././././LeanRV64DLEAN.lean:24086:33: unsolved goals
 rm : BitVec 3
@@ -1715,7 +1722,7 @@ v : BitVec 16
 __discr✝ : BitVec 5 × BitVec 32
 fst✝ : BitVec 5
 sig32 : BitVec 32
-⊢ 8 = 1 + ?m.8420930 __discr✝ fst✝ sig32
+⊢ 8 = 1 + ?m.8421022 __discr✝ fst✝ sig32
 error: ././././LeanRV64DLEAN.lean:24092:28: could not synthesize default value for parameter 'hmn' using tactics
 error: ././././LeanRV64DLEAN.lean:24092:28: unsolved goals
 rm : BitVec 3
@@ -1723,7 +1730,7 @@ v : BitVec 32
 __discr✝ : BitVec 5 × BitVec 32
 fst✝ : BitVec 5
 sig32 : BitVec 32
-⊢ 16 = 1 + ?m.8421655 __discr✝ fst✝ sig32
+⊢ 16 = 1 + ?m.8421747 __discr✝ fst✝ sig32
 error: ././././LeanRV64DLEAN.lean:24095:33: could not synthesize default value for parameter 'hmn' using tactics
 error: ././././LeanRV64DLEAN.lean:24095:33: unsolved goals
 rm : BitVec 3
@@ -1731,9 +1738,9 @@ v : BitVec 32
 __discr✝ : BitVec 5 × BitVec 32
 fst✝ : BitVec 5
 sig32 : BitVec 32
-⊢ 16 = 1 + ?m.8421660 __discr✝ fst✝ sig32
+⊢ 16 = 1 + ?m.8421752 __discr✝ fst✝ sig32
 error: ././././LeanRV64DLEAN.lean:24100:34: don't know how to synthesize implicit argument 'n'
-  @BitVec.toNat (?m.8422375 rm v __discr✝ fst✝ sig32) ones
+  @BitVec.toNat (?m.8422467 rm v __discr✝ fst✝ sig32) ones
 context:
 rm : BitVec 3
 v : BitVec 16
@@ -1742,7 +1749,7 @@ fst✝ : BitVec 5
 sig32 : BitVec 32
 ⊢ Nat
 error: ././././LeanRV64DLEAN.lean:24100:48: don't know how to synthesize implicit argument 'n'
-  @ones (?m.8422375 rm v __discr✝ fst✝ sig32)
+  @ones (?m.8422467 rm v __discr✝ fst✝ sig32)
 context:
 rm : BitVec 3
 v : BitVec 16
@@ -1751,7 +1758,7 @@ fst✝ : BitVec 5
 sig32 : BitVec 32
 ⊢ Nat
 error: ././././LeanRV64DLEAN.lean:24106:34: don't know how to synthesize implicit argument 'n'
-  @BitVec.toNat (?m.8422833 rm v __discr✝ fst✝ sig32) ones
+  @BitVec.toNat (?m.8422925 rm v __discr✝ fst✝ sig32) ones
 context:
 rm : BitVec 3
 v : BitVec 16
@@ -1760,7 +1767,7 @@ fst✝ : BitVec 5
 sig32 : BitVec 32
 ⊢ Nat
 error: ././././LeanRV64DLEAN.lean:24106:48: don't know how to synthesize implicit argument 'n'
-  @ones (?m.8422833 rm v __discr✝ fst✝ sig32)
+  @ones (?m.8422925 rm v __discr✝ fst✝ sig32)
 context:
 rm : BitVec 3
 v : BitVec 16
@@ -1769,7 +1776,7 @@ fst✝ : BitVec 5
 sig32 : BitVec 32
 ⊢ Nat
 error: ././././LeanRV64DLEAN.lean:24112:34: don't know how to synthesize implicit argument 'n'
-  @BitVec.toNat (?m.8423291 rm v __discr✝ fst✝ sig32) ones
+  @BitVec.toNat (?m.8423383 rm v __discr✝ fst✝ sig32) ones
 context:
 rm : BitVec 3
 v : BitVec 32
@@ -1778,7 +1785,7 @@ fst✝ : BitVec 5
 sig32 : BitVec 32
 ⊢ Nat
 error: ././././LeanRV64DLEAN.lean:24112:48: don't know how to synthesize implicit argument 'n'
-  @ones (?m.8423291 rm v __discr✝ fst✝ sig32)
+  @ones (?m.8423383 rm v __discr✝ fst✝ sig32)
 context:
 rm : BitVec 3
 v : BitVec 32
@@ -1789,11 +1796,11 @@ sig32 : BitVec 32
 error: ././././LeanRV64DLEAN.lean:24138:14: unknown identifier 'shiftl'
 error: ././././LeanRV64DLEAN.lean:24156:18: unknown identifier 'shiftl'
 error: ././././LeanRV64DLEAN.lean:24160:9: failed to synthesize
-  HSub Nat Int ?m.8432056
+  HSub Nat Int ?m.8432148
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:24258:12: unknown identifier 'shiftl'
 error: ././././LeanRV64DLEAN.lean:24268:7: failed to synthesize
-  HSub Nat Int ?m.8446556
+  HSub Nat Int ?m.8446648
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:24270:18: unknown identifier 'shiftl'
 error: ././././LeanRV64DLEAN.lean:24273:29: unknown identifier 'shiftr'
@@ -1803,7 +1810,7 @@ error: ././././LeanRV64DLEAN.lean:24497:9: unknown identifier 'print_endline'
 error: ././././LeanRV64DLEAN.lean:24494:18: could not synthesize default value for parameter 'hmn' using tactics
 error: ././././LeanRV64DLEAN.lean:24494:18: unsolved goals
 x✝ : Unit
-⊢ 2 ^ 3 * 8 = 1 + ?m.8460447
+⊢ 2 ^ 3 * 8 = 1 + ?m.8460539
 error: ././././LeanRV64DLEAN.lean:24505:18: unknown identifier 'sys_vext_vl_use_ceil'
 error: ././././LeanRV64DLEAN.lean:27889:11: failed to synthesize
   HPow Nat Int Int
@@ -1821,24 +1828,24 @@ error: ././././LeanRV64DLEAN.lean:27907:23: application type mismatch
 argument
   cont loop_j_lower
 has type
-  ER ?m.8605067 Nat : Type
+  ER ?m.8605159 Nat : Type
 but is expected to have type
   Nat : Type
 error: ././././LeanRV64DLEAN.lean:27918:29: function expected at
   early_return (handle_mem_exception vaddr (E_Load_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.8605719
+  ER (SailM Unit) ?m.8605811
 error: ././././LeanRV64DLEAN.lean:27923:31: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8605832
+  ER (SailM Unit) ?m.8605924
 error: ././././LeanRV64DLEAN.lean:27930:60: failed to synthesize
-  HMul Nat Int ?m.8606032
+  HMul Nat Int ?m.8606124
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:27932:33: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8621216
+  ER (SailM Unit) ?m.8621307
 error: ././././LeanRV64DLEAN.lean:27906:11: application type mismatch
   pure x✝
 argument
@@ -1846,7 +1853,7 @@ argument
 has type
   Retired : Type
 but is expected to have type
-  ER ?m.8604630 Unit : Type
+  ER ?m.8604722 Unit : Type
 error: ././././LeanRV64DLEAN.lean:27906:11: application type mismatch
   pure x✝
 argument
@@ -1854,7 +1861,7 @@ argument
 has type
   Unit : Type
 but is expected to have type
-  ER ?m.8604630 Unit : Type
+  ER ?m.8604722 Unit : Type
 error: ././././LeanRV64DLEAN.lean:27938:27: invalid `do` notation, expected type is not a monad application
   Unit
 You can use the `do` notation in pure code by writing `Id.run do` instead of `do`, where `Id` is the identity monad.
@@ -1874,44 +1881,44 @@ error: ././././LeanRV64DLEAN.lean:27975:30: application type mismatch
 argument
   cont loop_j_lower
 has type
-  ER ?m.8624195 Nat : Type
+  ER ?m.8624286 Nat : Type
 but is expected to have type
   Nat : Type
 error: ././././LeanRV64DLEAN.lean:27986:40: unknown identifier 'print_endline'
 error: ././././LeanRV64DLEAN.lean:27985:42: function expected at
-  writeReg vl ?m.8625274 ?m.8625342
+  writeReg vl ?m.8625365 ?m.8625433
 term has type
-  EStateM.Result (Error ?m.8625239) (SequentialState ?m.8625235 ?m.8625238) PUnit
+  EStateM.Result (Error ?m.8625330) (SequentialState ?m.8625326 ?m.8625329) PUnit
 error: ././././LeanRV64DLEAN.lean:27993:41: function expected at
   early_return (handle_mem_exception vaddr (E_Load_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.8625500
+  ER (SailM Unit) ?m.8625591
 error: ././././LeanRV64DLEAN.lean:27997:45: unknown identifier 'print_endline'
 error: ././././LeanRV64DLEAN.lean:27996:47: function expected at
-  writeReg vl ?m.8625636 ?m.8625704
+  writeReg vl ?m.8625727 ?m.8625795
 term has type
-  EStateM.Result (Error ?m.8625626) (SequentialState ?m.8625622 ?m.8625625) PUnit
+  EStateM.Result (Error ?m.8625717) (SequentialState ?m.8625713 ?m.8625716) PUnit
 error: ././././LeanRV64DLEAN.lean:28004:43: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8625897
+  ER (SailM Unit) ?m.8625988
 error: ././././LeanRV64DLEAN.lean:28008:47: unknown identifier 'print_endline'
 error: ././././LeanRV64DLEAN.lean:28007:49: function expected at
-  writeReg vl ?m.8626066 ?m.8626134
+  writeReg vl ?m.8626157 ?m.8626225
 term has type
-  EStateM.Result (Error ?m.8626056) (SequentialState ?m.8626052 ?m.8626055) PUnit
+  EStateM.Result (Error ?m.8626147) (SequentialState ?m.8626143 ?m.8626146) PUnit
 error: ././././LeanRV64DLEAN.lean:28017:65: failed to synthesize
-  HMul Nat Int ?m.8626823
+  HMul Nat Int ?m.8626914
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:28021:45: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8642239
+  ER (SailM Unit) ?m.8642330
 error: ././././LeanRV64DLEAN.lean:28025:49: unknown identifier 'print_endline'
 error: ././././LeanRV64DLEAN.lean:28024:51: function expected at
-  writeReg vl ?m.8642438 ?m.8642506
+  writeReg vl ?m.8642529 ?m.8642597
 term has type
-  EStateM.Result (Error ?m.8642428) (SequentialState ?m.8642424 ?m.8642427) PUnit
+  EStateM.Result (Error ?m.8642519) (SequentialState ?m.8642515 ?m.8642518) PUnit
 error: ././././LeanRV64DLEAN.lean:27974:18: application type mismatch
   pure x✝
 argument
@@ -1919,7 +1926,7 @@ argument
 has type
   Retired : Type
 but is expected to have type
-  ER ?m.8623771 Bool : Type
+  ER ?m.8623862 Bool : Type
 error: ././././LeanRV64DLEAN.lean:27974:18: application type mismatch
   pure x✝
 argument
@@ -1927,19 +1934,19 @@ argument
 has type
   Bool : Type
 but is expected to have type
-  ER ?m.8623771 Bool : Type
+  ER ?m.8623862 Bool : Type
 error: ././././LeanRV64DLEAN.lean:28035:31: unknown identifier 'shiftr'
 error: ././././LeanRV64DLEAN.lean:28039:54: failed to synthesize
-  HMul Nat Int ?m.8645929
+  HMul Nat Int ?m.8646020
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:28048:31: unknown identifier 'shiftr'
 error: ././././LeanRV64DLEAN.lean:28052:54: failed to synthesize
-  HMul Nat Int ?m.8648594
+  HMul Nat Int ?m.8648685
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:28053:22: function expected at
   pure ()
 term has type
-  ?m.8649950 Unit
+  ?m.8650041 Unit
 error: ././././LeanRV64DLEAN.lean:28034:29: could not synthesize default value for parameter 'hw' using tactics
 error: ././././LeanRV64DLEAN.lean:28034:29: unsolved goals
 nf : Nat
@@ -2002,23 +2009,23 @@ error: ././././LeanRV64DLEAN.lean:28080:23: application type mismatch
 argument
   cont loop_j_lower
 has type
-  ER ?m.8652760 Nat : Type
+  ER ?m.8652851 Nat : Type
 but is expected to have type
   Nat : Type
 error: ././././LeanRV64DLEAN.lean:28091:29: function expected at
   early_return (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.8653422
+  ER (SailM Unit) ?m.8653513
 error: ././././LeanRV64DLEAN.lean:28096:31: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8653537
+  ER (SailM Unit) ?m.8653628
 error: ././././LeanRV64DLEAN.lean:28104:33: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8653673
+  ER (SailM Unit) ?m.8653764
 error: ././././LeanRV64DLEAN.lean:28110:57: failed to synthesize
-  HMul Nat Int ?m.8653810
+  HMul Nat Int ?m.8653901
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:28112:68: application type mismatch
   mem_write_value paddr load_width_bytes elem_val
@@ -2031,7 +2038,7 @@ but is expected to have type
 error: ././././LeanRV64DLEAN.lean:28119:35: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8669140
+  ER (SailM Unit) ?m.8669239
 error: ././././LeanRV64DLEAN.lean:28079:11: application type mismatch
   pure x✝
 argument
@@ -2039,7 +2046,7 @@ argument
 has type
   Retired : Type
 but is expected to have type
-  ER ?m.8652304 Unit : Type
+  ER ?m.8652395 Unit : Type
 error: ././././LeanRV64DLEAN.lean:28079:11: application type mismatch
   pure x✝
 argument
@@ -2047,7 +2054,7 @@ argument
 has type
   Unit : Type
 but is expected to have type
-  ER ?m.8652304 Unit : Type
+  ER ?m.8652395 Unit : Type
 error: ././././LeanRV64DLEAN.lean:28132:11: failed to synthesize
   HPow Nat Int Int
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
@@ -2064,24 +2071,24 @@ error: ././././LeanRV64DLEAN.lean:28151:23: application type mismatch
 argument
   cont loop_j_lower
 has type
-  ER ?m.8672042 Nat : Type
+  ER ?m.8672141 Nat : Type
 but is expected to have type
   Nat : Type
 error: ././././LeanRV64DLEAN.lean:28162:29: function expected at
   early_return (handle_mem_exception vaddr (E_Load_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.8672686
+  ER (SailM Unit) ?m.8672785
 error: ././././LeanRV64DLEAN.lean:28167:31: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8672799
+  ER (SailM Unit) ?m.8672898
 error: ././././LeanRV64DLEAN.lean:28174:60: failed to synthesize
-  HMul Nat Int ?m.8672999
+  HMul Nat Int ?m.8673098
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:28176:33: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8688182
+  ER (SailM Unit) ?m.8688281
 error: ././././LeanRV64DLEAN.lean:28150:11: application type mismatch
   pure x✝
 argument
@@ -2089,7 +2096,7 @@ argument
 has type
   Retired : Type
 but is expected to have type
-  ER ?m.8671605 Unit : Type
+  ER ?m.8671704 Unit : Type
 error: ././././LeanRV64DLEAN.lean:28150:11: application type mismatch
   pure x✝
 argument
@@ -2097,7 +2104,7 @@ argument
 has type
   Unit : Type
 but is expected to have type
-  ER ?m.8671605 Unit : Type
+  ER ?m.8671704 Unit : Type
 error: ././././LeanRV64DLEAN.lean:28182:27: invalid `do` notation, expected type is not a monad application
   Unit
 You can use the `do` notation in pure code by writing `Id.run do` instead of `do`, where `Id` is the identity monad.
@@ -2109,23 +2116,23 @@ error: ././././LeanRV64DLEAN.lean:28215:23: application type mismatch
 argument
   cont loop_j_lower
 has type
-  ER ?m.8690584 Nat : Type
+  ER ?m.8690683 Nat : Type
 but is expected to have type
   Nat : Type
 error: ././././LeanRV64DLEAN.lean:28226:29: function expected at
   early_return (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.8691238
+  ER (SailM Unit) ?m.8691337
 error: ././././LeanRV64DLEAN.lean:28231:31: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8691353
+  ER (SailM Unit) ?m.8691452
 error: ././././LeanRV64DLEAN.lean:28239:33: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8691489
+  ER (SailM Unit) ?m.8691588
 error: ././././LeanRV64DLEAN.lean:28245:57: failed to synthesize
-  HMul Nat Int ?m.8691626
+  HMul Nat Int ?m.8691725
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:28247:68: application type mismatch
   mem_write_value paddr load_width_bytes elem_val
@@ -2138,7 +2145,7 @@ but is expected to have type
 error: ././././LeanRV64DLEAN.lean:28254:35: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8706956
+  ER (SailM Unit) ?m.8707055
 error: ././././LeanRV64DLEAN.lean:28214:11: application type mismatch
   pure x✝
 argument
@@ -2146,7 +2153,7 @@ argument
 has type
   Retired : Type
 but is expected to have type
-  ER ?m.8690128 Unit : Type
+  ER ?m.8690227 Unit : Type
 error: ././././LeanRV64DLEAN.lean:28214:11: application type mismatch
   pure x✝
 argument
@@ -2154,7 +2161,7 @@ argument
 has type
   Unit : Type
 but is expected to have type
-  ER ?m.8690128 Unit : Type
+  ER ?m.8690227 Unit : Type
 error: ././././LeanRV64DLEAN.lean:28268:11: failed to synthesize
   HPow Nat Int Int
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
@@ -2171,24 +2178,24 @@ error: ././././LeanRV64DLEAN.lean:28288:23: application type mismatch
 argument
   cont loop_j_lower
 has type
-  ER ?m.8709699 Nat : Type
+  ER ?m.8709798 Nat : Type
 but is expected to have type
   Nat : Type
 error: ././././LeanRV64DLEAN.lean:28300:29: function expected at
   early_return (handle_mem_exception vaddr (E_Load_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.8710425
+  ER (SailM Unit) ?m.8710524
 error: ././././LeanRV64DLEAN.lean:28305:31: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8710538
+  ER (SailM Unit) ?m.8710637
 error: ././././LeanRV64DLEAN.lean:28312:60: failed to synthesize
-  HMul Nat Int ?m.8710738
+  HMul Nat Int ?m.8710837
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:28314:33: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8725921
+  ER (SailM Unit) ?m.8726020
 error: ././././LeanRV64DLEAN.lean:28287:11: application type mismatch
   pure x✝
 argument
@@ -2196,7 +2203,7 @@ argument
 has type
   Retired : Type
 but is expected to have type
-  ER ?m.8709262 Unit : Type
+  ER ?m.8709361 Unit : Type
 error: ././././LeanRV64DLEAN.lean:28287:11: application type mismatch
   pure x✝
 argument
@@ -2204,7 +2211,7 @@ argument
 has type
   Unit : Type
 but is expected to have type
-  ER ?m.8709262 Unit : Type
+  ER ?m.8709361 Unit : Type
 error: ././././LeanRV64DLEAN.lean:28320:27: invalid `do` notation, expected type is not a monad application
   Unit
 You can use the `do` notation in pure code by writing `Id.run do` instead of `do`, where `Id` is the identity monad.
@@ -2216,23 +2223,23 @@ error: ././././LeanRV64DLEAN.lean:28355:23: application type mismatch
 argument
   cont loop_j_lower
 has type
-  ER ?m.8728302 Nat : Type
+  ER ?m.8728401 Nat : Type
 but is expected to have type
   Nat : Type
 error: ././././LeanRV64DLEAN.lean:28367:29: function expected at
   early_return (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.8729040
+  ER (SailM Unit) ?m.8729139
 error: ././././LeanRV64DLEAN.lean:28372:31: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8729155
+  ER (SailM Unit) ?m.8729254
 error: ././././LeanRV64DLEAN.lean:28380:33: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8729291
+  ER (SailM Unit) ?m.8729390
 error: ././././LeanRV64DLEAN.lean:28386:57: failed to synthesize
-  HMul Nat Int ?m.8729428
+  HMul Nat Int ?m.8729527
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:28388:66: application type mismatch
   mem_write_value paddr EEW_data_bytes elem_val
@@ -2245,7 +2252,7 @@ but is expected to have type
 error: ././././LeanRV64DLEAN.lean:28395:35: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8744758
+  ER (SailM Unit) ?m.8744857
 error: ././././LeanRV64DLEAN.lean:28354:11: application type mismatch
   pure x✝
 argument
@@ -2253,7 +2260,7 @@ argument
 has type
   Retired : Type
 but is expected to have type
-  ER ?m.8727846 Unit : Type
+  ER ?m.8727945 Unit : Type
 error: ././././LeanRV64DLEAN.lean:28354:11: application type mismatch
   pure x✝
 argument
@@ -2261,7 +2268,7 @@ argument
 has type
   Unit : Type
 but is expected to have type
-  ER ?m.8727846 Unit : Type
+  ER ?m.8727945 Unit : Type
 error: ././././LeanRV64DLEAN.lean:28409:35: unknown identifier 'emod_int'
 error: ././././LeanRV64DLEAN.lean:28418:28: application type mismatch
   foreach_ME loop_i_lower
@@ -2272,16 +2279,16 @@ has type
 but is expected to have type
   Nat : Type
 error: ././././LeanRV64DLEAN.lean:28421:40: failed to synthesize
-  HMul Int Nat ?m.8746612
+  HMul Int Nat ?m.8746711
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:28430:34: function expected at
   early_return (handle_mem_exception vaddr (E_Load_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.8746927
+  ER (SailM Unit) ?m.8747026
 error: ././././LeanRV64DLEAN.lean:28435:36: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8747083
+  ER (SailM Unit) ?m.8747182
 error: ././././LeanRV64DLEAN.lean:28443:70: application type mismatch
   write_single_element (load_width_bytes * 8) (↑i) (vd + to_bits 5 cur_field) elem
 argument
@@ -2293,11 +2300,11 @@ but is expected to have type
 error: ././././LeanRV64DLEAN.lean:28442:31: type mismatch, result value has type
   Unit : Type
 but is expected to have type
-  ER Retired ?m.8746781 : Type
+  ER Retired ?m.8746880 : Type
 error: ././././LeanRV64DLEAN.lean:28445:38: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8762616
+  ER (SailM Unit) ?m.8762715
 error: ././././LeanRV64DLEAN.lean:28456:21: application type mismatch
   foreach_ME loop_j_lower
 argument
@@ -2311,20 +2318,20 @@ error: ././././LeanRV64DLEAN.lean:28461:25: application type mismatch
 argument
   cont loop_i_lower
 has type
-  ER ?m.8763948 Nat : Type
+  ER ?m.8764047 Nat : Type
 but is expected to have type
   Nat : Type
 error: ././././LeanRV64DLEAN.lean:28464:37: failed to synthesize
-  HMul Int Nat ?m.8764347
+  HMul Int Nat ?m.8764446
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:28473:31: function expected at
   early_return (handle_mem_exception vaddr (E_Load_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.8764662
+  ER (SailM Unit) ?m.8764761
 error: ././././LeanRV64DLEAN.lean:28478:33: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8764819
+  ER (SailM Unit) ?m.8764918
 error: ././././LeanRV64DLEAN.lean:28485:59: application type mismatch
   write_single_element (load_width_bytes * 8) (↑i) (vd + to_bits 5 ↑j) elem
 argument
@@ -2336,11 +2343,11 @@ but is expected to have type
 error: ././././LeanRV64DLEAN.lean:28484:28: type mismatch, result value has type
   Unit : Type
 but is expected to have type
-  ER Retired ?m.8764516 : Type
+  ER Retired ?m.8764615 : Type
 error: ././././LeanRV64DLEAN.lean:28487:35: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8780394
+  ER (SailM Unit) ?m.8780493
 error: ././././LeanRV64DLEAN.lean:28460:13: application type mismatch
   pure x✝
 argument
@@ -2359,20 +2366,20 @@ has type
 but is expected to have type
   Nat : Type
 error: ././././LeanRV64DLEAN.lean:28513:46: failed to synthesize
-  HMul Int Nat ?m.8782387
+  HMul Int Nat ?m.8782486
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:28522:34: function expected at
   early_return (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.8782701
+  ER (SailM Unit) ?m.8782800
 error: ././././LeanRV64DLEAN.lean:28527:36: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8782857
+  ER (SailM Unit) ?m.8782956
 error: ././././LeanRV64DLEAN.lean:28535:38: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8783034
+  ER (SailM Unit) ?m.8783133
 error: ././././LeanRV64DLEAN.lean:28543:73: application type mismatch
   mem_write_value paddr load_width_bytes elem
 argument
@@ -2384,11 +2391,11 @@ but is expected to have type
 error: ././././LeanRV64DLEAN.lean:28545:45: type mismatch, result value has type
   Unit : Type
 but is expected to have type
-  ER Retired ?m.8782555 : Type
+  ER Retired ?m.8782654 : Type
 error: ././././LeanRV64DLEAN.lean:28550:40: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8798676
+  ER (SailM Unit) ?m.8798775
 error: ././././LeanRV64DLEAN.lean:28561:21: application type mismatch
   foreach_ME loop_j_lower
 argument
@@ -2402,24 +2409,24 @@ error: ././././LeanRV64DLEAN.lean:28569:25: application type mismatch
 argument
   cont loop_i_lower
 has type
-  ER ?m.8800127 Nat : Type
+  ER ?m.8800226 Nat : Type
 but is expected to have type
   Nat : Type
 error: ././././LeanRV64DLEAN.lean:28572:37: failed to synthesize
-  HMul Int Nat ?m.8800520
+  HMul Int Nat ?m.8800619
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
 error: ././././LeanRV64DLEAN.lean:28581:31: function expected at
   early_return (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.8800808
+  ER (SailM Unit) ?m.8800907
 error: ././././LeanRV64DLEAN.lean:28586:33: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8800961
+  ER (SailM Unit) ?m.8801060
 error: ././././LeanRV64DLEAN.lean:28594:35: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8801139
+  ER (SailM Unit) ?m.8801238
 error: ././././LeanRV64DLEAN.lean:28599:84: application type mismatch
   vectorAccess vs3_val
 argument
@@ -2427,15 +2434,15 @@ argument
 has type
   Vector (BitVec (load_width_bytes * 8)) elem_per_reg : Type
 but is expected to have type
-  Vector (BitVec (8 * load_width_bytes)) ?m.8801219 : Type
+  Vector (BitVec (8 * load_width_bytes)) ?m.8801318 : Type
 error: ././././LeanRV64DLEAN.lean:28602:42: type mismatch, result value has type
   Unit : Type
 but is expected to have type
-  ER Retired ?m.8800666 : Type
+  ER Retired ?m.8800765 : Type
 error: ././././LeanRV64DLEAN.lean:28607:37: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8801786
+  ER (SailM Unit) ?m.8801885
 error: ././././LeanRV64DLEAN.lean:28568:13: application type mismatch
   pure x✝
 argument
@@ -2447,21 +2454,21 @@ but is expected to have type
 error: ././././LeanRV64DLEAN.lean:28661:30: function expected at
   early_return (handle_mem_exception vaddr (E_Load_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.8804866
+  ER (SailM Unit) ?m.8804965
 error: ././././LeanRV64DLEAN.lean:28666:32: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8804978
+  ER (SailM Unit) ?m.8805077
 error: ././././LeanRV64DLEAN.lean:28674:34: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.8805186
+  ER (SailM Unit) ?m.8805285
 error: ././././LeanRV64DLEAN.lean:28685:35: function expected at
   early_return (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.8805815
+  ER (SailM Unit) ?m.8805914
 info: stdout:
-{"severity":"error","pos":{"line":28690,"column":37},"kind":"[anonymous]","keepFullRange":false,"fileName":"././././LeanRV64DLEAN.lean","endPos":{"line":28692,"column":45},"data":"function expected at\n  early_return (handle_mem_exceptio
+{"severity":"error","pos":{"line":28690,"column":37},"kind":"[anonymous]","keepFullRange":false,"fileName":"./././
 
 info: stderr:
 libc++abi: terminating due to uncaught exception of type lean::throwable: deep recursion was detected at 'interpreter' (potential solution: increase stack space in your system)

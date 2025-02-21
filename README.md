@@ -8,7 +8,7 @@ is still work-in-progress. As a result, our semantics are still full of warnings
 and errors. Similarly, our output is not yet polished for readability.
 # RISC-V Lean Statistics
 
-Lines: 78138  
+Lines: 78097  
 Definitions: 3205  
 Inductive definitions: 129  
 Abbreviations: 95  
@@ -20,7 +20,7 @@ Warnings found: 1
 
 ## Error Classes
 
-- 179x application type mismatch
+- 180x application type mismatch
 - 47x unknown identifier 'print_endline'
 - 47x function expected at
 - 39x failed to synthesize
@@ -70,7 +70,6 @@ Warnings found: 1
 - 1x unknown identifier 'plat_mtval_has_illegal_inst_bits'
 - 1x unknown identifier 'plat_enable_misaligned_access'
 - 1x unknown identifier 'plat_clint_size'
-- 1x unknown identifier 'k_num_elem_single'
 - 1x unknown identifier 'get_slice_int'
 - 1x unknown identifier 'get_16_random_bits'
 - 1x unknown identifier 'extern_ui64ToF64'
