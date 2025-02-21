@@ -1,6 +1,6 @@
-✔ [2/5] Built LeanRV64DLEAN.Sail.Sail
-⚠ [3/5] Built LeanRV64DLEAN.Sail.BitVec
+⚠ [2/5] Built LeanRV64DLEAN.Sail.BitVec
 warning: ././././LeanRV64DLEAN/Sail/BitVec.lean:148:20: `Array.zipWithIndex` has been deprecated: use `Array.zipIdx` instead
+✔ [3/5] Built LeanRV64DLEAN.Sail.Sail
 ✖ [4/5] Building LeanRV64DLEAN
 trace: .> LEAN_PATH=././.lake/build/lib LD_LIBRARY_PATH= /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-02-05/bin/lean ././././LeanRV64DLEAN.lean -R ./././. -o ././.lake/build/lib/LeanRV64DLEAN.olean -i ././.lake/build/lib/LeanRV64DLEAN.ilean -c ././.lake/build/ir/LeanRV64DLEAN.c --json
 error: ././././LeanRV64DLEAN.lean:1736:29: unknown identifier 'hex_str'
