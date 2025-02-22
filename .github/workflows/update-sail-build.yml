@@ -77,7 +77,7 @@ jobs:
         cp README.md.template sail-riscv/build/model/Lean_RV64D_LEAN/
         cp report.py sail-riscv/build/model/Lean_RV64D_LEAN/
         cd sail-riscv/build/model/Lean_RV64D_LEAN/
-	echo "Set ulimit"	
+        echo "Set ulimit"	
         ulimit -s unlimited
         ulimit
         (lake build | tee build_log.txt || true)
