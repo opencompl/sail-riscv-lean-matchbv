@@ -15,10 +15,46 @@ Abbreviations: 95
 
 # Warnings and Errors
 
-Errors found: 2  
+Errors found: 436  
 Warnings found: 1  
 
 ## Error Classes
 
-- 1x unknown module prefix 'THE_MODULE_NAME'
-- 1x Lean exited with code 1
+- 181x application type mismatch
+- 47x function expected at
+- 39x failed to synthesize
+- 29x unsolved goals
+- 21x type mismatch, result value has type
+- 16x could not synthesize default value for parameter 'hmn' using tactics
+- 13x could not synthesize default value for parameter 'hw' using tactics
+- 12x unknown identifier 'shiftl'
+- 8x unknown identifier 'emod_int'
+- 8x don't know how to synthesize implicit argument 'n'
+- 7x unknown identifier 'slice'
+- 7x unknown identifier 'shiftr'
+- 6x type mismatch
+- 4x unknown identifier 'shift_bits_right'
+- 4x unknown identifier 'parse_hex_bits'
+- 3x unknown identifier 'valid_hex_bits'
+- 3x unknown identifier 'hex_str'
+- 3x invalid `do` notation, expected type is not a monad application
+- 2x unknown identifier 'shift_bits_left'
+- 2x unknown identifier 'print'
+- 2x unknown identifier 'length'
+- 2x unknown identifier '_lean_sub'
+- 2x don't know how to synthesize implicit argument 'k_n'
+- 1x unknown identifier 'get_slice_int'
+- 1x unknown identifier 'get_16_random_bits'
+- 1x unknown identifier 'cancel_reservation'
+- 1x overloaded, errors 
+- 1x fail to show termination for
+- 1x Lean exited with code 134
+- 1x 'bits_rm' has already been declared
+- 1x 'bits_fflags' has already been declared
+- 1x 'bits_WU' has already been declared
+- 1x 'bits_W' has already been declared
+- 1x 'bits_S' has already been declared
+- 1x 'bits_LU' has already been declared
+- 1x 'bits_L' has already been declared
+- 1x 'bits_H' has already been declared
+- 1x 'bits_D' has already been declared

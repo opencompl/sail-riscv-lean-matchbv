@@ -1,13 +1,2340 @@
-✖ [2/6] Building LeanRV64DLEAN.RiscvExtras
-trace: .> LEAN_PATH=././.lake/build/lib LD_LIBRARY_PATH= /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-02-05/bin/lean ././././LeanRV64DLEAN/RiscvExtras.lean -R ./././. -o ././.lake/build/lib/LeanRV64DLEAN/RiscvExtras.olean -i ././.lake/build/lib/LeanRV64DLEAN/RiscvExtras.ilean -c ././.lake/build/ir/LeanRV64DLEAN/RiscvExtras.c --json
-error: ././././LeanRV64DLEAN/RiscvExtras.lean:2:0: unknown module prefix 'THE_MODULE_NAME'
-
-No directory 'THE_MODULE_NAME' or file 'THE_MODULE_NAME.olean' in the search path entries:
-././.lake/build/lib
-/home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-02-05/lib/lean
-error: Lean exited with code 1
-✔ [3/6] Built LeanRV64DLEAN.Sail.Sail
-⚠ [4/6] Built LeanRV64DLEAN.Sail.BitVec
+✔ [2/6] Built LeanRV64DLEAN.Sail.Sail
+⚠ [3/6] Built LeanRV64DLEAN.Sail.BitVec
 warning: ././././LeanRV64DLEAN/Sail/BitVec.lean:148:20: `Array.zipWithIndex` has been deprecated: use `Array.zipIdx` instead
+✔ [4/6] Built LeanRV64DLEAN.RiscvExtras
+✖ [5/6] Building LeanRV64DLEAN
+trace: .> LEAN_PATH=././.lake/build/lib LD_LIBRARY_PATH= /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-02-05/bin/lean ././././LeanRV64DLEAN.lean -R ./././. -o ././.lake/build/lib/LeanRV64DLEAN.olean -i ././.lake/build/lib/LeanRV64DLEAN.ilean -c ././.lake/build/ir/LeanRV64DLEAN.c --json
+error: ././././LeanRV64DLEAN.lean:1147:7: 'bits_rm' has already been declared
+error: ././././LeanRV64DLEAN.lean:1149:7: 'bits_fflags' has already been declared
+error: ././././LeanRV64DLEAN.lean:1151:7: 'bits_H' has already been declared
+error: ././././LeanRV64DLEAN.lean:1153:7: 'bits_S' has already been declared
+error: ././././LeanRV64DLEAN.lean:1155:7: 'bits_D' has already been declared
+error: ././././LeanRV64DLEAN.lean:1157:7: 'bits_W' has already been declared
+error: ././././LeanRV64DLEAN.lean:1159:7: 'bits_WU' has already been declared
+error: ././././LeanRV64DLEAN.lean:1161:7: 'bits_L' has already been declared
+error: ././././LeanRV64DLEAN.lean:1163:7: 'bits_LU' has already been declared
+error: ././././LeanRV64DLEAN.lean:1632:3: overloaded, errors 
+  function expected at
+    _root_.virtaddr
+  term has type
+    Type
+  
+  1632:13 unknown identifier '_lean_sub'
+error: ././././LeanRV64DLEAN.lean:1740:29: unknown identifier 'hex_str'
+error: ././././LeanRV64DLEAN.lean:1749:3: unknown identifier 'parse_hex_bits'
+error: ././././LeanRV64DLEAN.lean:1754:3: unknown identifier 'valid_hex_bits'
+error: ././././LeanRV64DLEAN.lean:4065:31: unknown identifier 'hex_str'
+error: ././././LeanRV64DLEAN.lean:4066:10: unknown identifier 'hex_str'
+error: ././././LeanRV64DLEAN.lean:4077:35: unknown identifier 'parse_hex_bits'
+error: ././././LeanRV64DLEAN.lean:4078:22: unknown identifier 'parse_hex_bits'
+error: ././././LeanRV64DLEAN.lean:4087:8: unknown identifier 'valid_hex_bits'
+error: ././././LeanRV64DLEAN.lean:4088:11: unknown identifier 'valid_hex_bits'
+error: ././././LeanRV64DLEAN.lean:4089:27: unknown identifier 'parse_hex_bits'
+error: ././././LeanRV64DLEAN.lean:6539:3: unknown identifier 'get_slice_int'
+error: ././././LeanRV64DLEAN.lean:6575:3: could not synthesize default value for parameter 'hw' using tactics
+error: ././././LeanRV64DLEAN.lean:6575:3: unsolved goals
+k_n : Nat
+value : BitVec k_n
+shift : Nat
+⊢ k_n = BitVec.length value - 1 + 1
+error: ././././LeanRV64DLEAN.lean:6584:12: unknown identifier 'shift_bits_right'
+error: ././././LeanRV64DLEAN.lean:6585:5: unknown identifier 'shift_bits_left'
+error: ././././LeanRV64DLEAN.lean:6589:12: unknown identifier 'shift_bits_left'
+error: ././././LeanRV64DLEAN.lean:6590:5: unknown identifier 'shift_bits_right'
+error: ././././LeanRV64DLEAN.lean:6594:12: unknown identifier 'shiftr'
+error: ././././LeanRV64DLEAN.lean:6594:25: unknown identifier 'shiftl'
+error: ././././LeanRV64DLEAN.lean:6598:12: unknown identifier 'shiftl'
+error: ././././LeanRV64DLEAN.lean:6598:25: unknown identifier 'shiftr'
+error: ././././LeanRV64DLEAN.lean:14326:4: fail to show termination for
+  Functions.extensionEnabled
+with errors
+failed to infer structural recursion:
+Cannot use parameter merge_var:
+  the type extension does not have a `.brecOn` recursor
+
+
+failed to prove termination, possible solutions:
+  - Use `have`-expressions to prove the remaining goals
+  - Use `termination_by` to specify a different well-founded relation
+  - Use `decreasing_by` to specify your own tactic for discharging this kind of goal
+⊢ False
+error: ././././LeanRV64DLEAN.lean:15345:32: unknown identifier 'shiftl'
+error: ././././LeanRV64DLEAN.lean:15815:19: unknown identifier 'emod_int'
+error: ././././LeanRV64DLEAN.lean:15840:33: don't know how to synthesize implicit argument 'k_n'
+  @zero_extend (?m.1772486 n match_type addr) (2 ^ 3 * 8) ones
+context:
+n : Nat
+G : Nat := sys_pmp_grain ()
+match_type : BitVec 2
+addr : BitVec (2 ^ 3 * 8)
+⊢ Nat
+error: ././././LeanRV64DLEAN.lean:15840:46: don't know how to synthesize implicit argument 'n'
+  @ones (?m.1772486 n match_type addr)
+context:
+n : Nat
+G : Nat := sys_pmp_grain ()
+match_type : BitVec 2
+addr : BitVec (2 ^ 3 * 8)
+⊢ Nat
+error: ././././LeanRV64DLEAN.lean:15835:33: don't know how to synthesize implicit argument 'k_n'
+  @zero_extend (?m.1772485 n match_type addr) (2 ^ 3 * 8) ones
+context:
+n : Nat
+G : Nat := sys_pmp_grain ()
+match_type : BitVec 2
+addr : BitVec (2 ^ 3 * 8)
+⊢ Nat
+error: ././././LeanRV64DLEAN.lean:15835:46: don't know how to synthesize implicit argument 'n'
+  @ones (?m.1772485 n match_type addr)
+context:
+n : Nat
+G : Nat := sys_pmp_grain ()
+match_type : BitVec 2
+addr : BitVec (2 ^ 3 * 8)
+⊢ Nat
+error: ././././LeanRV64DLEAN.lean:15871:19: unknown identifier 'emod_int'
+error: ././././LeanRV64DLEAN.lean:17610:41: failed to synthesize
+  HPow Nat Int Nat
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:17624:32: unknown identifier 'slice'
+error: ././././LeanRV64DLEAN.lean:17627:92: application type mismatch
+  BitVec SEW
+argument
+  SEW
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:17635:29: unknown identifier 'shiftl'
+error: ././././LeanRV64DLEAN.lean:17646:45: failed to synthesize
+  HPow Nat Int Nat
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:17649:16: unknown identifier 'emod_int'
+error: ././././LeanRV64DLEAN.lean:17653:36: unknown identifier 'length'
+error: ././././LeanRV64DLEAN.lean:17657:55: failed to synthesize
+  HPow Nat Int (?m.1915771 x✝)
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:17660:45: failed to synthesize
+  HMul Nat Int ?m.1916220
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:17664:41: application type mismatch
+  read_single_vreg (__id num_elem_single)
+argument
+  __id num_elem_single
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:17667:31: application type mismatch
+  foreach_M loop_r_i_lower
+argument
+  loop_r_i_lower
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:17669:43: failed to synthesize
+  HSub Nat Int ?m.1916808
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:17680:27: unknown identifier 'emod_int'
+error: ././././LeanRV64DLEAN.lean:17682:22: application type mismatch
+  read_single_vreg (__id elem_per_reg)
+argument
+  __id elem_per_reg
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:17695:40: failed to synthesize
+  HPow Nat Int (?m.1919108 x✝)
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:17698:44: application type mismatch
+  Vector (BitVec SEW) num_elem_single
+argument
+  num_elem_single
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:17700:30: failed to synthesize
+  HMul Nat Int ?m.1919624
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:17705:18: application type mismatch
+  foreach_M loop_r_i_lower
+argument
+  loop_r_i_lower
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:17707:30: failed to synthesize
+  HSub Nat Int ?m.1920036
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:17711:25: application type mismatch
+  write_single_vreg (__id num_elem_single)
+argument
+  __id num_elem_single
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:17718:27: unknown identifier 'emod_int'
+error: ././././LeanRV64DLEAN.lean:17720:22: application type mismatch
+  read_single_vreg (__id elem_per_reg)
+argument
+  __id elem_per_reg
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:17725:13: application type mismatch
+  foreach_ loop_i_upper
+argument
+  loop_i_upper
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:17727:29: unknown identifier 'shiftl'
+error: ././././LeanRV64DLEAN.lean:17728:22: application type mismatch
+  i == real_index
+argument
+  real_index
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:18025:26: could not synthesize default value for parameter 'hmn' using tactics
+error: ././././LeanRV64DLEAN.lean:18025:26: unsolved goals
+index : Nat
+value : BitVec (2 ^ 3 * 8)
+⊢ 2 ^ 3 * 8 = 96
+error: ././././LeanRV64DLEAN.lean:18177:31: unknown identifier 'get_16_random_bits'
+error: ././././LeanRV64DLEAN.lean:18503:5: could not synthesize default value for parameter 'hmn' using tactics
+error: ././././LeanRV64DLEAN.lean:18503:5: unsolved goals
+n : Nat
+⊢ n = 1 + (?m.2102617 + (1 + ?m.2102630))
+error: ././././LeanRV64DLEAN.lean:18506:5: could not synthesize default value for parameter 'hmn' using tactics
+error: ././././LeanRV64DLEAN.lean:18506:5: unsolved goals
+n : Nat
+⊢ n = 1 + (?m.2102657 + (1 + ?m.2102667))
+error: ././././LeanRV64DLEAN.lean:18509:5: could not synthesize default value for parameter 'hmn' using tactics
+error: ././././LeanRV64DLEAN.lean:18509:5: unsolved goals
+n : Nat
+⊢ n = 1 + (?m.2102694 + (1 + ?m.2102704))
+error: ././././LeanRV64DLEAN.lean:18512:5: could not synthesize default value for parameter 'hmn' using tactics
+error: ././././LeanRV64DLEAN.lean:18512:5: unsolved goals
+n : Nat
+x✝ : Int
+⊢ n = 1 + (?m.2102747 x✝ + (1 + ?m.2102749 x✝))
+error: ././././LeanRV64DLEAN.lean:18529:3: could not synthesize default value for parameter 'hmn' using tactics
+error: ././././LeanRV64DLEAN.lean:18529:3: unsolved goals
+k_n n : Nat
+x : BitVec k_n
+⊢ n = ?m.2103463 + k_n
+error: ././././LeanRV64DLEAN.lean:18533:37: application type mismatch
+  BitVec.length x == __id ↑m
+argument
+  __id ↑m
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:18535:86: application type mismatch
+  @BitVec.extractLsbUnif k_n x (BitVec.length x - 1) (__id ↑m)
+argument
+  __id ↑m
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:18537:42: application type mismatch
+  @BitVec.extractLsbUnif k_n x (__id ↑m - 1)
+argument
+  __id ↑m - 1
+has type
+  Int : outParam Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:18537:13: could not synthesize default value for parameter 'hw' using tactics
+error: ././././LeanRV64DLEAN.lean:18537:13: unsolved goals
+k_n m : Nat
+x : BitVec k_n
+⊢ m = sorry () + 1
+error: ././././LeanRV64DLEAN.lean:19602:65: application type mismatch
+  BitVec.access __do_lift✝ idx
+argument
+  idx
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:19841:3: unknown identifier 'cancel_reservation'
+error: ././././LeanRV64DLEAN.lean:19889:15: failed to synthesize
+  HAdd Nat Int ?m.2340074
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:19892:20: failed to synthesize
+  HAdd Nat Int ?m.2340260
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:19919:12: failed to synthesize
+  HAdd Nat Int ?m.2340858
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:19946:15: unknown identifier '_lean_sub'
+error: ././././LeanRV64DLEAN.lean:20051:15: unknown identifier '_lean_sub'
+error: ././././LeanRV64DLEAN.lean:20113:42: application type mismatch
+  writeReg mtime data
+argument
+  data
+has type
+  BitVec (8 * width) : Type
+but is expected to have type
+  RegisterType mtime : Type
+error: ././././LeanRV64DLEAN.lean:20126:34: application type mismatch
+  BitVec.updateSubrange __do_lift✝ 31 0 data
+argument
+  data
+has type
+  BitVec (8 * width) : Type
+but is expected to have type
+  BitVec (31 - 0 + 1) : Type
+error: ././././LeanRV64DLEAN.lean:20140:45: application type mismatch
+  BitVec.updateSubrange __do_lift✝ 63 32 data
+argument
+  data
+has type
+  BitVec (8 * width) : Type
+but is expected to have type
+  BitVec (63 - 32 + 1) : Type
+error: ././././LeanRV64DLEAN.lean:20241:90: application type mismatch
+  BitVec.updateSubrange __do_lift✝ 31 0 data
+argument
+  data
+has type
+  BitVec (8 * width) : Type
+but is expected to have type
+  BitVec (31 - 0 + 1) : Type
+error: ././././LeanRV64DLEAN.lean:20250:19: application type mismatch
+  BitVec.updateSubrange __do_lift✝ 63 32 data
+argument
+  data
+has type
+  BitVec (8 * width) : Type
+but is expected to have type
+  BitVec (63 - 32 + 1) : Type
+error: ././././LeanRV64DLEAN.lean:20267:42: unknown identifier 'shiftr'
+error: ././././LeanRV64DLEAN.lean:20282:34: unknown identifier 'print'
+error: ././././LeanRV64DLEAN.lean:20285:24: unknown identifier 'print'
+error: ././././LeanRV64DLEAN.lean:20238:30: could not synthesize default value for parameter 'hw' using tactics
+error: ././././LeanRV64DLEAN.lean:20238:30: unsolved goals
+app_0 : _root_.physaddr
+width : Nat
+data : BitVec (8 * width)
+paddr : physaddrbits
+x✝ : Unit :=
+  if get_config_print_platform () = true then
+    print_endline ("htif[" ++ (BitVec.toFormatted paddr ++ ("] <- " ++ BitVec.toFormatted data)))
+  else ()
+⊢ 8 * width = 32
+error: ././././LeanRV64DLEAN.lean:20352:12: unknown identifier 'emod_int'
+error: ././././LeanRV64DLEAN.lean:20554:8: could not synthesize default value for parameter 'hw' using tactics
+error: ././././LeanRV64DLEAN.lean:20554:8: unsolved goals
+k_pte_size : Nat
+pte : BitVec k_pte_size
+⊢ (if k_pte_size = 32 then 22 else 44) = 22
+error: ././././LeanRV64DLEAN.lean:20555:8: could not synthesize default value for parameter 'hw' using tactics
+error: ././././LeanRV64DLEAN.lean:20555:8: unsolved goals
+k_pte_size : Nat
+pte : BitVec k_pte_size
+⊢ (if k_pte_size = 32 then 22 else 44) = 44
+error: ././././LeanRV64DLEAN.lean:20663:38: application type mismatch
+  @BitVec.extractLsbUnif 64 ent.pte (__id ↑pte_width * 8 - 1)
+argument
+  __id ↑pte_width * 8 - 1
+has type
+  Int : outParam Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:20663:3: could not synthesize default value for parameter 'hw' using tactics
+error: ././././LeanRV64DLEAN.lean:20663:3: unsolved goals
+pte_width : Nat
+ent : TLB_Entry
+⊢ pte_width * 8 = sorry () + 1
+error: ././././LeanRV64DLEAN.lean:20675:2: type mismatch
+  Sail.BitVec.truncate (ppn ||| vpn &&& levelMask) (if (__id ↑sv_width == 32) = true then 22 else 44)
+has type
+  BitVec (if (__id ↑sv_width == 32) = true then 22 else 44) : Type
+but is expected to have type
+  BitVec (if sv_width = 32 then 22 else 44) : Type
+error: ././././LeanRV64DLEAN.lean:20712:25: application type mismatch
+  tlb_hash (__id ↑sv_width)
+argument
+  __id ↑sv_width
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:20742:25: application type mismatch
+  tlb_hash (__id ↑sv_width)
+argument
+  __id ↑sv_width
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:20747:42: unknown identifier 'length'
+error: ././././LeanRV64DLEAN.lean:20759:39: application type mismatch
+  mem_write_value_priv paddr pte_size pte
+argument
+  pte
+has type
+  BitVec (pte_size * 8) : Type
+but is expected to have type
+  BitVec (8 * pte_size) : Type
+error: ././././LeanRV64DLEAN.lean:20796:60: application type mismatch
+  pt_walk sv_width vpn ac priv mxr do_sum ppn
+argument
+  ppn
+has type
+  BitVec (if 8 * (fun x => 2 ^ x) log_pte_size_bytes = 32 then 22 else 44) : Type
+but is expected to have type
+  BitVec (if sv_width = 32 then 22 else 44) : Type
+error: ././././LeanRV64DLEAN.lean:20819:40: type mismatch
+  pte
+has type
+  BitVec (8 * (fun x => 2 ^ x) log_pte_size_bytes) : Type
+but is expected to have type
+  pte_bits sv_width : Type
+error: ././././LeanRV64DLEAN.lean:20824:35: type mismatch
+  ppn
+has type
+  BitVec (if 8 * (fun x => 2 ^ x) log_pte_size_bytes = 32 then 22 else 44) : Type
+but is expected to have type
+  ppn_bits sv_width : Type
+error: ././././LeanRV64DLEAN.lean:20825:35: type mismatch
+  pte
+has type
+  BitVec (8 * (fun x => 2 ^ x) log_pte_size_bytes) : Type
+but is expected to have type
+  pte_bits sv_width : Type
+error: ././././LeanRV64DLEAN.lean:20814:29: could not synthesize default value for parameter 'hmn' using tactics
+error: ././././LeanRV64DLEAN.lean:20814:29: unsolved goals
+sv_width : Nat
+vpn : BitVec (sv_width - 12)
+ac : AccessType Unit
+priv : Privilege
+mxr do_sum : Bool
+pt_base : BitVec (if sv_width = 32 then 22 else 44)
+level : Nat
+global✝ : Bool
+ext_ptw✝ : Unit
+vpn_i_size : Nat := if (__id ↑sv_width == 32) = true then 10 else 9
+vpn_i : BitVec
+  ((((level + 1) * if (__id ↑sv_width == 32) = true then 10 else 9) - 1 -
+      level * if (__id ↑sv_width == 32) = true then 10 else 9) +
+    1) :=
+  BitVec.extractLsbUnif vpn ((level + 1) * vpn_i_size - 1) (level * vpn_i_size) ⋯
+log_pte_size_bytes : Nat := if (__id ↑sv_width == 32) = true then 2 else 3
+pte_addr✝ : BitVec
+  ((if sv_width = 32 then 22 else 44) +
+    ((((level + 1) * if __id ↑sv_width = 32 then 10 else 9) - 1 - level * if __id ↑sv_width = 32 then 10 else 9) + 1 +
+      ?m.2673742)) :=
+  BitVec.append' pt_base (BitVec.append' vpn_i zeros_implicit ⋯) ⋯
+x✝ : PUnit
+pte_addr : _root_.physaddr := physaddr.physaddr (zero_extend pte_addr✝)
+pte : BitVec (8 * (fun x => 2 ^ x) log_pte_size_bytes)
+pte_flags : BitVec 8 := Mk_PTE_Flags (BitVec.extractLsbUnif pte 7 0 ⋯)
+pte_ext : BitVec 10 := ext_bits_of_PTE pte
+ppn : BitVec (if 8 * (fun x => 2 ^ x) log_pte_size_bytes = 32 then 22 else 44) := PPN_of_PTE pte
+global : Bool := global✝ || _get_PTE_Flags_G pte_flags == 1
+pte_check : PTE_Check
+ext_ptw : _root_.ext_ptw
+ppn_size_bits : Nat := if (__id ↑sv_width == 32) = true then 10 else 9
+low_bits : Nat := ppn_size_bits * level
+⊢ (if sv_width = 32 then 22 else 44) =
+    BitVec.length (PPN_of_PTE pte) - 1 - (if __id ↑sv_width = 32 then 10 else 9) * level + 1 +
+      ((if __id ↑sv_width = 32 then 10 else 9) * level - 1 + 1)
+error: ././././LeanRV64DLEAN.lean:20833:36: application type mismatch
+  Mk_Satp32 satp_val
+argument
+  satp_val
+has type
+  BitVec k_n : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:20834:36: application type mismatch
+  Mk_Satp64 satp_val
+argument
+  satp_val
+has type
+  BitVec k_n : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:20839:35: application type mismatch
+  Mk_Satp32 satp_val
+argument
+  satp_val
+has type
+  BitVec k_n : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:20840:35: application type mismatch
+  Mk_Satp64 satp_val
+argument
+  satp_val
+has type
+  BitVec k_n : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:20914:49: application type mismatch
+  write_pte pteAddr pte_width pte
+argument
+  pte
+has type
+  BitVec (if sv_width = 32 then 32 else 64) : Type
+but is expected to have type
+  BitVec (pte_width * 8) : Type
+error: ././././LeanRV64DLEAN.lean:20966:14: could not synthesize default value for parameter 'hw' using tactics
+error: ././././LeanRV64DLEAN.lean:20966:14: unsolved goals
+sv_width : Nat
+x✝ : PUnit
+⊢ (if sv_width = 32 then 32 else 64) = 32
+error: ././././LeanRV64DLEAN.lean:20975:37: application type mismatch
+  get_satp sv_width
+argument
+  sv_width
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:20977:71: application type mismatch
+  @BitVec.extractLsbUnif (2 ^ 3 * 8) (virtaddr_bits vAddr) (sv_width - 1)
+argument
+  sv_width - 1
+has type
+  Int : outParam Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:20987:25: application type mismatch
+  translate sv_width
+argument
+  sv_width
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:20988:51: application type mismatch
+  @BitVec.extractLsbUnif ?m.5415869 svAddr (sv_width - 1)
+argument
+  sv_width - 1
+has type
+  Int : outParam Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:20988:17: could not synthesize default value for parameter 'hw' using tactics
+error: ././././LeanRV64DLEAN.lean:20988:17: unsolved goals
+vAddr : _root_.virtaddr
+ac : AccessType Unit
+effPriv : Privilege
+mode : SATPMode
+sv_width : Int
+satp_sxlen : BitVec (if sorry = 32 then 32 else 64)
+x✝ : PUnit
+svAddr : BitVec (sorry () + 1) := BitVec.extractLsbUnif (virtaddr_bits vAddr) sorry 0 ⋯
+mxr do_sum : Bool
+asid : BitVec (if (if sorry = 32 then 32 else 64) = 32 then 9 else 16) := satp_to_asid satp_sxlen
+base_ppn : BitVec (if (if sorry = 32 then 32 else 64) = 32 then 22 else 44) := satp_to_ppn satp_sxlen
+⊢ sorry - 12 = sorry () - pagesize_bits + 1
+error: ././././LeanRV64DLEAN.lean:21002:20: unknown identifier 'shiftl'
+error: ././././LeanRV64DLEAN.lean:21140:31: unknown identifier 'shift_bits_right'
+error: ././././LeanRV64DLEAN.lean:21164:31: unknown identifier 'shift_bits_right'
+error: ././././LeanRV64DLEAN.lean:22641:7: type mismatch
+  x✝
+has type
+  Unit : Type
+but is expected to have type
+  SailM ?m.5525539 : Type
+error: ././././LeanRV64DLEAN.lean:23263:60: unknown identifier 'shiftl'
+error: ././././LeanRV64DLEAN.lean:23351:51: application type mismatch
+  BitVec.toNat __do_lift✝ == i
+argument
+  i
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:23360:11: failed to synthesize
+  HPow Nat Int Nat
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:23364:11: failed to synthesize
+  HPow Nat Int (?m.5561674 x✝)
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:23380:36: application type mismatch
+  (fun x => 2 ^ x) (0 - EMUL_pow)
+argument
+  0 - EMUL_pow
+has type
+  Int : outParam Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:23381:30: failed to synthesize
+  HPow Nat Int Int
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:23432:14: could not synthesize default value for parameter 'hw' using tactics
+error: ././././LeanRV64DLEAN.lean:23432:14: unsolved goals
+rs1 : BitVec 5
+SEW : Nat
+⊢ SEW = SEW - 1 + 1
+error: ././././LeanRV64DLEAN.lean:23439:47: failed to synthesize
+  HSub Nat Int ?m.5566618
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:23455:74: application type mismatch
+  undefined_bitvector (__id ↑SEW)
+argument
+  __id ↑SEW
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:23459:37: application type mismatch
+  (fun x => 2 ^ x) (0 - LMUL_pow)
+argument
+  0 - LMUL_pow
+has type
+  Int : outParam Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:23473:29: application type mismatch
+  i > end_element
+argument
+  end_element
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:23515:37: application type mismatch
+  (fun x => 2 ^ x) (0 - LMUL_pow)
+argument
+  0 - LMUL_pow
+has type
+  Int : outParam Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:23523:25: application type mismatch
+  i > end_element
+argument
+  end_element
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:23540:37: application type mismatch
+  (fun x => 2 ^ x) (0 - LMUL_pow)
+argument
+  0 - LMUL_pow
+has type
+  Int : outParam Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:23553:29: application type mismatch
+  i > end_element
+argument
+  end_element
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:23581:37: application type mismatch
+  (fun x => 2 ^ x) (0 - LMUL_pow)
+argument
+  0 - LMUL_pow
+has type
+  Int : outParam Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:23594:29: application type mismatch
+  i > end_element
+argument
+  end_element
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:23628:11: failed to synthesize
+  HPow Nat Int Int
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:23639:44: failed to synthesize
+  HMul Nat Int ?m.5579106
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:23652:17: unknown identifier 'shiftl'
+error: ././././LeanRV64DLEAN.lean:23659:58: application type mismatch
+  @BitVec.extractLsbUnif k_n bit_val (lowlog2bits - 1)
+argument
+  lowlog2bits - 1
+has type
+  Int : outParam Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:23668:19: unknown identifier 'slice'
+error: ././././LeanRV64DLEAN.lean:23672:33: unknown identifier 'slice'
+error: ././././LeanRV64DLEAN.lean:23673:38: unknown identifier 'slice'
+error: ././././LeanRV64DLEAN.lean:23674:35: unknown identifier 'slice'
+error: ././././LeanRV64DLEAN.lean:23679:43: unknown identifier 'slice'
+error: ././././LeanRV64DLEAN.lean:23680:34: unknown identifier 'slice'
+error: ././././LeanRV64DLEAN.lean:23687:46: application type mismatch
+  @BitVec.extractLsbUnif k_n elem (__id ↑len - 1)
+argument
+  __id ↑len - 1
+has type
+  Int : outParam Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:23687:14: could not synthesize default value for parameter 'hw' using tactics
+error: ././././LeanRV64DLEAN.lean:23687:14: unsolved goals
+k_n len : Nat
+elem : BitVec k_n
+⊢ len = sorry () + 1
+error: ././././LeanRV64DLEAN.lean:23698:51: application type mismatch
+  @BitVec.extractLsbUnif k_n elem (__id ↑len - 1)
+argument
+  __id ↑len - 1
+has type
+  Int : outParam Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:23693:14: could not synthesize default value for parameter 'hmn' using tactics
+error: ././././LeanRV64DLEAN.lean:23693:14: unsolved goals
+k_n len : Nat
+elem : BitVec k_n
+x✝ : PUnit
+⊢ len = 1 + ?m.5585683 __do_lift✝ x✝
+error: ././././LeanRV64DLEAN.lean:23697:19: could not synthesize default value for parameter 'hmn' using tactics
+error: ././././LeanRV64DLEAN.lean:23697:19: unsolved goals
+k_n len : Nat
+elem : BitVec k_n
+x✝ : PUnit
+⊢ len = 1 + ?m.5586682 __do_lift✝ x✝
+error: ././././LeanRV64DLEAN.lean:23698:19: could not synthesize default value for parameter 'hw' using tactics
+error: ././././LeanRV64DLEAN.lean:23698:19: unsolved goals
+k_n len : Nat
+elem : BitVec k_n
+⊢ len = sorry () + 1
+error: ././././LeanRV64DLEAN.lean:23707:26: application type mismatch
+  foreach_ loop_i_lower loop_i_upper
+argument
+  loop_i_upper
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:23757:26: application type mismatch
+  f_is_neg_inf_H xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23758:26: application type mismatch
+  f_is_neg_inf_S xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:23759:25: application type mismatch
+  f_is_neg_inf_D xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:23764:27: application type mismatch
+  f_is_neg_norm_H xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23765:27: application type mismatch
+  f_is_neg_norm_S xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:23766:26: application type mismatch
+  f_is_neg_norm_D xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:23771:30: application type mismatch
+  f_is_neg_subnorm_H xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23772:30: application type mismatch
+  f_is_neg_subnorm_S xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:23773:29: application type mismatch
+  f_is_neg_subnorm_D xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:23778:27: application type mismatch
+  f_is_neg_zero_H xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23779:27: application type mismatch
+  f_is_neg_zero_S xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:23780:26: application type mismatch
+  f_is_neg_zero_D xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:23785:27: application type mismatch
+  f_is_pos_zero_H xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23786:27: application type mismatch
+  f_is_pos_zero_S xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:23787:26: application type mismatch
+  f_is_pos_zero_D xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:23792:30: application type mismatch
+  f_is_pos_subnorm_H xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23793:30: application type mismatch
+  f_is_pos_subnorm_S xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:23794:29: application type mismatch
+  f_is_pos_subnorm_D xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:23799:27: application type mismatch
+  f_is_pos_norm_H xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23800:27: application type mismatch
+  f_is_pos_norm_S xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:23801:26: application type mismatch
+  f_is_pos_norm_D xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:23806:26: application type mismatch
+  f_is_pos_inf_H xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23807:26: application type mismatch
+  f_is_pos_inf_S xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:23808:25: application type mismatch
+  f_is_pos_inf_D xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:23813:23: application type mismatch
+  f_is_SNaN_H xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23814:23: application type mismatch
+  f_is_SNaN_S xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:23815:22: application type mismatch
+  f_is_SNaN_D xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:23820:23: application type mismatch
+  f_is_QNaN_H xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23821:23: application type mismatch
+  f_is_QNaN_S xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:23822:22: application type mismatch
+  f_is_QNaN_D xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:23827:22: application type mismatch
+  f_is_NaN_H xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23828:22: application type mismatch
+  f_is_NaN_S xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:23829:21: application type mismatch
+  f_is_NaN_D xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:23837:9: type mismatch
+  rF_D rs1
+has type
+  SailM (BitVec 64) : Type
+but is expected to have type
+  SailM (BitVec x✝) : Type
+error: ././././LeanRV64DLEAN.lean:23845:20: application type mismatch
+  negate_H xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23846:20: application type mismatch
+  negate_S xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:23847:19: application type mismatch
+  negate_D xf
+argument
+  xf
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:23853:32: application type mismatch
+  riscv_f16Add rm_3b op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23854:32: application type mismatch
+  riscv_f32Add rm_3b op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:23854:12: type mismatch, result value has type
+  BitVec 5 × BitVec 32 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23855:31: application type mismatch
+  riscv_f64Add rm_3b op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:23855:11: type mismatch, result value has type
+  BitVec 5 × BitVec 64 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23857:8: application type mismatch
+  pure result_val
+argument
+  result_val
+has type
+  BitVec 16 : Type
+but is expected to have type
+  BitVec k_m : Type
+error: ././././LeanRV64DLEAN.lean:23863:32: application type mismatch
+  riscv_f16Sub rm_3b op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23864:32: application type mismatch
+  riscv_f32Sub rm_3b op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:23864:12: type mismatch, result value has type
+  BitVec 5 × BitVec 32 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23865:31: application type mismatch
+  riscv_f64Sub rm_3b op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:23865:11: type mismatch, result value has type
+  BitVec 5 × BitVec 64 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23867:8: application type mismatch
+  pure result_val
+argument
+  result_val
+has type
+  BitVec 16 : Type
+but is expected to have type
+  BitVec k_m : Type
+error: ././././LeanRV64DLEAN.lean:23873:31: application type mismatch
+  riscv_f16Lt_quiet op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23874:31: application type mismatch
+  riscv_f32Lt_quiet op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:23875:30: application type mismatch
+  riscv_f64Lt_quiet op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:23897:31: application type mismatch
+  riscv_f16Lt_quiet op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23898:31: application type mismatch
+  riscv_f32Lt_quiet op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:23899:30: application type mismatch
+  riscv_f64Lt_quiet op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:23921:25: application type mismatch
+  riscv_f16Eq op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23922:25: application type mismatch
+  riscv_f32Eq op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:23923:24: application type mismatch
+  riscv_f64Eq op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:23931:25: application type mismatch
+  riscv_f16Le op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23932:25: application type mismatch
+  riscv_f32Le op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:23933:24: application type mismatch
+  riscv_f64Le op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:23945:25: application type mismatch
+  riscv_f16Lt op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23946:25: application type mismatch
+  riscv_f32Lt op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:23947:24: application type mismatch
+  riscv_f64Lt op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:23959:25: application type mismatch
+  riscv_f16Lt op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23960:25: application type mismatch
+  riscv_f32Lt op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:23961:24: application type mismatch
+  riscv_f64Lt op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:23969:25: application type mismatch
+  riscv_f16Le op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23970:25: application type mismatch
+  riscv_f32Le op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:23971:24: application type mismatch
+  riscv_f64Le op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:23979:32: application type mismatch
+  riscv_f16Mul rm_3b op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23980:32: application type mismatch
+  riscv_f32Mul rm_3b op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:23980:12: type mismatch, result value has type
+  BitVec 5 × BitVec 32 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23981:31: application type mismatch
+  riscv_f64Mul rm_3b op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:23981:11: type mismatch, result value has type
+  BitVec 5 × BitVec 64 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23983:8: application type mismatch
+  pure result_val
+argument
+  result_val
+has type
+  BitVec 16 : Type
+but is expected to have type
+  BitVec k_m : Type
+error: ././././LeanRV64DLEAN.lean:23989:32: application type mismatch
+  riscv_f16Div rm_3b op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23990:32: application type mismatch
+  riscv_f32Div rm_3b op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:23990:12: type mismatch, result value has type
+  BitVec 5 × BitVec 32 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23991:31: application type mismatch
+  riscv_f64Div rm_3b op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:23991:11: type mismatch, result value has type
+  BitVec 5 × BitVec 64 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:23993:8: application type mismatch
+  pure result_val
+argument
+  result_val
+has type
+  BitVec 16 : Type
+but is expected to have type
+  BitVec k_m : Type
+error: ././././LeanRV64DLEAN.lean:23999:35: application type mismatch
+  riscv_f16MulAdd rm_3b op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:24000:35: application type mismatch
+  riscv_f32MulAdd rm_3b op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:24000:12: type mismatch, result value has type
+  BitVec 5 × BitVec 32 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:24001:34: application type mismatch
+  riscv_f64MulAdd rm_3b op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:24001:11: type mismatch, result value has type
+  BitVec 5 × BitVec 64 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:24003:8: application type mismatch
+  pure result_val
+argument
+  result_val
+has type
+  BitVec 16 : Type
+but is expected to have type
+  BitVec k_m : Type
+error: ././././LeanRV64DLEAN.lean:24010:35: application type mismatch
+  riscv_f16MulAdd rm_3b op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:24011:35: application type mismatch
+  riscv_f32MulAdd rm_3b op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:24011:12: type mismatch, result value has type
+  BitVec 5 × BitVec 32 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:24012:34: application type mismatch
+  riscv_f64MulAdd rm_3b op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:24012:11: type mismatch, result value has type
+  BitVec 5 × BitVec 64 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:24014:8: application type mismatch
+  pure result_val
+argument
+  result_val
+has type
+  BitVec 16 : Type
+but is expected to have type
+  BitVec k_m : Type
+error: ././././LeanRV64DLEAN.lean:24021:35: application type mismatch
+  riscv_f16MulAdd rm_3b op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:24022:35: application type mismatch
+  riscv_f32MulAdd rm_3b op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:24022:12: type mismatch, result value has type
+  BitVec 5 × BitVec 32 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:24023:34: application type mismatch
+  riscv_f64MulAdd rm_3b op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:24023:11: type mismatch, result value has type
+  BitVec 5 × BitVec 64 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:24025:8: application type mismatch
+  pure result_val
+argument
+  result_val
+has type
+  BitVec 16 : Type
+but is expected to have type
+  BitVec k_m : Type
+error: ././././LeanRV64DLEAN.lean:24033:35: application type mismatch
+  riscv_f16MulAdd rm_3b op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:24034:35: application type mismatch
+  riscv_f32MulAdd rm_3b op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:24034:12: type mismatch, result value has type
+  BitVec 5 × BitVec 32 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:24035:34: application type mismatch
+  riscv_f64MulAdd rm_3b op1
+argument
+  op1
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 64 : Type
+error: ././././LeanRV64DLEAN.lean:24035:11: type mismatch, result value has type
+  BitVec 5 × BitVec 64 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:24037:8: application type mismatch
+  pure result_val
+argument
+  result_val
+has type
+  BitVec 16 : Type
+but is expected to have type
+  BitVec k_m : Type
+error: ././././LeanRV64DLEAN.lean:24070:34: application type mismatch
+  riscv_f16ToF32 rm_3b nval
+argument
+  nval
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:24071:33: application type mismatch
+  riscv_f32ToF64 rm_3b nval
+argument
+  nval
+has type
+  BitVec k_m : Type
+but is expected to have type
+  BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:24071:11: type mismatch, result value has type
+  BitVec 5 × BitVec 64 : Type
+but is expected to have type
+  BitVec 5 × BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:24073:8: application type mismatch
+  pure wval
+argument
+  wval
+has type
+  BitVec 32 : Type
+but is expected to have type
+  BitVec (k_m * 2) : Type
+error: ././././LeanRV64DLEAN.lean:24078:28: could not synthesize default value for parameter 'hmn' using tactics
+error: ././././LeanRV64DLEAN.lean:24078:28: unsolved goals
+rm : BitVec 3
+v : BitVec 16
+__discr✝ : BitVec 5 × BitVec 32
+fst✝ : BitVec 5
+sig32 : BitVec 32
+⊢ 16 = 1 + ?m.8428079 __discr✝ fst✝ sig32
+error: ././././LeanRV64DLEAN.lean:24081:33: could not synthesize default value for parameter 'hmn' using tactics
+error: ././././LeanRV64DLEAN.lean:24081:33: unsolved goals
+rm : BitVec 3
+v : BitVec 16
+__discr✝ : BitVec 5 × BitVec 32
+fst✝ : BitVec 5
+sig32 : BitVec 32
+⊢ 16 = 1 + ?m.8428084 __discr✝ fst✝ sig32
+error: ././././LeanRV64DLEAN.lean:24087:28: could not synthesize default value for parameter 'hmn' using tactics
+error: ././././LeanRV64DLEAN.lean:24087:28: unsolved goals
+rm : BitVec 3
+v : BitVec 16
+__discr✝ : BitVec 5 × BitVec 32
+fst✝ : BitVec 5
+sig32 : BitVec 32
+⊢ 8 = 1 + ?m.8428809 __discr✝ fst✝ sig32
+error: ././././LeanRV64DLEAN.lean:24090:33: could not synthesize default value for parameter 'hmn' using tactics
+error: ././././LeanRV64DLEAN.lean:24090:33: unsolved goals
+rm : BitVec 3
+v : BitVec 16
+__discr✝ : BitVec 5 × BitVec 32
+fst✝ : BitVec 5
+sig32 : BitVec 32
+⊢ 8 = 1 + ?m.8428814 __discr✝ fst✝ sig32
+error: ././././LeanRV64DLEAN.lean:24096:28: could not synthesize default value for parameter 'hmn' using tactics
+error: ././././LeanRV64DLEAN.lean:24096:28: unsolved goals
+rm : BitVec 3
+v : BitVec 32
+__discr✝ : BitVec 5 × BitVec 32
+fst✝ : BitVec 5
+sig32 : BitVec 32
+⊢ 16 = 1 + ?m.8429539 __discr✝ fst✝ sig32
+error: ././././LeanRV64DLEAN.lean:24099:33: could not synthesize default value for parameter 'hmn' using tactics
+error: ././././LeanRV64DLEAN.lean:24099:33: unsolved goals
+rm : BitVec 3
+v : BitVec 32
+__discr✝ : BitVec 5 × BitVec 32
+fst✝ : BitVec 5
+sig32 : BitVec 32
+⊢ 16 = 1 + ?m.8429544 __discr✝ fst✝ sig32
+error: ././././LeanRV64DLEAN.lean:24104:34: don't know how to synthesize implicit argument 'n'
+  @BitVec.toNat (?m.8430259 rm v __discr✝ fst✝ sig32) ones
+context:
+rm : BitVec 3
+v : BitVec 16
+__discr✝ : BitVec 5 × BitVec 32
+fst✝ : BitVec 5
+sig32 : BitVec 32
+⊢ Nat
+error: ././././LeanRV64DLEAN.lean:24104:48: don't know how to synthesize implicit argument 'n'
+  @ones (?m.8430259 rm v __discr✝ fst✝ sig32)
+context:
+rm : BitVec 3
+v : BitVec 16
+__discr✝ : BitVec 5 × BitVec 32
+fst✝ : BitVec 5
+sig32 : BitVec 32
+⊢ Nat
+error: ././././LeanRV64DLEAN.lean:24110:34: don't know how to synthesize implicit argument 'n'
+  @BitVec.toNat (?m.8430717 rm v __discr✝ fst✝ sig32) ones
+context:
+rm : BitVec 3
+v : BitVec 16
+__discr✝ : BitVec 5 × BitVec 32
+fst✝ : BitVec 5
+sig32 : BitVec 32
+⊢ Nat
+error: ././././LeanRV64DLEAN.lean:24110:48: don't know how to synthesize implicit argument 'n'
+  @ones (?m.8430717 rm v __discr✝ fst✝ sig32)
+context:
+rm : BitVec 3
+v : BitVec 16
+__discr✝ : BitVec 5 × BitVec 32
+fst✝ : BitVec 5
+sig32 : BitVec 32
+⊢ Nat
+error: ././././LeanRV64DLEAN.lean:24116:34: don't know how to synthesize implicit argument 'n'
+  @BitVec.toNat (?m.8431175 rm v __discr✝ fst✝ sig32) ones
+context:
+rm : BitVec 3
+v : BitVec 32
+__discr✝ : BitVec 5 × BitVec 32
+fst✝ : BitVec 5
+sig32 : BitVec 32
+⊢ Nat
+error: ././././LeanRV64DLEAN.lean:24116:48: don't know how to synthesize implicit argument 'n'
+  @ones (?m.8431175 rm v __discr✝ fst✝ sig32)
+context:
+rm : BitVec 3
+v : BitVec 32
+__discr✝ : BitVec 5 × BitVec 32
+fst✝ : BitVec 5
+sig32 : BitVec 32
+⊢ Nat
+error: ././././LeanRV64DLEAN.lean:24142:14: unknown identifier 'shiftl'
+error: ././././LeanRV64DLEAN.lean:24160:18: unknown identifier 'shiftl'
+error: ././././LeanRV64DLEAN.lean:24164:9: failed to synthesize
+  HSub Nat Int ?m.8439940
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:24262:12: unknown identifier 'shiftl'
+error: ././././LeanRV64DLEAN.lean:24272:7: failed to synthesize
+  HSub Nat Int ?m.8454440
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:24274:18: unknown identifier 'shiftl'
+error: ././././LeanRV64DLEAN.lean:24277:29: unknown identifier 'shiftr'
+error: ././././LeanRV64DLEAN.lean:24280:43: unknown identifier 'shiftr'
+error: ././././LeanRV64DLEAN.lean:24498:18: could not synthesize default value for parameter 'hmn' using tactics
+error: ././././LeanRV64DLEAN.lean:24498:18: unsolved goals
+x✝ : Unit
+⊢ 2 ^ 3 * 8 = 1 + ?m.8468331
+error: ././././LeanRV64DLEAN.lean:27893:11: failed to synthesize
+  HPow Nat Int Int
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:27899:88: application type mismatch
+  init_masked_result num_elem (nf * load_width_bytes * 8) EMUL_pow vd_seg
+argument
+  vd_seg
+has type
+  Vector (BitVec (nf * (load_width_bytes * 8))) num_elem : Type
+but is expected to have type
+  Vector (BitVec (nf * load_width_bytes * 8)) num_elem : Type
+error: ././././LeanRV64DLEAN.lean:27911:23: application type mismatch
+  foreach_ME (cont loop_j_lower)
+argument
+  cont loop_j_lower
+has type
+  ER ?m.8613643 Nat : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:27922:29: function expected at
+  early_return (handle_mem_exception vaddr (E_Load_Addr_Align ()))
+term has type
+  ER (SailM Unit) ?m.8614295
+error: ././././LeanRV64DLEAN.lean:27927:31: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8614408
+error: ././././LeanRV64DLEAN.lean:27934:60: failed to synthesize
+  HMul Nat Int ?m.8614608
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:27936:33: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8629792
+error: ././././LeanRV64DLEAN.lean:27910:11: application type mismatch
+  pure x✝
+argument
+  x✝
+has type
+  Retired : Type
+but is expected to have type
+  ER ?m.8613206 Unit : Type
+error: ././././LeanRV64DLEAN.lean:27910:11: application type mismatch
+  pure x✝
+argument
+  x✝
+has type
+  Unit : Type
+but is expected to have type
+  ER ?m.8613206 Unit : Type
+error: ././././LeanRV64DLEAN.lean:27942:27: invalid `do` notation, expected type is not a monad application
+  Unit
+You can use the `do` notation in pure code by writing `Id.run do` instead of `do`, where `Id` is the identity monad.
+error: ././././LeanRV64DLEAN.lean:27958:11: failed to synthesize
+  HPow Nat Int Int
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:27965:88: application type mismatch
+  init_masked_result num_elem (nf * load_width_bytes * 8) EMUL_pow vd_seg
+argument
+  vd_seg
+has type
+  Vector (BitVec (nf * (load_width_bytes * 8))) num_elem : Type
+but is expected to have type
+  Vector (BitVec (nf * load_width_bytes * 8)) num_elem : Type
+error: ././././LeanRV64DLEAN.lean:27979:30: application type mismatch
+  foreach_ME (cont loop_j_lower)
+argument
+  cont loop_j_lower
+has type
+  ER ?m.8632771 Nat : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:27989:42: function expected at
+  writeReg vl ?m.8633850 ?m.8634408
+term has type
+  EStateM.Result (Error ?m.8633815) (SequentialState ?m.8633811 ?m.8633814) PUnit
+error: ././././LeanRV64DLEAN.lean:27997:41: function expected at
+  early_return (handle_mem_exception vaddr (E_Load_Addr_Align ()))
+term has type
+  ER (SailM Unit) ?m.8634566
+error: ././././LeanRV64DLEAN.lean:28000:47: function expected at
+  writeReg vl ?m.8634702 ?m.8635099
+term has type
+  EStateM.Result (Error ?m.8634692) (SequentialState ?m.8634688 ?m.8634691) PUnit
+error: ././././LeanRV64DLEAN.lean:28008:43: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8635292
+error: ././././LeanRV64DLEAN.lean:28011:49: function expected at
+  writeReg vl ?m.8635461 ?m.8635858
+term has type
+  EStateM.Result (Error ?m.8635451) (SequentialState ?m.8635447 ?m.8635450) PUnit
+error: ././././LeanRV64DLEAN.lean:28021:65: failed to synthesize
+  HMul Nat Int ?m.8636547
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:28025:45: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8651963
+error: ././././LeanRV64DLEAN.lean:28028:51: function expected at
+  writeReg vl ?m.8652162 ?m.8652559
+term has type
+  EStateM.Result (Error ?m.8652152) (SequentialState ?m.8652148 ?m.8652151) PUnit
+error: ././././LeanRV64DLEAN.lean:27978:18: application type mismatch
+  pure x✝
+argument
+  x✝
+has type
+  Retired : Type
+but is expected to have type
+  ER ?m.8632347 Bool : Type
+error: ././././LeanRV64DLEAN.lean:27978:18: application type mismatch
+  pure x✝
+argument
+  x✝
+has type
+  Bool : Type
+but is expected to have type
+  ER ?m.8632347 Bool : Type
+error: ././././LeanRV64DLEAN.lean:28039:31: unknown identifier 'shiftr'
+error: ././././LeanRV64DLEAN.lean:28043:54: failed to synthesize
+  HMul Nat Int ?m.8655982
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:28052:31: unknown identifier 'shiftr'
+error: ././././LeanRV64DLEAN.lean:28056:54: failed to synthesize
+  HMul Nat Int ?m.8658647
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:28057:22: function expected at
+  pure ()
+term has type
+  ?m.8660003 Unit
+error: ././././LeanRV64DLEAN.lean:28038:29: could not synthesize default value for parameter 'hw' using tactics
+error: ././././LeanRV64DLEAN.lean:28038:29: unsolved goals
+nf : Nat
+vm : BitVec 1
+vd : BitVec 5
+load_width_bytes : Nat
+rs1 : BitVec 5
+EMUL_pow : Int
+num_elem : Nat
+EMUL_reg : Int := if EMUL_pow ≤ 0 then 1 else (fun x => 2 ^ x) EMUL_pow
+width_type : word_width := size_bytes_backwards load_width_bytes
+vm_val : BitVec num_elem
+vd_seg : Vector (BitVec (nf * (load_width_bytes * 8))) num_elem
+tail_ag : agtype
+__discr✝ : Vector (BitVec (nf * load_width_bytes * 8)) num_elem × BitVec num_elem
+result : Vector (BitVec (nf * load_width_bytes * 8)) num_elem
+mask : BitVec num_elem
+trimmed✝ : Bool := false
+loop_i_lower : Nat := 0
+loop_i_upper : Nat := num_elem - 1
+i : Nat
+trimmed : Bool
+loop_j_lower : Nat := 0
+loop_j_upper : Nat := nf - 1
+j : Nat
+x✝ : Unit
+⊢ load_width_bytes * 8 = load_width_bytes * 8 - 1 + 1
+error: ././././LeanRV64DLEAN.lean:28051:29: could not synthesize default value for parameter 'hw' using tactics
+error: ././././LeanRV64DLEAN.lean:28051:29: unsolved goals
+nf : Nat
+vm : BitVec 1
+vd : BitVec 5
+load_width_bytes : Nat
+rs1 : BitVec 5
+EMUL_pow : Int
+num_elem : Nat
+EMUL_reg : Int := if EMUL_pow ≤ 0 then 1 else (fun x => 2 ^ x) EMUL_pow
+width_type : word_width := size_bytes_backwards load_width_bytes
+vm_val : BitVec num_elem
+vd_seg : Vector (BitVec (nf * (load_width_bytes * 8))) num_elem
+tail_ag : agtype
+__discr✝ : Vector (BitVec (nf * load_width_bytes * 8)) num_elem × BitVec num_elem
+result : Vector (BitVec (nf * load_width_bytes * 8)) num_elem
+mask : BitVec num_elem
+trimmed✝ : Bool := false
+loop_i_lower : Nat := 0
+loop_i_upper : Nat := num_elem - 1
+i : Nat
+trimmed : Bool
+loop_j_lower : Nat := 0
+loop_j_upper : Nat := nf - 1
+j : Nat
+x✝ : Unit
+⊢ load_width_bytes * 8 = load_width_bytes * 8 - 1 + 1
+error: ././././LeanRV64DLEAN.lean:28029:42: application type mismatch
+  writeReg vl ?m.8652162 (pure (print_endline ("CSR vl <- " ++ BitVec.toFormatted __do_lift✝)))
+argument
+  pure (print_endline ("CSR vl <- " ++ BitVec.toFormatted __do_lift✝))
+has type
+  ?m.8652165 Unit : Type ?u.8652163
+but is expected to have type
+  SequentialState ?m.8652148 ?m.8652151 : Type
+error: ././././LeanRV64DLEAN.lean:28068:11: failed to synthesize
+  HPow Nat Int Int
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:28084:23: application type mismatch
+  foreach_ME (cont loop_j_lower)
+argument
+  cont loop_j_lower
+has type
+  ER ?m.8662813 Nat : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:28095:29: function expected at
+  early_return (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
+term has type
+  ER (SailM Unit) ?m.8663475
+error: ././././LeanRV64DLEAN.lean:28100:31: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8663590
+error: ././././LeanRV64DLEAN.lean:28108:33: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8663726
+error: ././././LeanRV64DLEAN.lean:28114:57: failed to synthesize
+  HMul Nat Int ?m.8663863
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:28116:68: application type mismatch
+  mem_write_value paddr load_width_bytes elem_val
+argument
+  elem_val
+has type
+  BitVec (load_width_bytes * 8) : Type
+but is expected to have type
+  BitVec (8 * load_width_bytes) : Type
+error: ././././LeanRV64DLEAN.lean:28123:35: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8679193
+error: ././././LeanRV64DLEAN.lean:28083:11: application type mismatch
+  pure x✝
+argument
+  x✝
+has type
+  Retired : Type
+but is expected to have type
+  ER ?m.8662357 Unit : Type
+error: ././././LeanRV64DLEAN.lean:28083:11: application type mismatch
+  pure x✝
+argument
+  x✝
+has type
+  Unit : Type
+but is expected to have type
+  ER ?m.8662357 Unit : Type
+error: ././././LeanRV64DLEAN.lean:28136:11: failed to synthesize
+  HPow Nat Int Int
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:28143:88: application type mismatch
+  init_masked_result num_elem (nf * load_width_bytes * 8) EMUL_pow vd_seg
+argument
+  vd_seg
+has type
+  Vector (BitVec (nf * (load_width_bytes * 8))) num_elem : Type
+but is expected to have type
+  Vector (BitVec (nf * load_width_bytes * 8)) num_elem : Type
+error: ././././LeanRV64DLEAN.lean:28155:23: application type mismatch
+  foreach_ME (cont loop_j_lower)
+argument
+  cont loop_j_lower
+has type
+  ER ?m.8682095 Nat : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:28166:29: function expected at
+  early_return (handle_mem_exception vaddr (E_Load_Addr_Align ()))
+term has type
+  ER (SailM Unit) ?m.8682739
+error: ././././LeanRV64DLEAN.lean:28171:31: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8682852
+error: ././././LeanRV64DLEAN.lean:28178:60: failed to synthesize
+  HMul Nat Int ?m.8683052
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:28180:33: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8698235
+error: ././././LeanRV64DLEAN.lean:28154:11: application type mismatch
+  pure x✝
+argument
+  x✝
+has type
+  Retired : Type
+but is expected to have type
+  ER ?m.8681658 Unit : Type
+error: ././././LeanRV64DLEAN.lean:28154:11: application type mismatch
+  pure x✝
+argument
+  x✝
+has type
+  Unit : Type
+but is expected to have type
+  ER ?m.8681658 Unit : Type
+error: ././././LeanRV64DLEAN.lean:28186:27: invalid `do` notation, expected type is not a monad application
+  Unit
+You can use the `do` notation in pure code by writing `Id.run do` instead of `do`, where `Id` is the identity monad.
+error: ././././LeanRV64DLEAN.lean:28202:11: failed to synthesize
+  HPow Nat Int Int
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:28219:23: application type mismatch
+  foreach_ME (cont loop_j_lower)
+argument
+  cont loop_j_lower
+has type
+  ER ?m.8700637 Nat : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:28230:29: function expected at
+  early_return (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
+term has type
+  ER (SailM Unit) ?m.8701291
+error: ././././LeanRV64DLEAN.lean:28235:31: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8701406
+error: ././././LeanRV64DLEAN.lean:28243:33: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8701542
+error: ././././LeanRV64DLEAN.lean:28249:57: failed to synthesize
+  HMul Nat Int ?m.8701679
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:28251:68: application type mismatch
+  mem_write_value paddr load_width_bytes elem_val
+argument
+  elem_val
+has type
+  BitVec (load_width_bytes * 8) : Type
+but is expected to have type
+  BitVec (8 * load_width_bytes) : Type
+error: ././././LeanRV64DLEAN.lean:28258:35: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8717009
+error: ././././LeanRV64DLEAN.lean:28218:11: application type mismatch
+  pure x✝
+argument
+  x✝
+has type
+  Retired : Type
+but is expected to have type
+  ER ?m.8700181 Unit : Type
+error: ././././LeanRV64DLEAN.lean:28218:11: application type mismatch
+  pure x✝
+argument
+  x✝
+has type
+  Unit : Type
+but is expected to have type
+  ER ?m.8700181 Unit : Type
+error: ././././LeanRV64DLEAN.lean:28272:11: failed to synthesize
+  HPow Nat Int Int
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:28280:91: application type mismatch
+  init_masked_result num_elem (nf * EEW_data_bytes * 8) EMUL_data_pow vd_seg
+argument
+  vd_seg
+has type
+  Vector (BitVec (nf * (EEW_data_bytes * 8))) num_elem : Type
+but is expected to have type
+  Vector (BitVec (nf * EEW_data_bytes * 8)) num_elem : Type
+error: ././././LeanRV64DLEAN.lean:28292:23: application type mismatch
+  foreach_ME (cont loop_j_lower)
+argument
+  cont loop_j_lower
+has type
+  ER ?m.8719752 Nat : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:28304:29: function expected at
+  early_return (handle_mem_exception vaddr (E_Load_Addr_Align ()))
+term has type
+  ER (SailM Unit) ?m.8720478
+error: ././././LeanRV64DLEAN.lean:28309:31: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8720591
+error: ././././LeanRV64DLEAN.lean:28316:60: failed to synthesize
+  HMul Nat Int ?m.8720791
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:28318:33: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8735974
+error: ././././LeanRV64DLEAN.lean:28291:11: application type mismatch
+  pure x✝
+argument
+  x✝
+has type
+  Retired : Type
+but is expected to have type
+  ER ?m.8719315 Unit : Type
+error: ././././LeanRV64DLEAN.lean:28291:11: application type mismatch
+  pure x✝
+argument
+  x✝
+has type
+  Unit : Type
+but is expected to have type
+  ER ?m.8719315 Unit : Type
+error: ././././LeanRV64DLEAN.lean:28324:27: invalid `do` notation, expected type is not a monad application
+  Unit
+You can use the `do` notation in pure code by writing `Id.run do` instead of `do`, where `Id` is the identity monad.
+error: ././././LeanRV64DLEAN.lean:28341:11: failed to synthesize
+  HPow Nat Int Int
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:28359:23: application type mismatch
+  foreach_ME (cont loop_j_lower)
+argument
+  cont loop_j_lower
+has type
+  ER ?m.8738355 Nat : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:28371:29: function expected at
+  early_return (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
+term has type
+  ER (SailM Unit) ?m.8739093
+error: ././././LeanRV64DLEAN.lean:28376:31: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8739208
+error: ././././LeanRV64DLEAN.lean:28384:33: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8739344
+error: ././././LeanRV64DLEAN.lean:28390:57: failed to synthesize
+  HMul Nat Int ?m.8739481
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:28392:66: application type mismatch
+  mem_write_value paddr EEW_data_bytes elem_val
+argument
+  elem_val
+has type
+  BitVec (EEW_data_bytes * 8) : Type
+but is expected to have type
+  BitVec (8 * EEW_data_bytes) : Type
+error: ././././LeanRV64DLEAN.lean:28399:35: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8754811
+error: ././././LeanRV64DLEAN.lean:28358:11: application type mismatch
+  pure x✝
+argument
+  x✝
+has type
+  Retired : Type
+but is expected to have type
+  ER ?m.8737899 Unit : Type
+error: ././././LeanRV64DLEAN.lean:28358:11: application type mismatch
+  pure x✝
+argument
+  x✝
+has type
+  Unit : Type
+but is expected to have type
+  ER ?m.8737899 Unit : Type
+error: ././././LeanRV64DLEAN.lean:28413:35: unknown identifier 'emod_int'
+error: ././././LeanRV64DLEAN.lean:28422:28: application type mismatch
+  foreach_ME loop_i_lower
+argument
+  loop_i_lower
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:28425:40: failed to synthesize
+  HMul Int Nat ?m.8756665
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:28434:34: function expected at
+  early_return (handle_mem_exception vaddr (E_Load_Addr_Align ()))
+term has type
+  ER (SailM Unit) ?m.8756980
+error: ././././LeanRV64DLEAN.lean:28439:36: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8757136
+error: ././././LeanRV64DLEAN.lean:28447:70: application type mismatch
+  write_single_element (load_width_bytes * 8) (↑i) (vd + to_bits 5 cur_field) elem
+argument
+  elem
+has type
+  BitVec (8 * load_width_bytes) : Type
+but is expected to have type
+  BitVec (load_width_bytes * 8) : Type
+error: ././././LeanRV64DLEAN.lean:28446:31: type mismatch, result value has type
+  Unit : Type
+but is expected to have type
+  ER Retired ?m.8756834 : Type
+error: ././././LeanRV64DLEAN.lean:28449:38: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8772669
+error: ././././LeanRV64DLEAN.lean:28460:21: application type mismatch
+  foreach_ME loop_j_lower
+argument
+  loop_j_lower
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:28465:25: application type mismatch
+  foreach_ME (cont loop_i_lower)
+argument
+  cont loop_i_lower
+has type
+  ER ?m.8774001 Nat : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:28468:37: failed to synthesize
+  HMul Int Nat ?m.8774400
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:28477:31: function expected at
+  early_return (handle_mem_exception vaddr (E_Load_Addr_Align ()))
+term has type
+  ER (SailM Unit) ?m.8774715
+error: ././././LeanRV64DLEAN.lean:28482:33: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8774872
+error: ././././LeanRV64DLEAN.lean:28489:59: application type mismatch
+  write_single_element (load_width_bytes * 8) (↑i) (vd + to_bits 5 ↑j) elem
+argument
+  elem
+has type
+  BitVec (8 * load_width_bytes) : Type
+but is expected to have type
+  BitVec (load_width_bytes * 8) : Type
+error: ././././LeanRV64DLEAN.lean:28488:28: type mismatch, result value has type
+  Unit : Type
+but is expected to have type
+  ER Retired ?m.8774569 : Type
+error: ././././LeanRV64DLEAN.lean:28491:35: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8790447
+error: ././././LeanRV64DLEAN.lean:28464:13: application type mismatch
+  pure x✝
+argument
+  x✝
+has type
+  Int : Type
+but is expected to have type
+  ER Retired Int : Type
+error: ././././LeanRV64DLEAN.lean:28505:35: unknown identifier 'emod_int'
+error: ././././LeanRV64DLEAN.lean:28514:28: application type mismatch
+  foreach_ME loop_i_lower
+argument
+  loop_i_lower
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:28517:46: failed to synthesize
+  HMul Int Nat ?m.8792440
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:28526:34: function expected at
+  early_return (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
+term has type
+  ER (SailM Unit) ?m.8792754
+error: ././././LeanRV64DLEAN.lean:28531:36: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8792910
+error: ././././LeanRV64DLEAN.lean:28539:38: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8793087
+error: ././././LeanRV64DLEAN.lean:28547:73: application type mismatch
+  mem_write_value paddr load_width_bytes elem
+argument
+  elem
+has type
+  BitVec (load_width_bytes * 8) : Type
+but is expected to have type
+  BitVec (8 * load_width_bytes) : Type
+error: ././././LeanRV64DLEAN.lean:28549:45: type mismatch, result value has type
+  Unit : Type
+but is expected to have type
+  ER Retired ?m.8792608 : Type
+error: ././././LeanRV64DLEAN.lean:28554:40: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8808729
+error: ././././LeanRV64DLEAN.lean:28565:21: application type mismatch
+  foreach_ME loop_j_lower
+argument
+  loop_j_lower
+has type
+  Int : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:28573:25: application type mismatch
+  foreach_ME (cont loop_i_lower)
+argument
+  cont loop_i_lower
+has type
+  ER ?m.8810180 Nat : Type
+but is expected to have type
+  Nat : Type
+error: ././././LeanRV64DLEAN.lean:28576:37: failed to synthesize
+  HMul Int Nat ?m.8810573
+Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: ././././LeanRV64DLEAN.lean:28585:31: function expected at
+  early_return (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
+term has type
+  ER (SailM Unit) ?m.8810861
+error: ././././LeanRV64DLEAN.lean:28590:33: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8811014
+error: ././././LeanRV64DLEAN.lean:28598:35: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8811192
+error: ././././LeanRV64DLEAN.lean:28603:84: application type mismatch
+  vectorAccess vs3_val
+argument
+  vs3_val
+has type
+  Vector (BitVec (load_width_bytes * 8)) elem_per_reg : Type
+but is expected to have type
+  Vector (BitVec (8 * load_width_bytes)) ?m.8811272 : Type
+error: ././././LeanRV64DLEAN.lean:28606:42: type mismatch, result value has type
+  Unit : Type
+but is expected to have type
+  ER Retired ?m.8810719 : Type
+error: ././././LeanRV64DLEAN.lean:28611:37: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8811839
+error: ././././LeanRV64DLEAN.lean:28572:13: application type mismatch
+  pure x✝
+argument
+  x✝
+has type
+  Int : Type
+but is expected to have type
+  ER Retired Int : Type
+error: ././././LeanRV64DLEAN.lean:28665:30: function expected at
+  early_return (handle_mem_exception vaddr (E_Load_Addr_Align ()))
+term has type
+  ER (SailM Unit) ?m.8814919
+error: ././././LeanRV64DLEAN.lean:28670:32: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8815031
+error: ././././LeanRV64DLEAN.lean:28678:34: function expected at
+  early_return (handle_mem_exception vaddr e)
+term has type
+  ER (SailM Unit) ?m.8815239
+error: ././././LeanRV64DLEAN.lean:28689:35: function expected at
+  early_return (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
+term has type
+  ER (SailM Unit) ?m.8815868
+info: stdout:
+{"severity":"error","pos":{"line":28694,"column":37},"kind":"[anonymous]","keepFullRange":false,"fileName":"././././LeanRV64DLEAN.lean","endPo
+
+info: stderr:
+libc++abi: terminating due to uncaught exception of type lean::throwable: deep recursion was detected at 'interpreter' (potential solution: increase stack space in your system)
+interpreter stacktrace:
+#1 _auto._@.LeanRV64DLEAN.Sail.Sail._hyg.245._closed_35
+#2 _auto._@.LeanRV64DLEAN.Sail.Sail._hyg.245._closed_36
+#3 _auto._@.LeanRV64DLEAN.Sail.Sail._hyg.245._closed_37
+#4 _auto._@.LeanRV64DLEAN.Sail.Sail._hyg.245._closed_38
+#5 _auto._@.LeanRV64DLEAN.Sail.Sail._hyg.245._closed_39
+#6 _auto._@.LeanRV64DLEAN.Sail.Sail._hyg.245._closed_40
+#7 _auto._@.LeanRV64DLEAN.Sail.Sail._hyg.245._closed_41
+#8 _auto._@.LeanRV64DLEAN.Sail.Sail._hyg.245._closed_42
+#9 _auto._@.LeanRV64DLEAN.Sail.Sail._hyg.245._closed_43
+#10 _auto._@.LeanRV64DLEAN.Sail.Sail._hyg.245._closed_44
+#11 _auto._@.LeanRV64DLEAN.Sail.Sail._hyg.245._closed_45
+#12 _auto._@.LeanRV64DLEAN.Sail.Sail._hyg.245._closed_46
+#13 _auto._@.LeanRV64DLEAN.Sail.Sail._hyg.245._closed_47
+#14 _auto._@.LeanRV64DLEAN.Sail.Sail._hyg.245._closed_48
+#15 _auto._@.LeanRV64DLEAN.Sail.Sail._hyg.245._closed_49
+#16 _auto._@.LeanRV64DLEAN.Sail.Sail._hyg.245
+error: Lean exited with code 134
 Some required builds logged failures:
-- LeanRV64DLEAN.RiscvExtras
+- LeanRV64DLEAN

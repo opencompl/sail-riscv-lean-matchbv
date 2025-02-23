@@ -1,5 +1,5 @@
 
-import THE_MODULE_NAME.Sail.Sail
+import LeanRV64DLEAN.Sail.Sail
 
 open Sail
 
