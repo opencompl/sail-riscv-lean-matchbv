@@ -89,7 +89,7 @@ jobs:
         sed -e 's/def encdec_compressed_backwards_matches /noncomputable def encdec_compressed_backwards_matches /' -i LeanRV64DLEAN.lean
         echo "Set ulimit"	
         ulimit -s unlimited
-        ulimit
+        ulimit -s
         (lake build | tee build_log.txt || true)
         cp README.md.template README.md
         ./report.py >> README.md
