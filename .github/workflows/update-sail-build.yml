@@ -79,6 +79,7 @@ jobs:
         cp README.md.template sail-riscv/build/model/Lean_RV64D_LEAN/
         cp report.py sail-riscv/build/model/Lean_RV64D_LEAN/
         cd sail-riscv/build/model/Lean_RV64D_LEAN/
+        sed -e 's/def encdec_forwards/noncomputable def encdec_forwards/;s/def encdec_backwards/noncomputable def encdec_backwards/;s/def encdec_backwards_matches/noncomputable def encdec_backwards_matches/;s/def encdec_compressed_forwards/noncomputable def encdec_compressed_forwards/' -i LeanRV64DLEAN.lean
         echo "Set ulimit"	
         ulimit -s unlimited
         ulimit
