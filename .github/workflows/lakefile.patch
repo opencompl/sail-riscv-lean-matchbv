@@ -5,7 +5,7 @@ index 3cde979..9df9436 100644
 @@ -1,5 +1,6 @@
  name = "Lean_RV64D_LEAN"
  defaultTargets = ["LeanRV64DLEAN"]
-+moreLeanArgs = ["--tstack=40000000"]
++moreLeanArgs = ["--tstack=400000"]
  
  [[lean_lib]]
  name = "LeanRV64DLEAN"
