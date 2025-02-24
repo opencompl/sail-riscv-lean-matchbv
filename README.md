@@ -15,7 +15,7 @@ Abbreviations: 95
 
 # Warnings and Errors
 
-Errors found: 162  
+Errors found: 159  
 Warnings found: 1  
 
 ## Error Classes
@@ -26,7 +26,6 @@ Warnings found: 1
 - 7x don't know how to synthesize placeholder
 - 4x type mismatch
 - 4x don't know how to synthesize placeholder for argument 'α'
-- 3x unknown identifier 'hex_str'
 - 3x unexpected token '←'; expected ':=' or '|'
 - 3x invalid `do` notation, expected type is not a monad application
 - 2x unknown identifier 'plat_cache_block_size_exp'

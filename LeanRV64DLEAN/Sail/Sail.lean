@@ -23,8 +23,8 @@ def extractLsb {w : Nat} (x : BitVec w) (hi lo : Nat) : BitVec (hi - lo + 1) :=
 
 def updateSubrange' {w : Nat} (x : BitVec w) (start len : Nat) (y : BitVec len) : BitVec w :=
   let mask := ~~~(((BitVec.allOnes len).zeroExtend w) <<< start)
-  let y' := mask ||| ((y.zeroExtend w) <<< start)
-  x &&& y'
+  let y' := ((y.zeroExtend w) <<< start)
+  (mask &&& x) ||| y'
 
 def slice {w : Nat} (x : BitVec w) (start len : Nat) : BitVec len :=
   x.extractLsb' start len
@@ -393,7 +393,7 @@ def foreach_ (from' to step : Nat) (vars : Vars) (body : Nat -> Vars -> Vars) : 
 def foreach_M' (from' to step : Nat) (vars : Vars) (body : Nat -> Vars -> PreSailM RegisterType c ue Vars) : PreSailM RegisterType c ue Vars := do
   let mut vars := vars
   let step := 1 + (step - 1)
-  let range := Std.Range.mk from' to step (by omega)
+  let range := Std.Range.mk from' (to + 1) step (by omega)
   for i in range do
     vars ← body i vars
   pure vars
@@ -454,6 +454,14 @@ def iterate {α : Sort u} (op : α → α) : Nat → α → α
   | 0, a => a
   | Nat.succ k, a => iterate op k (op a)
 
+def toHex (n : Nat) : String :=
+  have nbv : BitVec (Nat.log2 n + 1) := BitVec.ofNat _ n
+  "0x" ++ nbv.toHex
+
+def toHexUpper (n : Nat) : String :=
+  have nbv : BitVec (Nat.log2 n + 1) := BitVec.ofNat _ n
+  "0x" ++ nbv.toHex.toUpper
+
 end Nat
 
 namespace Int
@@ -469,6 +477,17 @@ def shiftr (a : Int) (n : Int) : Int :=
   match n with
   | Int.ofNat n => Sail.Nat.iterate (fun x => x / 2) n a
   | Int.negSucc n => Sail.Nat.iterate (fun x => x * 2) (n+1) a
+
+
+def toHex (i : Int) : String :=
+  match i with
+  | Int.ofNat n => Nat.toHex n
+  | Int.negSucc n => "-" ++ Nat.toHex (n+1)
+
+def toHexUpper (i : Int) : String :=
+  match i with
+  | Int.ofNat n => Nat.toHexUpper n
+  | Int.negSucc n => "-" ++ Nat.toHexUpper (n+1)
 
 end Int
 
