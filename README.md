@@ -8,19 +8,18 @@ is still work-in-progress. As a result, our semantics are still full of warnings
 and errors. Similarly, our output is not yet polished for readability.
 # RISC-V Lean Statistics
 
-Lines: 75850  
+Lines: 75851  
 Definitions: 3205  
 Inductive definitions: 129  
 Abbreviations: 95  
 
 # Warnings and Errors
 
-Errors found: 220  
+Errors found: 162  
 Warnings found: 1  
 
 ## Error Classes
 
-- 58x redundant alternative
 - 52x function expected at
 - 39x type mismatch, result value has type
 - 38x application type mismatch
