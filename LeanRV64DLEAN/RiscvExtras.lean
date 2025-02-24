@@ -3,7 +3,10 @@ import LeanRV64DLEAN.Sail.Sail
 
 open Sail
 
+def print (_ : String) : Unit := ()
 def print_endline (_ : String) : Unit := ()
+def print_bits (_ : String) (_ : BitVec n) : Unit := ()
+def print_string (_ : String) (_ : String) : Unit := ()
 def prerr_endline (_: String) : Unit := ()
 def prerr_string (_: String) : Unit := ()
 def putchar {T} (_: T ) : Unit := ()
@@ -51,9 +54,23 @@ axiom plat_clint_base : Unit → Arch.pa
 axiom plat_clint_size : Unit → Arch.pa
 axiom plat_insns_per_tick : Unit → Int
 
--- TODO import Sail module
-axiom plat_term_write {α β} : α → β
-axiom plat_term_read {α} : Unit → α
+section Effectful
+
+variable {Register : Type} {RegisterType : Register → Type} [DecidableEq Register] [Hashable Register]
+
+axiom plat_term_write {α} : α → PreSailM RegisterType c ue Unit
+axiom plat_term_read : Unit → PreSailM RegisterType c ue String
+
+-- Reservations
+axiom load_reservation : Arch.pa → PreSailM RegisterType c ue Unit
+axiom match_reservation : Arch.pa → PreSailM RegisterType c ue Bool
+axiom cancel_reservation : Unit → PreSailM RegisterType c ue Bool
+
+axiom get_16_random_bits : Unit → PreSailM RegisterType c ue (BitVec 16)
+
+axiom speculate_conditional : Unit → PreSailM RegisterType c ue Bool
+
+end Effectful
 
 -- Floats
 axiom extern_f16Add : BitVec 3 → BitVec 16 → BitVec 16 → Unit
