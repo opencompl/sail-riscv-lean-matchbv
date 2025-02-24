@@ -15,7 +15,7 @@ Abbreviations: 95
 
 # Warnings and Errors
 
-Errors found: 475  
+Errors found: 483  
 Warnings found: 1  
 
 ## Error Classes
@@ -32,6 +32,7 @@ Warnings found: 1
 - 13x unknown identifier 'get_slice_int'
 - 11x unknown identifier 'shift_bits_left'
 - 9x unknown identifier 'emod_int'
+- 8x unexpected token 'noncomputable'; expected 'abbrev', 'axiom', 'builtin_initialize', 'class', 'def', 'example', 'inductive', 'initialize', 'instance', 'opaque', 'section', 'structure' or 'theorem'
 - 8x don't know how to synthesize placeholder
 - 7x don't know how to synthesize placeholder for argument 'α'
 - 5x unknown identifier 'print'

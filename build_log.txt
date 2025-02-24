@@ -701,6 +701,14 @@ has type
 but is expected to have type
   Unit : Type
 error: ././././LeanRV64DLEAN.lean:29874:31: unknown identifier 'plat_cache_block_size_exp'
+error: ././././LeanRV64DLEAN.lean:29913:13: unexpected token 'noncomputable'; expected 'abbrev', 'axiom', 'builtin_initialize', 'class', 'def', 'example', 'inductive', 'initialize', 'instance', 'opaque', 'section', 'structure' or 'theorem'
+error: ././././LeanRV64DLEAN.lean:31738:13: unexpected token 'noncomputable'; expected 'abbrev', 'axiom', 'builtin_initialize', 'class', 'def', 'example', 'inductive', 'initialize', 'instance', 'opaque', 'section', 'structure' or 'theorem'
+error: ././././LeanRV64DLEAN.lean:47647:13: unexpected token 'noncomputable'; expected 'abbrev', 'axiom', 'builtin_initialize', 'class', 'def', 'example', 'inductive', 'initialize', 'instance', 'opaque', 'section', 'structure' or 'theorem'
+error: ././././LeanRV64DLEAN.lean:49005:13: unexpected token 'noncomputable'; expected 'abbrev', 'axiom', 'builtin_initialize', 'class', 'def', 'example', 'inductive', 'initialize', 'instance', 'opaque', 'section', 'structure' or 'theorem'
+error: ././././LeanRV64DLEAN.lean:60194:13: unexpected token 'noncomputable'; expected 'abbrev', 'axiom', 'builtin_initialize', 'class', 'def', 'example', 'inductive', 'initialize', 'instance', 'opaque', 'section', 'structure' or 'theorem'
+error: ././././LeanRV64DLEAN.lean:60713:13: unexpected token 'noncomputable'; expected 'abbrev', 'axiom', 'builtin_initialize', 'class', 'def', 'example', 'inductive', 'initialize', 'instance', 'opaque', 'section', 'structure' or 'theorem'
+error: ././././LeanRV64DLEAN.lean:62819:13: unexpected token 'noncomputable'; expected 'abbrev', 'axiom', 'builtin_initialize', 'class', 'def', 'example', 'inductive', 'initialize', 'instance', 'opaque', 'section', 'structure' or 'theorem'
+error: ././././LeanRV64DLEAN.lean:63128:13: unexpected token 'noncomputable'; expected 'abbrev', 'axiom', 'builtin_initialize', 'class', 'def', 'example', 'inductive', 'initialize', 'instance', 'opaque', 'section', 'structure' or 'theorem'
 error: ././././LeanRV64DLEAN.lean:64479:5: unknown identifier 'shift_bits_left'
 error: ././././LeanRV64DLEAN.lean:64495:5: unknown identifier 'shift_bits_left'
 error: ././././LeanRV64DLEAN.lean:64577:6: unknown identifier 'shift_bits_left'
