@@ -8,14 +8,14 @@ is still work-in-progress. As a result, our semantics are still full of warnings
 and errors. Similarly, our output is not yet polished for readability.
 # RISC-V Lean Statistics
 
-Lines: 75679  
+Lines: 75879  
 Definitions: 3205  
 Inductive definitions: 129  
 Abbreviations: 95  
 
 # Warnings and Errors
 
-Errors found: 604  
+Errors found: 475  
 Warnings found: 1  
 
 ## Error Classes
@@ -23,12 +23,9 @@ Warnings found: 1
 - 83x application type mismatch
 - 58x redundant alternative
 - 52x function expected at
-- 48x don't know how to synthesize implicit argument 'n'
 - 40x unknown identifier 'shiftl'
 - 39x unknown identifier 'shiftr'
 - 39x type mismatch, result value has type
-- 34x don't know how to synthesize implicit argument 'γ'
-- 32x don't know how to synthesize implicit argument 'β'
 - 28x failed to synthesize
 - 27x unknown identifier 'slice'
 - 14x unknown identifier 'shift_bits_right'
@@ -37,10 +34,9 @@ Warnings found: 1
 - 9x unknown identifier 'emod_int'
 - 8x don't know how to synthesize placeholder
 - 7x don't know how to synthesize placeholder for argument 'α'
-- 6x don't know how to synthesize implicit argument 'α'
-- 6x don't know how to synthesize implicit argument 'k_n'
 - 5x unknown identifier 'print'
 - 4x unknown identifier 'parse_hex_bits'
+- 4x unknown identifier 'length'
 - 4x unknown identifier 'cancel_reservation'
 - 3x unknown identifier 'valid_hex_bits'
 - 3x unknown identifier 'hex_str'
@@ -48,11 +44,8 @@ Warnings found: 1
 - 3x invalid `do` notation, expected type is not a monad application
 - 2x unknown identifier 'print_bits'
 - 2x unknown identifier 'plat_cache_block_size_exp'
-- 2x unknown identifier 'length'
 - 2x unexpected token 'if'; expected ')', ',' or ':'
 - 2x unexpected token '('; expected ':=', '_', 'rec' or identifier
-- 2x failed to infer 'let' declaration type
-- 2x don't know how to synthesize implicit argument 'm'
 - 1x unknown identifier 'speculate_conditional'
 - 1x unknown identifier 'print_string'
 - 1x unknown identifier 'match_reservation'
@@ -62,5 +55,4 @@ Warnings found: 1
 - 1x unexpected token 'while'; expected ')' or term
 - 1x type mismatch
 - 1x fail to show termination for
-- 1x don't know how to synthesize implicit argument 'w'
 - 1x Lean exited with code 1
