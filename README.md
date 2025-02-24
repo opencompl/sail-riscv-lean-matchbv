@@ -15,7 +15,7 @@ Abbreviations: 95
 
 # Warnings and Errors
 
-Errors found: 572  
+Errors found: 563  
 Warnings found: 1  
 
 ## Error Classes
@@ -63,12 +63,3 @@ Warnings found: 1
 - 1x fail to show termination for
 - 1x don't know how to synthesize implicit argument 'w'
 - 1x Lean exited with code 1
-- 1x 'bits_rm' has already been declared
-- 1x 'bits_fflags' has already been declared
-- 1x 'bits_WU' has already been declared
-- 1x 'bits_W' has already been declared
-- 1x 'bits_S' has already been declared
-- 1x 'bits_LU' has already been declared
-- 1x 'bits_L' has already been declared
-- 1x 'bits_H' has already been declared
-- 1x 'bits_D' has already been declared
