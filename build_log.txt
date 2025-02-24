@@ -630,14 +630,6 @@ has type
 but is expected to have type
   Unit : Type
 error: ././././LeanRV64DLEAN.lean:29875:31: unknown identifier 'plat_cache_block_size_exp'
-error: ././././LeanRV64DLEAN.lean:29914:13: unexpected token 'noncomputable'; expected 'abbrev', 'axiom', 'builtin_initialize', 'class', 'def', 'example', 'inductive', 'initialize', 'instance', 'opaque', 'section', 'structure' or 'theorem'
-error: ././././LeanRV64DLEAN.lean:31739:13: unexpected token 'noncomputable'; expected 'abbrev', 'axiom', 'builtin_initialize', 'class', 'def', 'example', 'inductive', 'initialize', 'instance', 'opaque', 'section', 'structure' or 'theorem'
-error: ././././LeanRV64DLEAN.lean:47648:13: unexpected token 'noncomputable'; expected 'abbrev', 'axiom', 'builtin_initialize', 'class', 'def', 'example', 'inductive', 'initialize', 'instance', 'opaque', 'section', 'structure' or 'theorem'
-error: ././././LeanRV64DLEAN.lean:49006:13: unexpected token 'noncomputable'; expected 'abbrev', 'axiom', 'builtin_initialize', 'class', 'def', 'example', 'inductive', 'initialize', 'instance', 'opaque', 'section', 'structure' or 'theorem'
-error: ././././LeanRV64DLEAN.lean:60195:13: unexpected token 'noncomputable'; expected 'abbrev', 'axiom', 'builtin_initialize', 'class', 'def', 'example', 'inductive', 'initialize', 'instance', 'opaque', 'section', 'structure' or 'theorem'
-error: ././././LeanRV64DLEAN.lean:60714:13: unexpected token 'noncomputable'; expected 'abbrev', 'axiom', 'builtin_initialize', 'class', 'def', 'example', 'inductive', 'initialize', 'instance', 'opaque', 'section', 'structure' or 'theorem'
-error: ././././LeanRV64DLEAN.lean:62820:13: unexpected token 'noncomputable'; expected 'abbrev', 'axiom', 'builtin_initialize', 'class', 'def', 'example', 'inductive', 'initialize', 'instance', 'opaque', 'section', 'structure' or 'theorem'
-error: ././././LeanRV64DLEAN.lean:63129:13: unexpected token 'noncomputable'; expected 'abbrev', 'axiom', 'builtin_initialize', 'class', 'def', 'example', 'inductive', 'initialize', 'instance', 'opaque', 'section', 'structure' or 'theorem'
 error: ././././LeanRV64DLEAN.lean:64617:46: application type mismatch
   foreach_ loop_i_lower loop_i_upper.toNat 1 result
 argument

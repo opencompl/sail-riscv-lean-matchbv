@@ -15,7 +15,7 @@ Abbreviations: 95
 
 # Warnings and Errors
 
-Errors found: 291  
+Errors found: 283  
 Warnings found: 1  
 
 ## Error Classes
@@ -25,7 +25,6 @@ Warnings found: 1
 - 52x function expected at
 - 39x type mismatch, result value has type
 - 11x failed to synthesize
-- 8x unexpected token 'noncomputable'; expected 'abbrev', 'axiom', 'builtin_initialize', 'class', 'def', 'example', 'inductive', 'initialize', 'instance', 'opaque', 'section', 'structure' or 'theorem'
 - 8x don't know how to synthesize placeholder
 - 7x don't know how to synthesize placeholder for argument 'α'
 - 4x type mismatch
