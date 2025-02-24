@@ -8,26 +8,25 @@ is still work-in-progress. As a result, our semantics are still full of warnings
 and errors. Similarly, our output is not yet polished for readability.
 # RISC-V Lean Statistics
 
-Lines: 75880  
+Lines: 75850  
 Definitions: 3205  
 Inductive definitions: 129  
 Abbreviations: 95  
 
 # Warnings and Errors
 
-Errors found: 283  
+Errors found: 220  
 Warnings found: 1  
 
 ## Error Classes
 
-- 86x application type mismatch
 - 58x redundant alternative
 - 52x function expected at
 - 39x type mismatch, result value has type
-- 11x failed to synthesize
-- 8x don't know how to synthesize placeholder
-- 7x don't know how to synthesize placeholder for argument 'α'
+- 38x application type mismatch
+- 7x don't know how to synthesize placeholder
 - 4x type mismatch
+- 4x don't know how to synthesize placeholder for argument 'α'
 - 3x unknown identifier 'hex_str'
 - 3x unexpected token '←'; expected ':=' or '|'
 - 3x invalid `do` notation, expected type is not a monad application
