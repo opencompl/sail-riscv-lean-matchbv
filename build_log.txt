@@ -1,10 +1,11 @@
-⚠ [2/6] Built LeanRV64DLEAN.Sail.BitVec
+⚠ [2/7] Built LeanRV64DLEAN.Sail.BitVec
 warning: ././././LeanRV64DLEAN/Sail/BitVec.lean:148:20: `Array.zipWithIndex` has been deprecated: use `Array.zipIdx` instead
-✔ [3/6] Built LeanRV64DLEAN.Sail.Sail
-✔ [4/6] Built LeanRV64DLEAN.RiscvExtras
-✖ [5/6] Building LeanRV64DLEAN
+✔ [3/7] Built LeanRV64DLEAN.Sail.Sail
+✔ [4/7] Built LeanRV64DLEAN.RiscvExtras
+✔ [5/7] Built LeanRV64DLEAN.Defs
+✖ [6/7] Building LeanRV64DLEAN
 trace: .> LEAN_PATH=././.lake/build/lib LD_LIBRARY_PATH= /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-02-05/bin/lean --tstack=400000 ././././LeanRV64DLEAN.lean -R ./././. -o ././.lake/build/lib/LeanRV64DLEAN.olean -i ././.lake/build/lib/LeanRV64DLEAN.ilean -c ././.lake/build/ir/LeanRV64DLEAN.c --json
-error: ././././LeanRV64DLEAN.lean:14318:4: fail to show termination for
+error: ././././LeanRV64DLEAN.lean:12856:4: fail to show termination for
   Functions.extensionEnabled
 with errors
 failed to infer structural recursion:
@@ -17,154 +18,154 @@ failed to prove termination, possible solutions:
   - Use `termination_by` to specify a different well-founded relation
   - Use `decreasing_by` to specify your own tactic for discharging this kind of goal
 ⊢ False
-error: ././././LeanRV64DLEAN.lean:19761:2: type mismatch
+error: ././././LeanRV64DLEAN.lean:18291:2: type mismatch
   cancel_reservation ()
 has type
-  PreSailM ?m.2213107 ?m.2213110 ?m.2213111 Bool : Type
+  PreSailM ?m.1116141 ?m.1116144 ?m.1116145 Bool : Type
 but is expected to have type
   SailM PUnit : Type
-error: ././././LeanRV64DLEAN.lean:22516:7: type mismatch
+error: ././././LeanRV64DLEAN.lean:21046:7: type mismatch
   x✝
 has type
   Unit : Type
 but is expected to have type
-  SailM ?m.2491004 : Type
-error: ././././LeanRV64DLEAN.lean:23736:12: type mismatch, result value has type
+  SailM ?m.1394038 : Type
+error: ././././LeanRV64DLEAN.lean:22266:12: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:23737:11: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:22267:11: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:23746:12: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:22276:12: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:23747:11: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:22277:11: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:23862:12: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:22392:12: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:23863:11: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:22393:11: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:23872:12: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:22402:12: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:23873:11: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:22403:11: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:23882:12: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:22412:12: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:23883:11: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:22413:11: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:23893:12: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:22423:12: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:23894:11: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:22424:11: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:23904:12: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:22434:12: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:23905:11: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:22435:11: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:23916:12: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:22446:12: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:23917:11: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:22447:11: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:23953:11: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:22483:11: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 32 : Type
-error: ././././LeanRV64DLEAN.lean:27784:23: application type mismatch
+error: ././././LeanRV64DLEAN.lean:26314:23: application type mismatch
   foreach_ME (cont loop_j_lower)
 argument
   cont loop_j_lower
 has type
-  ER ?m.2751450 ?m.2751297 : Type
+  ER ?m.1654484 ?m.1654331 : Type
 but is expected to have type
   Nat : Type
-error: ././././LeanRV64DLEAN.lean:27795:29: function expected at
+error: ././././LeanRV64DLEAN.lean:26325:29: function expected at
   early_return (handle_mem_exception vaddr (E_Load_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.2752132
-error: ././././LeanRV64DLEAN.lean:27800:31: function expected at
+  ER (SailM Unit) ?m.1655166
+error: ././././LeanRV64DLEAN.lean:26330:31: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2752249
-error: ././././LeanRV64DLEAN.lean:27809:33: function expected at
+  ER (SailM Unit) ?m.1655283
+error: ././././LeanRV64DLEAN.lean:26339:33: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2752659
-error: ././././LeanRV64DLEAN.lean:27783:11: application type mismatch
+  ER (SailM Unit) ?m.1655693
+error: ././././LeanRV64DLEAN.lean:26313:11: application type mismatch
   pure x✝
 argument
   x✝
 has type
   Retired : Type
 but is expected to have type
-  ER ?m.2751003 Unit : Type
-error: ././././LeanRV64DLEAN.lean:27783:11: application type mismatch
+  ER ?m.1654037 Unit : Type
+error: ././././LeanRV64DLEAN.lean:26313:11: application type mismatch
   pure x✝
 argument
   x✝
 has type
   Unit : Type
 but is expected to have type
-  ER ?m.2751003 Unit : Type
-error: ././././LeanRV64DLEAN.lean:27815:27: invalid `do` notation, expected type is not a monad application
+  ER ?m.1654037 Unit : Type
+error: ././././LeanRV64DLEAN.lean:26345:27: invalid `do` notation, expected type is not a monad application
   Unit
 You can use the `do` notation in pure code by writing `Id.run do` instead of `do`, where `Id` is the identity monad.
-error: ././././LeanRV64DLEAN.lean:27851:30: application type mismatch
+error: ././././LeanRV64DLEAN.lean:26381:30: application type mismatch
   foreach_ME (cont loop_j_lower)
 argument
   cont loop_j_lower
 has type
-  ER ?m.2755467 ?m.2755314 : Type
+  ER ?m.1658501 ?m.1658348 : Type
 but is expected to have type
   Nat : Type
-error: ././././LeanRV64DLEAN.lean:27861:42: function expected at
-  writeReg vl ?m.2756574 ?m.2757132
+error: ././././LeanRV64DLEAN.lean:26391:42: function expected at
+  writeReg vl ?m.1659608 ?m.1660166
 term has type
-  EStateM.Result (Error ?m.2756538) (SequentialState ?m.2756534 ?m.2756537) PUnit
-error: ././././LeanRV64DLEAN.lean:27869:41: function expected at
+  EStateM.Result (Error ?m.1659572) (SequentialState ?m.1659568 ?m.1659571) PUnit
+error: ././././LeanRV64DLEAN.lean:26399:41: function expected at
   early_return (handle_mem_exception vaddr (E_Load_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.2757295
-error: ././././LeanRV64DLEAN.lean:27872:47: function expected at
-  writeReg vl ?m.2757437 ?m.2757834
+  ER (SailM Unit) ?m.1660329
+error: ././././LeanRV64DLEAN.lean:26402:47: function expected at
+  writeReg vl ?m.1660471 ?m.1660868
 term has type
-  EStateM.Result (Error ?m.2757426) (SequentialState ?m.2757422 ?m.2757425) PUnit
-error: ././././LeanRV64DLEAN.lean:27880:43: function expected at
+  EStateM.Result (Error ?m.1660460) (SequentialState ?m.1660456 ?m.1660459) PUnit
+error: ././././LeanRV64DLEAN.lean:26410:43: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2758033
-error: ././././LeanRV64DLEAN.lean:27883:49: function expected at
-  writeReg vl ?m.2758209 ?m.2758606
+  ER (SailM Unit) ?m.1661067
+error: ././././LeanRV64DLEAN.lean:26413:49: function expected at
+  writeReg vl ?m.1661243 ?m.1661640
 term has type
-  EStateM.Result (Error ?m.2758198) (SequentialState ?m.2758194 ?m.2758197) PUnit
-error: ././././LeanRV64DLEAN.lean:27894:37: application type mismatch
+  EStateM.Result (Error ?m.1661232) (SequentialState ?m.1661228 ?m.1661231) PUnit
+error: ././././LeanRV64DLEAN.lean:26424:37: application type mismatch
   write_single_element (load_width_bytes * 8) (↑i) (vd + to_bits 5 (↑j * EMUL_reg))
     (BitVec.setWidth (load_width_bytes * 8) elem) trimmed
 argument
@@ -173,31 +174,31 @@ has type
   Bool : Type
 but is expected to have type
   SequentialState RegisterType trivialChoiceSource : Type
-error: ././././LeanRV64DLEAN.lean:27897:45: function expected at
+error: ././././LeanRV64DLEAN.lean:26427:45: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2759753
-error: ././././LeanRV64DLEAN.lean:27900:51: function expected at
-  writeReg vl ?m.2759963 ?m.2760360
+  ER (SailM Unit) ?m.1662787
+error: ././././LeanRV64DLEAN.lean:26430:51: function expected at
+  writeReg vl ?m.1662997 ?m.1663394
 term has type
-  EStateM.Result (Error ?m.2759952) (SequentialState ?m.2759948 ?m.2759951) PUnit
-error: ././././LeanRV64DLEAN.lean:27850:18: application type mismatch
+  EStateM.Result (Error ?m.1662986) (SequentialState ?m.1662982 ?m.1662985) PUnit
+error: ././././LeanRV64DLEAN.lean:26380:18: application type mismatch
   pure x✝
 argument
   x✝
 has type
   Retired : Type
 but is expected to have type
-  ER ?m.2755033 Bool : Type
-error: ././././LeanRV64DLEAN.lean:27850:18: application type mismatch
+  ER ?m.1658067 Bool : Type
+error: ././././LeanRV64DLEAN.lean:26380:18: application type mismatch
   pure x✝
 argument
   x✝
 has type
   Bool : Type
 but is expected to have type
-  ER ?m.2755033 Bool : Type
-error: ././././LeanRV64DLEAN.lean:27915:22: application type mismatch
+  ER ?m.1658067 Bool : Type
+error: ././././LeanRV64DLEAN.lean:26445:22: application type mismatch
   foreach_M loop_j_lower loop_j_upper 1 ()
     (fun j x =>
       let skipped_elem :=
@@ -211,7 +212,7 @@ has type
   Bool : Type
 but is expected to have type
   SequentialState RegisterType trivialChoiceSource : Type
-error: ././././LeanRV64DLEAN.lean:27919:22: type mismatch
+error: ././././LeanRV64DLEAN.lean:26449:22: type mismatch
   foreach_M loop_j_lower loop_j_upper 1 () fun j x =>
     let skipped_elem :=
       Sail.BitVec.extractLsb (shiftr (vectorAccess vd_seg i) (j * load_width_bytes * 8)) (load_width_bytes * 8 - 1) 0;
@@ -221,257 +222,257 @@ has type
   PreSailM RegisterType trivialChoiceSource exception Unit : Type
 but is expected to have type
   Bool : Type
-error: ././././LeanRV64DLEAN.lean:27927:22: function expected at
+error: ././././LeanRV64DLEAN.lean:26457:22: function expected at
   pure ()
 term has type
-  ?m.2768044 Unit
-error: ././././LeanRV64DLEAN.lean:27901:42: application type mismatch
-  writeReg vl ?m.2759963 (pure (print_endline ("CSR vl <- " ++ BitVec.toFormatted __do_lift✝)))
+  ?m.1671078 Unit
+error: ././././LeanRV64DLEAN.lean:26431:42: application type mismatch
+  writeReg vl ?m.1662997 (pure (print_endline ("CSR vl <- " ++ BitVec.toFormatted __do_lift✝)))
 argument
   pure (print_endline ("CSR vl <- " ++ BitVec.toFormatted __do_lift✝))
 has type
-  ?m.2759966 Unit : Type ?u.2759964
+  ?m.1663000 Unit : Type ?u.1662998
 but is expected to have type
-  SequentialState ?m.2759948 ?m.2759951 : Type
-error: ././././LeanRV64DLEAN.lean:27954:23: application type mismatch
+  SequentialState ?m.1662982 ?m.1662985 : Type
+error: ././././LeanRV64DLEAN.lean:26484:23: application type mismatch
   foreach_ME (cont loop_j_lower)
 argument
   cont loop_j_lower
 has type
-  ER ?m.2769668 ?m.2769515 : Type
+  ER ?m.1672702 ?m.1672549 : Type
 but is expected to have type
   Nat : Type
-error: ././././LeanRV64DLEAN.lean:27965:29: function expected at
+error: ././././LeanRV64DLEAN.lean:26495:29: function expected at
   early_return (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.2770350
-error: ././././LeanRV64DLEAN.lean:27970:31: function expected at
+  ER (SailM Unit) ?m.1673384
+error: ././././LeanRV64DLEAN.lean:26500:31: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2770469
-error: ././././LeanRV64DLEAN.lean:27978:33: function expected at
+  ER (SailM Unit) ?m.1673503
+error: ././././LeanRV64DLEAN.lean:26508:33: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2770609
-error: ././././LeanRV64DLEAN.lean:27993:35: function expected at
+  ER (SailM Unit) ?m.1673643
+error: ././././LeanRV64DLEAN.lean:26523:35: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2771119
-error: ././././LeanRV64DLEAN.lean:27953:11: application type mismatch
+  ER (SailM Unit) ?m.1674153
+error: ././././LeanRV64DLEAN.lean:26483:11: application type mismatch
   pure x✝
 argument
   x✝
 has type
   Retired : Type
 but is expected to have type
-  ER ?m.2769218 Unit : Type
-error: ././././LeanRV64DLEAN.lean:27953:11: application type mismatch
+  ER ?m.1672252 Unit : Type
+error: ././././LeanRV64DLEAN.lean:26483:11: application type mismatch
   pure x✝
 argument
   x✝
 has type
   Unit : Type
 but is expected to have type
-  ER ?m.2769218 Unit : Type
-error: ././././LeanRV64DLEAN.lean:28024:23: application type mismatch
+  ER ?m.1672252 Unit : Type
+error: ././././LeanRV64DLEAN.lean:26554:23: application type mismatch
   foreach_ME (cont loop_j_lower)
 argument
   cont loop_j_lower
 has type
-  ER ?m.2773852 ?m.2773699 : Type
+  ER ?m.1676886 ?m.1676733 : Type
 but is expected to have type
   Nat : Type
-error: ././././LeanRV64DLEAN.lean:28035:29: function expected at
+error: ././././LeanRV64DLEAN.lean:26565:29: function expected at
   early_return (handle_mem_exception vaddr (E_Load_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.2774526
-error: ././././LeanRV64DLEAN.lean:28040:31: function expected at
+  ER (SailM Unit) ?m.1677560
+error: ././././LeanRV64DLEAN.lean:26570:31: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2774643
-error: ././././LeanRV64DLEAN.lean:28049:33: function expected at
+  ER (SailM Unit) ?m.1677677
+error: ././././LeanRV64DLEAN.lean:26579:33: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2775053
-error: ././././LeanRV64DLEAN.lean:28023:11: application type mismatch
+  ER (SailM Unit) ?m.1678087
+error: ././././LeanRV64DLEAN.lean:26553:11: application type mismatch
   pure x✝
 argument
   x✝
 has type
   Retired : Type
 but is expected to have type
-  ER ?m.2773405 Unit : Type
-error: ././././LeanRV64DLEAN.lean:28023:11: application type mismatch
+  ER ?m.1676439 Unit : Type
+error: ././././LeanRV64DLEAN.lean:26553:11: application type mismatch
   pure x✝
 argument
   x✝
 has type
   Unit : Type
 but is expected to have type
-  ER ?m.2773405 Unit : Type
-error: ././././LeanRV64DLEAN.lean:28055:27: invalid `do` notation, expected type is not a monad application
+  ER ?m.1676439 Unit : Type
+error: ././././LeanRV64DLEAN.lean:26585:27: invalid `do` notation, expected type is not a monad application
   Unit
 You can use the `do` notation in pure code by writing `Id.run do` instead of `do`, where `Id` is the identity monad.
-error: ././././LeanRV64DLEAN.lean:28088:23: application type mismatch
+error: ././././LeanRV64DLEAN.lean:26618:23: application type mismatch
   foreach_ME (cont loop_j_lower)
 argument
   cont loop_j_lower
 has type
-  ER ?m.2777444 ?m.2777291 : Type
+  ER ?m.1680478 ?m.1680325 : Type
 but is expected to have type
   Nat : Type
-error: ././././LeanRV64DLEAN.lean:28099:29: function expected at
+error: ././././LeanRV64DLEAN.lean:26629:29: function expected at
   early_return (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.2778118
-error: ././././LeanRV64DLEAN.lean:28104:31: function expected at
+  ER (SailM Unit) ?m.1681152
+error: ././././LeanRV64DLEAN.lean:26634:31: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2778237
-error: ././././LeanRV64DLEAN.lean:28112:33: function expected at
+  ER (SailM Unit) ?m.1681271
+error: ././././LeanRV64DLEAN.lean:26642:33: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2778377
-error: ././././LeanRV64DLEAN.lean:28127:35: function expected at
+  ER (SailM Unit) ?m.1681411
+error: ././././LeanRV64DLEAN.lean:26657:35: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2778887
-error: ././././LeanRV64DLEAN.lean:28087:11: application type mismatch
+  ER (SailM Unit) ?m.1681921
+error: ././././LeanRV64DLEAN.lean:26617:11: application type mismatch
   pure x✝
 argument
   x✝
 has type
   Retired : Type
 but is expected to have type
-  ER ?m.2776994 Unit : Type
-error: ././././LeanRV64DLEAN.lean:28087:11: application type mismatch
+  ER ?m.1680028 Unit : Type
+error: ././././LeanRV64DLEAN.lean:26617:11: application type mismatch
   pure x✝
 argument
   x✝
 has type
   Unit : Type
 but is expected to have type
-  ER ?m.2776994 Unit : Type
-error: ././././LeanRV64DLEAN.lean:28160:23: application type mismatch
+  ER ?m.1680028 Unit : Type
+error: ././././LeanRV64DLEAN.lean:26690:23: application type mismatch
   foreach_ME (cont loop_j_lower)
 argument
   cont loop_j_lower
 has type
-  ER ?m.2781463 ?m.2781310 : Type
+  ER ?m.1684497 ?m.1684344 : Type
 but is expected to have type
   Nat : Type
-error: ././././LeanRV64DLEAN.lean:28172:29: function expected at
+error: ././././LeanRV64DLEAN.lean:26702:29: function expected at
   early_return (handle_mem_exception vaddr (E_Load_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.2782350
-error: ././././LeanRV64DLEAN.lean:28177:31: function expected at
+  ER (SailM Unit) ?m.1685384
+error: ././././LeanRV64DLEAN.lean:26707:31: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2782467
-error: ././././LeanRV64DLEAN.lean:28186:33: function expected at
+  ER (SailM Unit) ?m.1685501
+error: ././././LeanRV64DLEAN.lean:26716:33: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2782847
-error: ././././LeanRV64DLEAN.lean:28159:11: application type mismatch
+  ER (SailM Unit) ?m.1685881
+error: ././././LeanRV64DLEAN.lean:26689:11: application type mismatch
   pure x✝
 argument
   x✝
 has type
   Retired : Type
 but is expected to have type
-  ER ?m.2781016 Unit : Type
-error: ././././LeanRV64DLEAN.lean:28159:11: application type mismatch
+  ER ?m.1684050 Unit : Type
+error: ././././LeanRV64DLEAN.lean:26689:11: application type mismatch
   pure x✝
 argument
   x✝
 has type
   Unit : Type
 but is expected to have type
-  ER ?m.2781016 Unit : Type
-error: ././././LeanRV64DLEAN.lean:28192:27: invalid `do` notation, expected type is not a monad application
+  ER ?m.1684050 Unit : Type
+error: ././././LeanRV64DLEAN.lean:26722:27: invalid `do` notation, expected type is not a monad application
   Unit
 You can use the `do` notation in pure code by writing `Id.run do` instead of `do`, where `Id` is the identity monad.
-error: ././././LeanRV64DLEAN.lean:28227:23: application type mismatch
+error: ././././LeanRV64DLEAN.lean:26757:23: application type mismatch
   foreach_ME (cont loop_j_lower)
 argument
   cont loop_j_lower
 has type
-  ER ?m.2785215 ?m.2785062 : Type
+  ER ?m.1688249 ?m.1688096 : Type
 but is expected to have type
   Nat : Type
-error: ././././LeanRV64DLEAN.lean:28239:29: function expected at
+error: ././././LeanRV64DLEAN.lean:26769:29: function expected at
   early_return (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.2786104
-error: ././././LeanRV64DLEAN.lean:28244:31: function expected at
+  ER (SailM Unit) ?m.1689138
+error: ././././LeanRV64DLEAN.lean:26774:31: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2786223
-error: ././././LeanRV64DLEAN.lean:28252:33: function expected at
+  ER (SailM Unit) ?m.1689257
+error: ././././LeanRV64DLEAN.lean:26782:33: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2786363
-error: ././././LeanRV64DLEAN.lean:28267:35: function expected at
+  ER (SailM Unit) ?m.1689397
+error: ././././LeanRV64DLEAN.lean:26797:35: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2786843
-error: ././././LeanRV64DLEAN.lean:28226:11: application type mismatch
+  ER (SailM Unit) ?m.1689877
+error: ././././LeanRV64DLEAN.lean:26756:11: application type mismatch
   pure x✝
 argument
   x✝
 has type
   Retired : Type
 but is expected to have type
-  ER ?m.2784765 Unit : Type
-error: ././././LeanRV64DLEAN.lean:28226:11: application type mismatch
+  ER ?m.1687799 Unit : Type
+error: ././././LeanRV64DLEAN.lean:26756:11: application type mismatch
   pure x✝
 argument
   x✝
 has type
   Unit : Type
 but is expected to have type
-  ER ?m.2784765 Unit : Type
-error: ././././LeanRV64DLEAN.lean:28302:34: function expected at
+  ER ?m.1687799 Unit : Type
+error: ././././LeanRV64DLEAN.lean:26832:34: function expected at
   early_return (handle_mem_exception vaddr (E_Load_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.2789144
-error: ././././LeanRV64DLEAN.lean:28307:36: function expected at
+  ER (SailM Unit) ?m.1692178
+error: ././././LeanRV64DLEAN.lean:26837:36: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2789300
-error: ././././LeanRV64DLEAN.lean:28314:31: type mismatch, result value has type
+  ER (SailM Unit) ?m.1692334
+error: ././././LeanRV64DLEAN.lean:26844:31: type mismatch, result value has type
   Unit : Type
 but is expected to have type
-  ER Retired ?m.2788986 : Type
-error: ././././LeanRV64DLEAN.lean:28317:38: function expected at
+  ER Retired ?m.1692020 : Type
+error: ././././LeanRV64DLEAN.lean:26847:38: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2789769
-error: ././././LeanRV64DLEAN.lean:28333:25: application type mismatch
+  ER (SailM Unit) ?m.1692803
+error: ././././LeanRV64DLEAN.lean:26863:25: application type mismatch
   foreach_ME (cont loop_i_lower)
 argument
   cont loop_i_lower
 has type
-  ER ?m.2791013 ?m.2790863 : Type
+  ER ?m.1694047 ?m.1693897 : Type
 but is expected to have type
   Nat : Type
-error: ././././LeanRV64DLEAN.lean:28345:31: function expected at
+error: ././././LeanRV64DLEAN.lean:26875:31: function expected at
   early_return (handle_mem_exception vaddr (E_Load_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.2791833
-error: ././././LeanRV64DLEAN.lean:28350:33: function expected at
+  ER (SailM Unit) ?m.1694867
+error: ././././LeanRV64DLEAN.lean:26880:33: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2791994
-error: ././././LeanRV64DLEAN.lean:28356:28: type mismatch, result value has type
+  ER (SailM Unit) ?m.1695028
+error: ././././LeanRV64DLEAN.lean:26886:28: type mismatch, result value has type
   Unit : Type
 but is expected to have type
-  ER Retired ?m.2791687 : Type
-error: ././././LeanRV64DLEAN.lean:28358:35: function expected at
+  ER Retired ?m.1694721 : Type
+error: ././././LeanRV64DLEAN.lean:26888:35: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2792512
-error: ././././LeanRV64DLEAN.lean:28332:13: application type mismatch
+  ER (SailM Unit) ?m.1695546
+error: ././././LeanRV64DLEAN.lean:26862:13: application type mismatch
   pure x✝
 argument
   x✝
@@ -479,55 +480,55 @@ has type
   Int : Type
 but is expected to have type
   ER Retired Int : Type
-error: ././././LeanRV64DLEAN.lean:28393:34: function expected at
+error: ././././LeanRV64DLEAN.lean:26923:34: function expected at
   early_return (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.2794853
-error: ././././LeanRV64DLEAN.lean:28398:36: function expected at
+  ER (SailM Unit) ?m.1697887
+error: ././././LeanRV64DLEAN.lean:26928:36: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2795009
-error: ././././LeanRV64DLEAN.lean:28406:38: function expected at
+  ER (SailM Unit) ?m.1698043
+error: ././././LeanRV64DLEAN.lean:26936:38: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2795186
-error: ././././LeanRV64DLEAN.lean:28416:45: type mismatch, result value has type
+  ER (SailM Unit) ?m.1698220
+error: ././././LeanRV64DLEAN.lean:26946:45: type mismatch, result value has type
   Unit : Type
 but is expected to have type
-  ER Retired ?m.2794695 : Type
-error: ././././LeanRV64DLEAN.lean:28421:40: function expected at
+  ER Retired ?m.1697729 : Type
+error: ././././LeanRV64DLEAN.lean:26951:40: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2795785
-error: ././././LeanRV64DLEAN.lean:28439:25: application type mismatch
+  ER (SailM Unit) ?m.1698819
+error: ././././LeanRV64DLEAN.lean:26969:25: application type mismatch
   foreach_ME (cont loop_i_lower)
 argument
   cont loop_i_lower
 has type
-  ER ?m.2797133 ?m.2796990 : Type
+  ER ?m.1700167 ?m.1700024 : Type
 but is expected to have type
   Nat : Type
-error: ././././LeanRV64DLEAN.lean:28451:31: function expected at
+error: ././././LeanRV64DLEAN.lean:26981:31: function expected at
   early_return (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.2797859
-error: ././././LeanRV64DLEAN.lean:28456:33: function expected at
+  ER (SailM Unit) ?m.1700893
+error: ././././LeanRV64DLEAN.lean:26986:33: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2798016
-error: ././././LeanRV64DLEAN.lean:28464:35: function expected at
+  ER (SailM Unit) ?m.1701050
+error: ././././LeanRV64DLEAN.lean:26994:35: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2798198
-error: ././././LeanRV64DLEAN.lean:28472:42: type mismatch, result value has type
+  ER (SailM Unit) ?m.1701232
+error: ././././LeanRV64DLEAN.lean:27002:42: type mismatch, result value has type
   Unit : Type
 but is expected to have type
-  ER Retired ?m.2797717 : Type
-error: ././././LeanRV64DLEAN.lean:28477:37: function expected at
+  ER Retired ?m.1700751 : Type
+error: ././././LeanRV64DLEAN.lean:27007:37: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2798742
-error: ././././LeanRV64DLEAN.lean:28438:13: application type mismatch
+  ER (SailM Unit) ?m.1701776
+error: ././././LeanRV64DLEAN.lean:26968:13: application type mismatch
   pure x✝
 argument
   x✝
@@ -535,7 +536,7 @@ has type
   Int : Type
 but is expected to have type
   ER Retired Int : Type
-error: ././././LeanRV64DLEAN.lean:28469:84: application type mismatch
+error: ././././LeanRV64DLEAN.lean:26999:84: application type mismatch
   vectorAccess vs3_val
 argument
   vs3_val
@@ -543,37 +544,37 @@ has type
   Vector (BitVec (load_width_bytes * 8)) elem_per_reg : Type
 but is expected to have type
   Vector (BitVec (8 * load_width_bytes))
-    (?m.2800483 start_element __discr✝ cur_elem✝¹ cur_field j cur_elem✝ vs3_val i cur_elem x✝¹ __do_lift✝¹ vaddr
+    (?m.1703517 start_element __discr✝ cur_elem✝¹ cur_field j cur_elem✝ vs3_val i cur_elem x✝¹ __do_lift✝¹ vaddr
       __do_lift✝ paddr snd✝ eares x✝) : Type
-error: ././././LeanRV64DLEAN.lean:28531:30: function expected at
+error: ././././LeanRV64DLEAN.lean:27061:30: function expected at
   early_return (handle_mem_exception vaddr (E_Load_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.2802443
-error: ././././LeanRV64DLEAN.lean:28536:32: function expected at
+  ER (SailM Unit) ?m.1705477
+error: ././././LeanRV64DLEAN.lean:27066:32: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2802555
-error: ././././LeanRV64DLEAN.lean:28544:34: function expected at
+  ER (SailM Unit) ?m.1705589
+error: ././././LeanRV64DLEAN.lean:27074:34: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2802763
-error: ././././LeanRV64DLEAN.lean:28555:35: function expected at
+  ER (SailM Unit) ?m.1705797
+error: ././././LeanRV64DLEAN.lean:27085:35: function expected at
   early_return (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
 term has type
-  ER (SailM Unit) ?m.2803392
-error: ././././LeanRV64DLEAN.lean:28560:37: function expected at
+  ER (SailM Unit) ?m.1706426
+error: ././././LeanRV64DLEAN.lean:27090:37: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2803504
-error: ././././LeanRV64DLEAN.lean:28568:39: function expected at
+  ER (SailM Unit) ?m.1706538
+error: ././././LeanRV64DLEAN.lean:27098:39: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2803640
-error: ././././LeanRV64DLEAN.lean:28581:41: function expected at
+  ER (SailM Unit) ?m.1706674
+error: ././././LeanRV64DLEAN.lean:27111:41: function expected at
   early_return (handle_mem_exception vaddr e)
 term has type
-  ER (SailM Unit) ?m.2803972
-error: ././././LeanRV64DLEAN.lean:28586:20: application type mismatch
+  ER (SailM Unit) ?m.1707006
+error: ././././LeanRV64DLEAN.lean:27116:20: application type mismatch
   ite ((op == VLM) = true) (write_single_element 8 (↑i) vd_or_vs3 (vectorAccess vd_or_vs3_val i))
 argument
   write_single_element 8 (↑i) vd_or_vs3 (vectorAccess vd_or_vs3_val i)
@@ -581,52 +582,52 @@ has type
   SailM Unit : Type
 but is expected to have type
   Unit : Type
-error: ././././LeanRV64DLEAN.lean:29875:31: unknown identifier 'plat_cache_block_size_exp'
-error: ././././LeanRV64DLEAN.lean:65052:123: unexpected token 'if'; expected ')', ',' or ':'
-error: ././././LeanRV64DLEAN.lean:65293:47: unexpected token '←'; expected ':=' or '|'
-error: ././././LeanRV64DLEAN.lean:65637:29: function expected at
+error: ././././LeanRV64DLEAN.lean:28405:31: unknown identifier 'plat_cache_block_size_exp'
+error: ././././LeanRV64DLEAN.lean:63582:123: unexpected token 'if'; expected ')', ',' or ':'
+error: ././././LeanRV64DLEAN.lean:63823:47: unexpected token '←'; expected ':=' or '|'
+error: ././././LeanRV64DLEAN.lean:64167:29: function expected at
   early_return (handle_illegal_vtype ())
 term has type
-  ER (SailM Unit) ?m.3795592
-error: ././././LeanRV64DLEAN.lean:65674:29: function expected at
+  ER (SailM Unit) ?m.2698622
+error: ././././LeanRV64DLEAN.lean:64204:29: function expected at
   early_return (handle_illegal_vtype ())
 term has type
-  ER (SailM Unit) ?m.3802494
-error: ././././LeanRV64DLEAN.lean:65720:28: application type mismatch
+  ER (SailM Unit) ?m.2705524
+error: ././././LeanRV64DLEAN.lean:64250:28: application type mismatch
   vectorAccess vs2_val
 argument
   vs2_val
 has type
   Vector (BitVec SEW.toNat) num_elem.toNat : Type
 but is expected to have type
-  Vector (BitVec (2 ^ 3 * 8)) (?m.3819314 SEW num_elem __do_lift✝ x✝ vs2_val) : Type
-error: ././././LeanRV64DLEAN.lean:66104:125: unexpected token 'if'; expected ')', ',' or ':'
-error: ././././LeanRV64DLEAN.lean:66379:42: unexpected token '('; expected ':=', '_', 'rec' or identifier
-error: ././././LeanRV64DLEAN.lean:66469:36: type mismatch, result value has type
+  Vector (BitVec (2 ^ 3 * 8)) (?m.2722344 SEW num_elem __do_lift✝ x✝ vs2_val) : Type
+error: ././././LeanRV64DLEAN.lean:64634:125: unexpected token 'if'; expected ')', ',' or ':'
+error: ././././LeanRV64DLEAN.lean:64909:42: unexpected token '('; expected ':=', '_', 'rec' or identifier
+error: ././././LeanRV64DLEAN.lean:64999:36: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:66470:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65000:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:66477:36: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65007:36: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:66478:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65008:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:66485:36: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65015:36: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:66486:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65016:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:66489:70: application type mismatch
+error: ././././LeanRV64DLEAN.lean:65019:70: application type mismatch
   vectorAccess vs2_val
 argument
   vs2_val
@@ -634,57 +635,57 @@ has type
   Vector (BitVec SEW.toNat) num_elem.toNat : Type
 but is expected to have type
   Vector (BitVec 16)
-    (?m.3888972 rm_3b SEW LMUL_pow num_elem __do_lift✝ x✝ vm_val vs2_val vd_val __discr✝ initial_result mask i
+    (?m.2792002 rm_3b SEW LMUL_pow num_elem __do_lift✝ x✝ vm_val vs2_val vd_val __discr✝ initial_result mask i
       result) : Type
-error: ././././LeanRV64DLEAN.lean:66524:36: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65054:36: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:66525:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65055:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:66532:36: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65062:36: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:66533:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65063:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:66542:36: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65072:36: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:66543:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65073:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:66551:36: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65081:36: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:66552:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65082:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:66559:36: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65089:36: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:66560:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65090:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:66567:36: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65097:36: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:66568:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65098:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:66568:86: application type mismatch
+error: ././././LeanRV64DLEAN.lean:65098:86: application type mismatch
   vectorAccess vs2_val
 argument
   vs2_val
@@ -692,10 +693,10 @@ has type
   Vector (BitVec SEW.toNat) num_elem.toNat : Type
 but is expected to have type
   Vector (BitVec 64)
-    (?m.3904148 rm_3b SEW LMUL_pow num_elem __do_lift✝ x✝¹ vm_val vs2_val vd_val __discr✝ initial_result mask i result
+    (?m.2807178 rm_3b SEW LMUL_pow num_elem __do_lift✝ x✝¹ vm_val vs2_val vd_val __discr✝ initial_result mask i result
       x✝) : Type
-error: ././././LeanRV64DLEAN.lean:66607:42: unexpected token '('; expected ':=', '_', 'rec' or identifier
-error: ././././LeanRV64DLEAN.lean:66604:25: don't know how to synthesize placeholder
+error: ././././LeanRV64DLEAN.lean:65137:42: unexpected token '('; expected ':=', '_', 'rec' or identifier
+error: ././././LeanRV64DLEAN.lean:65134:25: don't know how to synthesize placeholder
 context:
 case m
 vm : BitVec 1
@@ -722,7 +723,7 @@ loop_i_upper : Int := num_elem - 1
 i : Nat
 result : Vector (BitVec SEW.toNat) num_elem.toNat
 ⊢ Type
-error: ././././LeanRV64DLEAN.lean:66603:18: don't know how to synthesize placeholder for argument 'α'
+error: ././././LeanRV64DLEAN.lean:65133:18: don't know how to synthesize placeholder for argument 'α'
 context:
 vm : BitVec 1
 vs2 : BitVec 5
@@ -748,31 +749,31 @@ loop_i_upper : Int := num_elem - 1
 i : Nat
 result : Vector (BitVec SEW.toNat) num_elem.toNat
 ⊢ Type
-error: ././././LeanRV64DLEAN.lean:66740:37: application type mismatch
+error: ././././LeanRV64DLEAN.lean:65270:37: application type mismatch
   vectorAccess vs2_val
 argument
   vs2_val
 has type
   Vector (BitVec SEW.toNat) num_elem.toNat : Type
 but is expected to have type
-  Vector (BitVec 64) (?m.3914941 rm_3b SEW num_elem __do_lift✝ x✝¹ vs2_val x✝) : Type
-error: ././././LeanRV64DLEAN.lean:67033:24: application type mismatch
+  Vector (BitVec 64) (?m.2817971 rm_3b SEW num_elem __do_lift✝ x✝¹ vs2_val x✝) : Type
+error: ././././LeanRV64DLEAN.lean:65563:24: application type mismatch
   not (match_reservation (physaddr_bits addr))
 argument
   match_reservation (physaddr_bits addr)
 has type
-  PreSailM ?m.3932476 ?m.3932479 ?m.3932480 Bool : Type
+  PreSailM ?m.2835506 ?m.2835509 ?m.2835510 Bool : Type
 but is expected to have type
   Bool : Type
-error: ././././LeanRV64DLEAN.lean:67053:25: type mismatch
+error: ././././LeanRV64DLEAN.lean:65583:25: type mismatch
   cancel_reservation ()
 has type
-  PreSailM ?m.3935314 ?m.3935317 ?m.3935318 Bool : Type
+  PreSailM ?m.2838344 ?m.2838347 ?m.2838348 Bool : Type
 but is expected to have type
   SailM PUnit : Type
-error: ././././LeanRV64DLEAN.lean:67442:36: unknown identifier 'plat_cache_block_size_exp'
-error: ././././LeanRV64DLEAN.lean:68715:47: unexpected token '←'; expected ':=' or '|'
-error: ././././LeanRV64DLEAN.lean:68709:25: don't know how to synthesize placeholder
+error: ././././LeanRV64DLEAN.lean:65972:36: unknown identifier 'plat_cache_block_size_exp'
+error: ././././LeanRV64DLEAN.lean:67245:47: unexpected token '←'; expected ':=' or '|'
+error: ././././LeanRV64DLEAN.lean:67239:25: don't know how to synthesize placeholder
 context:
 case m
 funct6 : mvxfunct6
@@ -793,7 +794,7 @@ loop_i_upper : Int := num_elem - 1
 i : Nat
 result : Vector (BitVec SEW.toNat) num_elem.toNat
 ⊢ Type
-error: ././././LeanRV64DLEAN.lean:68708:18: don't know how to synthesize placeholder for argument 'α'
+error: ././././LeanRV64DLEAN.lean:67238:18: don't know how to synthesize placeholder for argument 'α'
 context:
 funct6 : mvxfunct6
 vm : BitVec 1
@@ -813,7 +814,7 @@ loop_i_upper : Int := num_elem - 1
 i : Nat
 result : Vector (BitVec SEW.toNat) num_elem.toNat
 ⊢ Type
-error: ././././LeanRV64DLEAN.lean:70456:82: application type mismatch
+error: ././././LeanRV64DLEAN.lean:68986:82: application type mismatch
   vectorAccess vd_val
 argument
   vd_val
@@ -821,9 +822,9 @@ has type
   Vector (BitVec SEW_widen.toNat) num_elem.toNat : Type
 but is expected to have type
   Vector (BitVec (SEW.toNat * 2))
-    (?m.4153884 rm_3b SEW LMUL_pow num_elem __do_lift✝² x✝ vm_val vd_val vs1_val vs2_val __discr✝ initial_result mask i
+    (?m.3056914 rm_3b SEW LMUL_pow num_elem __do_lift✝² x✝ vm_val vd_val vs1_val vs2_val __discr✝ initial_result mask i
       result __do_lift✝¹ __do_lift✝) : Type
-error: ././././LeanRV64DLEAN.lean:70591:82: application type mismatch
+error: ././././LeanRV64DLEAN.lean:69121:82: application type mismatch
   vectorAccess vd_val
 argument
   vd_val
@@ -831,10 +832,10 @@ has type
   Vector (BitVec SEW_widen.toNat) num_elem.toNat : Type
 but is expected to have type
   Vector (BitVec (m.toNat * 2))
-    (?m.4170814 rm_3b SEW LMUL_pow num_elem __do_lift✝² x✝ vm_val vd_val rs1_val vs2_val __discr✝ initial_result mask i
+    (?m.3073844 rm_3b SEW LMUL_pow num_elem __do_lift✝² x✝ vm_val vd_val rs1_val vs2_val __discr✝ initial_result mask i
       result __do_lift✝¹ __do_lift✝) : Type
-error: ././././LeanRV64DLEAN.lean:70842:52: unexpected token '←'; expected ':=' or '|'
-error: ././././LeanRV64DLEAN.lean:70806:25: don't know how to synthesize placeholder
+error: ././././LeanRV64DLEAN.lean:69372:52: unexpected token '←'; expected ':=' or '|'
+error: ././././LeanRV64DLEAN.lean:69336:25: don't know how to synthesize placeholder
 context:
 case m
 funct6 : fvffunct6
@@ -857,7 +858,7 @@ loop_i_upper : Int := num_elem - 1
 i : Nat
 result : Vector (BitVec SEW.toNat) num_elem.toNat
 ⊢ Type
-error: ././././LeanRV64DLEAN.lean:70805:18: don't know how to synthesize placeholder for argument 'α'
+error: ././././LeanRV64DLEAN.lean:69335:18: don't know how to synthesize placeholder for argument 'α'
 context:
 funct6 : fvffunct6
 vm : BitVec 1
@@ -879,64 +880,64 @@ loop_i_upper : Int := num_elem - 1
 i : Nat
 result : Vector (BitVec SEW.toNat) num_elem.toNat
 ⊢ Type
-error: ././././LeanRV64DLEAN.lean:75652:11: unexpected token 'while'; expected ')' or term
-error: ././././LeanRV64DLEAN.lean:75651:6: don't know how to synthesize placeholder
+error: ././././LeanRV64DLEAN.lean:74182:11: unexpected token 'while'; expected ')' or term
+error: ././././LeanRV64DLEAN.lean:74181:6: don't know how to synthesize placeholder
 context:
 x✝ : Unit
 insns_per_tick : Int := plat_insns_per_tick ()
 i✝ : Int := 0
 step_no✝ : Int := 0
-__discr✝ : ?m.5102895 x✝ × ?m.5102896 x✝ × ?m.5102897 x✝
-u__3 : ?m.5102895 x✝
-i : ?m.5102896 x✝
-step_no : ?m.5102897 x✝
+__discr✝ : ?m.4005925 x✝ × ?m.4005926 x✝ × ?m.4005927 x✝
+u__3 : ?m.4005925 x✝
+i : ?m.4005926 x✝
+step_no : ?m.4005927 x✝
 ⊢ Type
-error: ././././LeanRV64DLEAN.lean:75651:6: don't know how to synthesize placeholder
+error: ././././LeanRV64DLEAN.lean:74181:6: don't know how to synthesize placeholder
 context:
 x✝ : Unit
 insns_per_tick : Int := plat_insns_per_tick ()
 i✝ : Int := 0
 step_no✝ : Int := 0
-__discr✝ : ?m.5102895 x✝ × ?m.5102896 x✝ × ?m.5102897 x✝
-u__3 : ?m.5102895 x✝
-i : ?m.5102896 x✝
-step_no : ?m.5102897 x✝
+__discr✝ : ?m.4005925 x✝ × ?m.4005926 x✝ × ?m.4005927 x✝
+u__3 : ?m.4005925 x✝
+i : ?m.4005926 x✝
+step_no : ?m.4005927 x✝
 ⊢ Type
-error: ././././LeanRV64DLEAN.lean:75651:6: don't know how to synthesize placeholder
+error: ././././LeanRV64DLEAN.lean:74181:6: don't know how to synthesize placeholder
 context:
 x✝ : Unit
 insns_per_tick : Int := plat_insns_per_tick ()
 i✝ : Int := 0
 step_no✝ : Int := 0
-__discr✝ : ?m.5102895 x✝ × ?m.5102896 x✝ × ?m.5102897 x✝
-u__3 : ?m.5102895 x✝
-i : ?m.5102896 x✝
-step_no : ?m.5102897 x✝
+__discr✝ : ?m.4005925 x✝ × ?m.4005926 x✝ × ?m.4005927 x✝
+u__3 : ?m.4005925 x✝
+i : ?m.4005926 x✝
+step_no : ?m.4005927 x✝
 ⊢ Type
-error: ././././LeanRV64DLEAN.lean:75651:6: don't know how to synthesize placeholder
+error: ././././LeanRV64DLEAN.lean:74181:6: don't know how to synthesize placeholder
 context:
 x✝ : Unit
 insns_per_tick : Int := plat_insns_per_tick ()
 i✝ : Int := 0
 step_no✝ : Int := 0
-__discr✝ : ?m.5102895 x✝ × ?m.5102896 x✝ × ?m.5102897 x✝
-u__3 : ?m.5102895 x✝
-i : ?m.5102896 x✝
-step_no : ?m.5102897 x✝
+__discr✝ : ?m.4005925 x✝ × ?m.4005926 x✝ × ?m.4005927 x✝
+u__3 : ?m.4005925 x✝
+i : ?m.4005926 x✝
+step_no : ?m.4005927 x✝
 ⊢ Type
-error: ././././LeanRV64DLEAN.lean:75652:4: don't know how to synthesize placeholder for argument 'α'
+error: ././././LeanRV64DLEAN.lean:74182:4: don't know how to synthesize placeholder for argument 'α'
 context:
 x✝ : Unit
 insns_per_tick : Int := plat_insns_per_tick ()
 i : Int := 0
 step_no : Int := 0
 ⊢ Type
-error: ././././LeanRV64DLEAN.lean:75695:2: application type mismatch
+error: ././././LeanRV64DLEAN.lean:74225:4: application type mismatch
   init_model () (cycle_count ())
 argument
   cycle_count ()
 has type
-  PreSailM ?m.5105094 ?m.5105097 ?m.5105098 Unit : Type
+  PreSailM ?m.4008124 ?m.4008127 ?m.4008128 Unit : Type
 but is expected to have type
   SequentialState RegisterType trivialChoiceSource : Type
 error: Lean exited with code 1
