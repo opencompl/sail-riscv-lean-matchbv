@@ -16,7 +16,7 @@ Abbreviations: 0
 # Warnings and Errors
 
 Errors found: 162  
-Warnings found: 1  
+Warnings found: 0  
 
 ## Error Classes
 
