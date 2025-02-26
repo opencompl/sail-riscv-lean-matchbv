@@ -8,14 +8,14 @@ is still work-in-progress. As a result, our semantics are still full of warnings
 and errors. Similarly, our output is not yet polished for readability.
 # RISC-V Lean Statistics
 
-Lines: 74388  
-Definitions: 3205  
+Lines: 74380  
+Definitions: 3204  
 Inductive definitions: 0  
 Abbreviations: 0  
 
 # Warnings and Errors
 
-Errors found: 162  
+Errors found: 153  
 Warnings found: 0  
 
 ## Error Classes
@@ -23,7 +23,6 @@ Warnings found: 0
 - 52x function expected at
 - 39x type mismatch, result value has type
 - 37x application type mismatch
-- 9x unsolved goals
 - 7x don't know how to synthesize placeholder
 - 4x don't know how to synthesize placeholder for argument 'α'
 - 3x unexpected token '←'; expected ':=' or '|'

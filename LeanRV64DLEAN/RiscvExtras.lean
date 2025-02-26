@@ -8,6 +8,7 @@ def print (_ : String) : Unit := ()
 def print_endline (_ : String) : Unit := ()
 def print_bits (_ : String) (_ : BitVec n) : Unit := ()
 def print_string (_ : String) (_ : String) : Unit := ()
+def print_int (_ : String) (_ : Int) : Unit := ()
 def prerr_endline (_: String) : Unit := ()
 def prerr_string (_: String) : Unit := ()
 def putchar {T} (_: T ) : Unit := ()
@@ -144,11 +145,17 @@ axiom extern_f64roundToInt : BitVec 3 → BitVec 64 → Bool → Unit
 
 -- Termination of extensionEnabled
 
+
 instance : SizeOf extension where
   sizeOf x :=
     match x with
     | .Ext_Zihpm => 0
+    | .Ext_B => 0
     | .Ext_C => 0
-    | _ => 1
+    | .Ext_D => 0
+    | .Ext_F => 0
+    | .Ext_Zfh => 0
+    | .Ext_Zca => 1
+    | _ => 2
 
 macro_rules | `(tactic| decreasing_trivial) => `(tactic| simp [sizeOf])
