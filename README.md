@@ -15,7 +15,7 @@ Abbreviations: 0
 
 # Warnings and Errors
 
-Errors found: 179  
+Errors found: 173  
 Warnings found: 0  
 
 ## Error Classes
@@ -23,7 +23,7 @@ Warnings found: 0
 - 52x function expected at
 - 39x type mismatch, result value has type
 - 37x application type mismatch
-- 25x failed to synthesize
+- 19x failed to synthesize
 - 7x don't know how to synthesize placeholder
 - 4x don't know how to synthesize placeholder for argument 'α'
 - 3x unexpected token '←'; expected ':=' or '|'
