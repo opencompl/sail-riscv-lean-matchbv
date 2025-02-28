@@ -15,10 +15,14 @@ Abbreviations: 0
 
 # Warnings and Errors
 
-Errors found: 7  
+Errors found: 106  
 Warnings found: 0  
 
 ## Error Classes
 
-- 6x function expected at
+- 56x type mismatch, result value has type
+- 27x failed to synthesize
+- 20x application type mismatch
+- 1x type mismatch
+- 1x fail to show termination for
 - 1x Lean exited with code 1
