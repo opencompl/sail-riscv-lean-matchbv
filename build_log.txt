@@ -1,11 +1,11 @@
 ✔ [2/8] Built LeanRV64DLEAN.Sail.BitVec
 ✔ [3/8] Built LeanRV64DLEAN.Sail.Sail
 ✔ [4/8] Built LeanRV64DLEAN.Defs
-✔ [5/8] Built LeanRV64DLEAN.RiscvExtras
-✔ [6/8] Built LeanRV64DLEAN.Specialization
+✔ [5/8] Built LeanRV64DLEAN.Specialization
+✔ [6/8] Built LeanRV64DLEAN.RiscvExtras
 ✖ [7/8] Building LeanRV64DLEAN
 trace: .> LEAN_PATH=././.lake/build/lib LD_LIBRARY_PATH= /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-02-05/bin/lean --tstack=400000 ././././LeanRV64DLEAN.lean -R ./././. -o ././.lake/build/lib/LeanRV64DLEAN.olean -i ././.lake/build/lib/LeanRV64DLEAN.ilean -c ././.lake/build/ir/LeanRV64DLEAN.c --json
-error: ././././LeanRV64DLEAN.lean:19204:4: fail to show termination for
+error: ././././LeanRV64DLEAN.lean:19251:4: fail to show termination for
   Functions.pt_walk
 with errors
 failed to infer structural recursion:
@@ -37,87 +37,89 @@ Could not find a decreasing measure.
 The basic measures relate at each recursive call as follows:
 (<, ≤, =: relation proved, ? all proofs failed, _: no proof attempted)
                #1 level #2
-1) 19230:20-91  ?     ?  ≤
+1) 19277:20-91  ?     ?  ≤
 
 #1: pt_base
 #2: global
 
 Please use `termination_by` to specify a decreasing measure.
-error: ././././LeanRV64DLEAN.lean:21029:7: type mismatch
-  x✝
-has type
+error: ././././LeanRV64DLEAN.lean:22322:12: type mismatch, result value has type
+  BitVec 5 × BitVec 32 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:22323:11: type mismatch, result value has type
+  BitVec 5 × BitVec 64 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:22332:12: type mismatch, result value has type
+  BitVec 5 × BitVec 32 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:22333:11: type mismatch, result value has type
+  BitVec 5 × BitVec 64 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:22448:12: type mismatch, result value has type
+  BitVec 5 × BitVec 32 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:22449:11: type mismatch, result value has type
+  BitVec 5 × BitVec 64 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:22458:12: type mismatch, result value has type
+  BitVec 5 × BitVec 32 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:22459:11: type mismatch, result value has type
+  BitVec 5 × BitVec 64 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:22468:12: type mismatch, result value has type
+  BitVec 5 × BitVec 32 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:22469:11: type mismatch, result value has type
+  BitVec 5 × BitVec 64 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:22479:12: type mismatch, result value has type
+  BitVec 5 × BitVec 32 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:22480:11: type mismatch, result value has type
+  BitVec 5 × BitVec 64 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:22490:12: type mismatch, result value has type
+  BitVec 5 × BitVec 32 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:22491:11: type mismatch, result value has type
+  BitVec 5 × BitVec 64 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:22502:12: type mismatch, result value has type
+  BitVec 5 × BitVec 32 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:22503:11: type mismatch, result value has type
+  BitVec 5 × BitVec 64 : Type
+but is expected to have type
+  BitVec 5 × BitVec 16 : Type
+error: ././././LeanRV64DLEAN.lean:22539:11: type mismatch, result value has type
+  BitVec 5 × BitVec 64 : Type
+but is expected to have type
+  BitVec 5 × BitVec 32 : Type
+error: ././././LeanRV64DLEAN.lean:26522:18: type mismatch, result value has type
   Unit : Type
 but is expected to have type
-  SailM ?m.1490769 : Type
-error: ././././LeanRV64DLEAN.lean:22250:12: type mismatch, result value has type
-  BitVec 5 × BitVec 32 : Type
+  Bool : Type
+error: ././././LeanRV64DLEAN.lean:26523:18: type mismatch, result value has type
+  Unit : Type
 but is expected to have type
-  BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:22251:11: type mismatch, result value has type
-  BitVec 5 × BitVec 64 : Type
-but is expected to have type
-  BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:22260:12: type mismatch, result value has type
-  BitVec 5 × BitVec 32 : Type
-but is expected to have type
-  BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:22261:11: type mismatch, result value has type
-  BitVec 5 × BitVec 64 : Type
-but is expected to have type
-  BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:22376:12: type mismatch, result value has type
-  BitVec 5 × BitVec 32 : Type
-but is expected to have type
-  BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:22377:11: type mismatch, result value has type
-  BitVec 5 × BitVec 64 : Type
-but is expected to have type
-  BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:22386:12: type mismatch, result value has type
-  BitVec 5 × BitVec 32 : Type
-but is expected to have type
-  BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:22387:11: type mismatch, result value has type
-  BitVec 5 × BitVec 64 : Type
-but is expected to have type
-  BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:22396:12: type mismatch, result value has type
-  BitVec 5 × BitVec 32 : Type
-but is expected to have type
-  BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:22397:11: type mismatch, result value has type
-  BitVec 5 × BitVec 64 : Type
-but is expected to have type
-  BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:22407:12: type mismatch, result value has type
-  BitVec 5 × BitVec 32 : Type
-but is expected to have type
-  BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:22408:11: type mismatch, result value has type
-  BitVec 5 × BitVec 64 : Type
-but is expected to have type
-  BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:22418:12: type mismatch, result value has type
-  BitVec 5 × BitVec 32 : Type
-but is expected to have type
-  BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:22419:11: type mismatch, result value has type
-  BitVec 5 × BitVec 64 : Type
-but is expected to have type
-  BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:22430:12: type mismatch, result value has type
-  BitVec 5 × BitVec 32 : Type
-but is expected to have type
-  BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:22431:11: type mismatch, result value has type
-  BitVec 5 × BitVec 64 : Type
-but is expected to have type
-  BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:22467:11: type mismatch, result value has type
-  BitVec 5 × BitVec 64 : Type
-but is expected to have type
-  BitVec 5 × BitVec 32 : Type
-error: ././././LeanRV64DLEAN.lean:27019:84: application type mismatch
+  Bool : Type
+error: ././././LeanRV64DLEAN.lean:27094:84: application type mismatch
   vectorAccess vs3_val
 argument
   vs3_val
@@ -125,85 +127,53 @@ has type
   Vector (BitVec (↑load_width_bytes *i 8).toNat) elem_per_reg : Type
 but is expected to have type
   Vector (BitVec (8 * load_width_bytes))
-    (?m.1784638 start_element __discr✝ cur_elem✝¹ cur_field j cur_elem✝ vs3_val i cur_elem x✝¹ __do_lift✝¹ vaddr
-      __do_lift✝ paddr snd✝ eares x✝) : Type
-error: ././././LeanRV64DLEAN.lean:63551:38: application type mismatch
-  vectorUpdate (cont result)
-argument
-  cont result
-has type
-  ER ?m.2675396 (Vector (BitVec SEW.toNat) num_elem.toNat) : Type
-but is expected to have type
-  Vector ?m.2675394 ?m.2675395 : Type ?u.2675393
-error: ././././LeanRV64DLEAN.lean:63769:38: application type mismatch
-  vectorUpdate (cont result)
-argument
-  cont result
-has type
-  ER ?m.2693548 (Vector (BitVec SEW.toNat) num_elem.toNat) : Type
-but is expected to have type
-  Vector ?m.2693546 ?m.2693547 : Type ?u.2693545
-error: ././././LeanRV64DLEAN.lean:64245:28: application type mismatch
+    (?m.1811352 start_element __discr✝ cur_elem✝¹ cur_field j r✝¹ vs3_val i r✝ x✝¹ __do_lift✝¹ vaddr __do_lift✝ paddr
+      snd✝ eares x✝) : Type
+error: ././././LeanRV64DLEAN.lean:64342:28: application type mismatch
   vectorAccess vs2_val
 argument
   vs2_val
 has type
   Vector (BitVec SEW.toNat) num_elem.toNat : Type
 but is expected to have type
-  Vector (BitVec (2 ^ 3 * 8)) (?m.2743559 SEW num_elem __do_lift✝ x✝ vs2_val) : Type
-error: ././././LeanRV64DLEAN.lean:64616:38: application type mismatch
-  vectorUpdate (cont result)
-argument
-  cont result
-has type
-  ER ?m.2765248 (Vector (BitVec SEW.toNat) num_elem.toNat) : Type
-but is expected to have type
-  Vector ?m.2765246 ?m.2765247 : Type ?u.2765245
-error: ././././LeanRV64DLEAN.lean:64892:35: type mismatch, result value has type
+  Vector (BitVec (2 ^ 3 * 8)) (?m.2774070 SEW num_elem __do_lift✝ x✝ vs2_val) : Type
+error: ././././LeanRV64DLEAN.lean:65023:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 32 : Type
-error: ././././LeanRV64DLEAN.lean:64905:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65034:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 32 : Type
-error: ././././LeanRV64DLEAN.lean:64917:36: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65044:30: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:64919:41: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65046:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:64930:36: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65055:30: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:64932:41: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65056:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:64944:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65067:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 32 : Type
-error: ././././LeanRV64DLEAN.lean:64957:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65078:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 32 : Type
-error: ././././LeanRV64DLEAN.lean:64970:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65089:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 32 : Type
-error: ././././LeanRV64DLEAN.lean:64880:38: application type mismatch
-  vectorUpdate (cont result)
-argument
-  cont result
-has type
-  ER ?m.2788690 (Vector (BitVec SEW_widen.toNat) num_elem.toNat) : Type
-but is expected to have type
-  Vector ?m.2788688 ?m.2788689 : Type ?u.2788687
-error: ././././LeanRV64DLEAN.lean:64970:86: application type mismatch
+error: ././././LeanRV64DLEAN.lean:65089:86: application type mismatch
   vectorAccess vs2_val
 argument
   vs2_val
@@ -211,33 +181,33 @@ has type
   Vector (BitVec SEW.toNat) num_elem.toNat : Type
 but is expected to have type
   Vector (BitVec 32)
-    (?m.2790813 rm_3b SEW LMUL_pow num_elem __do_lift✝ x✝¹ vm_val vs2_val vd_val __discr✝ initial_result mask i result
+    (?m.2827933 rm_3b SEW LMUL_pow num_elem __do_lift✝ x✝¹ vm_val vs2_val vd_val __discr✝ initial_result mask i r✝
       x✝) : Type
-error: ././././LeanRV64DLEAN.lean:65008:36: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65129:36: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:65009:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65130:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:65016:36: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65137:36: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:65017:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65138:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:65024:36: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65145:36: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:65025:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65146:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:65028:70: application type mismatch
+error: ././././LeanRV64DLEAN.lean:65149:70: application type mismatch
   vectorAccess vs2_val
 argument
   vs2_val
@@ -245,57 +215,57 @@ has type
   Vector (BitVec SEW.toNat) num_elem.toNat : Type
 but is expected to have type
   Vector (BitVec 16)
-    (?m.2800314 rm_3b SEW LMUL_pow num_elem __do_lift✝ x✝ vm_val vs2_val vd_val __discr✝ initial_result mask i
-      result) : Type
-error: ././././LeanRV64DLEAN.lean:65063:36: type mismatch, result value has type
+    (?m.2839490 rm_3b SEW LMUL_pow num_elem __do_lift✝ x✝ vm_val vs2_val vd_val __discr✝ initial_result mask i
+      r✝) : Type
+error: ././././LeanRV64DLEAN.lean:65187:36: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:65064:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65188:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:65071:36: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65195:36: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:65072:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65196:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:65081:36: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65205:36: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:65082:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65206:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:65090:36: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65214:36: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:65091:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65215:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:65098:36: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65222:36: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:65099:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65223:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:65106:36: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65230:36: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:65107:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65231:35: type mismatch, result value has type
   BitVec 5 × BitVec 64 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:65107:86: application type mismatch
+error: ././././LeanRV64DLEAN.lean:65231:86: application type mismatch
   vectorAccess vs2_val
 argument
   vs2_val
@@ -303,65 +273,57 @@ has type
   Vector (BitVec SEW.toNat) num_elem.toNat : Type
 but is expected to have type
   Vector (BitVec 64)
-    (?m.2815278 rm_3b SEW LMUL_pow num_elem __do_lift✝ x✝¹ vm_val vs2_val vd_val __discr✝ initial_result mask i result
+    (?m.2856329 rm_3b SEW LMUL_pow num_elem __do_lift✝ x✝¹ vm_val vs2_val vd_val __discr✝ initial_result mask i r✝
       x✝) : Type
-error: ././././LeanRV64DLEAN.lean:65150:42: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65275:36: type mismatch, result value has type
   BitVec 5 × BitVec 16 : Type
 but is expected to have type
   BitVec 5 × BitVec 8 : Type
-error: ././././LeanRV64DLEAN.lean:65151:41: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65276:35: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 8 : Type
-error: ././././LeanRV64DLEAN.lean:65159:42: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65283:36: type mismatch, result value has type
   BitVec 5 × BitVec 16 : Type
 but is expected to have type
   BitVec 5 × BitVec 8 : Type
-error: ././././LeanRV64DLEAN.lean:65160:41: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65284:35: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 8 : Type
-error: ././././LeanRV64DLEAN.lean:65172:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65295:35: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:65185:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65306:35: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:65198:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65317:35: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:65211:35: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65328:35: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 16 : Type
-error: ././././LeanRV64DLEAN.lean:65222:36: type mismatch, result value has type
-  BitVec 5 × BitVec 16 : Type
-but is expected to have type
-  BitVec 5 × BitVec 8 : Type
-error: ././././LeanRV64DLEAN.lean:65224:36: type mismatch, result value has type
-  BitVec 5 × BitVec 32 : Type
-but is expected to have type
-  BitVec 5 × BitVec 8 : Type
-error: ././././LeanRV64DLEAN.lean:65234:36: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65335:36: type mismatch, result value has type
   BitVec 5 × BitVec 16 : Type
 but is expected to have type
   BitVec 5 × BitVec 8 : Type
-error: ././././LeanRV64DLEAN.lean:65236:36: type mismatch, result value has type
+error: ././././LeanRV64DLEAN.lean:65336:35: type mismatch, result value has type
   BitVec 5 × BitVec 32 : Type
 but is expected to have type
   BitVec 5 × BitVec 8 : Type
-error: ././././LeanRV64DLEAN.lean:65142:38: application type mismatch
-  vectorUpdate (cont result)
-argument
-  cont result
-has type
-  ER ?m.2843620 (Vector (BitVec SEW.toNat) num_elem.toNat) : Type
+error: ././././LeanRV64DLEAN.lean:65343:36: type mismatch, result value has type
+  BitVec 5 × BitVec 16 : Type
 but is expected to have type
-  Vector ?m.2843618 ?m.2843619 : Type ?u.2843617
-error: ././././LeanRV64DLEAN.lean:65236:87: application type mismatch
+  BitVec 5 × BitVec 8 : Type
+error: ././././LeanRV64DLEAN.lean:65344:35: type mismatch, result value has type
+  BitVec 5 × BitVec 32 : Type
+but is expected to have type
+  BitVec 5 × BitVec 8 : Type
+error: ././././LeanRV64DLEAN.lean:65344:86: application type mismatch
   vectorAccess vs2_val
 argument
   vs2_val
@@ -369,25 +331,17 @@ has type
   Vector (BitVec SEW_widen.toNat) num_elem.toNat : Type
 but is expected to have type
   Vector (BitVec 64)
-    (?m.2848087 rm_3b SEW LMUL_pow num_elem __do_lift✝ x✝¹ vm_val vs2_val vd_val __discr✝ initial_result mask i result
+    (?m.2890424 rm_3b SEW LMUL_pow num_elem __do_lift✝ x✝¹ vm_val vs2_val vd_val __discr✝ initial_result mask i r✝
       x✝) : Type
-error: ././././LeanRV64DLEAN.lean:65292:37: application type mismatch
+error: ././././LeanRV64DLEAN.lean:65404:37: application type mismatch
   vectorAccess vs2_val
 argument
   vs2_val
 has type
   Vector (BitVec SEW.toNat) num_elem.toNat : Type
 but is expected to have type
-  Vector (BitVec 64) (?m.2858801 rm_3b SEW num_elem __do_lift✝ x✝¹ vs2_val x✝) : Type
-error: ././././LeanRV64DLEAN.lean:67261:38: application type mismatch
-  vectorUpdate (cont result)
-argument
-  cont result
-has type
-  ER ?m.3006591 (Vector (BitVec SEW.toNat) num_elem.toNat) : Type
-but is expected to have type
-  Vector ?m.3006589 ?m.3006590 : Type ?u.3006588
-error: ././././LeanRV64DLEAN.lean:69018:82: application type mismatch
+  Vector (BitVec 64) (?m.2907259 rm_3b SEW num_elem __do_lift✝ x✝¹ vs2_val x✝) : Type
+error: ././././LeanRV64DLEAN.lean:69253:82: application type mismatch
   vectorAccess vd_val
 argument
   vd_val
@@ -395,9 +349,9 @@ has type
   Vector (BitVec SEW_widen.toNat) num_elem.toNat : Type
 but is expected to have type
   Vector (BitVec (SEW.toNat * 2))
-    (?m.3125464 rm_3b SEW LMUL_pow num_elem __do_lift✝² x✝ vm_val vd_val vs1_val vs2_val __discr✝ initial_result mask i
-      result __do_lift✝¹ __do_lift✝) : Type
-error: ././././LeanRV64DLEAN.lean:69153:82: application type mismatch
+    (?m.3193609 rm_3b SEW LMUL_pow num_elem __do_lift✝² x✝ vm_val vd_val vs1_val vs2_val __discr✝ initial_result mask i
+      r✝ __do_lift✝¹ __do_lift✝) : Type
+error: ././././LeanRV64DLEAN.lean:69397:82: application type mismatch
   vectorAccess vd_val
 argument
   vd_val
@@ -405,32 +359,20 @@ has type
   Vector (BitVec SEW_widen.toNat) num_elem.toNat : Type
 but is expected to have type
   Vector (BitVec (m.toNat * 2))
-    (?m.3141473 rm_3b SEW LMUL_pow num_elem __do_lift✝² x✝ vm_val vd_val rs1_val vs2_val __discr✝ initial_result mask i
-      result __do_lift✝¹ __do_lift✝) : Type
-error: ././././LeanRV64DLEAN.lean:69367:38: application type mismatch
-  vectorUpdate (cont result)
-argument
-  cont result
-has type
-  ER ?m.3172008 (Vector (BitVec SEW.toNat) num_elem.toNat) : Type
-but is expected to have type
-  Vector ?m.3172006 ?m.3172007 : Type ?u.3172005
-error: ././././LeanRV64DLEAN.lean:74209:15: application type mismatch
-  Prod.mk __do_lift✝
-argument
-  __do_lift✝
-has type
-  Unit : Type
-but is expected to have type
-  Int : Type
-error: ././././LeanRV64DLEAN.lean:74195:6: application type mismatch
+    (?m.3213634 rm_3b SEW LMUL_pow num_elem __do_lift✝² x✝ vm_val vd_val rs1_val vs2_val __discr✝ initial_result mask i
+      r✝ __do_lift✝¹ __do_lift✝) : Type
+error: ././././LeanRV64DLEAN.lean:74452:6: application type mismatch
   (u__3, i, step_no)
 argument
   (i, step_no)
 has type
-  ?m.4095222 × ?m.4095225 : Type (max ?u.4095232 ?u.4095231)
+  ?m.4167152 × ?m.4167155 : Type (max ?u.4167162 ?u.4167161)
 but is expected to have type
   Int : Type
+error: ././././LeanRV64DLEAN.lean:74456:6: invalid reassignment, value has type
+  Unit × Int × Int : Type
+but is expected to have type
+  Int × Int : Type
 error: Lean exited with code 1
 Some required builds logged failures:
 - LeanRV64DLEAN
