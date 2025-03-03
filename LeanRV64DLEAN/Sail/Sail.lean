@@ -484,6 +484,15 @@ instance : CoeT (BitVec n) x (BitVec m) where
 instance: CoeT (Vector (BitVec n₁) m) x (Vector (BitVec n₂) m) where
   coe := x.map fun (bv : BitVec n₁) => bv.setWidth n₂
 
+instance {α α' β : Type u} (x : α × β) [CoeT α x.1 α'] : CoeT (α × β) x (α' × β) where
+  coe := (x.1, x.2)
+
+instance {α α' β : Type u} (x : β × α) [CoeT α x.2 α'] : CoeT (β × α) x (β × α') where
+  coe := (x.1, x.2)
+
+instance {α α' β β' : Type u} (x : α × β) [CoeT α x.1 α'] [CoeT β x.2 β'] : CoeT (α × β) x (α' × β') where
+  coe := (x.1, x.2)
+
 instance : HAdd (BitVec n) (BitVec m) (BitVec n) where
   hAdd x y := x + y
 
@@ -499,20 +508,17 @@ instance : HOr (BitVec n) (BitVec m) (BitVec n) where
 instance : HXor (BitVec n) (BitVec m) (BitVec n) where
   hXor x y := x ^^^ y
 
-def Int.zpow (m n : Int) : Int := m ^ n.toNat
+instance : HPow Int Int Int where
+  hPow x n := x ^ n.toNat
 
-infixl:65 " +i "   => Int.add
-infixl:65 " -i " => Int.sub
-infixr:80 " ^i "   => Int.pow
-infixl:70 " *i "   => Int.mul
-
-macro_rules | `($x +i $y)   => `(binop% Int.add $x $y)
-macro_rules | `($x -i $y)   => `(binop% Int.sub $x $y)
-macro_rules | `($x ^i $y)   => `(rightact% Int.zpow $x $y)
-macro_rules | `($x *i $y)   => `(binop% Int.mul $x $y)
-
+infixl:65 " +i "   => fun (x y : Int) => x + y
+infixl:65 " -i "   => fun (x y : Int) => x - y
+infixl:65 " ^i "   => fun (x y : Int) => x ^ y
+infixl:65 " *i "   => fun (x y : Int) => x * y
 
 notation:50 x "≤b" y => decide (x ≤ y)
 notation:50 x "<b" y => decide (x < y)
 notation:50 x "≥b" y => decide (x ≥ y)
 notation:50 x ">b" y => decide (x > y)
+
+macro_rules | `(tactic| decreasing_trivial) => `(tactic| simp_all <;> omega)
