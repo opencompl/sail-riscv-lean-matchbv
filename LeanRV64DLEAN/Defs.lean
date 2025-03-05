@@ -1350,6 +1350,8 @@ inductive Register : Type where
   | marchid
   | mimpid
   | mvendorid
+  | minstreth_write
+  | minstret_write
   | minstret_increment
   | minstret
   | mtime
@@ -1507,6 +1509,8 @@ abbrev RegisterType : Register → Type
   | .marchid => (BitVec (2 ^ 3 * 8))
   | .mimpid => (BitVec (2 ^ 3 * 8))
   | .mvendorid => (BitVec 32)
+  | .minstreth_write => (Option (BitVec 32))
+  | .minstret_write => (Option (BitVec (2 ^ 3 * 8)))
   | .minstret_increment => Bool
   | .minstret => (BitVec 64)
   | .mtime => (BitVec 64)
@@ -1582,6 +1586,10 @@ instance : Inhabited (RegisterRef RegisterType (BitVec 65536)) where
   default := .Reg vr0
 instance : Inhabited (RegisterRef RegisterType Bool) where
   default := .Reg minstret_increment
+instance : Inhabited (RegisterRef RegisterType (Option (BitVec 32))) where
+  default := .Reg minstreth_write
+instance : Inhabited (RegisterRef RegisterType (Option (BitVec (2 ^ 3 * 8)))) where
+  default := .Reg minstret_write
 instance : Inhabited (RegisterRef RegisterType (Vector (BitVec 64) 32)) where
   default := .Reg mhpmevent
 instance : Inhabited (RegisterRef RegisterType (Vector (BitVec (2 ^ 3 * 8)) 64)) where

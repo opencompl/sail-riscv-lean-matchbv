@@ -1,11 +1,11 @@
 ✔ [2/8] Built LeanRV64DLEAN.Sail.BitVec
 ✔ [3/8] Built LeanRV64DLEAN.Sail.Sail
 ✔ [4/8] Built LeanRV64DLEAN.Defs
-✔ [5/8] Built LeanRV64DLEAN.RiscvExtras
-✔ [6/8] Built LeanRV64DLEAN.Specialization
+✔ [5/8] Built LeanRV64DLEAN.Specialization
+✔ [6/8] Built LeanRV64DLEAN.RiscvExtras
 ✖ [7/8] Building LeanRV64DLEAN
 trace: .> LEAN_PATH=././.lake/build/lib LD_LIBRARY_PATH= /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-02-05/bin/lean --tstack=400000 ././././LeanRV64DLEAN.lean -R ./././. -o ././.lake/build/lib/LeanRV64DLEAN.olean -i ././.lake/build/lib/LeanRV64DLEAN.ilean -c ././.lake/build/ir/LeanRV64DLEAN.c --json
-error: ././././LeanRV64DLEAN.lean:78569:10: application type mismatch
+error: ././././LeanRV64DLEAN.lean:78570:10: application type mismatch
   pure loop_vars
 argument
   loop_vars
@@ -13,7 +13,7 @@ has type
   Int × Int : Type
 but is expected to have type
   Unit × Int × Int : Type
-error: ././././LeanRV64DLEAN.lean:78540:6: invalid reassignment, value has type
+error: ././././LeanRV64DLEAN.lean:78541:6: invalid reassignment, value has type
   Unit × Int × Int : Type
 but is expected to have type
   Int × Int : Type
