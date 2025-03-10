@@ -117,13 +117,28 @@ abbrev word := (BitVec 32)
 
 abbrev pagesize_bits : Int := 12
 
-abbrev regidx := (BitVec 5)
 
-abbrev cregidx := (BitVec 3)
+inductive regidx where
+  | Regidx (_ : (BitVec 5))
+  deriving BEq
+
+
+
+
+inductive cregidx where
+  | Cregidx (_ : (BitVec 3))
+  deriving BEq
+
+
 
 abbrev csreg := (BitVec 12)
 
-abbrev regno := Nat
+
+inductive regno where
+  | Regno (_ : Nat)
+  deriving BEq
+
+
 
 abbrev opcode := (BitVec 7)
 
@@ -201,6 +216,16 @@ inductive csrop where | CSRRW | CSRRS | CSRRC
 
 
 
+inductive f_bin_f_op_D where | FSGNJ_D | FSGNJN_D | FSGNJX_D | FMIN_D | FMAX_D
+  deriving Inhabited, BEq
+
+
+
+inductive f_bin_f_op_H where | FSGNJ_H | FSGNJN_H | FSGNJX_H | FMIN_H | FMAX_H
+  deriving Inhabited, BEq
+
+
+
 inductive f_bin_rm_op_D where | FADD_D | FSUB_D | FMUL_D | FDIV_D
   deriving Inhabited, BEq
 
@@ -216,17 +241,22 @@ inductive f_bin_rm_op_S where | FADD_S | FSUB_S | FMUL_S | FDIV_S
 
 
 
-inductive f_bin_op_D where | FSGNJ_D | FSGNJN_D | FSGNJX_D | FMIN_D | FMAX_D | FEQ_D | FLT_D | FLE_D
+inductive f_bin_op_f_S where | FSGNJ_S | FSGNJN_S | FSGNJX_S | FMIN_S | FMAX_S
   deriving Inhabited, BEq
 
 
 
-inductive f_bin_op_H where | FSGNJ_H | FSGNJN_H | FSGNJX_H | FMIN_H | FMAX_H | FEQ_H | FLT_H | FLE_H
+inductive f_bin_op_x_S where | FEQ_S | FLT_S | FLE_S
   deriving Inhabited, BEq
 
 
 
-inductive f_bin_op_S where | FSGNJ_S | FSGNJN_S | FSGNJX_S | FMIN_S | FMAX_S | FEQ_S | FLT_S | FLE_S
+inductive f_bin_x_op_D where | FEQ_D | FLT_D | FLE_D
+  deriving Inhabited, BEq
+
+
+
+inductive f_bin_x_op_H where | FEQ_H | FLT_H | FLE_H
   deriving Inhabited, BEq
 
 
@@ -246,33 +276,80 @@ inductive f_madd_op_S where | FMADD_S | FMSUB_S | FNMSUB_S | FNMADD_S
 
 
 
-inductive f_un_rm_op_D where | FSQRT_D | FCVT_W_D | FCVT_WU_D | FCVT_D_W | FCVT_D_WU | FCVT_S_D | FCVT_D_S | FCVT_L_D | FCVT_LU_D | FCVT_D_L | FCVT_D_LU
+inductive f_un_f_op_D where | FMV_D_X
   deriving Inhabited, BEq
 
 
 
-inductive f_un_rm_op_H where | FSQRT_H | FCVT_W_H | FCVT_WU_H | FCVT_H_W | FCVT_H_WU | FCVT_H_S | FCVT_H_D | FCVT_S_H | FCVT_D_H | FCVT_L_H | FCVT_LU_H | FCVT_H_L | FCVT_H_LU
+inductive f_un_f_op_H where | FMV_H_X
   deriving Inhabited, BEq
 
 
 
-inductive f_un_rm_op_S where | FSQRT_S | FCVT_W_S | FCVT_WU_S | FCVT_S_W | FCVT_S_WU | FCVT_L_S | FCVT_LU_S | FCVT_S_L | FCVT_S_LU
+inductive f_un_rm_ff_op_D where | FSQRT_D | FCVT_S_D | FCVT_D_S
   deriving Inhabited, BEq
 
 
 
-inductive f_un_op_D where | FCLASS_D | FMV_X_D | FMV_D_X
+inductive f_un_rm_ff_op_H where | FSQRT_H | FCVT_H_S | FCVT_H_D | FCVT_S_H | FCVT_D_H
   deriving Inhabited, BEq
 
 
 
-inductive f_un_op_H where | FCLASS_H | FMV_X_H | FMV_H_X
+inductive f_un_rm_fx_op_D where | FCVT_W_D | FCVT_WU_D | FCVT_L_D | FCVT_LU_D
   deriving Inhabited, BEq
 
 
 
-inductive f_un_op_S where | FCLASS_S | FMV_X_W | FMV_W_X
+inductive f_un_rm_fx_op_H where | FCVT_W_H | FCVT_WU_H | FCVT_L_H | FCVT_LU_H
   deriving Inhabited, BEq
+
+
+
+inductive f_un_rm_fx_op_S where | FCVT_W_S | FCVT_WU_S | FCVT_L_S | FCVT_LU_S
+  deriving Inhabited, BEq
+
+
+
+inductive f_un_rm_xf_op_D where | FCVT_D_W | FCVT_D_WU | FCVT_D_L | FCVT_D_LU
+  deriving Inhabited, BEq
+
+
+
+inductive f_un_rm_xf_op_H where | FCVT_H_W | FCVT_H_WU | FCVT_H_L | FCVT_H_LU
+  deriving Inhabited, BEq
+
+
+
+inductive f_un_rm_xf_op_S where | FCVT_S_W | FCVT_S_WU | FCVT_S_L | FCVT_S_LU
+  deriving Inhabited, BEq
+
+
+
+inductive f_un_op_f_S where | FMV_W_X
+  deriving Inhabited, BEq
+
+
+
+inductive f_un_op_x_S where | FCLASS_S | FMV_X_W
+  deriving Inhabited, BEq
+
+
+
+inductive f_un_x_op_D where | FCLASS_D | FMV_X_D
+  deriving Inhabited, BEq
+
+
+
+inductive f_un_x_op_H where | FCLASS_H | FMV_X_H
+  deriving Inhabited, BEq
+
+
+
+
+inductive fregidx where
+  | Fregidx (_ : (BitVec 5))
+  deriving BEq
 
 
 
@@ -528,6 +605,13 @@ inductive vmlsop where | VLM | VSM
 
 
 
+
+inductive vregidx where
+  | Vregidx (_ : (BitVec 5))
+  deriving BEq
+
+
+
 inductive vvcmpfunct6 where | VVCMP_VMSEQ | VVCMP_VMSNE | VVCMP_VMSLTU | VVCMP_VMSLT | VVCMP_VMSLEU | VVCMP_VMSLE
   deriving Inhabited, BEq
 
@@ -658,6 +742,11 @@ inductive zicondop where | RISCV_CZERO_EQZ | RISCV_CZERO_NEZ
 
 
 
+inductive f_un_rm_ff_op_S where | FSQRT_S
+  deriving Inhabited, BEq
+
+
+
 
 inductive ast where
   | ILLEGAL (_ : word)
@@ -738,24 +827,32 @@ inductive ast where
   | C_SRAI_HINT (_ : cregidx)
   | FENCE_RESERVED (_ : ((BitVec 4) × (BitVec 4) × (BitVec 4) × regidx × regidx))
   | FENCEI_RESERVED (_ : ((BitVec 12) × regidx × regidx))
-  | LOAD_FP (_ : ((BitVec 12) × regidx × regidx × word_width))
-  | STORE_FP (_ : ((BitVec 12) × regidx × regidx × word_width))
-  | F_MADD_TYPE_S (_ : (regidx × regidx × regidx × rounding_mode × regidx × f_madd_op_S))
-  | F_BIN_RM_TYPE_S (_ : (regidx × regidx × rounding_mode × regidx × f_bin_rm_op_S))
-  | F_UN_RM_TYPE_S (_ : (regidx × rounding_mode × regidx × f_un_rm_op_S))
-  | F_BIN_TYPE_S (_ : (regidx × regidx × regidx × f_bin_op_S))
-  | F_UN_TYPE_S (_ : (regidx × regidx × f_un_op_S))
-  | C_FLWSP (_ : ((BitVec 6) × regidx))
-  | C_FSWSP (_ : ((BitVec 6) × regidx))
+  | LOAD_FP (_ : ((BitVec 12) × regidx × fregidx × word_width))
+  | STORE_FP (_ : ((BitVec 12) × fregidx × regidx × word_width))
+  | F_MADD_TYPE_S (_ : (fregidx × fregidx × fregidx × rounding_mode × fregidx × f_madd_op_S))
+  | F_BIN_RM_TYPE_S (_ : (fregidx × fregidx × rounding_mode × fregidx × f_bin_rm_op_S))
+  | F_UN_RM_FF_TYPE_S (_ : (fregidx × rounding_mode × fregidx × f_un_rm_ff_op_S))
+  | F_UN_RM_FX_TYPE_S (_ : (fregidx × rounding_mode × regidx × f_un_rm_fx_op_S))
+  | F_UN_RM_XF_TYPE_S (_ : (regidx × rounding_mode × fregidx × f_un_rm_xf_op_S))
+  | F_BIN_TYPE_F_S (_ : (fregidx × fregidx × fregidx × f_bin_op_f_S))
+  | F_BIN_TYPE_X_S (_ : (fregidx × fregidx × regidx × f_bin_op_x_S))
+  | F_UN_TYPE_F_S (_ : (regidx × fregidx × f_un_op_f_S))
+  | F_UN_TYPE_X_S (_ : (fregidx × regidx × f_un_op_x_S))
+  | C_FLWSP (_ : ((BitVec 6) × fregidx))
+  | C_FSWSP (_ : ((BitVec 6) × fregidx))
   | C_FLW (_ : ((BitVec 5) × cregidx × cregidx))
   | C_FSW (_ : ((BitVec 5) × cregidx × cregidx))
-  | F_MADD_TYPE_D (_ : (regidx × regidx × regidx × rounding_mode × regidx × f_madd_op_D))
-  | F_BIN_RM_TYPE_D (_ : (regidx × regidx × rounding_mode × regidx × f_bin_rm_op_D))
-  | F_UN_RM_TYPE_D (_ : (regidx × rounding_mode × regidx × f_un_rm_op_D))
-  | F_BIN_TYPE_D (_ : (regidx × regidx × regidx × f_bin_op_D))
-  | F_UN_TYPE_D (_ : (regidx × regidx × f_un_op_D))
-  | C_FLDSP (_ : ((BitVec 6) × regidx))
-  | C_FSDSP (_ : ((BitVec 6) × regidx))
+  | F_MADD_TYPE_D (_ : (fregidx × fregidx × fregidx × rounding_mode × fregidx × f_madd_op_D))
+  | F_BIN_RM_TYPE_D (_ : (fregidx × fregidx × rounding_mode × fregidx × f_bin_rm_op_D))
+  | F_UN_RM_FF_TYPE_D (_ : (fregidx × rounding_mode × fregidx × f_un_rm_ff_op_D))
+  | F_UN_RM_XF_TYPE_D (_ : (regidx × rounding_mode × fregidx × f_un_rm_xf_op_D))
+  | F_UN_RM_FX_TYPE_D (_ : (fregidx × rounding_mode × regidx × f_un_rm_fx_op_D))
+  | F_BIN_F_TYPE_D (_ : (fregidx × fregidx × fregidx × f_bin_f_op_D))
+  | F_BIN_X_TYPE_D (_ : (fregidx × fregidx × regidx × f_bin_x_op_D))
+  | F_UN_X_TYPE_D (_ : (fregidx × regidx × f_un_x_op_D))
+  | F_UN_F_TYPE_D (_ : (regidx × fregidx × f_un_f_op_D))
+  | C_FLDSP (_ : ((BitVec 6) × fregidx))
+  | C_FSDSP (_ : ((BitVec 6) × fregidx))
   | C_FLD (_ : ((BitVec 5) × cregidx × cregidx))
   | C_FSD (_ : ((BitVec 5) × cregidx × cregidx))
   | SINVAL_VMA (_ : (regidx × regidx))
@@ -794,35 +891,39 @@ inductive ast where
   | C_ZEXT_W (_ : cregidx)
   | C_NOT (_ : cregidx)
   | C_MUL (_ : (cregidx × cregidx))
-  | F_BIN_RM_TYPE_H (_ : (regidx × regidx × rounding_mode × regidx × f_bin_rm_op_H))
-  | F_MADD_TYPE_H (_ : (regidx × regidx × regidx × rounding_mode × regidx × f_madd_op_H))
-  | F_BIN_TYPE_H (_ : (regidx × regidx × regidx × f_bin_op_H))
-  | F_UN_RM_TYPE_H (_ : (regidx × rounding_mode × regidx × f_un_rm_op_H))
-  | F_UN_TYPE_H (_ : (regidx × regidx × f_un_op_H))
-  | RISCV_FLI_H (_ : ((BitVec 5) × regidx))
-  | RISCV_FLI_S (_ : ((BitVec 5) × regidx))
-  | RISCV_FLI_D (_ : ((BitVec 5) × regidx))
-  | RISCV_FMINM_H (_ : (regidx × regidx × regidx))
-  | RISCV_FMAXM_H (_ : (regidx × regidx × regidx))
-  | RISCV_FMINM_S (_ : (regidx × regidx × regidx))
-  | RISCV_FMAXM_S (_ : (regidx × regidx × regidx))
-  | RISCV_FMINM_D (_ : (regidx × regidx × regidx))
-  | RISCV_FMAXM_D (_ : (regidx × regidx × regidx))
-  | RISCV_FROUND_H (_ : (regidx × rounding_mode × regidx))
-  | RISCV_FROUNDNX_H (_ : (regidx × rounding_mode × regidx))
-  | RISCV_FROUND_S (_ : (regidx × rounding_mode × regidx))
-  | RISCV_FROUNDNX_S (_ : (regidx × rounding_mode × regidx))
-  | RISCV_FROUND_D (_ : (regidx × rounding_mode × regidx))
-  | RISCV_FROUNDNX_D (_ : (regidx × rounding_mode × regidx))
-  | RISCV_FMVH_X_D (_ : (regidx × regidx))
-  | RISCV_FMVP_D_X (_ : (regidx × regidx × regidx))
-  | RISCV_FLEQ_H (_ : (regidx × regidx × regidx))
-  | RISCV_FLTQ_H (_ : (regidx × regidx × regidx))
-  | RISCV_FLEQ_S (_ : (regidx × regidx × regidx))
-  | RISCV_FLTQ_S (_ : (regidx × regidx × regidx))
-  | RISCV_FLEQ_D (_ : (regidx × regidx × regidx))
-  | RISCV_FLTQ_D (_ : (regidx × regidx × regidx))
-  | RISCV_FCVTMOD_W_D (_ : (regidx × regidx))
+  | F_BIN_RM_TYPE_H (_ : (fregidx × fregidx × rounding_mode × fregidx × f_bin_rm_op_H))
+  | F_MADD_TYPE_H (_ : (fregidx × fregidx × fregidx × rounding_mode × fregidx × f_madd_op_H))
+  | F_BIN_F_TYPE_H (_ : (fregidx × fregidx × fregidx × f_bin_f_op_H))
+  | F_BIN_X_TYPE_H (_ : (fregidx × fregidx × regidx × f_bin_x_op_H))
+  | F_UN_RM_FF_TYPE_H (_ : (fregidx × rounding_mode × fregidx × f_un_rm_ff_op_H))
+  | F_UN_RM_FX_TYPE_H (_ : (fregidx × rounding_mode × regidx × f_un_rm_fx_op_H))
+  | F_UN_RM_XF_TYPE_H (_ : (regidx × rounding_mode × fregidx × f_un_rm_xf_op_H))
+  | F_UN_F_TYPE_H (_ : (regidx × fregidx × f_un_f_op_H))
+  | F_UN_X_TYPE_H (_ : (fregidx × regidx × f_un_x_op_H))
+  | RISCV_FLI_H (_ : ((BitVec 5) × fregidx))
+  | RISCV_FLI_S (_ : ((BitVec 5) × fregidx))
+  | RISCV_FLI_D (_ : ((BitVec 5) × fregidx))
+  | RISCV_FMINM_H (_ : (fregidx × fregidx × fregidx))
+  | RISCV_FMAXM_H (_ : (fregidx × fregidx × fregidx))
+  | RISCV_FMINM_S (_ : (fregidx × fregidx × fregidx))
+  | RISCV_FMAXM_S (_ : (fregidx × fregidx × fregidx))
+  | RISCV_FMINM_D (_ : (fregidx × fregidx × fregidx))
+  | RISCV_FMAXM_D (_ : (fregidx × fregidx × fregidx))
+  | RISCV_FROUND_H (_ : (fregidx × rounding_mode × fregidx))
+  | RISCV_FROUNDNX_H (_ : (fregidx × rounding_mode × fregidx))
+  | RISCV_FROUND_S (_ : (fregidx × rounding_mode × fregidx))
+  | RISCV_FROUNDNX_S (_ : (fregidx × rounding_mode × fregidx))
+  | RISCV_FROUND_D (_ : (fregidx × rounding_mode × fregidx))
+  | RISCV_FROUNDNX_D (_ : (fregidx × rounding_mode × fregidx))
+  | RISCV_FMVH_X_D (_ : (fregidx × regidx))
+  | RISCV_FMVP_D_X (_ : (regidx × regidx × fregidx))
+  | RISCV_FLEQ_H (_ : (fregidx × fregidx × regidx))
+  | RISCV_FLTQ_H (_ : (fregidx × fregidx × regidx))
+  | RISCV_FLEQ_S (_ : (fregidx × fregidx × regidx))
+  | RISCV_FLTQ_S (_ : (fregidx × fregidx × regidx))
+  | RISCV_FLEQ_D (_ : (fregidx × fregidx × regidx))
+  | RISCV_FLTQ_D (_ : (fregidx × fregidx × regidx))
+  | RISCV_FCVTMOD_W_D (_ : (fregidx × regidx))
   | SHA256SIG0 (_ : (regidx × regidx))
   | SHA256SIG1 (_ : (regidx × regidx))
   | SHA256SUM0 (_ : (regidx × regidx))
@@ -862,96 +963,96 @@ inductive ast where
   | ZICOND_RTYPE (_ : (regidx × regidx × regidx × zicondop))
   | VSETVLI (_ : ((BitVec 1) × (BitVec 1) × (BitVec 3) × (BitVec 3) × regidx × regidx))
   | VSETVL (_ : (regidx × regidx × regidx))
-  | VSETIVLI (_ : ((BitVec 1) × (BitVec 1) × (BitVec 3) × (BitVec 3) × regidx × regidx))
-  | VVTYPE (_ : (vvfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | NVSTYPE (_ : (nvsfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | NVTYPE (_ : (nvfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | MASKTYPEV (_ : (regidx × regidx × regidx))
-  | MOVETYPEV (_ : (regidx × regidx))
-  | VXTYPE (_ : (vxfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | NXSTYPE (_ : (nxsfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | NXTYPE (_ : (nxfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | VXSG (_ : (vxsgfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | MASKTYPEX (_ : (regidx × regidx × regidx))
-  | MOVETYPEX (_ : (regidx × regidx))
-  | VITYPE (_ : (vifunct6 × (BitVec 1) × regidx × (BitVec 5) × regidx))
-  | NISTYPE (_ : (nisfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | NITYPE (_ : (nifunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | VISG (_ : (visgfunct6 × (BitVec 1) × regidx × (BitVec 5) × regidx))
-  | MASKTYPEI (_ : (regidx × (BitVec 5) × regidx))
-  | MOVETYPEI (_ : (regidx × (BitVec 5)))
-  | VMVRTYPE (_ : (regidx × (BitVec 5) × regidx))
-  | MVVTYPE (_ : (mvvfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | MVVMATYPE (_ : (mvvmafunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | WVVTYPE (_ : (wvvfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | WVTYPE (_ : (wvfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | WMVVTYPE (_ : (wmvvfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | VEXT2TYPE (_ : (vext2funct6 × (BitVec 1) × regidx × regidx))
-  | VEXT4TYPE (_ : (vext4funct6 × (BitVec 1) × regidx × regidx))
-  | VEXT8TYPE (_ : (vext8funct6 × (BitVec 1) × regidx × regidx))
-  | VMVXS (_ : (regidx × regidx))
-  | MVVCOMPRESS (_ : (regidx × regidx × regidx))
-  | MVXTYPE (_ : (mvxfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | MVXMATYPE (_ : (mvxmafunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | WVXTYPE (_ : (wvxfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | WXTYPE (_ : (wxfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | WMVXTYPE (_ : (wmvxfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | VMVSX (_ : (regidx × regidx))
-  | FVVTYPE (_ : (fvvfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | FVVMATYPE (_ : (fvvmafunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | FWVVTYPE (_ : (fwvvfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | FWVVMATYPE (_ : (fwvvmafunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | FWVTYPE (_ : (fwvfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | VFUNARY0 (_ : ((BitVec 1) × regidx × vfunary0 × regidx))
-  | VFWUNARY0 (_ : ((BitVec 1) × regidx × vfwunary0 × regidx))
-  | VFNUNARY0 (_ : ((BitVec 1) × regidx × vfnunary0 × regidx))
-  | VFUNARY1 (_ : ((BitVec 1) × regidx × vfunary1 × regidx))
-  | VFMVFS (_ : (regidx × regidx))
-  | FVFTYPE (_ : (fvffunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | FVFMATYPE (_ : (fvfmafunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | FWVFTYPE (_ : (fwvffunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | FWVFMATYPE (_ : (fwvfmafunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | FWFTYPE (_ : (fwffunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | VFMERGE (_ : (regidx × regidx × regidx))
-  | VFMV (_ : (regidx × regidx))
-  | VFMVSF (_ : (regidx × regidx))
-  | VLSEGTYPE (_ : ((BitVec 3) × (BitVec 1) × regidx × vlewidth × regidx))
-  | VLSEGFFTYPE (_ : ((BitVec 3) × (BitVec 1) × regidx × vlewidth × regidx))
-  | VSSEGTYPE (_ : ((BitVec 3) × (BitVec 1) × regidx × vlewidth × regidx))
-  | VLSSEGTYPE (_ : ((BitVec 3) × (BitVec 1) × regidx × regidx × vlewidth × regidx))
-  | VSSSEGTYPE (_ : ((BitVec 3) × (BitVec 1) × regidx × regidx × vlewidth × regidx))
-  | VLUXSEGTYPE (_ : ((BitVec 3) × (BitVec 1) × regidx × regidx × vlewidth × regidx))
-  | VLOXSEGTYPE (_ : ((BitVec 3) × (BitVec 1) × regidx × regidx × vlewidth × regidx))
-  | VSUXSEGTYPE (_ : ((BitVec 3) × (BitVec 1) × regidx × regidx × vlewidth × regidx))
-  | VSOXSEGTYPE (_ : ((BitVec 3) × (BitVec 1) × regidx × regidx × vlewidth × regidx))
-  | VLRETYPE (_ : ((BitVec 3) × regidx × vlewidth × regidx))
-  | VSRETYPE (_ : ((BitVec 3) × regidx × regidx))
-  | VMTYPE (_ : (regidx × regidx × vmlsop))
-  | MMTYPE (_ : (mmfunct6 × regidx × regidx × regidx))
-  | VCPOP_M (_ : ((BitVec 1) × regidx × regidx))
-  | VFIRST_M (_ : ((BitVec 1) × regidx × regidx))
-  | VMSBF_M (_ : ((BitVec 1) × regidx × regidx))
-  | VMSIF_M (_ : ((BitVec 1) × regidx × regidx))
-  | VMSOF_M (_ : ((BitVec 1) × regidx × regidx))
-  | VIOTA_M (_ : ((BitVec 1) × regidx × regidx))
-  | VID_V (_ : ((BitVec 1) × regidx))
-  | VVMTYPE (_ : (vvmfunct6 × regidx × regidx × regidx))
-  | VVMCTYPE (_ : (vvmcfunct6 × regidx × regidx × regidx))
-  | VVMSTYPE (_ : (vvmsfunct6 × regidx × regidx × regidx))
-  | VVCMPTYPE (_ : (vvcmpfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | VXMTYPE (_ : (vxmfunct6 × regidx × regidx × regidx))
-  | VXMCTYPE (_ : (vxmcfunct6 × regidx × regidx × regidx))
-  | VXMSTYPE (_ : (vxmsfunct6 × regidx × regidx × regidx))
-  | VXCMPTYPE (_ : (vxcmpfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | VIMTYPE (_ : (vimfunct6 × regidx × regidx × regidx))
-  | VIMCTYPE (_ : (vimcfunct6 × regidx × regidx × regidx))
-  | VIMSTYPE (_ : (vimsfunct6 × regidx × regidx × regidx))
-  | VICMPTYPE (_ : (vicmpfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | FVVMTYPE (_ : (fvvmfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | FVFMTYPE (_ : (fvfmfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | RIVVTYPE (_ : (rivvfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | RMVVTYPE (_ : (rmvvfunct6 × (BitVec 1) × regidx × regidx × regidx))
-  | RFVVTYPE (_ : (rfvvfunct6 × (BitVec 1) × regidx × regidx × regidx))
+  | VSETIVLI (_ : ((BitVec 1) × (BitVec 1) × (BitVec 3) × (BitVec 3) × (BitVec 5) × regidx))
+  | VVTYPE (_ : (vvfunct6 × (BitVec 1) × vregidx × vregidx × vregidx))
+  | NVSTYPE (_ : (nvsfunct6 × (BitVec 1) × vregidx × vregidx × vregidx))
+  | NVTYPE (_ : (nvfunct6 × (BitVec 1) × vregidx × vregidx × vregidx))
+  | MASKTYPEV (_ : (vregidx × vregidx × vregidx))
+  | MOVETYPEV (_ : (vregidx × vregidx))
+  | VXTYPE (_ : (vxfunct6 × (BitVec 1) × vregidx × regidx × vregidx))
+  | NXSTYPE (_ : (nxsfunct6 × (BitVec 1) × vregidx × regidx × vregidx))
+  | NXTYPE (_ : (nxfunct6 × (BitVec 1) × vregidx × regidx × vregidx))
+  | VXSG (_ : (vxsgfunct6 × (BitVec 1) × vregidx × regidx × vregidx))
+  | MASKTYPEX (_ : (vregidx × regidx × vregidx))
+  | MOVETYPEX (_ : (regidx × vregidx))
+  | VITYPE (_ : (vifunct6 × (BitVec 1) × vregidx × (BitVec 5) × vregidx))
+  | NISTYPE (_ : (nisfunct6 × (BitVec 1) × vregidx × (BitVec 5) × vregidx))
+  | NITYPE (_ : (nifunct6 × (BitVec 1) × vregidx × (BitVec 5) × vregidx))
+  | VISG (_ : (visgfunct6 × (BitVec 1) × vregidx × (BitVec 5) × vregidx))
+  | MASKTYPEI (_ : (vregidx × (BitVec 5) × vregidx))
+  | MOVETYPEI (_ : (vregidx × (BitVec 5)))
+  | VMVRTYPE (_ : (vregidx × (BitVec 5) × vregidx))
+  | MVVTYPE (_ : (mvvfunct6 × (BitVec 1) × vregidx × vregidx × vregidx))
+  | MVVMATYPE (_ : (mvvmafunct6 × (BitVec 1) × vregidx × vregidx × vregidx))
+  | WVVTYPE (_ : (wvvfunct6 × (BitVec 1) × vregidx × vregidx × vregidx))
+  | WVTYPE (_ : (wvfunct6 × (BitVec 1) × vregidx × vregidx × vregidx))
+  | WMVVTYPE (_ : (wmvvfunct6 × (BitVec 1) × vregidx × vregidx × vregidx))
+  | VEXT2TYPE (_ : (vext2funct6 × (BitVec 1) × vregidx × vregidx))
+  | VEXT4TYPE (_ : (vext4funct6 × (BitVec 1) × vregidx × vregidx))
+  | VEXT8TYPE (_ : (vext8funct6 × (BitVec 1) × vregidx × vregidx))
+  | VMVXS (_ : (vregidx × regidx))
+  | MVVCOMPRESS (_ : (vregidx × vregidx × vregidx))
+  | MVXTYPE (_ : (mvxfunct6 × (BitVec 1) × vregidx × regidx × vregidx))
+  | MVXMATYPE (_ : (mvxmafunct6 × (BitVec 1) × vregidx × regidx × vregidx))
+  | WVXTYPE (_ : (wvxfunct6 × (BitVec 1) × vregidx × regidx × vregidx))
+  | WXTYPE (_ : (wxfunct6 × (BitVec 1) × vregidx × regidx × vregidx))
+  | WMVXTYPE (_ : (wmvxfunct6 × (BitVec 1) × vregidx × regidx × vregidx))
+  | VMVSX (_ : (regidx × vregidx))
+  | FVVTYPE (_ : (fvvfunct6 × (BitVec 1) × vregidx × vregidx × vregidx))
+  | FVVMATYPE (_ : (fvvmafunct6 × (BitVec 1) × vregidx × vregidx × vregidx))
+  | FWVVTYPE (_ : (fwvvfunct6 × (BitVec 1) × vregidx × vregidx × vregidx))
+  | FWVVMATYPE (_ : (fwvvmafunct6 × (BitVec 1) × vregidx × vregidx × vregidx))
+  | FWVTYPE (_ : (fwvfunct6 × (BitVec 1) × vregidx × vregidx × vregidx))
+  | VFUNARY0 (_ : ((BitVec 1) × vregidx × vfunary0 × vregidx))
+  | VFWUNARY0 (_ : ((BitVec 1) × vregidx × vfwunary0 × vregidx))
+  | VFNUNARY0 (_ : ((BitVec 1) × vregidx × vfnunary0 × vregidx))
+  | VFUNARY1 (_ : ((BitVec 1) × vregidx × vfunary1 × vregidx))
+  | VFMVFS (_ : (vregidx × fregidx))
+  | FVFTYPE (_ : (fvffunct6 × (BitVec 1) × vregidx × fregidx × vregidx))
+  | FVFMATYPE (_ : (fvfmafunct6 × (BitVec 1) × vregidx × fregidx × vregidx))
+  | FWVFTYPE (_ : (fwvffunct6 × (BitVec 1) × vregidx × fregidx × vregidx))
+  | FWVFMATYPE (_ : (fwvfmafunct6 × (BitVec 1) × fregidx × vregidx × vregidx))
+  | FWFTYPE (_ : (fwffunct6 × (BitVec 1) × vregidx × fregidx × vregidx))
+  | VFMERGE (_ : (vregidx × fregidx × vregidx))
+  | VFMV (_ : (fregidx × vregidx))
+  | VFMVSF (_ : (fregidx × vregidx))
+  | VLSEGTYPE (_ : ((BitVec 3) × (BitVec 1) × regidx × vlewidth × vregidx))
+  | VLSEGFFTYPE (_ : ((BitVec 3) × (BitVec 1) × regidx × vlewidth × vregidx))
+  | VSSEGTYPE (_ : ((BitVec 3) × (BitVec 1) × regidx × vlewidth × vregidx))
+  | VLSSEGTYPE (_ : ((BitVec 3) × (BitVec 1) × regidx × regidx × vlewidth × vregidx))
+  | VSSSEGTYPE (_ : ((BitVec 3) × (BitVec 1) × regidx × regidx × vlewidth × vregidx))
+  | VLUXSEGTYPE (_ : ((BitVec 3) × (BitVec 1) × vregidx × regidx × vlewidth × vregidx))
+  | VLOXSEGTYPE (_ : ((BitVec 3) × (BitVec 1) × vregidx × regidx × vlewidth × vregidx))
+  | VSUXSEGTYPE (_ : ((BitVec 3) × (BitVec 1) × vregidx × regidx × vlewidth × vregidx))
+  | VSOXSEGTYPE (_ : ((BitVec 3) × (BitVec 1) × vregidx × regidx × vlewidth × vregidx))
+  | VLRETYPE (_ : ((BitVec 3) × regidx × vlewidth × vregidx))
+  | VSRETYPE (_ : ((BitVec 3) × regidx × vregidx))
+  | VMTYPE (_ : (regidx × vregidx × vmlsop))
+  | MMTYPE (_ : (mmfunct6 × vregidx × vregidx × vregidx))
+  | VCPOP_M (_ : ((BitVec 1) × vregidx × regidx))
+  | VFIRST_M (_ : ((BitVec 1) × vregidx × regidx))
+  | VMSBF_M (_ : ((BitVec 1) × vregidx × vregidx))
+  | VMSIF_M (_ : ((BitVec 1) × vregidx × vregidx))
+  | VMSOF_M (_ : ((BitVec 1) × vregidx × vregidx))
+  | VIOTA_M (_ : ((BitVec 1) × vregidx × vregidx))
+  | VID_V (_ : ((BitVec 1) × vregidx))
+  | VVMTYPE (_ : (vvmfunct6 × vregidx × vregidx × vregidx))
+  | VVMCTYPE (_ : (vvmcfunct6 × vregidx × vregidx × vregidx))
+  | VVMSTYPE (_ : (vvmsfunct6 × vregidx × vregidx × vregidx))
+  | VVCMPTYPE (_ : (vvcmpfunct6 × (BitVec 1) × vregidx × vregidx × vregidx))
+  | VXMTYPE (_ : (vxmfunct6 × vregidx × regidx × vregidx))
+  | VXMCTYPE (_ : (vxmcfunct6 × vregidx × regidx × vregidx))
+  | VXMSTYPE (_ : (vxmsfunct6 × vregidx × regidx × vregidx))
+  | VXCMPTYPE (_ : (vxcmpfunct6 × (BitVec 1) × vregidx × regidx × vregidx))
+  | VIMTYPE (_ : (vimfunct6 × vregidx × (BitVec 5) × vregidx))
+  | VIMCTYPE (_ : (vimcfunct6 × vregidx × (BitVec 5) × vregidx))
+  | VIMSTYPE (_ : (vimsfunct6 × vregidx × (BitVec 5) × vregidx))
+  | VICMPTYPE (_ : (vicmpfunct6 × (BitVec 1) × vregidx × (BitVec 5) × vregidx))
+  | FVVMTYPE (_ : (fvvmfunct6 × (BitVec 1) × vregidx × vregidx × vregidx))
+  | FVFMTYPE (_ : (fvfmfunct6 × (BitVec 1) × vregidx × fregidx × vregidx))
+  | RIVVTYPE (_ : (rivvfunct6 × (BitVec 1) × vregidx × vregidx × vregidx))
+  | RMVVTYPE (_ : (rmvvfunct6 × (BitVec 1) × vregidx × vregidx × vregidx))
+  | RFVVTYPE (_ : (rfvvfunct6 × (BitVec 1) × vregidx × vregidx × vregidx))
   | RISCV_ZICBOM (_ : (cbop_zicbom × regidx))
   | RISCV_ZICBOZ (_ : regidx)
   deriving BEq
@@ -1124,6 +1225,13 @@ inductive maskfunct3 where | VV_VMERGE | VI_VMERGE | VX_VMERGE
 
 
 
+
+inductive vregno where
+  | Vregno (_ : Nat)
+  deriving BEq
+
+
+
 abbrev Vcsr := (BitVec 3)
 
 abbrev ext_exception := Unit
@@ -1161,6 +1269,13 @@ abbrev bits_WU := (BitVec 32)
 abbrev bits_L := (BitVec 64)
 
 abbrev bits_LU := (BitVec 64)
+
+
+inductive fregno where
+  | Fregno (_ : Nat)
+  deriving BEq
+
+
 
 abbrev Fcsr := (BitVec 32)
 
