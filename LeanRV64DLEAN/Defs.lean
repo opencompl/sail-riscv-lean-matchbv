@@ -10,38 +10,28 @@ set_option match.ignoreUnusedAlts true
 
 open Sail
 
-
 /-- Type quantifiers: k_a : Type -/
-
 inductive option (k_a : Type) where
   | Some (_ : k_a)
   | None (_ : Unit)
   deriving BEq
 
-
-
 abbrev bits k_n := (BitVec k_n)
 
 abbrev xlenbits := (BitVec (2 ^ 3 * 8))
-
 
 inductive virtaddr where
   | virtaddr (_ : xlenbits)
   deriving BEq
 
-
-
 abbrev max_mem_access : Int := 4096
 
 abbrev mem_access_width := Nat
-
 
 inductive exception where
   | Error_not_implemented (_ : String)
   | Error_internal_error (_ : Unit)
   deriving BEq
-
-
 
 abbrev log2_xlen_bytes : Int := 3
 
@@ -67,30 +57,20 @@ abbrev vlenmax : Int := 65536
 
 abbrev physaddrbits := (BitVec 64)
 
-
 inductive physaddr where
   | physaddr (_ : physaddrbits)
   deriving BEq
-
-
 
 abbrev mem_meta := Unit
 
 inductive write_kind where | Write_plain | Write_RISCV_release | Write_RISCV_strong_release | Write_RISCV_conditional | Write_RISCV_conditional_release | Write_RISCV_conditional_strong_release
   deriving Inhabited, BEq
 
-
-
 inductive read_kind where | Read_plain | Read_ifetch | Read_RISCV_acquire | Read_RISCV_strong_acquire | Read_RISCV_reserved | Read_RISCV_reserved_acquire | Read_RISCV_reserved_strong_acquire
   deriving Inhabited, BEq
 
-
-
 inductive barrier_kind where | Barrier_RISCV_rw_rw | Barrier_RISCV_r_rw | Barrier_RISCV_r_r | Barrier_RISCV_rw_w | Barrier_RISCV_w_w | Barrier_RISCV_w_rw | Barrier_RISCV_rw_r | Barrier_RISCV_r_w | Barrier_RISCV_w_r | Barrier_RISCV_tso | Barrier_RISCV_i
   deriving Inhabited, BEq
-
-
-
 
 structure RISCV_strong_access where
   variety : Access_variety
@@ -98,8 +78,6 @@ structure RISCV_strong_access where
 
 inductive extension where | Ext_M | Ext_F | Ext_D | Ext_C | Ext_B | Ext_V | Ext_S | Ext_U | Ext_Zicbom | Ext_Zicboz | Ext_Zicntr | Ext_Zicond | Ext_Zifencei | Ext_Zihpm | Ext_Zmmul | Ext_Zaamo | Ext_Zabha | Ext_Zalrsc | Ext_Zfa | Ext_Zfh | Ext_Zfhmin | Ext_Zfinx | Ext_Zdinx | Ext_Zca | Ext_Zcb | Ext_Zcd | Ext_Zcf | Ext_Zba | Ext_Zbb | Ext_Zbc | Ext_Zbkb | Ext_Zbkc | Ext_Zbkx | Ext_Zbs | Ext_Zknd | Ext_Zkne | Ext_Zknh | Ext_Zkr | Ext_Zksed | Ext_Zksh | Ext_Zhinx | Ext_Sscofpmf | Ext_Sstc | Ext_Svinval | Ext_Svnapot | Ext_Svpbmt | Ext_Smcntrpmf
   deriving Inhabited, BEq
-
-
 
 abbrev exc_code := (BitVec 8)
 
@@ -117,28 +95,19 @@ abbrev word := (BitVec 32)
 
 abbrev pagesize_bits : Int := 12
 
-
 inductive regidx where
   | Regidx (_ : (BitVec 5))
   deriving BEq
-
-
-
 
 inductive cregidx where
   | Cregidx (_ : (BitVec 3))
   deriving BEq
 
-
-
 abbrev csreg := (BitVec 12)
-
 
 inductive regno where
   | Regno (_ : Nat)
   deriving BEq
-
-
 
 abbrev opcode := (BitVec 7)
 
@@ -151,8 +120,6 @@ abbrev amo := (BitVec 1)
 inductive Architecture where | RV32 | RV64 | RV128
   deriving Inhabited, BEq
 
-
-
 abbrev arch_xlen := (BitVec 2)
 
 abbrev priv_level := (BitVec 2)
@@ -160,19 +127,13 @@ abbrev priv_level := (BitVec 2)
 inductive Privilege where | User | Supervisor | Machine
   deriving Inhabited, BEq
 
-
-
 /-- Type quantifiers: k_a : Type -/
-
 inductive AccessType (k_a : Type) where
   | Read (_ : k_a)
   | Write (_ : k_a)
   | ReadWrite (_ : (k_a × k_a))
   | Execute (_ : Unit)
   deriving BEq
-
-
-
 
 inductive ExceptionType where
   | E_Fetch_Addr_Align (_ : Unit)
@@ -194,240 +155,144 @@ inductive ExceptionType where
   | E_Extension (_ : ext_exc_type)
   deriving BEq
 
-
-
 inductive amoop where | AMOSWAP | AMOADD | AMOXOR | AMOAND | AMOOR | AMOMIN | AMOMAX | AMOMINU | AMOMAXU
   deriving Inhabited, BEq
-
-
 
 inductive bop where | RISCV_BEQ | RISCV_BNE | RISCV_BLT | RISCV_BGE | RISCV_BLTU | RISCV_BGEU
   deriving Inhabited, BEq
 
-
-
 inductive cbop_zicbom where | CBO_CLEAN | CBO_FLUSH | CBO_INVAL
   deriving Inhabited, BEq
-
-
 
 inductive csrop where | CSRRW | CSRRS | CSRRC
   deriving Inhabited, BEq
 
-
-
 inductive f_bin_f_op_D where | FSGNJ_D | FSGNJN_D | FSGNJX_D | FMIN_D | FMAX_D
   deriving Inhabited, BEq
-
-
 
 inductive f_bin_f_op_H where | FSGNJ_H | FSGNJN_H | FSGNJX_H | FMIN_H | FMAX_H
   deriving Inhabited, BEq
 
-
-
 inductive f_bin_rm_op_D where | FADD_D | FSUB_D | FMUL_D | FDIV_D
   deriving Inhabited, BEq
-
-
 
 inductive f_bin_rm_op_H where | FADD_H | FSUB_H | FMUL_H | FDIV_H
   deriving Inhabited, BEq
 
-
-
 inductive f_bin_rm_op_S where | FADD_S | FSUB_S | FMUL_S | FDIV_S
   deriving Inhabited, BEq
-
-
 
 inductive f_bin_op_f_S where | FSGNJ_S | FSGNJN_S | FSGNJX_S | FMIN_S | FMAX_S
   deriving Inhabited, BEq
 
-
-
 inductive f_bin_op_x_S where | FEQ_S | FLT_S | FLE_S
   deriving Inhabited, BEq
-
-
 
 inductive f_bin_x_op_D where | FEQ_D | FLT_D | FLE_D
   deriving Inhabited, BEq
 
-
-
 inductive f_bin_x_op_H where | FEQ_H | FLT_H | FLE_H
   deriving Inhabited, BEq
-
-
 
 inductive f_madd_op_D where | FMADD_D | FMSUB_D | FNMSUB_D | FNMADD_D
   deriving Inhabited, BEq
 
-
-
 inductive f_madd_op_H where | FMADD_H | FMSUB_H | FNMSUB_H | FNMADD_H
   deriving Inhabited, BEq
-
-
 
 inductive f_madd_op_S where | FMADD_S | FMSUB_S | FNMSUB_S | FNMADD_S
   deriving Inhabited, BEq
 
-
-
 inductive f_un_f_op_D where | FMV_D_X
   deriving Inhabited, BEq
-
-
 
 inductive f_un_f_op_H where | FMV_H_X
   deriving Inhabited, BEq
 
-
-
 inductive f_un_rm_ff_op_D where | FSQRT_D | FCVT_S_D | FCVT_D_S
   deriving Inhabited, BEq
-
-
 
 inductive f_un_rm_ff_op_H where | FSQRT_H | FCVT_H_S | FCVT_H_D | FCVT_S_H | FCVT_D_H
   deriving Inhabited, BEq
 
-
-
 inductive f_un_rm_fx_op_D where | FCVT_W_D | FCVT_WU_D | FCVT_L_D | FCVT_LU_D
   deriving Inhabited, BEq
-
-
 
 inductive f_un_rm_fx_op_H where | FCVT_W_H | FCVT_WU_H | FCVT_L_H | FCVT_LU_H
   deriving Inhabited, BEq
 
-
-
 inductive f_un_rm_fx_op_S where | FCVT_W_S | FCVT_WU_S | FCVT_L_S | FCVT_LU_S
   deriving Inhabited, BEq
-
-
 
 inductive f_un_rm_xf_op_D where | FCVT_D_W | FCVT_D_WU | FCVT_D_L | FCVT_D_LU
   deriving Inhabited, BEq
 
-
-
 inductive f_un_rm_xf_op_H where | FCVT_H_W | FCVT_H_WU | FCVT_H_L | FCVT_H_LU
   deriving Inhabited, BEq
-
-
 
 inductive f_un_rm_xf_op_S where | FCVT_S_W | FCVT_S_WU | FCVT_S_L | FCVT_S_LU
   deriving Inhabited, BEq
 
-
-
 inductive f_un_op_f_S where | FMV_W_X
   deriving Inhabited, BEq
-
-
 
 inductive f_un_op_x_S where | FCLASS_S | FMV_X_W
   deriving Inhabited, BEq
 
-
-
 inductive f_un_x_op_D where | FCLASS_D | FMV_X_D
   deriving Inhabited, BEq
 
-
-
 inductive f_un_x_op_H where | FCLASS_H | FMV_X_H
   deriving Inhabited, BEq
-
-
-
 
 inductive fregidx where
   | Fregidx (_ : (BitVec 5))
   deriving BEq
 
-
-
 inductive rounding_mode where | RM_RNE | RM_RTZ | RM_RDN | RM_RUP | RM_RMM | RM_DYN
   deriving Inhabited, BEq
-
-
 
 inductive fvfmafunct6 where | VF_VMADD | VF_VNMADD | VF_VMSUB | VF_VNMSUB | VF_VMACC | VF_VNMACC | VF_VMSAC | VF_VNMSAC
   deriving Inhabited, BEq
 
-
-
 inductive fvfmfunct6 where | VFM_VMFEQ | VFM_VMFLE | VFM_VMFLT | VFM_VMFNE | VFM_VMFGT | VFM_VMFGE
   deriving Inhabited, BEq
-
-
 
 inductive fvffunct6 where | VF_VADD | VF_VSUB | VF_VMIN | VF_VMAX | VF_VSGNJ | VF_VSGNJN | VF_VSGNJX | VF_VDIV | VF_VRDIV | VF_VMUL | VF_VRSUB | VF_VSLIDE1UP | VF_VSLIDE1DOWN
   deriving Inhabited, BEq
 
-
-
 inductive fvvmafunct6 where | FVV_VMADD | FVV_VNMADD | FVV_VMSUB | FVV_VNMSUB | FVV_VMACC | FVV_VNMACC | FVV_VMSAC | FVV_VNMSAC
   deriving Inhabited, BEq
-
-
 
 inductive fvvmfunct6 where | FVVM_VMFEQ | FVVM_VMFLE | FVVM_VMFLT | FVVM_VMFNE
   deriving Inhabited, BEq
 
-
-
 inductive fvvfunct6 where | FVV_VADD | FVV_VSUB | FVV_VMIN | FVV_VMAX | FVV_VSGNJ | FVV_VSGNJN | FVV_VSGNJX | FVV_VDIV | FVV_VMUL
   deriving Inhabited, BEq
-
-
 
 inductive fwffunct6 where | FWF_VADD | FWF_VSUB
   deriving Inhabited, BEq
 
-
-
 inductive fwvfmafunct6 where | FWVF_VMACC | FWVF_VNMACC | FWVF_VMSAC | FWVF_VNMSAC
   deriving Inhabited, BEq
-
-
 
 inductive fwvffunct6 where | FWVF_VADD | FWVF_VSUB | FWVF_VMUL
   deriving Inhabited, BEq
 
-
-
 inductive fwvfunct6 where | FWV_VADD | FWV_VSUB
   deriving Inhabited, BEq
-
-
 
 inductive fwvvmafunct6 where | FWVV_VMACC | FWVV_VNMACC | FWVV_VMSAC | FWVV_VNMSAC
   deriving Inhabited, BEq
 
-
-
 inductive fwvvfunct6 where | FWVV_VADD | FWVV_VSUB | FWVV_VMUL
   deriving Inhabited, BEq
-
-
 
 inductive iop where | RISCV_ADDI | RISCV_SLTI | RISCV_SLTIU | RISCV_XORI | RISCV_ORI | RISCV_ANDI
   deriving Inhabited, BEq
 
-
-
 inductive mmfunct6 where | MM_VMAND | MM_VMNAND | MM_VMANDN | MM_VMXOR | MM_VMOR | MM_VMNOR | MM_VMORN | MM_VMXNOR
   deriving Inhabited, BEq
-
-
-
 
 structure mul_op where
   high : Bool
@@ -438,315 +303,189 @@ structure mul_op where
 inductive mvvmafunct6 where | MVV_VMACC | MVV_VNMSAC | MVV_VMADD | MVV_VNMSUB
   deriving Inhabited, BEq
 
-
-
 inductive mvvfunct6 where | MVV_VAADDU | MVV_VAADD | MVV_VASUBU | MVV_VASUB | MVV_VMUL | MVV_VMULH | MVV_VMULHU | MVV_VMULHSU | MVV_VDIVU | MVV_VDIV | MVV_VREMU | MVV_VREM
   deriving Inhabited, BEq
-
-
 
 inductive mvxmafunct6 where | MVX_VMACC | MVX_VNMSAC | MVX_VMADD | MVX_VNMSUB
   deriving Inhabited, BEq
 
-
-
 inductive mvxfunct6 where | MVX_VAADDU | MVX_VAADD | MVX_VASUBU | MVX_VASUB | MVX_VSLIDE1UP | MVX_VSLIDE1DOWN | MVX_VMUL | MVX_VMULH | MVX_VMULHU | MVX_VMULHSU | MVX_VDIVU | MVX_VDIV | MVX_VREMU | MVX_VREM
   deriving Inhabited, BEq
-
-
 
 inductive nisfunct6 where | NIS_VNSRL | NIS_VNSRA
   deriving Inhabited, BEq
 
-
-
 inductive nifunct6 where | NI_VNCLIPU | NI_VNCLIP
   deriving Inhabited, BEq
-
-
 
 inductive nvsfunct6 where | NVS_VNSRL | NVS_VNSRA
   deriving Inhabited, BEq
 
-
-
 inductive nvfunct6 where | NV_VNCLIPU | NV_VNCLIP
   deriving Inhabited, BEq
-
-
 
 inductive nxsfunct6 where | NXS_VNSRL | NXS_VNSRA
   deriving Inhabited, BEq
 
-
-
 inductive nxfunct6 where | NX_VNCLIPU | NX_VNCLIP
   deriving Inhabited, BEq
-
-
 
 inductive rfvvfunct6 where | FVV_VFREDOSUM | FVV_VFREDUSUM | FVV_VFREDMAX | FVV_VFREDMIN | FVV_VFWREDOSUM | FVV_VFWREDUSUM
   deriving Inhabited, BEq
 
-
-
 inductive rivvfunct6 where | IVV_VWREDSUMU | IVV_VWREDSUM
   deriving Inhabited, BEq
-
-
 
 inductive rmvvfunct6 where | MVV_VREDSUM | MVV_VREDAND | MVV_VREDOR | MVV_VREDXOR | MVV_VREDMINU | MVV_VREDMIN | MVV_VREDMAXU | MVV_VREDMAX
   deriving Inhabited, BEq
 
-
-
 inductive rop where | RISCV_ADD | RISCV_SUB | RISCV_SLL | RISCV_SLT | RISCV_SLTU | RISCV_XOR | RISCV_SRL | RISCV_SRA | RISCV_OR | RISCV_AND
   deriving Inhabited, BEq
-
-
 
 inductive ropw where | RISCV_ADDW | RISCV_SUBW | RISCV_SLLW | RISCV_SRLW | RISCV_SRAW
   deriving Inhabited, BEq
 
-
-
 inductive sop where | RISCV_SLLI | RISCV_SRLI | RISCV_SRAI
   deriving Inhabited, BEq
-
-
 
 inductive sopw where | RISCV_SLLIW | RISCV_SRLIW | RISCV_SRAIW
   deriving Inhabited, BEq
 
-
-
 inductive word_width where | BYTE | HALF | WORD | DOUBLE
   deriving Inhabited, BEq
-
-
 
 inductive uop where | RISCV_LUI | RISCV_AUIPC
   deriving Inhabited, BEq
 
-
-
 inductive vext2funct6 where | VEXT2_ZVF2 | VEXT2_SVF2
   deriving Inhabited, BEq
-
-
 
 inductive vext4funct6 where | VEXT4_ZVF4 | VEXT4_SVF4
   deriving Inhabited, BEq
 
-
-
 inductive vext8funct6 where | VEXT8_ZVF8 | VEXT8_SVF8
   deriving Inhabited, BEq
-
-
 
 inductive vfnunary0 where | FNV_CVT_XU_F | FNV_CVT_X_F | FNV_CVT_F_XU | FNV_CVT_F_X | FNV_CVT_F_F | FNV_CVT_ROD_F_F | FNV_CVT_RTZ_XU_F | FNV_CVT_RTZ_X_F
   deriving Inhabited, BEq
 
-
-
 inductive vfunary0 where | FV_CVT_XU_F | FV_CVT_X_F | FV_CVT_F_XU | FV_CVT_F_X | FV_CVT_RTZ_XU_F | FV_CVT_RTZ_X_F
   deriving Inhabited, BEq
-
-
 
 inductive vfunary1 where | FVV_VSQRT | FVV_VRSQRT7 | FVV_VREC7 | FVV_VCLASS
   deriving Inhabited, BEq
 
-
-
 inductive vfwunary0 where | FWV_CVT_XU_F | FWV_CVT_X_F | FWV_CVT_F_XU | FWV_CVT_F_X | FWV_CVT_F_F | FWV_CVT_RTZ_XU_F | FWV_CVT_RTZ_X_F
   deriving Inhabited, BEq
-
-
 
 inductive vicmpfunct6 where | VICMP_VMSEQ | VICMP_VMSNE | VICMP_VMSLEU | VICMP_VMSLE | VICMP_VMSGTU | VICMP_VMSGT
   deriving Inhabited, BEq
 
-
-
 inductive vimcfunct6 where | VIMC_VMADC
   deriving Inhabited, BEq
-
-
 
 inductive vimsfunct6 where | VIMS_VADC
   deriving Inhabited, BEq
 
-
-
 inductive vimfunct6 where | VIM_VMADC
   deriving Inhabited, BEq
-
-
 
 inductive visgfunct6 where | VI_VSLIDEUP | VI_VSLIDEDOWN | VI_VRGATHER
   deriving Inhabited, BEq
 
-
-
 inductive vifunct6 where | VI_VADD | VI_VRSUB | VI_VAND | VI_VOR | VI_VXOR | VI_VSADDU | VI_VSADD | VI_VSLL | VI_VSRL | VI_VSRA | VI_VSSRL | VI_VSSRA
   deriving Inhabited, BEq
-
-
 
 inductive vlewidth where | VLE8 | VLE16 | VLE32 | VLE64
   deriving Inhabited, BEq
 
-
-
 inductive vmlsop where | VLM | VSM
   deriving Inhabited, BEq
-
-
-
 
 inductive vregidx where
   | Vregidx (_ : (BitVec 5))
   deriving BEq
 
-
-
 inductive vvcmpfunct6 where | VVCMP_VMSEQ | VVCMP_VMSNE | VVCMP_VMSLTU | VVCMP_VMSLT | VVCMP_VMSLEU | VVCMP_VMSLE
   deriving Inhabited, BEq
-
-
 
 inductive vvmcfunct6 where | VVMC_VMADC | VVMC_VMSBC
   deriving Inhabited, BEq
 
-
-
 inductive vvmsfunct6 where | VVMS_VADC | VVMS_VSBC
   deriving Inhabited, BEq
-
-
 
 inductive vvmfunct6 where | VVM_VMADC | VVM_VMSBC
   deriving Inhabited, BEq
 
-
-
 inductive vvfunct6 where | VV_VADD | VV_VSUB | VV_VMINU | VV_VMIN | VV_VMAXU | VV_VMAX | VV_VAND | VV_VOR | VV_VXOR | VV_VRGATHER | VV_VRGATHEREI16 | VV_VSADDU | VV_VSADD | VV_VSSUBU | VV_VSSUB | VV_VSLL | VV_VSMUL | VV_VSRL | VV_VSRA | VV_VSSRL | VV_VSSRA
   deriving Inhabited, BEq
-
-
 
 inductive vxcmpfunct6 where | VXCMP_VMSEQ | VXCMP_VMSNE | VXCMP_VMSLTU | VXCMP_VMSLT | VXCMP_VMSLEU | VXCMP_VMSLE | VXCMP_VMSGTU | VXCMP_VMSGT
   deriving Inhabited, BEq
 
-
-
 inductive vxmcfunct6 where | VXMC_VMADC | VXMC_VMSBC
   deriving Inhabited, BEq
-
-
 
 inductive vxmsfunct6 where | VXMS_VADC | VXMS_VSBC
   deriving Inhabited, BEq
 
-
-
 inductive vxmfunct6 where | VXM_VMADC | VXM_VMSBC
   deriving Inhabited, BEq
-
-
 
 inductive vxsgfunct6 where | VX_VSLIDEUP | VX_VSLIDEDOWN | VX_VRGATHER
   deriving Inhabited, BEq
 
-
-
 inductive vxfunct6 where | VX_VADD | VX_VSUB | VX_VRSUB | VX_VMINU | VX_VMIN | VX_VMAXU | VX_VMAX | VX_VAND | VX_VOR | VX_VXOR | VX_VSADDU | VX_VSADD | VX_VSSUBU | VX_VSSUB | VX_VSLL | VX_VSMUL | VX_VSRL | VX_VSRA | VX_VSSRL | VX_VSSRA
   deriving Inhabited, BEq
-
-
 
 inductive wmvvfunct6 where | WMVV_VWMACCU | WMVV_VWMACC | WMVV_VWMACCSU
   deriving Inhabited, BEq
 
-
-
 inductive wmvxfunct6 where | WMVX_VWMACCU | WMVX_VWMACC | WMVX_VWMACCUS | WMVX_VWMACCSU
   deriving Inhabited, BEq
-
-
 
 inductive wvfunct6 where | WV_VADD | WV_VSUB | WV_VADDU | WV_VSUBU
   deriving Inhabited, BEq
 
-
-
 inductive wvvfunct6 where | WVV_VADD | WVV_VSUB | WVV_VADDU | WVV_VSUBU | WVV_VWMUL | WVV_VWMULU | WVV_VWMULSU
   deriving Inhabited, BEq
-
-
 
 inductive wvxfunct6 where | WVX_VADD | WVX_VSUB | WVX_VADDU | WVX_VSUBU | WVX_VWMUL | WVX_VWMULU | WVX_VWMULSU
   deriving Inhabited, BEq
 
-
-
 inductive wxfunct6 where | WX_VADD | WX_VSUB | WX_VADDU | WX_VSUBU
   deriving Inhabited, BEq
-
-
 
 inductive brop_zba where | RISCV_SH1ADD | RISCV_SH2ADD | RISCV_SH3ADD
   deriving Inhabited, BEq
 
-
-
 inductive bropw_zba where | RISCV_ADDUW | RISCV_SH1ADDUW | RISCV_SH2ADDUW | RISCV_SH3ADDUW
   deriving Inhabited, BEq
-
-
 
 inductive extop_zbb where | RISCV_SEXTB | RISCV_SEXTH | RISCV_ZEXTH
   deriving Inhabited, BEq
 
-
-
 inductive brop_zbb where | RISCV_ANDN | RISCV_ORN | RISCV_XNOR | RISCV_MAX | RISCV_MAXU | RISCV_MIN | RISCV_MINU | RISCV_ROL | RISCV_ROR
   deriving Inhabited, BEq
-
-
 
 inductive bropw_zbb where | RISCV_ROLW | RISCV_RORW
   deriving Inhabited, BEq
 
-
-
 inductive brop_zbkb where | RISCV_PACK | RISCV_PACKH
   deriving Inhabited, BEq
-
-
 
 inductive biop_zbs where | RISCV_BCLRI | RISCV_BEXTI | RISCV_BINVI | RISCV_BSETI
   deriving Inhabited, BEq
 
-
-
 inductive brop_zbs where | RISCV_BCLR | RISCV_BEXT | RISCV_BINV | RISCV_BSET
   deriving Inhabited, BEq
-
-
 
 inductive zicondop where | RISCV_CZERO_EQZ | RISCV_CZERO_NEZ
   deriving Inhabited, BEq
 
-
-
 inductive f_un_rm_ff_op_S where | FSQRT_S
   deriving Inhabited, BEq
-
-
-
 
 inductive ast where
   | ILLEGAL (_ : word)
@@ -1057,9 +796,6 @@ inductive ast where
   | RISCV_ZICBOZ (_ : regidx)
   deriving BEq
 
-
-
-
 inductive PTW_Error where
   | PTW_Invalid_Addr (_ : Unit)
   | PTW_Access (_ : Unit)
@@ -1070,38 +806,26 @@ inductive PTW_Error where
   | PTW_Ext_Error (_ : ext_ptw_error)
   deriving BEq
 
-
-
 inductive Retired where | RETIRE_SUCCESS | RETIRE_FAIL
   deriving Inhabited, BEq
 
-
-
 inductive InterruptType where | I_U_Software | I_S_Software | I_M_Software | I_U_Timer | I_S_Timer | I_M_Timer | I_U_External | I_S_External | I_M_External
   deriving Inhabited, BEq
-
-
 
 abbrev tv_mode := (BitVec 2)
 
 inductive TrapVectorMode where | TV_Direct | TV_Vector | TV_Reserved
   deriving Inhabited, BEq
 
-
-
 abbrev ext_status := (BitVec 2)
 
 inductive ExtStatus where | Off | Initial | Clean | Dirty
   deriving Inhabited, BEq
 
-
-
 abbrev satp_mode := (BitVec 4)
 
 inductive SATPMode where | Bare | Sv32 | Sv39 | Sv48 | Sv57
   deriving Inhabited, BEq
-
-
 
 abbrev csrRW := (BitVec 2)
 
@@ -1154,12 +878,8 @@ abbrev Vtype := (BitVec (2 ^ 3 * 8))
 inductive agtype where | UNDISTURBED | AGNOSTIC
   deriving Inhabited, BEq
 
-
-
 inductive PmpAddrMatchType where | OFF | TOR | NA4 | NAPOT
   deriving Inhabited, BEq
-
-
 
 abbrev Pmpcfg_ent := (BitVec 8)
 
@@ -1168,47 +888,31 @@ abbrev pmp_addr_range_in_words := (Option (xlenbits × xlenbits))
 inductive pmpAddrMatch where | PMP_NoMatch | PMP_PartialMatch | PMP_Match
   deriving Inhabited, BEq
 
-
-
 inductive pmpMatch where | PMP_Success | PMP_Continue | PMP_Fail
   deriving Inhabited, BEq
 
-
-
 /-- Type quantifiers: k_a : Type -/
-
 inductive Ext_FetchAddr_Check (k_a : Type) where
   | Ext_FetchAddr_OK (_ : virtaddr)
   | Ext_FetchAddr_Error (_ : k_a)
   deriving BEq
 
-
-
 /-- Type quantifiers: k_a : Type -/
-
 inductive Ext_ControlAddr_Check (k_a : Type) where
   | Ext_ControlAddr_OK (_ : virtaddr)
   | Ext_ControlAddr_Error (_ : k_a)
   deriving BEq
 
-
-
 /-- Type quantifiers: k_a : Type -/
-
 inductive Ext_DataAddr_Check (k_a : Type) where
   | Ext_DataAddr_OK (_ : virtaddr)
   | Ext_DataAddr_Error (_ : k_a)
   deriving BEq
 
-
-
-
 inductive Ext_PhysAddr_Check where
   | Ext_PhysAddr_OK (_ : Unit)
   | Ext_PhysAddr_Error (_ : ExceptionType)
   deriving BEq
-
-
 
 abbrev ext_fetch_addr_error := Unit
 
@@ -1223,19 +927,13 @@ abbrev vregtype := vreglenbits
 inductive maskfunct3 where | VV_VMERGE | VI_VMERGE | VX_VMERGE
   deriving Inhabited, BEq
 
-
-
-
 inductive vregno where
   | Vregno (_ : Nat)
   deriving BEq
 
-
-
 abbrev Vcsr := (BitVec 3)
 
 abbrev ext_exception := Unit
-
 
 structure sync_exception where
   trap : ExceptionType
@@ -1249,8 +947,6 @@ abbrev hpmidx := Nat
 
 inductive seed_opst where | BIST | ES16 | WAIT | DEAD
   deriving Inhabited, BEq
-
-
 
 abbrev bits_rm := (BitVec 3)
 
@@ -1270,25 +966,19 @@ abbrev bits_L := (BitVec 64)
 
 abbrev bits_LU := (BitVec 64)
 
-
 inductive fregno where
   | Fregno (_ : Nat)
   deriving BEq
 
-
-
 abbrev Fcsr := (BitVec 32)
 
 abbrev CountSmcntrpmf := (BitVec 64)
-
 
 inductive ctl_result where
   | CTL_TRAP (_ : sync_exception)
   | CTL_SRET (_ : Unit)
   | CTL_MRET (_ : Unit)
   deriving BEq
-
-
 
 abbrev MemoryOpResult k_a := (Result k_a ExceptionType)
 
@@ -1302,18 +992,14 @@ abbrev PTE_Ext := (BitVec 10)
 
 abbrev PTE_Flags := (BitVec 8)
 
-
 inductive PTE_Check where
   | PTE_Check_Success (_ : ext_ptw)
   | PTE_Check_Failure (_ : (ext_ptw × ext_ptw_fail))
   deriving BEq
 
-
-
 abbrev tlb_vpn_bits : Int := (57 - 12)
 
 abbrev tlb_ppn_bits : Int := 44
-
 
 structure TLB_Entry where
   asid : asidbits
@@ -1330,7 +1016,6 @@ abbrev num_tlb_entries : Int := 64
 abbrev tlb_index_range := Nat
 
 /-- Type quantifiers: k_v : Int, is_sv_mode(k_v) -/
-
 structure PTW_Output (k_v : Nat) where
   ppn : (ppn_bits k_v)
   pte : (pte_bits k_v)
@@ -1340,23 +1025,16 @@ structure PTW_Output (k_v : Nat) where
   deriving BEq
 
 /-- Type quantifiers: k_v : Int, is_sv_mode(k_v) -/
-
 inductive PTW_Result (k_v : Nat) where
   | PTW_Success (_ : ((PTW_Output k_v) × ext_ptw))
   | PTW_Failure (_ : (PTW_Error × ext_ptw))
   deriving BEq
 
-
-
 /-- Type quantifiers: k_paddr : Type, k_failure : Type -/
-
 inductive TR_Result (k_paddr : Type) (k_failure : Type) where
   | TR_Address (_ : (k_paddr × ext_ptw))
   | TR_Failure (_ : (k_failure × ext_ptw))
   deriving BEq
-
-
-
 
 inductive FetchResult where
   | F_Ext_Error (_ : ext_fetch_addr_error)
@@ -1364,8 +1042,6 @@ inductive FetchResult where
   | F_RVC (_ : half)
   | F_Error (_ : (ExceptionType × xlenbits))
   deriving BEq
-
-
 
 inductive Register : Type where
   | satp
