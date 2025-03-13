@@ -9,7 +9,7 @@ trace: .> LEAN_PATH=././.lake/build/lib LD_LIBRARY_PATH= /home/runner/.elan/tool
 error: ././././LeanRV64DLEAN.lean:22408:50: failed to synthesize
   Inhabited fregidx
 Additional diagnostic information may be available using the `set_option diagnostics true` command.
-error: ././././LeanRV64DLEAN.lean:105637:10: application type mismatch
+error: ././././LeanRV64DLEAN.lean:105606:10: application type mismatch
   pure loop_vars
 argument
   loop_vars
@@ -17,7 +17,7 @@ has type
   Int × Int : Type
 but is expected to have type
   Unit × Int × Int : Type
-error: ././././LeanRV64DLEAN.lean:105608:6: invalid reassignment, value has type
+error: ././././LeanRV64DLEAN.lean:105577:6: invalid reassignment, value has type
   Unit × Int × Int : Type
 but is expected to have type
   Int × Int : Type
