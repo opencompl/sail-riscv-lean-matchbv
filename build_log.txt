@@ -1,26 +1,9 @@
 ✔ [2/9] Built LeanRV64DLEAN.Sail.IntRange
 ✔ [3/9] Built LeanRV64DLEAN.Sail.BitVec
 ✔ [4/9] Built LeanRV64DLEAN.Sail.Sail
-✔ [5/9] Built LeanRV64DLEAN.Defs
-✔ [6/9] Built LeanRV64DLEAN.RiscvExtras
-✔ [7/9] Built LeanRV64DLEAN.Specialization
-✖ [8/9] Building LeanRV64DLEAN
-trace: .> LEAN_PATH=././.lake/build/lib LD_LIBRARY_PATH= /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-02-05/bin/lean --tstack=400000 ././././LeanRV64DLEAN.lean -R ./././. -o ././.lake/build/lib/LeanRV64DLEAN.olean -i ././.lake/build/lib/LeanRV64DLEAN.ilean -c ././.lake/build/ir/LeanRV64DLEAN.c --json
-error: ././././LeanRV64DLEAN.lean:22408:50: failed to synthesize
-  Inhabited fregidx
-Additional diagnostic information may be available using the `set_option diagnostics true` command.
-error: ././././LeanRV64DLEAN.lean:105606:10: application type mismatch
-  pure loop_vars
-argument
-  loop_vars
-has type
-  Int × Int : Type
-but is expected to have type
-  Unit × Int × Int : Type
-error: ././././LeanRV64DLEAN.lean:105577:6: invalid reassignment, value has type
-  Unit × Int × Int : Type
-but is expected to have type
-  Int × Int : Type
+✖ [5/9] Building LeanRV64DLEAN.Defs
+trace: .> LEAN_PATH=././.lake/build/lib LD_LIBRARY_PATH= /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-02-05/bin/lean --tstack=400000 ././././LeanRV64DLEAN/Defs.lean -R ./././. -o ././.lake/build/lib/LeanRV64DLEAN/Defs.olean -i ././.lake/build/lib/LeanRV64DLEAN/Defs.ilean -c ././.lake/build/ir/LeanRV64DLEAN/Defs.c --json
+error: ././././LeanRV64DLEAN/Defs.lean:77:11: failed to generate 'Inhabited' instance for 'RISCV_strong_access'
 error: Lean exited with code 1
 Some required builds logged failures:
-- LeanRV64DLEAN
+- LeanRV64DLEAN.Defs

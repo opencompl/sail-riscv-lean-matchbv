@@ -15,12 +15,10 @@ Abbreviations: 0
 
 # Warnings and Errors
 
-Errors found: 4  
+Errors found: 2  
 Warnings found: 0  
 
 ## Error Classes
 
-- 1x invalid reassignment, value has type
-- 1x failed to synthesize
-- 1x application type mismatch
+- 1x failed to generate 'Inhabited' instance for 'RISCV_strong_access'
 - 1x Lean exited with code 1
