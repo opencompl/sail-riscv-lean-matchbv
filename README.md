@@ -15,12 +15,11 @@ Abbreviations: 0
 
 # Warnings and Errors
 
-Errors found: 70  
+Errors found: 3  
 Warnings found: 0  
 
 ## Error Classes
 
-- 67x ambiguous, possible interpretations 
 - 1x invalid reassignment, value has type
 - 1x application type mismatch
 - 1x Lean exited with code 1
