@@ -10,7 +10,7 @@ error: ././././LeanRV64DLEAN.lean:12709:13: ambiguous, possible interpretations
   _root_.print_endline ("x" ++ ((↑r).repr ++ (" <- " ++ RegStr v))) : Unit
   
   Sail.print_endline ("x" ++ ((↑r).repr ++ (" <- " ++ RegStr v))) : Unit
-error: ././././LeanRV64DLEAN.lean:17021:11: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:17047:11: ambiguous, possible interpretations 
   _root_.print_endline
     ("v" ++
       ((↑r).repr ++
@@ -20,11 +20,11 @@ error: ././././LeanRV64DLEAN.lean:17021:11: ambiguous, possible interpretations
     ("v" ++
       ((↑r).repr ++
         (" <- " ++ BitVec.toFormatted (Sail.BitVec.extractLsb v ((fun x y => x - y) VLEN 1).toNat 0)))) : Unit
-error: ././././LeanRV64DLEAN.lean:18173:11: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:18199:11: ambiguous, possible interpretations 
   _root_.print_endline ("f" ++ ((↑r).repr ++ (" <- " ++ FRegStr v))) : Unit
   
   Sail.print_endline ("f" ++ ((↑r).repr ++ (" <- " ++ FRegStr v))) : Unit
-error: ././././LeanRV64DLEAN.lean:19245:7: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19271:7: ambiguous, possible interpretations 
   _root_.print_endline
     ("handling " ++
       ((if intr = true then "int#" else "exc#") ++
@@ -36,15 +36,15 @@ error: ././././LeanRV64DLEAN.lean:19245:7: ambiguous, possible interpretations
       ((if intr = true then "int#" else "exc#") ++
         (BitVec.toFormatted c ++
           (" at priv " ++ (privLevel_to_str del_priv ++ (" with tval " ++ BitVec.toFormatted (tval info))))))) : Unit
-error: ././././LeanRV64DLEAN.lean:19273:13: ambiguous, possible interpretations 
-  _root_.print_endline ("CSR mstatus <- " ++ BitVec.toFormatted __do_lift✝) : Unit
-  
-  Sail.print_endline ("CSR mstatus <- " ++ BitVec.toFormatted __do_lift✝) : Unit
 error: ././././LeanRV64DLEAN.lean:19299:13: ambiguous, possible interpretations 
   _root_.print_endline ("CSR mstatus <- " ++ BitVec.toFormatted __do_lift✝) : Unit
   
   Sail.print_endline ("CSR mstatus <- " ++ BitVec.toFormatted __do_lift✝) : Unit
-error: ././././LeanRV64DLEAN.lean:19312:9: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19325:13: ambiguous, possible interpretations 
+  _root_.print_endline ("CSR mstatus <- " ++ BitVec.toFormatted __do_lift✝) : Unit
+  
+  Sail.print_endline ("CSR mstatus <- " ++ BitVec.toFormatted __do_lift✝) : Unit
+error: ././././LeanRV64DLEAN.lean:19338:9: ambiguous, possible interpretations 
   _root_.print_endline
     ("trapping from " ++
       (privLevel_to_str cur_priv ++
@@ -54,25 +54,25 @@ error: ././././LeanRV64DLEAN.lean:19312:9: ambiguous, possible interpretations
     ("trapping from " ++
       (privLevel_to_str cur_priv ++
         (" to " ++ (privLevel_to_str del_priv ++ (" to handle " ++ exceptionType_to_str e.trap))))) : Unit
-error: ././././LeanRV64DLEAN.lean:19338:13: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19364:13: ambiguous, possible interpretations 
   _root_.print_endline ("CSR mstatus <- " ++ BitVec.toFormatted __do_lift✝) : Unit
   
   Sail.print_endline ("CSR mstatus <- " ++ BitVec.toFormatted __do_lift✝) : Unit
-error: ././././LeanRV64DLEAN.lean:19343:13: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19369:13: ambiguous, possible interpretations 
   _root_.print_endline
     ("ret-ing from " ++ (privLevel_to_str prev_priv ++ (" to " ++ privLevel_to_str __do_lift✝))) : Unit
   
   Sail.print_endline ("ret-ing from " ++ (privLevel_to_str prev_priv ++ (" to " ++ privLevel_to_str __do_lift✝))) : Unit
-error: ././././LeanRV64DLEAN.lean:19365:13: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19391:13: ambiguous, possible interpretations 
   _root_.print_endline ("CSR mstatus <- " ++ BitVec.toFormatted __do_lift✝) : Unit
   
   Sail.print_endline ("CSR mstatus <- " ++ BitVec.toFormatted __do_lift✝) : Unit
-error: ././././LeanRV64DLEAN.lean:19370:13: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19396:13: ambiguous, possible interpretations 
   _root_.print_endline
     ("ret-ing from " ++ (privLevel_to_str prev_priv ++ (" to " ++ privLevel_to_str __do_lift✝))) : Unit
   
   Sail.print_endline ("ret-ing from " ++ (privLevel_to_str prev_priv ++ (" to " ++ privLevel_to_str __do_lift✝))) : Unit
-error: ././././LeanRV64DLEAN.lean:19440:11: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19466:11: ambiguous, possible interpretations 
   _root_.print_endline
     ("CSR mstatus <- " ++
       (BitVec.toFormatted __do_lift✝ ++ (" (input: " ++ (BitVec.toFormatted zeros_implicit ++ ")")))) : Unit
@@ -80,33 +80,33 @@ error: ././././LeanRV64DLEAN.lean:19440:11: ambiguous, possible interpretations
   Sail.print_endline
     ("CSR mstatus <- " ++
       (BitVec.toFormatted __do_lift✝ ++ (" (input: " ++ (BitVec.toFormatted zeros_implicit ++ ")")))) : Unit
-error: ././././LeanRV64DLEAN.lean:19480:9: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19506:9: ambiguous, possible interpretations 
   _root_.print_endline ("within_phys_mem: " ++ (BitVec.toFormatted addr ++ " not within phys-mem:")) : Unit
   
   Sail.print_endline ("within_phys_mem: " ++ (BitVec.toFormatted addr ++ " not within phys-mem:")) : Unit
-error: ././././LeanRV64DLEAN.lean:19484:9: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19510:9: ambiguous, possible interpretations 
   _root_.print_endline ("  plat_rom_base: " ++ BitVec.toFormatted (plat_rom_base ())) : Unit
   
   Sail.print_endline ("  plat_rom_base: " ++ BitVec.toFormatted (plat_rom_base ())) : Unit
-error: ././././LeanRV64DLEAN.lean:19486:9: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19512:9: ambiguous, possible interpretations 
   _root_.print_endline ("  plat_rom_size: " ++ BitVec.toFormatted (plat_rom_size ())) : Unit
   
   Sail.print_endline ("  plat_rom_size: " ++ BitVec.toFormatted (plat_rom_size ())) : Unit
-error: ././././LeanRV64DLEAN.lean:19488:9: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19514:9: ambiguous, possible interpretations 
   _root_.print_endline ("  plat_ram_base: " ++ BitVec.toFormatted (plat_ram_base ())) : Unit
   
   Sail.print_endline ("  plat_ram_base: " ++ BitVec.toFormatted (plat_ram_base ())) : Unit
-error: ././././LeanRV64DLEAN.lean:19490:9: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19516:9: ambiguous, possible interpretations 
   _root_.print_endline ("  plat_ram_size: " ++ BitVec.toFormatted (plat_ram_size ())) : Unit
   
   Sail.print_endline ("  plat_ram_size: " ++ BitVec.toFormatted (plat_ram_size ())) : Unit
-error: ././././LeanRV64DLEAN.lean:19532:13: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19558:13: ambiguous, possible interpretations 
   _root_.print_endline
     ("clint[" ++ (BitVec.toFormatted addr ++ ("] -> " ++ BitVec.toFormatted (_get_Minterrupts_MSI __do_lift✝)))) : Unit
   
   Sail.print_endline
     ("clint[" ++ (BitVec.toFormatted addr ++ ("] -> " ++ BitVec.toFormatted (_get_Minterrupts_MSI __do_lift✝)))) : Unit
-error: ././././LeanRV64DLEAN.lean:19543:15: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19569:15: ambiguous, possible interpretations 
   _root_.print_endline
     ("clint<4>[" ++
       (BitVec.toFormatted addr ++ ("] -> " ++ BitVec.toFormatted (Sail.BitVec.extractLsb __do_lift✝ 31 0)))) : Unit
@@ -114,11 +114,11 @@ error: ././././LeanRV64DLEAN.lean:19543:15: ambiguous, possible interpretations
   Sail.print_endline
     ("clint<4>[" ++
       (BitVec.toFormatted addr ++ ("] -> " ++ BitVec.toFormatted (Sail.BitVec.extractLsb __do_lift✝ 31 0)))) : Unit
-error: ././././LeanRV64DLEAN.lean:19555:17: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19581:17: ambiguous, possible interpretations 
   _root_.print_endline ("clint<8>[" ++ (BitVec.toFormatted addr ++ ("] -> " ++ BitVec.toFormatted __do_lift✝))) : Unit
   
   Sail.print_endline ("clint<8>[" ++ (BitVec.toFormatted addr ++ ("] -> " ++ BitVec.toFormatted __do_lift✝))) : Unit
-error: ././././LeanRV64DLEAN.lean:19566:19: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19592:19: ambiguous, possible interpretations 
   _root_.print_endline
     ("clint-hi<4>[" ++
       (BitVec.toFormatted addr ++ ("] -> " ++ BitVec.toFormatted (Sail.BitVec.extractLsb __do_lift✝ 63 32)))) : Unit
@@ -126,23 +126,23 @@ error: ././././LeanRV64DLEAN.lean:19566:19: ambiguous, possible interpretations
   Sail.print_endline
     ("clint-hi<4>[" ++
       (BitVec.toFormatted addr ++ ("] -> " ++ BitVec.toFormatted (Sail.BitVec.extractLsb __do_lift✝ 63 32)))) : Unit
-error: ././././LeanRV64DLEAN.lean:19578:21: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19604:21: ambiguous, possible interpretations 
   _root_.print_endline ("clint[" ++ (BitVec.toFormatted addr ++ ("] -> " ++ BitVec.toFormatted __do_lift✝))) : Unit
   
   Sail.print_endline ("clint[" ++ (BitVec.toFormatted addr ++ ("] -> " ++ BitVec.toFormatted __do_lift✝))) : Unit
-error: ././././LeanRV64DLEAN.lean:19589:23: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19615:23: ambiguous, possible interpretations 
   _root_.print_endline ("clint[" ++ (BitVec.toFormatted addr ++ ("] -> " ++ BitVec.toFormatted __do_lift✝))) : Unit
   
   Sail.print_endline ("clint[" ++ (BitVec.toFormatted addr ++ ("] -> " ++ BitVec.toFormatted __do_lift✝))) : Unit
-error: ././././LeanRV64DLEAN.lean:19600:25: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19626:25: ambiguous, possible interpretations 
   _root_.print_endline ("clint[" ++ (BitVec.toFormatted addr ++ ("] -> " ++ BitVec.toFormatted __do_lift✝))) : Unit
   
   Sail.print_endline ("clint[" ++ (BitVec.toFormatted addr ++ ("] -> " ++ BitVec.toFormatted __do_lift✝))) : Unit
-error: ././././LeanRV64DLEAN.lean:19610:21: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19636:21: ambiguous, possible interpretations 
   _root_.print_endline ("clint[" ++ (BitVec.toFormatted addr ++ "] -> <not-mapped>")) : Unit
   
   Sail.print_endline ("clint[" ++ (BitVec.toFormatted addr ++ "] -> <not-mapped>")) : Unit
-error: ././././LeanRV64DLEAN.lean:19629:11: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19655:11: ambiguous, possible interpretations 
   _root_.print_endline
     ("clint mtime " ++
       (BitVec.toFormatted __do_lift✝² ++
@@ -152,7 +152,7 @@ error: ././././LeanRV64DLEAN.lean:19629:11: ambiguous, possible interpretations
     ("clint mtime " ++
       (BitVec.toFormatted __do_lift✝² ++
         (" (mip.MTI <- " ++ (BitVec.toFormatted (_get_Minterrupts_MTI __do_lift✝¹) ++ (__do_lift✝ ++ ")"))))) : Unit
-error: ././././LeanRV64DLEAN.lean:19651:13: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19677:13: ambiguous, possible interpretations 
   _root_.print_endline
     ("clint[" ++
       (BitVec.toFormatted addr ++
@@ -162,77 +162,77 @@ error: ././././LeanRV64DLEAN.lean:19651:13: ambiguous, possible interpretations
     ("clint[" ++
       (BitVec.toFormatted addr ++
         ("] <- " ++ (BitVec.toFormatted data ++ (" (mip.MSI <- " ++ (__do_lift✝ ++ ")")))))) : Unit
-error: ././././LeanRV64DLEAN.lean:19669:11: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19695:11: ambiguous, possible interpretations 
   _root_.print_endline
     ("clint<8>[" ++ (BitVec.toFormatted addr ++ ("] <- " ++ (BitVec.toFormatted data ++ " (mtimecmp)")))) : Unit
   
   Sail.print_endline
     ("clint<8>[" ++ (BitVec.toFormatted addr ++ ("] <- " ++ (BitVec.toFormatted data ++ " (mtimecmp)")))) : Unit
-error: ././././LeanRV64DLEAN.lean:19683:13: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19709:13: ambiguous, possible interpretations 
   _root_.print_endline
     ("clint<4>[" ++ (BitVec.toFormatted addr ++ ("] <- " ++ (BitVec.toFormatted data ++ " (mtimecmp)")))) : Unit
   
   Sail.print_endline
     ("clint<4>[" ++ (BitVec.toFormatted addr ++ ("] <- " ++ (BitVec.toFormatted data ++ " (mtimecmp)")))) : Unit
-error: ././././LeanRV64DLEAN.lean:19698:15: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19724:15: ambiguous, possible interpretations 
   _root_.print_endline
     ("clint<4>[" ++ (BitVec.toFormatted addr ++ ("] <- " ++ (BitVec.toFormatted data ++ " (mtimecmp)")))) : Unit
   
   Sail.print_endline
     ("clint<4>[" ++ (BitVec.toFormatted addr ++ ("] <- " ++ (BitVec.toFormatted data ++ " (mtimecmp)")))) : Unit
-error: ././././LeanRV64DLEAN.lean:19714:17: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19740:17: ambiguous, possible interpretations 
   _root_.print_endline
     ("clint<8>[" ++ (BitVec.toFormatted addr ++ ("] <- " ++ (BitVec.toFormatted data ++ " (mtime)")))) : Unit
   
   Sail.print_endline
     ("clint<8>[" ++ (BitVec.toFormatted addr ++ ("] <- " ++ (BitVec.toFormatted data ++ " (mtime)")))) : Unit
-error: ././././LeanRV64DLEAN.lean:19729:19: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19755:19: ambiguous, possible interpretations 
   _root_.print_endline
     ("clint<4>[" ++ (BitVec.toFormatted addr ++ ("] <- " ++ (BitVec.toFormatted data ++ " (mtime)")))) : Unit
   
   Sail.print_endline
     ("clint<4>[" ++ (BitVec.toFormatted addr ++ ("] <- " ++ (BitVec.toFormatted data ++ " (mtime)")))) : Unit
-error: ././././LeanRV64DLEAN.lean:19744:21: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19770:21: ambiguous, possible interpretations 
   _root_.print_endline
     ("clint<4>[" ++ (BitVec.toFormatted addr ++ ("] <- " ++ (BitVec.toFormatted data ++ " (mtime)")))) : Unit
   
   Sail.print_endline
     ("clint<4>[" ++ (BitVec.toFormatted addr ++ ("] <- " ++ (BitVec.toFormatted data ++ " (mtime)")))) : Unit
-error: ././././LeanRV64DLEAN.lean:19757:21: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19783:21: ambiguous, possible interpretations 
   _root_.print_endline
     ("clint[" ++ (BitVec.toFormatted addr ++ ("] <- " ++ (BitVec.toFormatted data ++ " (<unmapped>)")))) : Unit
   
   Sail.print_endline
     ("clint[" ++ (BitVec.toFormatted addr ++ ("] <- " ++ (BitVec.toFormatted data ++ " (<unmapped>)")))) : Unit
-error: ././././LeanRV64DLEAN.lean:19818:11: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19844:11: ambiguous, possible interpretations 
   _root_.print_endline ("htif[" ++ (BitVec.toFormatted paddr ++ ("] -> " ++ BitVec.toFormatted __do_lift✝))) : Unit
   
   Sail.print_endline ("htif[" ++ (BitVec.toFormatted paddr ++ ("] -> " ++ BitVec.toFormatted __do_lift✝))) : Unit
-error: ././././LeanRV64DLEAN.lean:19844:7: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19870:7: ambiguous, possible interpretations 
   _root_.print_endline ("htif[" ++ (BitVec.toFormatted paddr ++ ("] <- " ++ BitVec.toFormatted data))) : Unit
   
   Sail.print_endline ("htif[" ++ (BitVec.toFormatted paddr ++ ("] <- " ++ BitVec.toFormatted data))) : Unit
-error: ././././LeanRV64DLEAN.lean:19885:11: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19911:11: ambiguous, possible interpretations 
   _root_.print_endline ("htif-syscall-proxy cmd: " ++ BitVec.toFormatted (_get_htif_cmd_payload cmd)) : Unit
   
   Sail.print_endline ("htif-syscall-proxy cmd: " ++ BitVec.toFormatted (_get_htif_cmd_payload cmd)) : Unit
-error: ././././LeanRV64DLEAN.lean:19900:13: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19926:13: ambiguous, possible interpretations 
   _root_.print_endline ("htif-term cmd: " ++ BitVec.toFormatted (_get_htif_cmd_payload cmd)) : Unit
   
   Sail.print_endline ("htif-term cmd: " ++ BitVec.toFormatted (_get_htif_cmd_payload cmd)) : Unit
-error: ././././LeanRV64DLEAN.lean:19909:22: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19935:22: ambiguous, possible interpretations 
   _root_.print ("Unknown term cmd: " ++ BitVec.toFormatted b__2) : Unit
   
   Sail.print ("Unknown term cmd: " ++ BitVec.toFormatted b__2) : Unit
-error: ././././LeanRV64DLEAN.lean:19911:18: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19937:18: ambiguous, possible interpretations 
   _root_.print ("htif-???? cmd: " ++ BitVec.toFormatted data) : Unit
   
   Sail.print ("htif-???? cmd: " ++ BitVec.toFormatted data) : Unit
-error: ././././LeanRV64DLEAN.lean:19918:11: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:19944:11: ambiguous, possible interpretations 
   _root_.print_endline ("htif::tick " ++ BitVec.toFormatted __do_lift✝) : Unit
   
   Sail.print_endline ("htif::tick " ++ BitVec.toFormatted __do_lift✝) : Unit
-error: ././././LeanRV64DLEAN.lean:20021:9: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:20047:9: ambiguous, possible interpretations 
   _root_.print_endline
     ("mem[" ++
       (accessType_to_str t ++
@@ -242,81 +242,81 @@ error: ././././LeanRV64DLEAN.lean:20021:9: ambiguous, possible interpretations
     ("mem[" ++
       (accessType_to_str t ++
         ("," ++ (BitVec.toFormatted (physaddr_bits paddr) ++ ("] -> " ++ BitVec.toFormatted v))))) : Unit
-error: ././././LeanRV64DLEAN.lean:20113:7: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:20139:7: ambiguous, possible interpretations 
   _root_.print_endline
     ("mem[" ++ (BitVec.toFormatted (physaddr_bits paddr) ++ ("] <- " ++ BitVec.toFormatted data))) : Unit
   
   Sail.print_endline
     ("mem[" ++ (BitVec.toFormatted (physaddr_bits paddr) ++ ("] <- " ++ BitVec.toFormatted data))) : Unit
-error: ././././LeanRV64DLEAN.lean:24525:9: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:24551:9: ambiguous, possible interpretations 
   _root_.print_endline ("CSR vtype <- " ++ BitVec.toFormatted __do_lift✝) : Unit
   
   Sail.print_endline ("CSR vtype <- " ++ BitVec.toFormatted __do_lift✝) : Unit
-error: ././././LeanRV64DLEAN.lean:24526:9: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:24552:9: ambiguous, possible interpretations 
   _root_.print_endline ("CSR vl <- " ++ BitVec.toFormatted __do_lift✝) : Unit
   
   Sail.print_endline ("CSR vl <- " ++ BitVec.toFormatted __do_lift✝) : Unit
-error: ././././LeanRV64DLEAN.lean:28410:27: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:28436:27: ambiguous, possible interpretations 
   _root_.print_endline ("CSR vl <- " ++ BitVec.toFormatted __do_lift✝) : Unit
   
   Sail.print_endline ("CSR vl <- " ++ BitVec.toFormatted __do_lift✝) : Unit
-error: ././././LeanRV64DLEAN.lean:28423:29: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:28449:29: ambiguous, possible interpretations 
   _root_.print_endline ("CSR vl <- " ++ BitVec.toFormatted __do_lift✝) : Unit
   
   Sail.print_endline ("CSR vl <- " ++ BitVec.toFormatted __do_lift✝) : Unit
-error: ././././LeanRV64DLEAN.lean:28436:31: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:28462:31: ambiguous, possible interpretations 
   _root_.print_endline ("CSR vl <- " ++ BitVec.toFormatted __do_lift✝) : Unit
   
   Sail.print_endline ("CSR vl <- " ++ BitVec.toFormatted __do_lift✝) : Unit
-error: ././././LeanRV64DLEAN.lean:28453:33: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:28479:33: ambiguous, possible interpretations 
   _root_.print_endline ("CSR vl <- " ++ BitVec.toFormatted __do_lift✝) : Unit
   
   Sail.print_endline ("CSR vl <- " ++ BitVec.toFormatted __do_lift✝) : Unit
-error: ././././LeanRV64DLEAN.lean:94444:11: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:94470:11: ambiguous, possible interpretations 
   _root_.print_endline ("CSR vtype <- " ++ BitVec.toFormatted __do_lift✝) : Unit
   
   Sail.print_endline ("CSR vtype <- " ++ BitVec.toFormatted __do_lift✝) : Unit
-error: ././././LeanRV64DLEAN.lean:94445:11: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:94471:11: ambiguous, possible interpretations 
   _root_.print_endline ("CSR vl <- " ++ BitVec.toFormatted __do_lift✝) : Unit
   
   Sail.print_endline ("CSR vl <- " ++ BitVec.toFormatted __do_lift✝) : Unit
-error: ././././LeanRV64DLEAN.lean:94446:11: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:94472:11: ambiguous, possible interpretations 
   _root_.print_endline ("CSR vstart <- " ++ BitVec.toFormatted __do_lift✝) : Unit
   
   Sail.print_endline ("CSR vstart <- " ++ BitVec.toFormatted __do_lift✝) : Unit
-error: ././././LeanRV64DLEAN.lean:94487:11: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:94513:11: ambiguous, possible interpretations 
   _root_.print_endline ("CSR vtype <- " ++ BitVec.toFormatted __do_lift✝) : Unit
   
   Sail.print_endline ("CSR vtype <- " ++ BitVec.toFormatted __do_lift✝) : Unit
-error: ././././LeanRV64DLEAN.lean:94488:11: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:94514:11: ambiguous, possible interpretations 
   _root_.print_endline ("CSR vl <- " ++ BitVec.toFormatted __do_lift✝) : Unit
   
   Sail.print_endline ("CSR vl <- " ++ BitVec.toFormatted __do_lift✝) : Unit
-error: ././././LeanRV64DLEAN.lean:94489:11: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:94515:11: ambiguous, possible interpretations 
   _root_.print_endline ("CSR vstart <- " ++ BitVec.toFormatted __do_lift✝) : Unit
   
   Sail.print_endline ("CSR vstart <- " ++ BitVec.toFormatted __do_lift✝) : Unit
-error: ././././LeanRV64DLEAN.lean:94509:11: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:94535:11: ambiguous, possible interpretations 
   _root_.print_endline ("CSR vtype <- " ++ BitVec.toFormatted __do_lift✝) : Unit
   
   Sail.print_endline ("CSR vtype <- " ++ BitVec.toFormatted __do_lift✝) : Unit
-error: ././././LeanRV64DLEAN.lean:94510:11: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:94536:11: ambiguous, possible interpretations 
   _root_.print_endline ("CSR vl <- " ++ BitVec.toFormatted __do_lift✝) : Unit
   
   Sail.print_endline ("CSR vl <- " ++ BitVec.toFormatted __do_lift✝) : Unit
-error: ././././LeanRV64DLEAN.lean:94511:11: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:94537:11: ambiguous, possible interpretations 
   _root_.print_endline ("CSR vstart <- " ++ BitVec.toFormatted __do_lift✝) : Unit
   
   Sail.print_endline ("CSR vstart <- " ++ BitVec.toFormatted __do_lift✝) : Unit
-error: ././././LeanRV64DLEAN.lean:100366:25: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:100392:25: ambiguous, possible interpretations 
   _root_.print "FIXME: unsupported fence" : Unit
   
   Sail.print "FIXME: unsupported fence" : Unit
-error: ././././LeanRV64DLEAN.lean:100427:43: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:100453:43: ambiguous, possible interpretations 
   _root_.print "FIXME: unsupported fence" : Unit
   
   Sail.print "FIXME: unsupported fence" : Unit
-error: ././././LeanRV64DLEAN.lean:102046:17: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:102072:17: ambiguous, possible interpretations 
   _root_.print_endline
     ("CSR " ++
       (__do_lift✝ ++
@@ -326,11 +326,11 @@ error: ././././LeanRV64DLEAN.lean:102046:17: ambiguous, possible interpretations
     ("CSR " ++
       (__do_lift✝ ++
         (" <- " ++ (BitVec.toFormatted final_val ++ (" (input: " ++ (BitVec.toFormatted new_val ++ ")")))))) : Unit
-error: ././././LeanRV64DLEAN.lean:102057:17: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:102083:17: ambiguous, possible interpretations 
   _root_.print_endline ("CSR " ++ (__do_lift✝ ++ (" -> " ++ BitVec.toFormatted csr_val))) : Unit
   
   Sail.print_endline ("CSR " ++ (__do_lift✝ ++ (" -> " ++ BitVec.toFormatted csr_val))) : Unit
-error: ././././LeanRV64DLEAN.lean:105524:17: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:105550:17: ambiguous, possible interpretations 
   _root_.print_endline
     ("[" ++
       (step_no.repr ++
@@ -346,7 +346,7 @@ error: ././././LeanRV64DLEAN.lean:105524:17: ambiguous, possible interpretations
           (privLevel_to_str __do_lift✝² ++
             ("]: " ++
               (BitVec.toFormatted __do_lift✝¹ ++ (" (" ++ (BitVec.toFormatted h ++ (") " ++ __do_lift✝))))))))) : Unit
-error: ././././LeanRV64DLEAN.lean:105548:17: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:105574:17: ambiguous, possible interpretations 
   _root_.print_endline
     ("[" ++
       (step_no.repr ++
@@ -362,7 +362,7 @@ error: ././././LeanRV64DLEAN.lean:105548:17: ambiguous, possible interpretations
           (privLevel_to_str __do_lift✝² ++
             ("]: " ++
               (BitVec.toFormatted __do_lift✝¹ ++ (" (" ++ (BitVec.toFormatted w ++ (") " ++ __do_lift✝))))))))) : Unit
-error: ././././LeanRV64DLEAN.lean:105606:10: application type mismatch
+error: ././././LeanRV64DLEAN.lean:105632:10: application type mismatch
   pure loop_vars
 argument
   loop_vars
@@ -370,19 +370,19 @@ has type
   Int × Int : Type
 but is expected to have type
   Unit × Int × Int : Type
-error: ././././LeanRV64DLEAN.lean:105595:26: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:105621:26: ambiguous, possible interpretations 
   _root_.print "SUCCESS" : Unit
   
   Sail.print "SUCCESS" : Unit
-error: ././././LeanRV64DLEAN.lean:105596:26: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:105622:26: ambiguous, possible interpretations 
   _root_.print_int "FAILURE: " ↑exit_val : Unit
   
   Sail.print_int "FAILURE: " ↑exit_val : Unit
-error: ././././LeanRV64DLEAN.lean:105577:6: invalid reassignment, value has type
+error: ././././LeanRV64DLEAN.lean:105603:6: invalid reassignment, value has type
   Unit × Int × Int : Type
 but is expected to have type
   Int × Int : Type
-error: ././././LeanRV64DLEAN.lean:105630:43: ambiguous, possible interpretations 
+error: ././././LeanRV64DLEAN.lean:105656:43: ambiguous, possible interpretations 
   _root_.print "Error: internal error" : Unit
   
   Sail.print "Error: internal error" : Unit
