@@ -2,8 +2,8 @@
 ✔ [3/9] Built LeanRV64DLEAN.Sail.BitVec
 ✔ [4/9] Built LeanRV64DLEAN.Sail.Sail
 ✔ [5/9] Built LeanRV64DLEAN.Defs
-✔ [6/9] Built LeanRV64DLEAN.RiscvExtras
-✔ [7/9] Built LeanRV64DLEAN.Specialization
+✔ [6/9] Built LeanRV64DLEAN.Specialization
+✔ [7/9] Built LeanRV64DLEAN.RiscvExtras
 ✖ [8/9] Building LeanRV64DLEAN
 trace: .> LEAN_PATH=././.lake/build/lib LD_LIBRARY_PATH= /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-02-05/bin/lean --tstack=400000 ././././LeanRV64DLEAN.lean -R ./././. -o ././.lake/build/lib/LeanRV64DLEAN.olean -i ././.lake/build/lib/LeanRV64DLEAN.ilean -c ././.lake/build/ir/LeanRV64DLEAN.c --json
 error: ././././LeanRV64DLEAN.lean:105632:10: application type mismatch
