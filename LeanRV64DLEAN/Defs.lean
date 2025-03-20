@@ -1036,6 +1036,12 @@ inductive TR_Result (k_paddr : Type) (k_failure : Type) where
   | TR_Failure (_ : (k_failure × ext_ptw))
   deriving Inhabited, BEq
 
+inductive cbie where | CBIE_ILLEGAL | CBIE_EXEC_FLUSH | CBIE_EXEC_INVAL
+  deriving Inhabited, BEq
+
+inductive checked_cbop where | CBOP_ILLEGAL | CBOP_ILLEGAL_VIRTUAL | CBOP_INVAL_FLUSH | CBOP_INVAL_INVAL
+  deriving Inhabited, BEq
+
 inductive FetchResult where
   | F_Ext_Error (_ : ext_fetch_addr_error)
   | F_Base (_ : word)
