@@ -4,20 +4,5 @@
 ✔ [5/9] Built LeanRV64DLEAN.Defs
 ✔ [6/9] Built LeanRV64DLEAN.Specialization
 ✔ [7/9] Built LeanRV64DLEAN.RiscvExtras
-✖ [8/9] Building LeanRV64DLEAN
-trace: .> LEAN_PATH=././.lake/build/lib/lean /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-03-17/bin/lean --tstack=400000 ././././LeanRV64DLEAN.lean -R ./././. -o ././.lake/build/lib/lean/LeanRV64DLEAN.olean -i ././.lake/build/lib/lean/LeanRV64DLEAN.ilean -c ././.lake/build/ir/LeanRV64DLEAN.c --json
-error: ././././LeanRV64DLEAN.lean:105632:10: application type mismatch
-  pure loop_vars
-argument
-  loop_vars
-has type
-  Int × Int : Type
-but is expected to have type
-  Unit × Int × Int : Type
-error: ././././LeanRV64DLEAN.lean:105603:6: invalid reassignment, value has type
-  Unit × Int × Int : Type
-but is expected to have type
-  Int × Int : Type
-error: Lean exited with code 1
-Some required builds logged failures:
-- LeanRV64DLEAN
+✔ [8/9] Built LeanRV64DLEAN
+Build completed successfully.
