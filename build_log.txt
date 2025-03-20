@@ -2,7 +2,7 @@
 ✔ [3/9] Built LeanRV64DLEAN.Sail.BitVec
 ✔ [4/9] Built LeanRV64DLEAN.Sail.Sail
 ✔ [5/9] Built LeanRV64DLEAN.Defs
-✔ [6/9] Built LeanRV64DLEAN.RiscvExtras
-✔ [7/9] Built LeanRV64DLEAN.Specialization
+✔ [6/9] Built LeanRV64DLEAN.Specialization
+✔ [7/9] Built LeanRV64DLEAN.RiscvExtras
 ✔ [8/9] Built LeanRV64DLEAN
 Build completed successfully.
