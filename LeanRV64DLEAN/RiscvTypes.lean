@@ -1,0 +1,6482 @@
+import LeanRV64DLEAN.RiscvTypesExt
+
+set_option maxHeartbeats 1_000_000_000
+set_option maxRecDepth 10_000
+set_option linter.unusedVariables false
+set_option match.ignoreUnusedAlts true
+
+open Sail
+
+noncomputable section
+
+namespace LeanRV64DLEAN.Functions
+
+open zicondop
+open wxfunct6
+open wvxfunct6
+open wvvfunct6
+open wvfunct6
+open write_kind
+open word_width
+open wmvxfunct6
+open wmvvfunct6
+open vxsgfunct6
+open vxmsfunct6
+open vxmfunct6
+open vxmcfunct6
+open vxfunct6
+open vxcmpfunct6
+open vvmsfunct6
+open vvmfunct6
+open vvmcfunct6
+open vvfunct6
+open vvcmpfunct6
+open vregno
+open vregidx
+open vmlsop
+open vlewidth
+open visgfunct6
+open virtaddr
+open vimsfunct6
+open vimfunct6
+open vimcfunct6
+open vifunct6
+open vicmpfunct6
+open vfwunary0
+open vfunary1
+open vfunary0
+open vfnunary0
+open vext8funct6
+open vext4funct6
+open vext2funct6
+open uop
+open sopw
+open sop
+open seed_opst
+open rounding_mode
+open ropw
+open rop
+open rmvvfunct6
+open rivvfunct6
+open rfvvfunct6
+open regno
+open regidx
+open read_kind
+open pmpMatch
+open pmpAddrMatch
+open physaddr
+open option
+open nxsfunct6
+open nxfunct6
+open nvsfunct6
+open nvfunct6
+open nisfunct6
+open nifunct6
+open mvxmafunct6
+open mvxfunct6
+open mvvmafunct6
+open mvvfunct6
+open mmfunct6
+open maskfunct3
+open iop
+open fwvvmafunct6
+open fwvvfunct6
+open fwvfunct6
+open fwvfmafunct6
+open fwvffunct6
+open fwffunct6
+open fvvmfunct6
+open fvvmafunct6
+open fvvfunct6
+open fvfmfunct6
+open fvfmafunct6
+open fvffunct6
+open fregno
+open fregidx
+open f_un_x_op_H
+open f_un_x_op_D
+open f_un_rm_xf_op_S
+open f_un_rm_xf_op_H
+open f_un_rm_xf_op_D
+open f_un_rm_fx_op_S
+open f_un_rm_fx_op_H
+open f_un_rm_fx_op_D
+open f_un_rm_ff_op_S
+open f_un_rm_ff_op_H
+open f_un_rm_ff_op_D
+open f_un_op_x_S
+open f_un_op_f_S
+open f_un_f_op_H
+open f_un_f_op_D
+open f_madd_op_S
+open f_madd_op_H
+open f_madd_op_D
+open f_bin_x_op_H
+open f_bin_x_op_D
+open f_bin_rm_op_S
+open f_bin_rm_op_H
+open f_bin_rm_op_D
+open f_bin_op_x_S
+open f_bin_op_f_S
+open f_bin_f_op_H
+open f_bin_f_op_D
+open extop_zbb
+open extension
+open exception
+open ctl_result
+open csrop
+open cregidx
+open checked_cbop
+open cbop_zicbom
+open cbie
+open bropw_zbb
+open bropw_zba
+open brop_zbs
+open brop_zbkb
+open brop_zbb
+open brop_zba
+open bop
+open biop_zbs
+open barrier_kind
+open ast
+open amoop
+open agtype
+open TrapVectorMode
+open TR_Result
+open SATPMode
+open Retired
+open Register
+open Privilege
+open PmpAddrMatchType
+open PTW_Result
+open PTW_Error
+open PTE_Check
+open InterruptType
+open FetchResult
+open Ext_PhysAddr_Check
+open Ext_FetchAddr_Check
+open Ext_DataAddr_Check
+open Ext_ControlAddr_Check
+open ExtStatus
+open ExceptionType
+open Architecture
+open AccessType
+
+def xlen_val := xlen
+
+def xlen_max_unsigned := ((2 ^i xlen) -i 1)
+
+def xlen_max_signed := ((2 ^i (xlen -i 1)) -i 1)
+
+def xlen_min_signed := (0 -i (2 ^i (xlen -i 1)))
+
+def pagesize_bits := 12
+
+def regidx_offset (typ_0 : regidx) (o : (BitVec 5)) : regidx :=
+  let .Regidx r : regidx := typ_0
+  (Regidx (r + o))
+
+def regidx_bits (app_0 : regidx) : (BitVec 5) :=
+  let .Regidx b := app_0
+  b
+
+def regidx_to_regno (app_0 : regidx) : regno :=
+  let .Regidx b := app_0
+  (Regno (BitVec.toNat b))
+
+def creg2reg_idx (app_0 : cregidx) : regidx :=
+  let .Cregidx i := app_0
+  (Regidx ((0b01 : (BitVec 2)) ++ i))
+
+def zreg : regidx := (Regidx (0b00000 : (BitVec 5)))
+
+def ra : regidx := (Regidx (0b00001 : (BitVec 5)))
+
+def sp : regidx := (Regidx (0b00010 : (BitVec 5)))
+
+def undefined_Architecture (_ : Unit) : SailM Architecture := do
+  (internal_pick [RV32, RV64, RV128])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 2 -/
+def Architecture_of_num (arg_ : Nat) : Architecture :=
+  match arg_ with
+  | 0 => RV32
+  | 1 => RV64
+  | _ => RV128
+
+def num_of_Architecture (arg_ : Architecture) : Int :=
+  match arg_ with
+  | RV32 => 0
+  | RV64 => 1
+  | RV128 => 2
+
+def architecture_forwards (arg_ : Architecture) : (BitVec 2) :=
+  match arg_ with
+  | RV32 => (0b01 : (BitVec 2))
+  | RV64 => (0b10 : (BitVec 2))
+  | RV128 => (0b11 : (BitVec 2))
+
+def architecture_backwards (arg_ : (BitVec 2)) : SailM Architecture := do
+  let b__0 := arg_
+  if (BEq.beq b__0 (0b01 : (BitVec 2)))
+  then (pure RV32)
+  else
+    if (BEq.beq b__0 (0b10 : (BitVec 2)))
+    then (pure RV64)
+    else
+      if (BEq.beq b__0 (0b11 : (BitVec 2)))
+      then (pure RV128)
+      else (internal_error "riscv_types.sail" 74 "architecture(0b00) is invalid")
+
+def architecture_forwards_matches (arg_ : Architecture) : Bool :=
+  match arg_ with
+  | RV32 => true
+  | RV64 => true
+  | RV128 => true
+
+def architecture_backwards_matches (arg_ : (BitVec 2)) : Bool :=
+  let b__0 := arg_
+  if (BEq.beq b__0 (0b01 : (BitVec 2)))
+  then true
+  else
+    if (BEq.beq b__0 (0b10 : (BitVec 2)))
+    then true
+    else
+      if (BEq.beq b__0 (0b11 : (BitVec 2)))
+      then true
+      else
+        if (BEq.beq b__0 (0b00 : (BitVec 2)))
+        then true
+        else false
+
+def undefined_Privilege (_ : Unit) : SailM Privilege := do
+  (internal_pick [User, Supervisor, Machine])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 2 -/
+def Privilege_of_num (arg_ : Nat) : Privilege :=
+  match arg_ with
+  | 0 => User
+  | 1 => Supervisor
+  | _ => Machine
+
+def num_of_Privilege (arg_ : Privilege) : Int :=
+  match arg_ with
+  | User => 0
+  | Supervisor => 1
+  | Machine => 2
+
+def privLevel_to_bits (p : Privilege) : (BitVec 2) :=
+  match p with
+  | User => (0b00 : (BitVec 2))
+  | Supervisor => (0b01 : (BitVec 2))
+  | Machine => (0b11 : (BitVec 2))
+
+def privLevel_of_bits (p : (BitVec 2)) : SailM Privilege := do
+  let b__0 := p
+  if (BEq.beq b__0 (0b00 : (BitVec 2)))
+  then (pure User)
+  else
+    if (BEq.beq b__0 (0b01 : (BitVec 2)))
+    then (pure Supervisor)
+    else
+      if (BEq.beq b__0 (0b11 : (BitVec 2)))
+      then (pure Machine)
+      else
+        (internal_error "riscv_types.sail" 100
+          (HAppend.hAppend "Invalid privilege level: " (BitVec.toFormatted p)))
+
+def privLevel_to_str (p : Privilege) : String :=
+  match p with
+  | User => "U"
+  | Supervisor => "S"
+  | Machine => "M"
+
+def accessType_to_str (a : (AccessType Unit)) : String :=
+  match a with
+  | .Read _ => "R"
+  | .Write _ => "W"
+  | .ReadWrite (_, _) => "RW"
+  | .Execute () => "X"
+
+def csr_name_map_forwards (arg_ : (BitVec 12)) : SailM String := do
+  let b__0 := arg_
+  if (BEq.beq b__0 (0x301 : (BitVec 12)))
+  then (pure "misa")
+  else
+    if (BEq.beq b__0 (0x300 : (BitVec 12)))
+    then (pure "mstatus")
+    else
+      if (BEq.beq b__0 (0x30A : (BitVec 12)))
+      then (pure "menvcfg")
+      else
+        if (BEq.beq b__0 (0x31A : (BitVec 12)))
+        then (pure "menvcfgh")
+        else
+          if (BEq.beq b__0 (0x10A : (BitVec 12)))
+          then (pure "senvcfg")
+          else
+            if (BEq.beq b__0 (0x304 : (BitVec 12)))
+            then (pure "mie")
+            else
+              if (BEq.beq b__0 (0x344 : (BitVec 12)))
+              then (pure "mip")
+              else
+                if (BEq.beq b__0 (0x302 : (BitVec 12)))
+                then (pure "medeleg")
+                else
+                  if (BEq.beq b__0 (0x312 : (BitVec 12)))
+                  then (pure "medelegh")
+                  else
+                    if (BEq.beq b__0 (0x303 : (BitVec 12)))
+                    then (pure "mideleg")
+                    else
+                      if (BEq.beq b__0 (0x342 : (BitVec 12)))
+                      then (pure "mcause")
+                      else
+                        if (BEq.beq b__0 (0x343 : (BitVec 12)))
+                        then (pure "mtval")
+                        else
+                          if (BEq.beq b__0 (0x340 : (BitVec 12)))
+                          then (pure "mscratch")
+                          else
+                            if (BEq.beq b__0 (0x106 : (BitVec 12)))
+                            then (pure "scounteren")
+                            else
+                              if (BEq.beq b__0 (0x306 : (BitVec 12)))
+                              then (pure "mcounteren")
+                              else
+                                if (BEq.beq b__0 (0x320 : (BitVec 12)))
+                                then (pure "mcountinhibit")
+                                else
+                                  if (BEq.beq b__0 (0xF11 : (BitVec 12)))
+                                  then (pure "mvendorid")
+                                  else
+                                    if (BEq.beq b__0 (0xF12 : (BitVec 12)))
+                                    then (pure "marchid")
+                                    else
+                                      if (BEq.beq b__0 (0xF13 : (BitVec 12)))
+                                      then (pure "mimpid")
+                                      else
+                                        if (BEq.beq b__0 (0xF14 : (BitVec 12)))
+                                        then (pure "mhartid")
+                                        else
+                                          if (BEq.beq b__0 (0xF15 : (BitVec 12)))
+                                          then (pure "mconfigptr")
+                                          else
+                                            if (BEq.beq b__0 (0x100 : (BitVec 12)))
+                                            then (pure "sstatus")
+                                            else
+                                              if (BEq.beq b__0 (0x144 : (BitVec 12)))
+                                              then (pure "sip")
+                                              else
+                                                if (BEq.beq b__0 (0x104 : (BitVec 12)))
+                                                then (pure "sie")
+                                                else
+                                                  if (BEq.beq b__0 (0x140 : (BitVec 12)))
+                                                  then (pure "sscratch")
+                                                  else
+                                                    if (BEq.beq b__0 (0x142 : (BitVec 12)))
+                                                    then (pure "scause")
+                                                    else
+                                                      if (BEq.beq b__0 (0x143 : (BitVec 12)))
+                                                      then (pure "stval")
+                                                      else
+                                                        if (BEq.beq b__0 (0x7A0 : (BitVec 12)))
+                                                        then (pure "tselect")
+                                                        else
+                                                          if (BEq.beq b__0 (0x7A1 : (BitVec 12)))
+                                                          then (pure "tdata1")
+                                                          else
+                                                            if (BEq.beq b__0 (0x7A2 : (BitVec 12)))
+                                                            then (pure "tdata2")
+                                                            else
+                                                              if (BEq.beq b__0 (0x7A3 : (BitVec 12)))
+                                                              then (pure "tdata3")
+                                                              else
+                                                                if (BEq.beq b__0
+                                                                     (0x3A0 : (BitVec 12)))
+                                                                then (pure "pmpcfg0")
+                                                                else
+                                                                  if (BEq.beq b__0
+                                                                       (0x3A1 : (BitVec 12)))
+                                                                  then (pure "pmpcfg1")
+                                                                  else
+                                                                    if (BEq.beq b__0
+                                                                         (0x3A2 : (BitVec 12)))
+                                                                    then (pure "pmpcfg2")
+                                                                    else
+                                                                      if (BEq.beq b__0
+                                                                           (0x3A3 : (BitVec 12)))
+                                                                      then (pure "pmpcfg3")
+                                                                      else
+                                                                        if (BEq.beq b__0
+                                                                             (0x3A4 : (BitVec 12)))
+                                                                        then (pure "pmpcfg4")
+                                                                        else
+                                                                          if (BEq.beq b__0
+                                                                               (0x3A5 : (BitVec 12)))
+                                                                          then (pure "pmpcfg5")
+                                                                          else
+                                                                            if (BEq.beq b__0
+                                                                                 (0x3A6 : (BitVec 12)))
+                                                                            then (pure "pmpcfg6")
+                                                                            else
+                                                                              if (BEq.beq b__0
+                                                                                   (0x3A7 : (BitVec 12)))
+                                                                              then (pure "pmpcfg7")
+                                                                              else
+                                                                                if (BEq.beq b__0
+                                                                                     (0x3A8 : (BitVec 12)))
+                                                                                then
+                                                                                  (pure "pmpcfg8")
+                                                                                else
+                                                                                  if (BEq.beq b__0
+                                                                                       (0x3A9 : (BitVec 12)))
+                                                                                  then
+                                                                                    (pure "pmpcfg9")
+                                                                                  else
+                                                                                    if (BEq.beq b__0
+                                                                                         (0x3AA : (BitVec 12)))
+                                                                                    then
+                                                                                      (pure "pmpcfg10")
+                                                                                    else
+                                                                                      if (BEq.beq
+                                                                                           b__0
+                                                                                           (0x3AB : (BitVec 12)))
+                                                                                      then
+                                                                                        (pure "pmpcfg11")
+                                                                                      else
+                                                                                        if (BEq.beq
+                                                                                             b__0
+                                                                                             (0x3AC : (BitVec 12)))
+                                                                                        then
+                                                                                          (pure "pmpcfg12")
+                                                                                        else
+                                                                                          if (BEq.beq
+                                                                                               b__0
+                                                                                               (0x3AD : (BitVec 12)))
+                                                                                          then
+                                                                                            (pure "pmpcfg13")
+                                                                                          else
+                                                                                            if (BEq.beq
+                                                                                                 b__0
+                                                                                                 (0x3AE : (BitVec 12)))
+                                                                                            then
+                                                                                              (pure "pmpcfg14")
+                                                                                            else
+                                                                                              if (BEq.beq
+                                                                                                   b__0
+                                                                                                   (0x3AF : (BitVec 12)))
+                                                                                              then
+                                                                                                (pure "pmpcfg15")
+                                                                                              else
+                                                                                                if (BEq.beq
+                                                                                                     b__0
+                                                                                                     (0x3B0 : (BitVec 12)))
+                                                                                                then
+                                                                                                  (pure "pmpaddr0")
+                                                                                                else
+                                                                                                  if (BEq.beq
+                                                                                                       b__0
+                                                                                                       (0x3B1 : (BitVec 12)))
+                                                                                                  then
+                                                                                                    (pure "pmpaddr1")
+                                                                                                  else
+                                                                                                    if (BEq.beq
+                                                                                                         b__0
+                                                                                                         (0x3B2 : (BitVec 12)))
+                                                                                                    then
+                                                                                                      (pure "pmpaddr2")
+                                                                                                    else
+                                                                                                      if (BEq.beq
+                                                                                                           b__0
+                                                                                                           (0x3B3 : (BitVec 12)))
+                                                                                                      then
+                                                                                                        (pure "pmpaddr3")
+                                                                                                      else
+                                                                                                        if (BEq.beq
+                                                                                                             b__0
+                                                                                                             (0x3B4 : (BitVec 12)))
+                                                                                                        then
+                                                                                                          (pure "pmpaddr4")
+                                                                                                        else
+                                                                                                          if (BEq.beq
+                                                                                                               b__0
+                                                                                                               (0x3B5 : (BitVec 12)))
+                                                                                                          then
+                                                                                                            (pure "pmpaddr5")
+                                                                                                          else
+                                                                                                            if (BEq.beq
+                                                                                                                 b__0
+                                                                                                                 (0x3B6 : (BitVec 12)))
+                                                                                                            then
+                                                                                                              (pure "pmpaddr6")
+                                                                                                            else
+                                                                                                              if (BEq.beq
+                                                                                                                   b__0
+                                                                                                                   (0x3B7 : (BitVec 12)))
+                                                                                                              then
+                                                                                                                (pure "pmpaddr7")
+                                                                                                              else
+                                                                                                                if (BEq.beq
+                                                                                                                     b__0
+                                                                                                                     (0x3B8 : (BitVec 12)))
+                                                                                                                then
+                                                                                                                  (pure "pmpaddr8")
+                                                                                                                else
+                                                                                                                  if (BEq.beq
+                                                                                                                       b__0
+                                                                                                                       (0x3B9 : (BitVec 12)))
+                                                                                                                  then
+                                                                                                                    (pure "pmpaddr9")
+                                                                                                                  else
+                                                                                                                    if (BEq.beq
+                                                                                                                         b__0
+                                                                                                                         (0x3BA : (BitVec 12)))
+                                                                                                                    then
+                                                                                                                      (pure "pmpaddr10")
+                                                                                                                    else
+                                                                                                                      if (BEq.beq
+                                                                                                                           b__0
+                                                                                                                           (0x3BB : (BitVec 12)))
+                                                                                                                      then
+                                                                                                                        (pure "pmpaddr11")
+                                                                                                                      else
+                                                                                                                        if (BEq.beq
+                                                                                                                             b__0
+                                                                                                                             (0x3BC : (BitVec 12)))
+                                                                                                                        then
+                                                                                                                          (pure "pmpaddr12")
+                                                                                                                        else
+                                                                                                                          if (BEq.beq
+                                                                                                                               b__0
+                                                                                                                               (0x3BD : (BitVec 12)))
+                                                                                                                          then
+                                                                                                                            (pure "pmpaddr13")
+                                                                                                                          else
+                                                                                                                            if (BEq.beq
+                                                                                                                                 b__0
+                                                                                                                                 (0x3BE : (BitVec 12)))
+                                                                                                                            then
+                                                                                                                              (pure "pmpaddr14")
+                                                                                                                            else
+                                                                                                                              if (BEq.beq
+                                                                                                                                   b__0
+                                                                                                                                   (0x3BF : (BitVec 12)))
+                                                                                                                              then
+                                                                                                                                (pure "pmpaddr15")
+                                                                                                                              else
+                                                                                                                                if (BEq.beq
+                                                                                                                                     b__0
+                                                                                                                                     (0x3C0 : (BitVec 12)))
+                                                                                                                                then
+                                                                                                                                  (pure "pmpaddr16")
+                                                                                                                                else
+                                                                                                                                  if (BEq.beq
+                                                                                                                                       b__0
+                                                                                                                                       (0x3C1 : (BitVec 12)))
+                                                                                                                                  then
+                                                                                                                                    (pure "pmpaddr17")
+                                                                                                                                  else
+                                                                                                                                    if (BEq.beq
+                                                                                                                                         b__0
+                                                                                                                                         (0x3C2 : (BitVec 12)))
+                                                                                                                                    then
+                                                                                                                                      (pure "pmpaddr18")
+                                                                                                                                    else
+                                                                                                                                      if (BEq.beq
+                                                                                                                                           b__0
+                                                                                                                                           (0x3C3 : (BitVec 12)))
+                                                                                                                                      then
+                                                                                                                                        (pure "pmpaddr19")
+                                                                                                                                      else
+                                                                                                                                        if (BEq.beq
+                                                                                                                                             b__0
+                                                                                                                                             (0x3C4 : (BitVec 12)))
+                                                                                                                                        then
+                                                                                                                                          (pure "pmpaddr20")
+                                                                                                                                        else
+                                                                                                                                          if (BEq.beq
+                                                                                                                                               b__0
+                                                                                                                                               (0x3C5 : (BitVec 12)))
+                                                                                                                                          then
+                                                                                                                                            (pure "pmpaddr21")
+                                                                                                                                          else
+                                                                                                                                            if (BEq.beq
+                                                                                                                                                 b__0
+                                                                                                                                                 (0x3C6 : (BitVec 12)))
+                                                                                                                                            then
+                                                                                                                                              (pure "pmpaddr22")
+                                                                                                                                            else
+                                                                                                                                              if (BEq.beq
+                                                                                                                                                   b__0
+                                                                                                                                                   (0x3C7 : (BitVec 12)))
+                                                                                                                                              then
+                                                                                                                                                (pure "pmpaddr23")
+                                                                                                                                              else
+                                                                                                                                                if (BEq.beq
+                                                                                                                                                     b__0
+                                                                                                                                                     (0x3C8 : (BitVec 12)))
+                                                                                                                                                then
+                                                                                                                                                  (pure "pmpaddr24")
+                                                                                                                                                else
+                                                                                                                                                  if (BEq.beq
+                                                                                                                                                       b__0
+                                                                                                                                                       (0x3C9 : (BitVec 12)))
+                                                                                                                                                  then
+                                                                                                                                                    (pure "pmpaddr25")
+                                                                                                                                                  else
+                                                                                                                                                    if (BEq.beq
+                                                                                                                                                         b__0
+                                                                                                                                                         (0x3CA : (BitVec 12)))
+                                                                                                                                                    then
+                                                                                                                                                      (pure "pmpaddr26")
+                                                                                                                                                    else
+                                                                                                                                                      if (BEq.beq
+                                                                                                                                                           b__0
+                                                                                                                                                           (0x3CB : (BitVec 12)))
+                                                                                                                                                      then
+                                                                                                                                                        (pure "pmpaddr27")
+                                                                                                                                                      else
+                                                                                                                                                        if (BEq.beq
+                                                                                                                                                             b__0
+                                                                                                                                                             (0x3CC : (BitVec 12)))
+                                                                                                                                                        then
+                                                                                                                                                          (pure "pmpaddr28")
+                                                                                                                                                        else
+                                                                                                                                                          if (BEq.beq
+                                                                                                                                                               b__0
+                                                                                                                                                               (0x3CD : (BitVec 12)))
+                                                                                                                                                          then
+                                                                                                                                                            (pure "pmpaddr29")
+                                                                                                                                                          else
+                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                 b__0
+                                                                                                                                                                 (0x3CE : (BitVec 12)))
+                                                                                                                                                            then
+                                                                                                                                                              (pure "pmpaddr30")
+                                                                                                                                                            else
+                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                   b__0
+                                                                                                                                                                   (0x3CF : (BitVec 12)))
+                                                                                                                                                              then
+                                                                                                                                                                (pure "pmpaddr31")
+                                                                                                                                                              else
+                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                     b__0
+                                                                                                                                                                     (0x3D0 : (BitVec 12)))
+                                                                                                                                                                then
+                                                                                                                                                                  (pure "pmpaddr32")
+                                                                                                                                                                else
+                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                       b__0
+                                                                                                                                                                       (0x3D1 : (BitVec 12)))
+                                                                                                                                                                  then
+                                                                                                                                                                    (pure "pmpaddr33")
+                                                                                                                                                                  else
+                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                         b__0
+                                                                                                                                                                         (0x3D2 : (BitVec 12)))
+                                                                                                                                                                    then
+                                                                                                                                                                      (pure "pmpaddr34")
+                                                                                                                                                                    else
+                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                           b__0
+                                                                                                                                                                           (0x3D3 : (BitVec 12)))
+                                                                                                                                                                      then
+                                                                                                                                                                        (pure "pmpaddr35")
+                                                                                                                                                                      else
+                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                             b__0
+                                                                                                                                                                             (0x3D4 : (BitVec 12)))
+                                                                                                                                                                        then
+                                                                                                                                                                          (pure "pmpaddr36")
+                                                                                                                                                                        else
+                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                               b__0
+                                                                                                                                                                               (0x3D5 : (BitVec 12)))
+                                                                                                                                                                          then
+                                                                                                                                                                            (pure "pmpaddr37")
+                                                                                                                                                                          else
+                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                 b__0
+                                                                                                                                                                                 (0x3D6 : (BitVec 12)))
+                                                                                                                                                                            then
+                                                                                                                                                                              (pure "pmpaddr38")
+                                                                                                                                                                            else
+                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                   b__0
+                                                                                                                                                                                   (0x3D7 : (BitVec 12)))
+                                                                                                                                                                              then
+                                                                                                                                                                                (pure "pmpaddr39")
+                                                                                                                                                                              else
+                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                     b__0
+                                                                                                                                                                                     (0x3D8 : (BitVec 12)))
+                                                                                                                                                                                then
+                                                                                                                                                                                  (pure "pmpaddr40")
+                                                                                                                                                                                else
+                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                       b__0
+                                                                                                                                                                                       (0x3D9 : (BitVec 12)))
+                                                                                                                                                                                  then
+                                                                                                                                                                                    (pure "pmpaddr41")
+                                                                                                                                                                                  else
+                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                         b__0
+                                                                                                                                                                                         (0x3DA : (BitVec 12)))
+                                                                                                                                                                                    then
+                                                                                                                                                                                      (pure "pmpaddr42")
+                                                                                                                                                                                    else
+                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                           b__0
+                                                                                                                                                                                           (0x3DB : (BitVec 12)))
+                                                                                                                                                                                      then
+                                                                                                                                                                                        (pure "pmpaddr43")
+                                                                                                                                                                                      else
+                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                             b__0
+                                                                                                                                                                                             (0x3DC : (BitVec 12)))
+                                                                                                                                                                                        then
+                                                                                                                                                                                          (pure "pmpaddr44")
+                                                                                                                                                                                        else
+                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                               b__0
+                                                                                                                                                                                               (0x3DD : (BitVec 12)))
+                                                                                                                                                                                          then
+                                                                                                                                                                                            (pure "pmpaddr45")
+                                                                                                                                                                                          else
+                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                 (0x3DE : (BitVec 12)))
+                                                                                                                                                                                            then
+                                                                                                                                                                                              (pure "pmpaddr46")
+                                                                                                                                                                                            else
+                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                   (0x3DF : (BitVec 12)))
+                                                                                                                                                                                              then
+                                                                                                                                                                                                (pure "pmpaddr47")
+                                                                                                                                                                                              else
+                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                     (0x3E0 : (BitVec 12)))
+                                                                                                                                                                                                then
+                                                                                                                                                                                                  (pure "pmpaddr48")
+                                                                                                                                                                                                else
+                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                       (0x3E1 : (BitVec 12)))
+                                                                                                                                                                                                  then
+                                                                                                                                                                                                    (pure "pmpaddr49")
+                                                                                                                                                                                                  else
+                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                         (0x3E2 : (BitVec 12)))
+                                                                                                                                                                                                    then
+                                                                                                                                                                                                      (pure "pmpaddr50")
+                                                                                                                                                                                                    else
+                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                           (0x3E3 : (BitVec 12)))
+                                                                                                                                                                                                      then
+                                                                                                                                                                                                        (pure "pmpaddr51")
+                                                                                                                                                                                                      else
+                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                             (0x3E4 : (BitVec 12)))
+                                                                                                                                                                                                        then
+                                                                                                                                                                                                          (pure "pmpaddr52")
+                                                                                                                                                                                                        else
+                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                               (0x3E5 : (BitVec 12)))
+                                                                                                                                                                                                          then
+                                                                                                                                                                                                            (pure "pmpaddr53")
+                                                                                                                                                                                                          else
+                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                 (0x3E6 : (BitVec 12)))
+                                                                                                                                                                                                            then
+                                                                                                                                                                                                              (pure "pmpaddr54")
+                                                                                                                                                                                                            else
+                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                   (0x3E7 : (BitVec 12)))
+                                                                                                                                                                                                              then
+                                                                                                                                                                                                                (pure "pmpaddr55")
+                                                                                                                                                                                                              else
+                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                     (0x3E8 : (BitVec 12)))
+                                                                                                                                                                                                                then
+                                                                                                                                                                                                                  (pure "pmpaddr56")
+                                                                                                                                                                                                                else
+                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                       (0x3E9 : (BitVec 12)))
+                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                    (pure "pmpaddr57")
+                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                         (0x3EA : (BitVec 12)))
+                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                      (pure "pmpaddr58")
+                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                           (0x3EB : (BitVec 12)))
+                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                        (pure "pmpaddr59")
+                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                             (0x3EC : (BitVec 12)))
+                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                          (pure "pmpaddr60")
+                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                               (0x3ED : (BitVec 12)))
+                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                            (pure "pmpaddr61")
+                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                 (0x3EE : (BitVec 12)))
+                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                              (pure "pmpaddr62")
+                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                   (0x3EF : (BitVec 12)))
+                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                (pure "pmpaddr63")
+                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                     (0x008 : (BitVec 12)))
+                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                  (pure "vstart")
+                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                       (0x009 : (BitVec 12)))
+                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                    (pure "vxsat")
+                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                         (0x00A : (BitVec 12)))
+                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                      (pure "vxrm")
+                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                           (0x00F : (BitVec 12)))
+                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                        (pure "vcsr")
+                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                             (0xC20 : (BitVec 12)))
+                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                          (pure "vl")
+                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                               (0xC21 : (BitVec 12)))
+                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                            (pure "vtype")
+                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                 (0xC22 : (BitVec 12)))
+                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                              (pure "vlenb")
+                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                   (0x105 : (BitVec 12)))
+                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                (pure "stvec")
+                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                     (0x141 : (BitVec 12)))
+                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                  (pure "sepc")
+                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                       (0x305 : (BitVec 12)))
+                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                    (pure "mtvec")
+                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                         (0x341 : (BitVec 12)))
+                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                      (pure "mepc")
+                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                           (0xC03 : (BitVec 12)))
+                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                        (pure "hpmcounter3")
+                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                             (0xC04 : (BitVec 12)))
+                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                          (pure "hpmcounter4")
+                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                                               (0xC05 : (BitVec 12)))
+                                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                                            (pure "hpmcounter5")
+                                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                                 (0xC06 : (BitVec 12)))
+                                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                                              (pure "hpmcounter6")
+                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                                   (0xC07 : (BitVec 12)))
+                                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                                (pure "hpmcounter7")
+                                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                                     (0xC08 : (BitVec 12)))
+                                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                                  (pure "hpmcounter8")
+                                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                                       (0xC09 : (BitVec 12)))
+                                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                                    (pure "hpmcounter9")
+                                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                                         (0xC0A : (BitVec 12)))
+                                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                                      (pure "hpmcounter10")
+                                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                                           (0xC0B : (BitVec 12)))
+                                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                                        (pure "hpmcounter11")
+                                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                                             (0xC0C : (BitVec 12)))
+                                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                                          (pure "hpmcounter12")
+                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                                                               (0xC0D : (BitVec 12)))
+                                                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                                                            (pure "hpmcounter13")
+                                                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                                                 (0xC0E : (BitVec 12)))
+                                                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                                                              (pure "hpmcounter14")
+                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                                                   (0xC0F : (BitVec 12)))
+                                                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                                                (pure "hpmcounter15")
+                                                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                                                     (0xC10 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                                                  (pure "hpmcounter16")
+                                                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                                                       (0xC11 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                                                    (pure "hpmcounter17")
+                                                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                                                         (0xC12 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                                                      (pure "hpmcounter18")
+                                                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                                                           (0xC13 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                                                        (pure "hpmcounter19")
+                                                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                                                             (0xC14 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                                                          (pure "hpmcounter20")
+                                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                                                                               (0xC15 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                                                                            (pure "hpmcounter21")
+                                                                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                                                                 (0xC16 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                                                                              (pure "hpmcounter22")
+                                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                                                                   (0xC17 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                                                                (pure "hpmcounter23")
+                                                                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                                                                     (0xC18 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                                                                  (pure "hpmcounter24")
+                                                                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                                                                       (0xC19 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                                                                    (pure "hpmcounter25")
+                                                                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                                                                         (0xC1A : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                                                                      (pure "hpmcounter26")
+                                                                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                                                                           (0xC1B : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                                                                        (pure "hpmcounter27")
+                                                                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                                                                             (0xC1C : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                                                                          (pure "hpmcounter28")
+                                                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                                                                                               (0xC1D : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                                                                                            (pure "hpmcounter29")
+                                                                                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                                                                                 (0xC1E : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                                                                                              (pure "hpmcounter30")
+                                                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                                                                                   (0xC1F : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                                                                                (pure "hpmcounter31")
+                                                                                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                                                                                     (0xC83 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                                                                                  (pure "hpmcounter3h")
+                                                                                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                                                                                       (0xC84 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                                                                                    (pure "hpmcounter4h")
+                                                                                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                                                                                         (0xC85 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                                                                                      (pure "hpmcounter5h")
+                                                                                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                                                                                           (0xC86 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                                                                                        (pure "hpmcounter6h")
+                                                                                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                                                                                             (0xC87 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                                                                                          (pure "hpmcounter7h")
+                                                                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                                                                                                               (0xC88 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                                                                                                            (pure "hpmcounter8h")
+                                                                                                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                                                                                                 (0xC89 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                                                                                                              (pure "hpmcounter9h")
+                                                                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                                                                                                   (0xC8A : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                                                                                                (pure "hpmcounter10h")
+                                                                                                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                                                                                                     (0xC8B : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                                                                                                  (pure "hpmcounter11h")
+                                                                                                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                                                                                                       (0xC8C : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                                                                                                    (pure "hpmcounter12h")
+                                                                                                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                                                                                                         (0xC8D : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                                                                                                      (pure "hpmcounter13h")
+                                                                                                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                                                                                                           (0xC8E : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                                                                                                        (pure "hpmcounter14h")
+                                                                                                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                                                                                                             (0xC8F : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                                                                                                          (pure "hpmcounter15h")
+                                                                                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                                                                                                                               (0xC90 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                                                                                                                            (pure "hpmcounter16h")
+                                                                                                                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                                                                                                                 (0xC91 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                                                                                                                              (pure "hpmcounter17h")
+                                                                                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                                                                                                                   (0xC92 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                                                                                                                (pure "hpmcounter18h")
+                                                                                                                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                                                                                                                     (0xC93 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                                                                                                                  (pure "hpmcounter19h")
+                                                                                                                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                                                                                                                       (0xC94 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                                                                                                                    (pure "hpmcounter20h")
+                                                                                                                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                                                                                                                         (0xC95 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                                                                                                                      (pure "hpmcounter21h")
+                                                                                                                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                                                                                                                           (0xC96 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                                                                                                                        (pure "hpmcounter22h")
+                                                                                                                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                                                                                                                             (0xC97 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                                                                                                                          (pure "hpmcounter23h")
+                                                                                                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                                                                                                                                               (0xC98 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                                                                                                                                            (pure "hpmcounter24h")
+                                                                                                                                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                                                                                                                                 (0xC99 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                                                                                                                                              (pure "hpmcounter25h")
+                                                                                                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                                                                                                                                   (0xC9A : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                                                                                                                                (pure "hpmcounter26h")
+                                                                                                                                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                                                                                                                                     (0xC9B : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                                                                                                                                  (pure "hpmcounter27h")
+                                                                                                                                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                                                                                                                                       (0xC9C : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                                                                                                                                    (pure "hpmcounter28h")
+                                                                                                                                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                                                                                                                                         (0xC9D : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                                                                                                                                      (pure "hpmcounter29h")
+                                                                                                                                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                                                                                                                                           (0xC9E : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                                                                                                                                        (pure "hpmcounter30h")
+                                                                                                                                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                                                                                                                                             (0xC9F : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                                                                                                                                          (pure "hpmcounter31h")
+                                                                                                                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                                                                                                                                                               (0x323 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                                                                                                                                                            (pure "mhpmevent3")
+                                                                                                                                                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                                                                                                                                                 (0x324 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                                                                                                                                                              (pure "mhpmevent4")
+                                                                                                                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                                                                                                                                                   (0x325 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                                                                                                                                                (pure "mhpmevent5")
+                                                                                                                                                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                                                                                                                                                     (0x326 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                                                                                                                                                  (pure "mhpmevent6")
+                                                                                                                                                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                                                                                                                                                       (0x327 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                                                                                                                                                    (pure "mhpmevent7")
+                                                                                                                                                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                                                                                                                                                         (0x328 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                                                                                                                                                      (pure "mhpmevent8")
+                                                                                                                                                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                                                                                                                                                           (0x329 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                                                                                                                                                        (pure "mhpmevent9")
+                                                                                                                                                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                                                                                                                                                             (0x32A : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                                                                                                                                                          (pure "mhpmevent10")
+                                                                                                                                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                                                                                                                                                                               (0x32B : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                                                                                                                                                                            (pure "mhpmevent11")
+                                                                                                                                                                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                                                                                                                                                                 (0x32C : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                                                                                                                                                                              (pure "mhpmevent12")
+                                                                                                                                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                                                                                                                                                                   (0x32D : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                                                                                                                                                                (pure "mhpmevent13")
+                                                                                                                                                                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                                                                                                                                                                     (0x32E : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                                                                                                                                                                  (pure "mhpmevent14")
+                                                                                                                                                                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                                                                                                                                                                       (0x32F : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                                                                                                                                                                    (pure "mhpmevent15")
+                                                                                                                                                                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                                                                                                                                                                         (0x330 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                                                                                                                                                                      (pure "mhpmevent16")
+                                                                                                                                                                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                                                                                                                                                                           (0x331 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                                                                                                                                                                        (pure "mhpmevent17")
+                                                                                                                                                                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                                                                                                                                                                             (0x332 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                                                                                                                                                                          (pure "mhpmevent18")
+                                                                                                                                                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                                                                                                                                                                                               (0x333 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                                                                                                                                                                                            (pure "mhpmevent19")
+                                                                                                                                                                                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                 (0x334 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                                                                                                                                                                                              (pure "mhpmevent20")
+                                                                                                                                                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                   (0x335 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                                                                                                                                                                                (pure "mhpmevent21")
+                                                                                                                                                                                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                     (0x336 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                                                                                                                                                                                  (pure "mhpmevent22")
+                                                                                                                                                                                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                       (0x337 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                                                                                                                                                                                    (pure "mhpmevent23")
+                                                                                                                                                                                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                         (0x338 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                                                                                                                                                                                      (pure "mhpmevent24")
+                                                                                                                                                                                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                           (0x339 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                                                                                                                                                                                        (pure "mhpmevent25")
+                                                                                                                                                                                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                             (0x33A : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                                                                                                                                                                                          (pure "mhpmevent26")
+                                                                                                                                                                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                               (0x33B : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                                                                                                                                                                                                            (pure "mhpmevent27")
+                                                                                                                                                                                                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                 (0x33C : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                                                                                                                                                                                                              (pure "mhpmevent28")
+                                                                                                                                                                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                   (0x33D : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                                                                                                                                                                                                (pure "mhpmevent29")
+                                                                                                                                                                                                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                     (0x33E : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                                                                                                                                                                                                  (pure "mhpmevent30")
+                                                                                                                                                                                                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                       (0x33F : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                                                                                                                                                                                                    (pure "mhpmevent31")
+                                                                                                                                                                                                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                         (0xB03 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                                                                                                                                                                                                      (pure "mhpmcounter3")
+                                                                                                                                                                                                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                           (0xB04 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                                                                                                                                                                                                        (pure "mhpmcounter4")
+                                                                                                                                                                                                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                             (0xB05 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                                                                                                                                                                                                          (pure "mhpmcounter5")
+                                                                                                                                                                                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                               (0xB06 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                                                                                                                                                                                                                            (pure "mhpmcounter6")
+                                                                                                                                                                                                                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                 (0xB07 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                                                                                                                                                                                                                              (pure "mhpmcounter7")
+                                                                                                                                                                                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                   (0xB08 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                (pure "mhpmcounter8")
+                                                                                                                                                                                                                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                     (0xB09 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  (pure "mhpmcounter9")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                       (0xB0A : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                    (pure "mhpmcounter10")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                         (0xB0B : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      (pure "mhpmcounter11")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                           (0xB0C : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        (pure "mhpmcounter12")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             (0xB0D : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                          (pure "mhpmcounter13")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                               (0xB0E : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                            (pure "mhpmcounter14")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                 (0xB0F : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              (pure "mhpmcounter15")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                   (0xB10 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                (pure "mhpmcounter16")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                     (0xB11 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                  (pure "mhpmcounter17")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                       (0xB12 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                    (pure "mhpmcounter18")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                         (0xB13 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                      (pure "mhpmcounter19")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                           (0xB14 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                        (pure "mhpmcounter20")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                             (0xB15 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                          (pure "mhpmcounter21")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                               (0xB16 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            (pure "mhpmcounter22")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 (0xB17 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                              (pure "mhpmcounter23")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   (0xB18 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                (pure "mhpmcounter24")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     (0xB19 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  (pure "mhpmcounter25")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       (0xB1A : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    (pure "mhpmcounter26")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         (0xB1B : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      (pure "mhpmcounter27")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           (0xB1C : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        (pure "mhpmcounter28")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             (0xB1D : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          (pure "mhpmcounter29")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               (0xB1E : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            (pure "mhpmcounter30")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 (0xB1F : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              (pure "mhpmcounter31")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   (0xB83 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                (pure "mhpmcounter3h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     (0xB84 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  (pure "mhpmcounter4h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       (0xB85 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    (pure "mhpmcounter5h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         (0xB86 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      (pure "mhpmcounter6h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           (0xB87 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        (pure "mhpmcounter7h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             (0xB88 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          (pure "mhpmcounter8h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               (0xB89 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            (pure "mhpmcounter9h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 (0xB8A : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              (pure "mhpmcounter10h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   (0xB8B : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                (pure "mhpmcounter11h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     (0xB8C : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  (pure "mhpmcounter12h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       (0xB8D : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    (pure "mhpmcounter13h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         (0xB8E : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      (pure "mhpmcounter14h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           (0xB8F : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        (pure "mhpmcounter15h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             (0xB90 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          (pure "mhpmcounter16h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               (0xB91 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            (pure "mhpmcounter17h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 (0xB92 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              (pure "mhpmcounter18h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   (0xB93 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                (pure "mhpmcounter19h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     (0xB94 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  (pure "mhpmcounter20h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       (0xB95 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    (pure "mhpmcounter21h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         (0xB96 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      (pure "mhpmcounter22h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           (0xB97 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        (pure "mhpmcounter23h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             (0xB98 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          (pure "mhpmcounter24h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               (0xB99 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            (pure "mhpmcounter25h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 (0xB9A : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              (pure "mhpmcounter26h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   (0xB9B : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                (pure "mhpmcounter27h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     (0xB9C : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  (pure "mhpmcounter28h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       (0xB9D : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    (pure "mhpmcounter29h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         (0xB9E : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      (pure "mhpmcounter30h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           (0xB9F : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        (pure "mhpmcounter31h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             (0xB83 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          (pure "mhpmcounter3h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               (0xB84 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            (pure "mhpmcounter4h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 (0xB85 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              (pure "mhpmcounter5h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   (0xB86 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                (pure "mhpmcounter6h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     (0xB87 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  (pure "mhpmcounter7h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       (0xB88 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    (pure "mhpmcounter8h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         (0xB89 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      (pure "mhpmcounter9h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           (0xB8A : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        (pure "mhpmcounter10h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             (0xB8B : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          (pure "mhpmcounter11h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               (0xB8C : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            (pure "mhpmcounter12h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 (0xB8D : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              (pure "mhpmcounter13h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   (0xB8E : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                (pure "mhpmcounter14h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     (0xB8F : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  (pure "mhpmcounter15h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       (0xB90 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    (pure "mhpmcounter16h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         (0xB91 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      (pure "mhpmcounter17h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           (0xB92 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        (pure "mhpmcounter18h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             (0xB93 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          (pure "mhpmcounter19h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               (0xB94 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            (pure "mhpmcounter20h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 (0xB95 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              (pure "mhpmcounter21h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   (0xB96 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                (pure "mhpmcounter22h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     (0xB97 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  (pure "mhpmcounter23h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       (0xB98 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    (pure "mhpmcounter24h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         (0xB99 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      (pure "mhpmcounter25h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           (0xB9A : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        (pure "mhpmcounter26h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             (0xB9B : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          (pure "mhpmcounter27h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               (0xB9C : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            (pure "mhpmcounter28h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 (0xB9D : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              (pure "mhpmcounter29h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   (0xB9E : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                (pure "mhpmcounter30h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     (0xB9F : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  (pure "mhpmcounter31h")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       (0xDA0 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    (pure "scountovf")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         (0x015 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      (pure "seed")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           (0xC00 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        (pure "cycle")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             (0xC01 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          (pure "time")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               (0xC02 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            (pure "instret")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 (0xC80 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              (pure "cycleh")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   (0xC81 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                (pure "timeh")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     (0xC82 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  (pure "instreth")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       (0xB00 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    (pure "mcycle")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         (0xB02 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      (pure "minstret")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           (0xB80 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        (pure "mcycleh")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             (0xB82 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          (pure "minstreth")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               (0x001 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            (pure "fflags")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 (0x002 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              (pure "frm")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   (0x003 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                (pure "fcsr")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     (0x321 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  (pure "mcyclecfg")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       (0x721 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    (pure "mcyclecfgh")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         (0x322 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      (pure "minstretcfg")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           (0x722 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        (pure "minstretcfgh")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        if (BEq.beq
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             b__0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             (0x180 : (BitVec 12)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        then
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          (pure "satp")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          (hex_bits_12_forwards
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            b__0)
+
+def csr_name (csr : (BitVec 12)) : SailM String := do
+  (csr_name_map_forwards csr)
+
+def exceptionType_to_str (e : ExceptionType) : String :=
+  match e with
+  | .E_Fetch_Addr_Align () => "misaligned-fetch"
+  | .E_Fetch_Access_Fault () => "fetch-access-fault"
+  | .E_Illegal_Instr () => "illegal-instruction"
+  | .E_Breakpoint () => "breakpoint"
+  | .E_Load_Addr_Align () => "misaligned-load"
+  | .E_Load_Access_Fault () => "load-access-fault"
+  | .E_SAMO_Addr_Align () => "misaligned-store/amo"
+  | .E_SAMO_Access_Fault () => "store/amo-access-fault"
+  | .E_U_EnvCall () => "u-call"
+  | .E_S_EnvCall () => "s-call"
+  | .E_Reserved_10 () => "reserved-0"
+  | .E_M_EnvCall () => "m-call"
+  | .E_Fetch_Page_Fault () => "fetch-page-fault"
+  | .E_Load_Page_Fault () => "load-page-fault"
+  | .E_Reserved_14 () => "reserved-1"
+  | .E_SAMO_Page_Fault () => "store/amo-page-fault"
+  | .E_Extension e => (ext_exc_type_to_str e)
+
+def amo_mnemonic_forwards (arg_ : amoop) : String :=
+  match arg_ with
+  | AMOSWAP => "amoswap"
+  | AMOADD => "amoadd"
+  | AMOXOR => "amoxor"
+  | AMOAND => "amoand"
+  | AMOOR => "amoor"
+  | AMOMIN => "amomin"
+  | AMOMAX => "amomax"
+  | AMOMINU => "amominu"
+  | AMOMAXU => "amomaxu"
+
+def btype_mnemonic_forwards (arg_ : bop) : String :=
+  match arg_ with
+  | RISCV_BEQ => "beq"
+  | RISCV_BNE => "bne"
+  | RISCV_BLT => "blt"
+  | RISCV_BGE => "bge"
+  | RISCV_BLTU => "bltu"
+  | RISCV_BGEU => "bgeu"
+
+def cbop_mnemonic_forwards (arg_ : cbop_zicbom) : String :=
+  match arg_ with
+  | CBO_CLEAN => "cbo.clean"
+  | CBO_FLUSH => "cbo.flush"
+  | CBO_INVAL => "cbo.inval"
+
+def creg_name_raw_forwards (arg_ : (BitVec 3)) : String :=
+  let b__0 := arg_
+  if (BEq.beq b__0 (0b000 : (BitVec 3)))
+  then "s0"
+  else
+    if (BEq.beq b__0 (0b001 : (BitVec 3)))
+    then "s1"
+    else
+      if (BEq.beq b__0 (0b010 : (BitVec 3)))
+      then "a0"
+      else
+        if (BEq.beq b__0 (0b011 : (BitVec 3)))
+        then "a1"
+        else
+          if (BEq.beq b__0 (0b100 : (BitVec 3)))
+          then "a2"
+          else
+            if (BEq.beq b__0 (0b101 : (BitVec 3)))
+            then "a3"
+            else
+              if (BEq.beq b__0 (0b110 : (BitVec 3)))
+              then "a4"
+              else "a5"
+
+def creg_name_forwards (arg_ : cregidx) : String :=
+  match arg_ with
+  | .Cregidx i => (creg_name_raw_forwards i)
+
+def csr_mnemonic_forwards (arg_ : csrop) : String :=
+  match arg_ with
+  | CSRRW => "csrrw"
+  | CSRRS => "csrrs"
+  | CSRRC => "csrrc"
+
+def f_bin_f_type_mnemonic_D_forwards (arg_ : f_bin_f_op_D) : String :=
+  match arg_ with
+  | FSGNJ_D => "fsgnj.d"
+  | FSGNJN_D => "fsgnjn.d"
+  | FSGNJX_D => "fsgnjx.d"
+  | FMIN_D => "fmin.d"
+  | FMAX_D => "fmax.d"
+
+def f_bin_f_type_mnemonic_H_forwards (arg_ : f_bin_f_op_H) : String :=
+  match arg_ with
+  | FSGNJ_H => "fsgnj.h"
+  | FSGNJN_H => "fsgnjn.h"
+  | FSGNJX_H => "fsgnjx.h"
+  | FMIN_H => "fmin.h"
+  | FMAX_H => "fmax.h"
+
+def f_bin_rm_type_mnemonic_D_forwards (arg_ : f_bin_rm_op_D) : String :=
+  match arg_ with
+  | FADD_D => "fadd.d"
+  | FSUB_D => "fsub.d"
+  | FMUL_D => "fmul.d"
+  | FDIV_D => "fdiv.d"
+
+def f_bin_rm_type_mnemonic_H_forwards (arg_ : f_bin_rm_op_H) : String :=
+  match arg_ with
+  | FADD_H => "fadd.h"
+  | FSUB_H => "fsub.h"
+  | FMUL_H => "fmul.h"
+  | FDIV_H => "fdiv.h"
+
+def f_bin_rm_type_mnemonic_S_forwards (arg_ : f_bin_rm_op_S) : String :=
+  match arg_ with
+  | FADD_S => "fadd.s"
+  | FSUB_S => "fsub.s"
+  | FMUL_S => "fmul.s"
+  | FDIV_S => "fdiv.s"
+
+def f_bin_type_mnemonic_f_S_forwards (arg_ : f_bin_op_f_S) : String :=
+  match arg_ with
+  | FSGNJ_S => "fsgnj.s"
+  | FSGNJN_S => "fsgnjn.s"
+  | FSGNJX_S => "fsgnjx.s"
+  | FMIN_S => "fmin.s"
+  | FMAX_S => "fmax.s"
+
+def f_bin_type_mnemonic_x_S_forwards (arg_ : f_bin_op_x_S) : String :=
+  match arg_ with
+  | FEQ_S => "feq.s"
+  | FLT_S => "flt.s"
+  | FLE_S => "fle.s"
+
+def f_bin_x_type_mnemonic_D_forwards (arg_ : f_bin_x_op_D) : String :=
+  match arg_ with
+  | FEQ_D => "feq.d"
+  | FLT_D => "flt.d"
+  | FLE_D => "fle.d"
+
+def f_bin_x_type_mnemonic_H_forwards (arg_ : f_bin_x_op_H) : String :=
+  match arg_ with
+  | FEQ_H => "feq.h"
+  | FLT_H => "flt.h"
+  | FLE_H => "fle.h"
+
+def f_madd_type_mnemonic_D_forwards (arg_ : f_madd_op_D) : String :=
+  match arg_ with
+  | FMADD_D => "fmadd.d"
+  | FMSUB_D => "fmsub.d"
+  | FNMSUB_D => "fnmsub.d"
+  | FNMADD_D => "fnmadd.d"
+
+def f_madd_type_mnemonic_H_forwards (arg_ : f_madd_op_H) : String :=
+  match arg_ with
+  | FMADD_H => "fmadd.h"
+  | FMSUB_H => "fmsub.h"
+  | FNMSUB_H => "fnmsub.h"
+  | FNMADD_H => "fnmadd.h"
+
+def f_madd_type_mnemonic_S_forwards (arg_ : f_madd_op_S) : String :=
+  match arg_ with
+  | FMADD_S => "fmadd.s"
+  | FMSUB_S => "fmsub.s"
+  | FNMSUB_S => "fnmsub.s"
+  | FNMADD_S => "fnmadd.s"
+
+def f_un_f_type_mnemonic_D_forwards (arg_ : f_un_f_op_D) : String :=
+  match arg_ with
+  | FMV_D_X => "fmv.d.x"
+
+def f_un_f_type_mnemonic_H_forwards (arg_ : f_un_f_op_H) : String :=
+  match arg_ with
+  | FMV_H_X => "fmv.h.x"
+
+def f_un_rm_ff_type_mnemonic_D_forwards (arg_ : f_un_rm_ff_op_D) : String :=
+  match arg_ with
+  | FSQRT_D => "fsqrt.d"
+  | FCVT_S_D => "fcvt.s.d"
+  | FCVT_D_S => "fcvt.d.s"
+
+def f_un_rm_ff_type_mnemonic_H_forwards (arg_ : f_un_rm_ff_op_H) : String :=
+  match arg_ with
+  | FSQRT_H => "fsqrt.h"
+  | FCVT_H_S => "fcvt.h.s"
+  | FCVT_H_D => "fcvt.h.d"
+  | FCVT_S_H => "fcvt.s.h"
+  | FCVT_D_H => "fcvt.d.h"
+
+def f_un_rm_fx_type_mnemonic_D_forwards (arg_ : f_un_rm_fx_op_D) : String :=
+  match arg_ with
+  | FCVT_W_D => "fcvt.w.d"
+  | FCVT_WU_D => "fcvt.wu.d"
+  | FCVT_L_D => "fcvt.l.d"
+  | FCVT_LU_D => "fcvt.lu.d"
+
+def f_un_rm_fx_type_mnemonic_H_forwards (arg_ : f_un_rm_fx_op_H) : String :=
+  match arg_ with
+  | FCVT_W_H => "fcvt.w.h"
+  | FCVT_WU_H => "fcvt.wu.h"
+  | FCVT_L_H => "fcvt.l.h"
+  | FCVT_LU_H => "fcvt.lu.h"
+
+def f_un_rm_fx_type_mnemonic_S_forwards (arg_ : f_un_rm_fx_op_S) : String :=
+  match arg_ with
+  | FCVT_W_S => "fcvt.w.s"
+  | FCVT_WU_S => "fcvt.wu.s"
+  | FCVT_L_S => "fcvt.l.s"
+  | FCVT_LU_S => "fcvt.lu.s"
+
+def f_un_rm_xf_type_mnemonic_D_forwards (arg_ : f_un_rm_xf_op_D) : String :=
+  match arg_ with
+  | FCVT_D_W => "fcvt.d.w"
+  | FCVT_D_WU => "fcvt.d.wu"
+  | FCVT_D_L => "fcvt.d.l"
+  | FCVT_D_LU => "fcvt.d.lu"
+
+def f_un_rm_xf_type_mnemonic_H_forwards (arg_ : f_un_rm_xf_op_H) : String :=
+  match arg_ with
+  | FCVT_H_W => "fcvt.h.w"
+  | FCVT_H_WU => "fcvt.h.wu"
+  | FCVT_H_L => "fcvt.h.l"
+  | FCVT_H_LU => "fcvt.h.lu"
+
+def f_un_rm_xf_type_mnemonic_S_forwards (arg_ : f_un_rm_xf_op_S) : String :=
+  match arg_ with
+  | FCVT_S_W => "fcvt.s.w"
+  | FCVT_S_WU => "fcvt.s.wu"
+  | FCVT_S_L => "fcvt.s.l"
+  | FCVT_S_LU => "fcvt.s.lu"
+
+def f_un_type_mnemonic_f_S_forwards (arg_ : f_un_op_f_S) : String :=
+  match arg_ with
+  | FMV_W_X => "fmv.w.x"
+
+def f_un_type_mnemonic_x_S_forwards (arg_ : f_un_op_x_S) : String :=
+  match arg_ with
+  | FCLASS_S => "fclass.s"
+  | FMV_X_W => "fmv.x.w"
+
+def f_un_x_type_mnemonic_D_forwards (arg_ : f_un_x_op_D) : String :=
+  match arg_ with
+  | FMV_X_D => "fmv.x.d"
+  | FCLASS_D => "fclass.d"
+
+def f_un_x_type_mnemonic_H_forwards (arg_ : f_un_x_op_H) : String :=
+  match arg_ with
+  | FMV_X_H => "fmv.x.h"
+  | FCLASS_H => "fclass.h"
+
+def bit_maybe_i_forwards (arg_ : (BitVec 1)) : String :=
+  let b__0 := arg_
+  if (BEq.beq b__0 (0b1 : (BitVec 1)))
+  then "i"
+  else ""
+
+def bit_maybe_o_forwards (arg_ : (BitVec 1)) : String :=
+  let b__0 := arg_
+  if (BEq.beq b__0 (0b1 : (BitVec 1)))
+  then "o"
+  else ""
+
+def bit_maybe_r_forwards (arg_ : (BitVec 1)) : String :=
+  let b__0 := arg_
+  if (BEq.beq b__0 (0b1 : (BitVec 1)))
+  then "r"
+  else ""
+
+def bit_maybe_w_forwards (arg_ : (BitVec 1)) : String :=
+  let b__0 := arg_
+  if (BEq.beq b__0 (0b1 : (BitVec 1)))
+  then "w"
+  else ""
+
+def fence_bits_forwards (arg_ : (BitVec 4)) : String :=
+  match arg_ with
+  | v__0 =>
+    let i : (BitVec 1) := (Sail.BitVec.extractLsb v__0 3 3)
+    let w : (BitVec 1) := (Sail.BitVec.extractLsb v__0 0 0)
+    let r : (BitVec 1) := (Sail.BitVec.extractLsb v__0 1 1)
+    let o : (BitVec 1) := (Sail.BitVec.extractLsb v__0 2 2)
+    let i : (BitVec 1) := (Sail.BitVec.extractLsb v__0 3 3)
+    (String.append (bit_maybe_i_forwards i)
+      (String.append (bit_maybe_o_forwards o)
+        (String.append (bit_maybe_r_forwards r) (String.append (bit_maybe_w_forwards w) ""))))
+
+def freg_name_raw_forwards (arg_ : (BitVec 5)) : String :=
+  let b__0 := arg_
+  if (BEq.beq b__0 (0b00000 : (BitVec 5)))
+  then "ft0"
+  else
+    if (BEq.beq b__0 (0b00001 : (BitVec 5)))
+    then "ft1"
+    else
+      if (BEq.beq b__0 (0b00010 : (BitVec 5)))
+      then "ft2"
+      else
+        if (BEq.beq b__0 (0b00011 : (BitVec 5)))
+        then "ft3"
+        else
+          if (BEq.beq b__0 (0b00100 : (BitVec 5)))
+          then "ft4"
+          else
+            if (BEq.beq b__0 (0b00101 : (BitVec 5)))
+            then "ft5"
+            else
+              if (BEq.beq b__0 (0b00110 : (BitVec 5)))
+              then "ft6"
+              else
+                if (BEq.beq b__0 (0b00111 : (BitVec 5)))
+                then "ft7"
+                else
+                  if (BEq.beq b__0 (0b01000 : (BitVec 5)))
+                  then "fs0"
+                  else
+                    if (BEq.beq b__0 (0b01001 : (BitVec 5)))
+                    then "fs1"
+                    else
+                      if (BEq.beq b__0 (0b01010 : (BitVec 5)))
+                      then "fa0"
+                      else
+                        if (BEq.beq b__0 (0b01011 : (BitVec 5)))
+                        then "fa1"
+                        else
+                          if (BEq.beq b__0 (0b01100 : (BitVec 5)))
+                          then "fa2"
+                          else
+                            if (BEq.beq b__0 (0b01101 : (BitVec 5)))
+                            then "fa3"
+                            else
+                              if (BEq.beq b__0 (0b01110 : (BitVec 5)))
+                              then "fa4"
+                              else
+                                if (BEq.beq b__0 (0b01111 : (BitVec 5)))
+                                then "fa5"
+                                else
+                                  if (BEq.beq b__0 (0b10000 : (BitVec 5)))
+                                  then "fa6"
+                                  else
+                                    if (BEq.beq b__0 (0b10001 : (BitVec 5)))
+                                    then "fa7"
+                                    else
+                                      if (BEq.beq b__0 (0b10010 : (BitVec 5)))
+                                      then "fs2"
+                                      else
+                                        if (BEq.beq b__0 (0b10011 : (BitVec 5)))
+                                        then "fs3"
+                                        else
+                                          if (BEq.beq b__0 (0b10100 : (BitVec 5)))
+                                          then "fs4"
+                                          else
+                                            if (BEq.beq b__0 (0b10101 : (BitVec 5)))
+                                            then "fs5"
+                                            else
+                                              if (BEq.beq b__0 (0b10110 : (BitVec 5)))
+                                              then "fs6"
+                                              else
+                                                if (BEq.beq b__0 (0b10111 : (BitVec 5)))
+                                                then "fs7"
+                                                else
+                                                  if (BEq.beq b__0 (0b11000 : (BitVec 5)))
+                                                  then "fs8"
+                                                  else
+                                                    if (BEq.beq b__0 (0b11001 : (BitVec 5)))
+                                                    then "fs9"
+                                                    else
+                                                      if (BEq.beq b__0 (0b11010 : (BitVec 5)))
+                                                      then "fs10"
+                                                      else
+                                                        if (BEq.beq b__0 (0b11011 : (BitVec 5)))
+                                                        then "fs11"
+                                                        else
+                                                          if (BEq.beq b__0 (0b11100 : (BitVec 5)))
+                                                          then "ft8"
+                                                          else
+                                                            if (BEq.beq b__0 (0b11101 : (BitVec 5)))
+                                                            then "ft9"
+                                                            else
+                                                              if (BEq.beq b__0
+                                                                   (0b11110 : (BitVec 5)))
+                                                              then "ft10"
+                                                              else "ft11"
+
+def freg_name_forwards (arg_ : fregidx) : String :=
+  match arg_ with
+  | .Fregidx i => (freg_name_raw_forwards i)
+
+def fregidx_to_regidx (app_0 : fregidx) : regidx :=
+  let .Fregidx b := app_0
+  (Regidx
+    (Sail.BitVec.truncate b
+      (let .Regidx zreg_bits := zreg
+      (Sail.BitVec.length zreg_bits))))
+
+def reg_name_raw_forwards (arg_ : (BitVec 5)) : String :=
+  let b__0 := arg_
+  if (BEq.beq b__0 (0b00000 : (BitVec 5)))
+  then "zero"
+  else
+    if (BEq.beq b__0 (0b00001 : (BitVec 5)))
+    then "ra"
+    else
+      if (BEq.beq b__0 (0b00010 : (BitVec 5)))
+      then "sp"
+      else
+        if (BEq.beq b__0 (0b00011 : (BitVec 5)))
+        then "gp"
+        else
+          if (BEq.beq b__0 (0b00100 : (BitVec 5)))
+          then "tp"
+          else
+            if (BEq.beq b__0 (0b00101 : (BitVec 5)))
+            then "t0"
+            else
+              if (BEq.beq b__0 (0b00110 : (BitVec 5)))
+              then "t1"
+              else
+                if (BEq.beq b__0 (0b00111 : (BitVec 5)))
+                then "t2"
+                else
+                  if (BEq.beq b__0 (0b01000 : (BitVec 5)))
+                  then "fp"
+                  else
+                    if (BEq.beq b__0 (0b01001 : (BitVec 5)))
+                    then "s1"
+                    else
+                      if (BEq.beq b__0 (0b01010 : (BitVec 5)))
+                      then "a0"
+                      else
+                        if (BEq.beq b__0 (0b01011 : (BitVec 5)))
+                        then "a1"
+                        else
+                          if (BEq.beq b__0 (0b01100 : (BitVec 5)))
+                          then "a2"
+                          else
+                            if (BEq.beq b__0 (0b01101 : (BitVec 5)))
+                            then "a3"
+                            else
+                              if (BEq.beq b__0 (0b01110 : (BitVec 5)))
+                              then "a4"
+                              else
+                                if (BEq.beq b__0 (0b01111 : (BitVec 5)))
+                                then "a5"
+                                else
+                                  if (BEq.beq b__0 (0b10000 : (BitVec 5)))
+                                  then "a6"
+                                  else
+                                    if (BEq.beq b__0 (0b10001 : (BitVec 5)))
+                                    then "a7"
+                                    else
+                                      if (BEq.beq b__0 (0b10010 : (BitVec 5)))
+                                      then "s2"
+                                      else
+                                        if (BEq.beq b__0 (0b10011 : (BitVec 5)))
+                                        then "s3"
+                                        else
+                                          if (BEq.beq b__0 (0b10100 : (BitVec 5)))
+                                          then "s4"
+                                          else
+                                            if (BEq.beq b__0 (0b10101 : (BitVec 5)))
+                                            then "s5"
+                                            else
+                                              if (BEq.beq b__0 (0b10110 : (BitVec 5)))
+                                              then "s6"
+                                              else
+                                                if (BEq.beq b__0 (0b10111 : (BitVec 5)))
+                                                then "s7"
+                                                else
+                                                  if (BEq.beq b__0 (0b11000 : (BitVec 5)))
+                                                  then "s8"
+                                                  else
+                                                    if (BEq.beq b__0 (0b11001 : (BitVec 5)))
+                                                    then "s9"
+                                                    else
+                                                      if (BEq.beq b__0 (0b11010 : (BitVec 5)))
+                                                      then "s10"
+                                                      else
+                                                        if (BEq.beq b__0 (0b11011 : (BitVec 5)))
+                                                        then "s11"
+                                                        else
+                                                          if (BEq.beq b__0 (0b11100 : (BitVec 5)))
+                                                          then "t3"
+                                                          else
+                                                            if (BEq.beq b__0 (0b11101 : (BitVec 5)))
+                                                            then "t4"
+                                                            else
+                                                              if (BEq.beq b__0
+                                                                   (0b11110 : (BitVec 5)))
+                                                              then "t5"
+                                                              else "t6"
+
+def reg_name_forwards (arg_ : regidx) : String :=
+  match arg_ with
+  | .Regidx i => (reg_name_raw_forwards i)
+
+def freg_or_reg_name_forwards (arg_ : fregidx) : String :=
+  let f := arg_
+  if (sys_enable_zfinx ())
+  then (reg_name_forwards (fregidx_to_regidx f))
+  else (freg_name_forwards f)
+
+def frm_mnemonic_forwards (arg_ : rounding_mode) : String :=
+  match arg_ with
+  | RM_RNE => "rne"
+  | RM_RTZ => "rtz"
+  | RM_RDN => "rdn"
+  | RM_RUP => "rup"
+  | RM_RMM => "rmm"
+  | RM_DYN => "dyn"
+
+def fvfmatype_mnemonic_forwards (arg_ : fvfmafunct6) : String :=
+  match arg_ with
+  | VF_VMADD => "vfmadd.vf"
+  | VF_VNMADD => "vfnmadd.vf"
+  | VF_VMSUB => "vfmsub.vf"
+  | VF_VNMSUB => "vfnmsub.vf"
+  | VF_VMACC => "vfmacc.vf"
+  | VF_VNMACC => "vfnmacc.vf"
+  | VF_VMSAC => "vfmsac.vf"
+  | VF_VNMSAC => "vfnmsac.vf"
+
+def fvfmtype_mnemonic_forwards (arg_ : fvfmfunct6) : String :=
+  match arg_ with
+  | VFM_VMFEQ => "vmfeq.vf"
+  | VFM_VMFLE => "vmfle.vf"
+  | VFM_VMFLT => "vmflt.vf"
+  | VFM_VMFNE => "vmfne.vf"
+  | VFM_VMFGT => "vmfgt.vf"
+  | VFM_VMFGE => "vmfge.vf"
+
+def fvftype_mnemonic_forwards (arg_ : fvffunct6) : String :=
+  match arg_ with
+  | VF_VADD => "vfadd.vf"
+  | VF_VSUB => "vfsub.vf"
+  | VF_VMIN => "vfmin.vf"
+  | VF_VMAX => "vfmax.vf"
+  | VF_VSGNJ => "vfsgnj.vf"
+  | VF_VSGNJN => "vfsgnjn.vf"
+  | VF_VSGNJX => "vfsgnjx.vf"
+  | VF_VSLIDE1UP => "vfslide1up.vf"
+  | VF_VSLIDE1DOWN => "vfslide1down.vf"
+  | VF_VDIV => "vfdiv.vf"
+  | VF_VRDIV => "vfrdiv.vf"
+  | VF_VMUL => "vfmul.vf"
+  | VF_VRSUB => "vfrsub.vf"
+
+def fvvmatype_mnemonic_forwards (arg_ : fvvmafunct6) : String :=
+  match arg_ with
+  | FVV_VMADD => "vfmadd.vv"
+  | FVV_VNMADD => "vfnmadd.vv"
+  | FVV_VMSUB => "vfmsub.vv"
+  | FVV_VNMSUB => "vfnmsub.vv"
+  | FVV_VMACC => "vfmacc.vv"
+  | FVV_VNMACC => "vfnmacc.vv"
+  | FVV_VMSAC => "vfmsac.vv"
+  | FVV_VNMSAC => "vfnmsac.vv"
+
+def fvvmtype_mnemonic_forwards (arg_ : fvvmfunct6) : String :=
+  match arg_ with
+  | FVVM_VMFEQ => "vmfeq.vv"
+  | FVVM_VMFLE => "vmfle.vv"
+  | FVVM_VMFLT => "vmflt.vv"
+  | FVVM_VMFNE => "vmfne.vv"
+
+def fvvtype_mnemonic_forwards (arg_ : fvvfunct6) : String :=
+  match arg_ with
+  | FVV_VADD => "vfadd.vv"
+  | FVV_VSUB => "vfsub.vv"
+  | FVV_VMIN => "vfmin.vv"
+  | FVV_VMAX => "vfmax.vv"
+  | FVV_VSGNJ => "vfsgnj.vv"
+  | FVV_VSGNJN => "vfsgnjn.vv"
+  | FVV_VSGNJX => "vfsgnjx.vv"
+  | FVV_VDIV => "vfdiv.vv"
+  | FVV_VMUL => "vfmul.vv"
+
+def fwftype_mnemonic_forwards (arg_ : fwffunct6) : String :=
+  match arg_ with
+  | FWF_VADD => "vfwadd.wf"
+  | FWF_VSUB => "vfwsub.wf"
+
+def fwvfmatype_mnemonic_forwards (arg_ : fwvfmafunct6) : String :=
+  match arg_ with
+  | FWVF_VMACC => "vfwmacc.vf"
+  | FWVF_VNMACC => "vfwnmacc.vf"
+  | FWVF_VMSAC => "vfwmsac.vf"
+  | FWVF_VNMSAC => "vfwnmsac.vf"
+
+def fwvftype_mnemonic_forwards (arg_ : fwvffunct6) : String :=
+  match arg_ with
+  | FWVF_VADD => "vfwadd.vf"
+  | FWVF_VSUB => "vfwsub.vf"
+  | FWVF_VMUL => "vfwmul.vf"
+
+def fwvtype_mnemonic_forwards (arg_ : fwvfunct6) : String :=
+  match arg_ with
+  | FWV_VADD => "vfwadd.wv"
+  | FWV_VSUB => "vfwsub.wv"
+
+def fwvvmatype_mnemonic_forwards (arg_ : fwvvmafunct6) : String :=
+  match arg_ with
+  | FWVV_VMACC => "vfwmacc.vv"
+  | FWVV_VNMACC => "vfwnmacc.vv"
+  | FWVV_VMSAC => "vfwmsac.vv"
+  | FWVV_VNMSAC => "vfwnmsac.vv"
+
+def fwvvtype_mnemonic_forwards (arg_ : fwvvfunct6) : String :=
+  match arg_ with
+  | FWVV_VADD => "vfwadd.vv"
+  | FWVV_VSUB => "vfwsub.vv"
+  | FWVV_VMUL => "vfwmul.vv"
+
+def itype_mnemonic_forwards (arg_ : iop) : String :=
+  match arg_ with
+  | RISCV_ADDI => "addi"
+  | RISCV_SLTI => "slti"
+  | RISCV_SLTIU => "sltiu"
+  | RISCV_XORI => "xori"
+  | RISCV_ORI => "ori"
+  | RISCV_ANDI => "andi"
+
+/-- Type quantifiers: k_ex297567# : Bool -/
+def maybe_aq_forwards (arg_ : Bool) : String :=
+  match arg_ with
+  | true => ".aq"
+  | false => ""
+
+def maybe_lmul_flag_backwards (arg_ : (BitVec 3)) : SailM String := do
+  let b__0 := arg_
+  if (BEq.beq b__0 (0b000 : (BitVec 3)))
+  then (pure "")
+  else
+    if (BEq.beq b__0 (0b101 : (BitVec 3)))
+    then (pure (String.append (sep_forwards ()) (String.append "mf8" "")))
+    else
+      if (BEq.beq b__0 (0b110 : (BitVec 3)))
+      then (pure (String.append (sep_forwards ()) (String.append "mf4" "")))
+      else
+        if (BEq.beq b__0 (0b111 : (BitVec 3)))
+        then (pure (String.append (sep_forwards ()) (String.append "mf2" "")))
+        else
+          if (BEq.beq b__0 (0b000 : (BitVec 3)))
+          then (pure (String.append (sep_forwards ()) (String.append "m1" "")))
+          else
+            if (BEq.beq b__0 (0b001 : (BitVec 3)))
+            then (pure (String.append (sep_forwards ()) (String.append "m2" "")))
+            else
+              if (BEq.beq b__0 (0b010 : (BitVec 3)))
+              then (pure (String.append (sep_forwards ()) (String.append "m4" "")))
+              else
+                if (BEq.beq b__0 (0b011 : (BitVec 3)))
+                then (pure (String.append (sep_forwards ()) (String.append "m8" "")))
+                else
+                  assert false "Pattern match failure at unknown location"
+                  throw Error.Exit
+
+def maybe_ma_flag_backwards (arg_ : (BitVec 1)) : String :=
+  let b__0 := arg_
+  if (BEq.beq b__0 (0b0 : (BitVec 1)))
+  then ""
+  else
+    if (BEq.beq b__0 (0b1 : (BitVec 1)))
+    then (String.append (sep_forwards ()) (String.append "ma" ""))
+    else (String.append (sep_forwards ()) (String.append "mu" ""))
+
+/-- Type quantifiers: k_ex297578# : Bool -/
+def maybe_not_u_forwards (arg_ : Bool) : String :=
+  match arg_ with
+  | false => "u"
+  | true => ""
+
+/-- Type quantifiers: k_ex297579# : Bool -/
+def maybe_rl_forwards (arg_ : Bool) : String :=
+  match arg_ with
+  | true => ".rl"
+  | false => ""
+
+def maybe_ta_flag_backwards (arg_ : (BitVec 1)) : String :=
+  let b__0 := arg_
+  if (BEq.beq b__0 (0b0 : (BitVec 1)))
+  then ""
+  else
+    if (BEq.beq b__0 (0b1 : (BitVec 1)))
+    then (String.append (sep_forwards ()) (String.append "ta" ""))
+    else (String.append (sep_forwards ()) (String.append "tu" ""))
+
+/-- Type quantifiers: k_ex297582# : Bool -/
+def maybe_u_forwards (arg_ : Bool) : String :=
+  match arg_ with
+  | true => "u"
+  | false => ""
+
+def maybe_vmask_backwards (arg_ : (BitVec 1)) : String :=
+  let b__0 := arg_
+  if (BEq.beq b__0 (0b1 : (BitVec 1)))
+  then ""
+  else (String.append (sep_forwards ()) (String.append "v0.t" ""))
+
+def mmtype_mnemonic_forwards (arg_ : mmfunct6) : String :=
+  match arg_ with
+  | MM_VMAND => "vmand.mm"
+  | MM_VMNAND => "vmnand.mm"
+  | MM_VMANDN => "vmandn.mm"
+  | MM_VMXOR => "vmxor.mm"
+  | MM_VMOR => "vmor.mm"
+  | MM_VMNOR => "vmnor.mm"
+  | MM_VMORN => "vmorn.mm"
+  | MM_VMXNOR => "vmxnor.mm"
+
+def mul_mnemonic_forwards (arg_ : mul_op) : SailM String := do
+  match arg_ with
+  | { high := false, signed_rs1 := true, signed_rs2 := true } => (pure "mul")
+  | { high := true, signed_rs1 := true, signed_rs2 := true } => (pure "mulh")
+  | { high := true, signed_rs1 := true, signed_rs2 := false } => (pure "mulhsu")
+  | { high := true, signed_rs1 := false, signed_rs2 := false } => (pure "mulhu")
+  | _ =>
+    assert false "Pattern match failure at unknown location"
+    throw Error.Exit
+
+def mvvmatype_mnemonic_forwards (arg_ : mvvmafunct6) : String :=
+  match arg_ with
+  | MVV_VMACC => "vmacc.vv"
+  | MVV_VNMSAC => "vnmsac.vv"
+  | MVV_VMADD => "vmadd.vv"
+  | MVV_VNMSUB => "vnmsub.vv"
+
+def mvvtype_mnemonic_forwards (arg_ : mvvfunct6) : String :=
+  match arg_ with
+  | MVV_VAADDU => "vaaddu.vv"
+  | MVV_VAADD => "vaadd.vv"
+  | MVV_VASUBU => "vasubu.vv"
+  | MVV_VASUB => "vasub.vv"
+  | MVV_VMUL => "vmul.vv"
+  | MVV_VMULH => "vmulh.vv"
+  | MVV_VMULHU => "vmulhu.vv"
+  | MVV_VMULHSU => "vmulhsu.vv"
+  | MVV_VDIVU => "vdivu.vv"
+  | MVV_VDIV => "vdiv.vv"
+  | MVV_VREMU => "vremu.vv"
+  | MVV_VREM => "vrem.vv"
+
+def mvxmatype_mnemonic_forwards (arg_ : mvxmafunct6) : String :=
+  match arg_ with
+  | MVX_VMACC => "vmacc.vx"
+  | MVX_VNMSAC => "vnmsac.vx"
+  | MVX_VMADD => "vmadd.vx"
+  | MVX_VNMSUB => "vnmsub.vx"
+
+def mvxtype_mnemonic_forwards (arg_ : mvxfunct6) : String :=
+  match arg_ with
+  | MVX_VAADDU => "vaaddu.vx"
+  | MVX_VAADD => "vaadd.vx"
+  | MVX_VASUBU => "vasubu.vx"
+  | MVX_VASUB => "vasub.vx"
+  | MVX_VSLIDE1UP => "vslide1up.vx"
+  | MVX_VSLIDE1DOWN => "vslide1down.vx"
+  | MVX_VMUL => "vmul.vx"
+  | MVX_VMULH => "vmulh.vx"
+  | MVX_VMULHU => "vmulhu.vx"
+  | MVX_VMULHSU => "vmulhsu.vx"
+  | MVX_VDIVU => "vdivu.vx"
+  | MVX_VDIV => "vdiv.vx"
+  | MVX_VREMU => "vremu.vx"
+  | MVX_VREM => "vrem.vx"
+
+def nfields_string_forwards (arg_ : (BitVec 3)) : String :=
+  let b__0 := arg_
+  if (BEq.beq b__0 (0b000 : (BitVec 3)))
+  then ""
+  else
+    if (BEq.beq b__0 (0b001 : (BitVec 3)))
+    then "seg2"
+    else
+      if (BEq.beq b__0 (0b010 : (BitVec 3)))
+      then "seg3"
+      else
+        if (BEq.beq b__0 (0b011 : (BitVec 3)))
+        then "seg4"
+        else
+          if (BEq.beq b__0 (0b100 : (BitVec 3)))
+          then "seg5"
+          else
+            if (BEq.beq b__0 (0b101 : (BitVec 3)))
+            then "seg6"
+            else
+              if (BEq.beq b__0 (0b110 : (BitVec 3)))
+              then "seg7"
+              else "seg8"
+
+def nistype_mnemonic_forwards (arg_ : nisfunct6) : String :=
+  match arg_ with
+  | NIS_VNSRL => "vnsrl.wi"
+  | NIS_VNSRA => "vnsra.wi"
+
+def nitype_mnemonic_forwards (arg_ : nifunct6) : String :=
+  match arg_ with
+  | NI_VNCLIPU => "vnclipu.wi"
+  | NI_VNCLIP => "vnclip.wi"
+
+def nvstype_mnemonic_forwards (arg_ : nvsfunct6) : String :=
+  match arg_ with
+  | NVS_VNSRL => "vnsrl.wv"
+  | NVS_VNSRA => "vnsra.wv"
+
+def nvtype_mnemonic_forwards (arg_ : nvfunct6) : String :=
+  match arg_ with
+  | NV_VNCLIPU => "vnclipu.wv"
+  | NV_VNCLIP => "vnclip.wv"
+
+def nxstype_mnemonic_forwards (arg_ : nxsfunct6) : String :=
+  match arg_ with
+  | NXS_VNSRL => "vnsrl.wx"
+  | NXS_VNSRA => "vnsra.wx"
+
+def nxtype_mnemonic_forwards (arg_ : nxfunct6) : String :=
+  match arg_ with
+  | NX_VNCLIPU => "vnclipu.wx"
+  | NX_VNCLIP => "vnclip.wx"
+
+def rfvvtype_mnemonic_forwards (arg_ : rfvvfunct6) : String :=
+  match arg_ with
+  | FVV_VFREDOSUM => "vfredosum.vs"
+  | FVV_VFREDUSUM => "vfredusum.vs"
+  | FVV_VFREDMAX => "vfredmax.vs"
+  | FVV_VFREDMIN => "vfredmin.vs"
+  | FVV_VFWREDOSUM => "vfwredosum.vs"
+  | FVV_VFWREDUSUM => "vfwredusum.vs"
+
+def rivvtype_mnemonic_forwards (arg_ : rivvfunct6) : String :=
+  match arg_ with
+  | IVV_VWREDSUMU => "vwredsumu.vs"
+  | IVV_VWREDSUM => "vwredsum.vs"
+
+def rmvvtype_mnemonic_forwards (arg_ : rmvvfunct6) : String :=
+  match arg_ with
+  | MVV_VREDSUM => "vredsum.vs"
+  | MVV_VREDAND => "vredand.vs"
+  | MVV_VREDOR => "vredor.vs"
+  | MVV_VREDXOR => "vredxor.vs"
+  | MVV_VREDMINU => "vredminu.vs"
+  | MVV_VREDMIN => "vredmin.vs"
+  | MVV_VREDMAXU => "vredmaxu.vs"
+  | MVV_VREDMAX => "vredmax.vs"
+
+def rtype_mnemonic_forwards (arg_ : rop) : String :=
+  match arg_ with
+  | RISCV_ADD => "add"
+  | RISCV_SLT => "slt"
+  | RISCV_SLTU => "sltu"
+  | RISCV_AND => "and"
+  | RISCV_OR => "or"
+  | RISCV_XOR => "xor"
+  | RISCV_SLL => "sll"
+  | RISCV_SRL => "srl"
+  | RISCV_SUB => "sub"
+  | RISCV_SRA => "sra"
+
+def rtypew_mnemonic_forwards (arg_ : ropw) : String :=
+  match arg_ with
+  | RISCV_ADDW => "addw"
+  | RISCV_SUBW => "subw"
+  | RISCV_SLLW => "sllw"
+  | RISCV_SRLW => "srlw"
+  | RISCV_SRAW => "sraw"
+
+def sew_flag_backwards (arg_ : (BitVec 3)) : SailM String := do
+  let b__0 := arg_
+  if (BEq.beq b__0 (0b000 : (BitVec 3)))
+  then (pure "e8")
+  else
+    if (BEq.beq b__0 (0b001 : (BitVec 3)))
+    then (pure "e16")
+    else
+      if (BEq.beq b__0 (0b010 : (BitVec 3)))
+      then (pure "e32")
+      else
+        if (BEq.beq b__0 (0b011 : (BitVec 3)))
+        then (pure "e64")
+        else
+          assert false "Pattern match failure at unknown location"
+          throw Error.Exit
+
+def shiftiop_mnemonic_forwards (arg_ : sop) : String :=
+  match arg_ with
+  | RISCV_SLLI => "slli"
+  | RISCV_SRLI => "srli"
+  | RISCV_SRAI => "srai"
+
+def shiftiwop_mnemonic_forwards (arg_ : sopw) : String :=
+  match arg_ with
+  | RISCV_SLLIW => "slliw"
+  | RISCV_SRLIW => "srliw"
+  | RISCV_SRAIW => "sraiw"
+
+def simm_string_forwards (arg_ : (BitVec 5)) : SailM String := do
+  let b__0 := arg_
+  if (BEq.beq b__0 (0b00000 : (BitVec 5)))
+  then (pure "1")
+  else
+    if (BEq.beq b__0 (0b00001 : (BitVec 5)))
+    then (pure "2")
+    else
+      if (BEq.beq b__0 (0b00011 : (BitVec 5)))
+      then (pure "4")
+      else
+        if (BEq.beq b__0 (0b00111 : (BitVec 5)))
+        then (pure "8")
+        else
+          assert false "Pattern match failure at unknown location"
+          throw Error.Exit
+
+def size_mnemonic_forwards (arg_ : word_width) : String :=
+  match arg_ with
+  | BYTE => "b"
+  | HALF => "h"
+  | WORD => "w"
+  | DOUBLE => "d"
+
+def utype_mnemonic_forwards (arg_ : uop) : String :=
+  match arg_ with
+  | RISCV_LUI => "lui"
+  | RISCV_AUIPC => "auipc"
+
+def vext2type_mnemonic_forwards (arg_ : vext2funct6) : String :=
+  match arg_ with
+  | VEXT2_ZVF2 => "vzext.vf2"
+  | VEXT2_SVF2 => "vsext.vf2"
+
+def vext4type_mnemonic_forwards (arg_ : vext4funct6) : String :=
+  match arg_ with
+  | VEXT4_ZVF4 => "vzext.vf4"
+  | VEXT4_SVF4 => "vsext.vf4"
+
+def vext8type_mnemonic_forwards (arg_ : vext8funct6) : String :=
+  match arg_ with
+  | VEXT8_ZVF8 => "vzext.vf8"
+  | VEXT8_SVF8 => "vsext.vf8"
+
+def vfnunary0_mnemonic_forwards (arg_ : vfnunary0) : String :=
+  match arg_ with
+  | FNV_CVT_XU_F => "vfncvt.xu.f.w"
+  | FNV_CVT_X_F => "vfncvt.x.f.w"
+  | FNV_CVT_F_XU => "vfncvt.f.xu.w"
+  | FNV_CVT_F_X => "vfncvt.f.x.w"
+  | FNV_CVT_F_F => "vfncvt.f.f.w"
+  | FNV_CVT_ROD_F_F => "vfncvt.rod.f.f.w"
+  | FNV_CVT_RTZ_XU_F => "vfncvt.rtz.xu.f.w"
+  | FNV_CVT_RTZ_X_F => "vfncvt.rtz.x.f.w"
+
+def vfunary0_mnemonic_forwards (arg_ : vfunary0) : String :=
+  match arg_ with
+  | FV_CVT_XU_F => "vfcvt.xu.f.v"
+  | FV_CVT_X_F => "vfcvt.x.f.v"
+  | FV_CVT_F_XU => "vfcvt.f.xu.v"
+  | FV_CVT_F_X => "vfcvt.f.x.v"
+  | FV_CVT_RTZ_XU_F => "vfcvt.rtz.xu.f.v"
+  | FV_CVT_RTZ_X_F => "vfcvt.rtz.x.f.v"
+
+def vfunary1_mnemonic_forwards (arg_ : vfunary1) : String :=
+  match arg_ with
+  | FVV_VSQRT => "vfsqrt.v"
+  | FVV_VRSQRT7 => "vfrsqrt7.v"
+  | FVV_VREC7 => "vfrec7.v"
+  | FVV_VCLASS => "vfclass.v"
+
+def vfwunary0_mnemonic_forwards (arg_ : vfwunary0) : String :=
+  match arg_ with
+  | FWV_CVT_XU_F => "vfwcvt.xu.f.v"
+  | FWV_CVT_X_F => "vfwcvt.x.f.v"
+  | FWV_CVT_F_XU => "vfwcvt.f.xu.v"
+  | FWV_CVT_F_X => "vfwcvt.f.x.v"
+  | FWV_CVT_F_F => "vfwcvt.f.f.v"
+  | FWV_CVT_RTZ_XU_F => "vfwcvt.rtz.xu.f.v"
+  | FWV_CVT_RTZ_X_F => "vfwcvt.rtz.x.f.v"
+
+def vicmptype_mnemonic_forwards (arg_ : vicmpfunct6) : String :=
+  match arg_ with
+  | VICMP_VMSEQ => "vmseq.vi"
+  | VICMP_VMSNE => "vmsne.vi"
+  | VICMP_VMSLEU => "vmsleu.vi"
+  | VICMP_VMSLE => "vmsle.vi"
+  | VICMP_VMSGTU => "vmsgtu.vi"
+  | VICMP_VMSGT => "vmsgt.vi"
+
+def vimctype_mnemonic_forwards (arg_ : vimcfunct6) : String :=
+  match arg_ with
+  | VIMC_VMADC => "vmadc.vi"
+
+def vimstype_mnemonic_forwards (arg_ : vimsfunct6) : String :=
+  match arg_ with
+  | VIMS_VADC => "vadc.vim"
+
+def vimtype_mnemonic_forwards (arg_ : vimfunct6) : String :=
+  match arg_ with
+  | VIM_VMADC => "vmadc.vim"
+
+def visg_mnemonic_forwards (arg_ : visgfunct6) : String :=
+  match arg_ with
+  | VI_VSLIDEUP => "vslideup.vi"
+  | VI_VSLIDEDOWN => "vslidedown.vi"
+  | VI_VRGATHER => "vrgather.vi"
+
+def vitype_mnemonic_forwards (arg_ : vifunct6) : String :=
+  match arg_ with
+  | VI_VADD => "vadd.vi"
+  | VI_VRSUB => "vrsub.vi"
+  | VI_VAND => "vand.vi"
+  | VI_VOR => "vor.vi"
+  | VI_VXOR => "vxor.vi"
+  | VI_VSADDU => "vsaddu.vi"
+  | VI_VSADD => "vsadd.vi"
+  | VI_VSLL => "vsll.vi"
+  | VI_VSRL => "vsrl.vi"
+  | VI_VSRA => "vsra.vi"
+  | VI_VSSRL => "vssrl.vi"
+  | VI_VSSRA => "vssra.vi"
+
+def vlewidth_bitsnumberstr_forwards (arg_ : vlewidth) : String :=
+  match arg_ with
+  | VLE8 => "8"
+  | VLE16 => "16"
+  | VLE32 => "32"
+  | VLE64 => "64"
+
+def vmtype_mnemonic_forwards (arg_ : vmlsop) : String :=
+  match arg_ with
+  | VLM => "vlm.v"
+  | VSM => "vsm.v"
+
+def vreg_name_raw_forwards (arg_ : (BitVec 5)) : String :=
+  let b__0 := arg_
+  if (BEq.beq b__0 (0b00000 : (BitVec 5)))
+  then "v0"
+  else
+    if (BEq.beq b__0 (0b00001 : (BitVec 5)))
+    then "v1"
+    else
+      if (BEq.beq b__0 (0b00010 : (BitVec 5)))
+      then "v2"
+      else
+        if (BEq.beq b__0 (0b00011 : (BitVec 5)))
+        then "v3"
+        else
+          if (BEq.beq b__0 (0b00100 : (BitVec 5)))
+          then "v4"
+          else
+            if (BEq.beq b__0 (0b00101 : (BitVec 5)))
+            then "v5"
+            else
+              if (BEq.beq b__0 (0b00110 : (BitVec 5)))
+              then "v6"
+              else
+                if (BEq.beq b__0 (0b00111 : (BitVec 5)))
+                then "v7"
+                else
+                  if (BEq.beq b__0 (0b01000 : (BitVec 5)))
+                  then "v8"
+                  else
+                    if (BEq.beq b__0 (0b01001 : (BitVec 5)))
+                    then "v9"
+                    else
+                      if (BEq.beq b__0 (0b01010 : (BitVec 5)))
+                      then "v10"
+                      else
+                        if (BEq.beq b__0 (0b01011 : (BitVec 5)))
+                        then "v11"
+                        else
+                          if (BEq.beq b__0 (0b01100 : (BitVec 5)))
+                          then "v12"
+                          else
+                            if (BEq.beq b__0 (0b01101 : (BitVec 5)))
+                            then "v13"
+                            else
+                              if (BEq.beq b__0 (0b01110 : (BitVec 5)))
+                              then "v14"
+                              else
+                                if (BEq.beq b__0 (0b01111 : (BitVec 5)))
+                                then "v15"
+                                else
+                                  if (BEq.beq b__0 (0b10000 : (BitVec 5)))
+                                  then "v16"
+                                  else
+                                    if (BEq.beq b__0 (0b10001 : (BitVec 5)))
+                                    then "v17"
+                                    else
+                                      if (BEq.beq b__0 (0b10010 : (BitVec 5)))
+                                      then "v18"
+                                      else
+                                        if (BEq.beq b__0 (0b10011 : (BitVec 5)))
+                                        then "v19"
+                                        else
+                                          if (BEq.beq b__0 (0b10100 : (BitVec 5)))
+                                          then "v20"
+                                          else
+                                            if (BEq.beq b__0 (0b10101 : (BitVec 5)))
+                                            then "v21"
+                                            else
+                                              if (BEq.beq b__0 (0b10110 : (BitVec 5)))
+                                              then "v22"
+                                              else
+                                                if (BEq.beq b__0 (0b10111 : (BitVec 5)))
+                                                then "v23"
+                                                else
+                                                  if (BEq.beq b__0 (0b11000 : (BitVec 5)))
+                                                  then "v24"
+                                                  else
+                                                    if (BEq.beq b__0 (0b11001 : (BitVec 5)))
+                                                    then "v25"
+                                                    else
+                                                      if (BEq.beq b__0 (0b11010 : (BitVec 5)))
+                                                      then "v26"
+                                                      else
+                                                        if (BEq.beq b__0 (0b11011 : (BitVec 5)))
+                                                        then "v27"
+                                                        else
+                                                          if (BEq.beq b__0 (0b11100 : (BitVec 5)))
+                                                          then "v28"
+                                                          else
+                                                            if (BEq.beq b__0 (0b11101 : (BitVec 5)))
+                                                            then "v29"
+                                                            else
+                                                              if (BEq.beq b__0
+                                                                   (0b11110 : (BitVec 5)))
+                                                              then "v30"
+                                                              else "v31"
+
+def vreg_name_forwards (arg_ : vregidx) : String :=
+  match arg_ with
+  | .Vregidx i => (vreg_name_raw_forwards i)
+
+def vvcmptype_mnemonic_forwards (arg_ : vvcmpfunct6) : String :=
+  match arg_ with
+  | VVCMP_VMSEQ => "vmseq.vv"
+  | VVCMP_VMSNE => "vmsne.vv"
+  | VVCMP_VMSLTU => "vmsltu.vv"
+  | VVCMP_VMSLT => "vmslt.vv"
+  | VVCMP_VMSLEU => "vmsleu.vv"
+  | VVCMP_VMSLE => "vmsle.vv"
+
+def vvmctype_mnemonic_forwards (arg_ : vvmcfunct6) : String :=
+  match arg_ with
+  | VVMC_VMADC => "vmadc.vv"
+  | VVMC_VMSBC => "vmsbc.vv"
+
+def vvmstype_mnemonic_forwards (arg_ : vvmsfunct6) : String :=
+  match arg_ with
+  | VVMS_VADC => "vadc.vvm"
+  | VVMS_VSBC => "vsbc.vvm"
+
+def vvmtype_mnemonic_forwards (arg_ : vvmfunct6) : String :=
+  match arg_ with
+  | VVM_VMADC => "vmadc.vvm"
+  | VVM_VMSBC => "vmsbc.vvm"
+
+def vvtype_mnemonic_forwards (arg_ : vvfunct6) : String :=
+  match arg_ with
+  | VV_VADD => "vadd.vv"
+  | VV_VSUB => "vsub.vv"
+  | VV_VAND => "vand.vv"
+  | VV_VOR => "vor.vv"
+  | VV_VXOR => "vxor.vv"
+  | VV_VRGATHER => "vrgather.vv"
+  | VV_VRGATHEREI16 => "vrgatherei16.vv"
+  | VV_VSADDU => "vsaddu.vv"
+  | VV_VSADD => "vsadd.vv"
+  | VV_VSSUBU => "vssubu.vv"
+  | VV_VSSUB => "vssub.vv"
+  | VV_VSLL => "vsll.vv"
+  | VV_VSMUL => "vsmul.vv"
+  | VV_VSRL => "vsrl.vv"
+  | VV_VSRA => "vsra.vv"
+  | VV_VSSRL => "vssrl.vv"
+  | VV_VSSRA => "vssra.vv"
+  | VV_VMINU => "vminu.vv"
+  | VV_VMIN => "vmin.vv"
+  | VV_VMAXU => "vmaxu.vv"
+  | VV_VMAX => "vmax.vv"
+
+def vxcmptype_mnemonic_forwards (arg_ : vxcmpfunct6) : String :=
+  match arg_ with
+  | VXCMP_VMSEQ => "vmseq.vx"
+  | VXCMP_VMSNE => "vmsne.vx"
+  | VXCMP_VMSLTU => "vmsltu.vx"
+  | VXCMP_VMSLT => "vmslt.vx"
+  | VXCMP_VMSLEU => "vmsleu.vx"
+  | VXCMP_VMSLE => "vmsle.vx"
+  | VXCMP_VMSGTU => "vmsgtu.vx"
+  | VXCMP_VMSGT => "vmsgt.vx"
+
+def vxmctype_mnemonic_forwards (arg_ : vxmcfunct6) : String :=
+  match arg_ with
+  | VXMC_VMADC => "vmadc.vx"
+  | VXMC_VMSBC => "vmsbc.vx"
+
+def vxmstype_mnemonic_forwards (arg_ : vxmsfunct6) : String :=
+  match arg_ with
+  | VXMS_VADC => "vadc.vxm"
+  | VXMS_VSBC => "vsbc.vxm"
+
+def vxmtype_mnemonic_forwards (arg_ : vxmfunct6) : String :=
+  match arg_ with
+  | VXM_VMADC => "vmadc.vxm"
+  | VXM_VMSBC => "vmsbc.vxm"
+
+def vxsg_mnemonic_forwards (arg_ : vxsgfunct6) : String :=
+  match arg_ with
+  | VX_VSLIDEUP => "vslideup.vx"
+  | VX_VSLIDEDOWN => "vslidedown.vx"
+  | VX_VRGATHER => "vrgather.vx"
+
+def vxtype_mnemonic_forwards (arg_ : vxfunct6) : String :=
+  match arg_ with
+  | VX_VADD => "vadd.vx"
+  | VX_VSUB => "vsub.vx"
+  | VX_VRSUB => "vrsub.vx"
+  | VX_VAND => "vand.vx"
+  | VX_VOR => "vor.vx"
+  | VX_VXOR => "vxor.vx"
+  | VX_VSADDU => "vsaddu.vx"
+  | VX_VSADD => "vsadd.vx"
+  | VX_VSSUBU => "vssubu.vx"
+  | VX_VSSUB => "vssub.vx"
+  | VX_VSLL => "vsll.vx"
+  | VX_VSMUL => "vsmul.vx"
+  | VX_VSRL => "vsrl.vx"
+  | VX_VSRA => "vsra.vx"
+  | VX_VSSRL => "vssrl.vx"
+  | VX_VSSRA => "vssra.vx"
+  | VX_VMINU => "vminu.vx"
+  | VX_VMIN => "vmin.vx"
+  | VX_VMAXU => "vmaxu.vx"
+  | VX_VMAX => "vmax.vx"
+
+def wmvvtype_mnemonic_forwards (arg_ : wmvvfunct6) : String :=
+  match arg_ with
+  | WMVV_VWMACCU => "vwmaccu.vv"
+  | WMVV_VWMACC => "vwmacc.vv"
+  | WMVV_VWMACCSU => "vwmaccsu.vv"
+
+def wmvxtype_mnemonic_forwards (arg_ : wmvxfunct6) : String :=
+  match arg_ with
+  | WMVX_VWMACCU => "vwmaccu.vx"
+  | WMVX_VWMACC => "vwmacc.vx"
+  | WMVX_VWMACCUS => "vwmaccus.vx"
+  | WMVX_VWMACCSU => "vwmaccsu.vx"
+
+def wvtype_mnemonic_forwards (arg_ : wvfunct6) : String :=
+  match arg_ with
+  | WV_VADD => "vwadd.wv"
+  | WV_VSUB => "vwsub.wv"
+  | WV_VADDU => "vwaddu.wv"
+  | WV_VSUBU => "vwsubu.wv"
+
+def wvvtype_mnemonic_forwards (arg_ : wvvfunct6) : String :=
+  match arg_ with
+  | WVV_VADD => "vwadd.vv"
+  | WVV_VSUB => "vwsub.vv"
+  | WVV_VADDU => "vwaddu.vv"
+  | WVV_VSUBU => "vwsubu.vv"
+  | WVV_VWMUL => "vwmul.vv"
+  | WVV_VWMULU => "vwmulu.vv"
+  | WVV_VWMULSU => "vwmulsu.vv"
+
+def wvxtype_mnemonic_forwards (arg_ : wvxfunct6) : String :=
+  match arg_ with
+  | WVX_VADD => "vwadd.vx"
+  | WVX_VSUB => "vwsub.vx"
+  | WVX_VADDU => "vwaddu.vx"
+  | WVX_VSUBU => "vwsubu.vx"
+  | WVX_VWMUL => "vwmul.vx"
+  | WVX_VWMULU => "vwmulu.vx"
+  | WVX_VWMULSU => "vwmulsu.vx"
+
+def wxtype_mnemonic_forwards (arg_ : wxfunct6) : String :=
+  match arg_ with
+  | WX_VADD => "vwadd.wx"
+  | WX_VSUB => "vwsub.wx"
+  | WX_VADDU => "vwaddu.wx"
+  | WX_VSUBU => "vwsubu.wx"
+
+def zba_rtype_mnemonic_forwards (arg_ : brop_zba) : String :=
+  match arg_ with
+  | RISCV_SH1ADD => "sh1add"
+  | RISCV_SH2ADD => "sh2add"
+  | RISCV_SH3ADD => "sh3add"
+
+def zba_rtypeuw_mnemonic_forwards (arg_ : bropw_zba) : String :=
+  match arg_ with
+  | RISCV_ADDUW => "add.uw"
+  | RISCV_SH1ADDUW => "sh1add.uw"
+  | RISCV_SH2ADDUW => "sh2add.uw"
+  | RISCV_SH3ADDUW => "sh3add.uw"
+
+def zbb_extop_mnemonic_forwards (arg_ : extop_zbb) : String :=
+  match arg_ with
+  | RISCV_SEXTB => "sext.b"
+  | RISCV_SEXTH => "sext.h"
+  | RISCV_ZEXTH => "zext.h"
+
+def zbb_rtype_mnemonic_forwards (arg_ : brop_zbb) : String :=
+  match arg_ with
+  | RISCV_ANDN => "andn"
+  | RISCV_ORN => "orn"
+  | RISCV_XNOR => "xnor"
+  | RISCV_MAX => "max"
+  | RISCV_MAXU => "maxu"
+  | RISCV_MIN => "min"
+  | RISCV_MINU => "minu"
+  | RISCV_ROL => "rol"
+  | RISCV_ROR => "ror"
+
+def zbb_rtypew_mnemonic_forwards (arg_ : bropw_zbb) : String :=
+  match arg_ with
+  | RISCV_ROLW => "rolw"
+  | RISCV_RORW => "rorw"
+
+def zbkb_rtype_mnemonic_forwards (arg_ : brop_zbkb) : String :=
+  match arg_ with
+  | RISCV_PACK => "pack"
+  | RISCV_PACKH => "packh"
+
+def zbs_iop_mnemonic_forwards (arg_ : biop_zbs) : String :=
+  match arg_ with
+  | RISCV_BCLRI => "bclri"
+  | RISCV_BEXTI => "bexti"
+  | RISCV_BINVI => "binvi"
+  | RISCV_BSETI => "bseti"
+
+def zbs_rtype_mnemonic_forwards (arg_ : brop_zbs) : String :=
+  match arg_ with
+  | RISCV_BCLR => "bclr"
+  | RISCV_BEXT => "bext"
+  | RISCV_BINV => "binv"
+  | RISCV_BSET => "bset"
+
+def zicond_mnemonic_forwards (arg_ : zicondop) : String :=
+  match arg_ with
+  | RISCV_CZERO_EQZ => "czero.eqz"
+  | RISCV_CZERO_NEZ => "czero.nez"
+
+def assembly_forwards (arg_ : ast) : SailM String := do
+  match arg_ with
+  | .UTYPE (imm, rd, op) =>
+    (pure (String.append (utype_mnemonic_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (← (hex_bits_signed_20_forwards imm)) ""))))))
+  | .RISCV_JAL (imm, rd) =>
+    (pure (String.append "jal"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (← (hex_bits_signed_21_forwards imm)) ""))))))
+  | .RISCV_JALR (imm, rs1, rd) =>
+    (pure (String.append "jalr"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (← (hex_bits_signed_12_forwards imm))
+                (String.append "(" (String.append (reg_name_forwards rs1) (String.append ")" "")))))))))
+  | .BTYPE (imm, rs2, rs1, op) =>
+    (pure (String.append (btype_mnemonic_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rs1)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs2)
+                (String.append (sep_forwards ())
+                  (String.append (← (hex_bits_signed_13_forwards imm)) ""))))))))
+  | .ITYPE (imm, rs1, rd, op) =>
+    (pure (String.append (itype_mnemonic_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ())
+                  (String.append (← (hex_bits_signed_12_forwards imm)) ""))))))))
+  | .SHIFTIOP (shamt, rs1, rd, op) =>
+    (pure (String.append (shiftiop_mnemonic_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ())
+                  (String.append (← (hex_bits_6_forwards shamt)) ""))))))))
+  | .RTYPE (rs2, rs1, rd, op) =>
+    (pure (String.append (rtype_mnemonic_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .LOAD (imm, rs1, rd, is_unsigned, size, aq, rl) =>
+    (pure (String.append "l"
+        (String.append (size_mnemonic_forwards size)
+          (String.append (maybe_u_forwards is_unsigned)
+            (String.append (maybe_aq_forwards aq)
+              (String.append (maybe_rl_forwards rl)
+                (String.append (spc_forwards ())
+                  (String.append (reg_name_forwards rd)
+                    (String.append (sep_forwards ())
+                      (String.append (← (hex_bits_signed_12_forwards imm))
+                        (String.append "("
+                          (String.append (reg_name_forwards rs1) (String.append ")" "")))))))))))))
+  | .STORE (imm, rs2, rs1, size, aq, rl) =>
+    (pure (String.append "s"
+        (String.append (size_mnemonic_forwards size)
+          (String.append (maybe_aq_forwards aq)
+            (String.append (maybe_rl_forwards rl)
+              (String.append (spc_forwards ())
+                (String.append (reg_name_forwards rs2)
+                  (String.append (sep_forwards ())
+                    (String.append (← (hex_bits_signed_12_forwards imm))
+                      (String.append (opt_spc_forwards ())
+                        (String.append "("
+                          (String.append (opt_spc_forwards ())
+                            (String.append (reg_name_forwards rs1)
+                              (String.append (opt_spc_forwards ()) (String.append ")" "")))))))))))))))
+  | .ADDIW (imm, rs1, rd) =>
+    if (BEq.beq xlen 64)
+    then
+      (pure (String.append "addiw"
+          (String.append (spc_forwards ())
+            (String.append (reg_name_forwards rd)
+              (String.append (sep_forwards ())
+                (String.append (reg_name_forwards rs1)
+                  (String.append (sep_forwards ())
+                    (String.append (← (hex_bits_signed_12_forwards imm)) ""))))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .RTYPEW (rs2, rs1, rd, op) =>
+    if (BEq.beq xlen 64)
+    then
+      (pure (String.append (rtypew_mnemonic_forwards op)
+          (String.append (spc_forwards ())
+            (String.append (reg_name_forwards rd)
+              (String.append (sep_forwards ())
+                (String.append (reg_name_forwards rs1)
+                  (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .SHIFTIWOP (shamt, rs1, rd, op) =>
+    if (BEq.beq xlen 64)
+    then
+      (pure (String.append (shiftiwop_mnemonic_forwards op)
+          (String.append (spc_forwards ())
+            (String.append (reg_name_forwards rd)
+              (String.append (sep_forwards ())
+                (String.append (reg_name_forwards rs1)
+                  (String.append (sep_forwards ())
+                    (String.append (← (hex_bits_5_forwards shamt)) ""))))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .FENCE (pred, succ) =>
+    (pure (String.append "fence"
+        (String.append (spc_forwards ())
+          (String.append (fence_bits_forwards pred)
+            (String.append (sep_forwards ()) (String.append (fence_bits_forwards succ) ""))))))
+  | .FENCE_TSO (pred, succ) =>
+    (pure (String.append "fence.tso"
+        (String.append (spc_forwards ())
+          (String.append (fence_bits_forwards pred)
+            (String.append (sep_forwards ()) (String.append (fence_bits_forwards succ) ""))))))
+  | .ECALL () => (pure "ecall")
+  | .MRET () => (pure "mret")
+  | .SRET () => (pure "sret")
+  | .EBREAK () => (pure "ebreak")
+  | .WFI () => (pure "wfi")
+  | .SFENCE_VMA (rs1, rs2) =>
+    (pure (String.append "sfence.vma"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rs1)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))
+  | .FENCEI () => (pure "fence.i")
+  | .LOADRES (aq, rl, rs1, size, rd) =>
+    (pure (String.append "lr."
+        (String.append (size_mnemonic_forwards size)
+          (String.append (maybe_aq_forwards aq)
+            (String.append (maybe_rl_forwards rl)
+              (String.append (spc_forwards ())
+                (String.append (reg_name_forwards rd)
+                  (String.append (sep_forwards ())
+                    (String.append "("
+                      (String.append (reg_name_forwards rs1) (String.append ")" "")))))))))))
+  | .STORECON (aq, rl, rs2, rs1, size, rd) =>
+    (pure (String.append "sc."
+        (String.append (size_mnemonic_forwards size)
+          (String.append (maybe_aq_forwards aq)
+            (String.append (maybe_rl_forwards rl)
+              (String.append (spc_forwards ())
+                (String.append (reg_name_forwards rd)
+                  (String.append (sep_forwards ())
+                    (String.append (reg_name_forwards rs2)
+                      (String.append (sep_forwards ())
+                        (String.append "("
+                          (String.append (reg_name_forwards rs1) (String.append ")" "")))))))))))))
+  | .AMO (op, aq, rl, rs2, rs1, width, rd) =>
+    (pure (String.append (amo_mnemonic_forwards op)
+        (String.append "."
+          (String.append (size_mnemonic_forwards width)
+            (String.append (maybe_aq_forwards aq)
+              (String.append (maybe_rl_forwards rl)
+                (String.append (spc_forwards ())
+                  (String.append (reg_name_forwards rd)
+                    (String.append (sep_forwards ())
+                      (String.append (reg_name_forwards rs2)
+                        (String.append (sep_forwards ())
+                          (String.append "("
+                            (String.append (reg_name_forwards rs1) (String.append ")" ""))))))))))))))
+  | .C_NOP () => (pure "c.nop")
+  | .C_ADDI4SPN (rdc, nzimm) =>
+    if (bne nzimm (0x00 : (BitVec 8)))
+    then
+      (pure (String.append "c.addi4spn"
+          (String.append (spc_forwards ())
+            (String.append (creg_name_forwards rdc)
+              (String.append (sep_forwards ())
+                (String.append
+                  (← (hex_bits_10_forwards ((nzimm : (BitVec 8)) ++ (0b00 : (BitVec 2))))) ""))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_LW (uimm, rsc, rdc) =>
+    (pure (String.append "c.lw"
+        (String.append (spc_forwards ())
+          (String.append (creg_name_forwards rdc)
+            (String.append (sep_forwards ())
+              (String.append (creg_name_forwards rsc)
+                (String.append (sep_forwards ())
+                  (String.append
+                    (← (hex_bits_7_forwards ((uimm : (BitVec 5)) ++ (0b00 : (BitVec 2))))) ""))))))))
+  | .C_LD (uimm, rsc, rdc) =>
+    if (BEq.beq xlen 64)
+    then
+      (pure (String.append "c.ld"
+          (String.append (spc_forwards ())
+            (String.append (creg_name_forwards rdc)
+              (String.append (sep_forwards ())
+                (String.append (creg_name_forwards rsc)
+                  (String.append (sep_forwards ())
+                    (String.append
+                      (← (hex_bits_8_forwards ((uimm : (BitVec 5)) ++ (0b000 : (BitVec 3))))) ""))))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_SW (uimm, rsc1, rsc2) =>
+    (pure (String.append "c.sw"
+        (String.append (spc_forwards ())
+          (String.append (creg_name_forwards rsc1)
+            (String.append (sep_forwards ())
+              (String.append (creg_name_forwards rsc2)
+                (String.append (sep_forwards ())
+                  (String.append
+                    (← (hex_bits_7_forwards ((uimm : (BitVec 5)) ++ (0b00 : (BitVec 2))))) ""))))))))
+  | .C_SD (uimm, rsc1, rsc2) =>
+    if (BEq.beq xlen 64)
+    then
+      (pure (String.append "c.sd"
+          (String.append (spc_forwards ())
+            (String.append (creg_name_forwards rsc1)
+              (String.append (sep_forwards ())
+                (String.append (creg_name_forwards rsc2)
+                  (String.append (sep_forwards ())
+                    (String.append
+                      (← (hex_bits_8_forwards ((uimm : (BitVec 5)) ++ (0b000 : (BitVec 3))))) ""))))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_ADDI (nzi, rsd) =>
+    if (Bool.and (bne nzi (0b000000 : (BitVec 6))) (bne rsd zreg))
+    then
+      (pure (String.append "c.addi"
+          (String.append (spc_forwards ())
+            (String.append (reg_name_forwards rsd)
+              (String.append (sep_forwards ())
+                (String.append (← (hex_bits_signed_6_forwards nzi)) ""))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_JAL imm =>
+    if (BEq.beq xlen 32)
+    then
+      (pure (String.append "c.jal"
+          (String.append (spc_forwards ())
+            (String.append
+              (← (hex_bits_signed_12_forwards ((imm : (BitVec 11)) ++ (0b0 : (BitVec 1))))) ""))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_ADDIW (imm, rsd) =>
+    if (BEq.beq xlen 64)
+    then
+      (pure (String.append "c.addiw"
+          (String.append (spc_forwards ())
+            (String.append (reg_name_forwards rsd)
+              (String.append (sep_forwards ())
+                (String.append (← (hex_bits_signed_6_forwards imm)) ""))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_LI (imm, rd) =>
+    if (bne rd zreg)
+    then
+      (pure (String.append "c.li"
+          (String.append (spc_forwards ())
+            (String.append (reg_name_forwards rd)
+              (String.append (sep_forwards ())
+                (String.append (← (hex_bits_signed_6_forwards imm)) ""))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_ADDI16SP imm =>
+    if (bne imm (0b000000 : (BitVec 6)))
+    then
+      (pure (String.append "c.addi16sp"
+          (String.append (spc_forwards ()) (String.append (← (hex_bits_signed_6_forwards imm)) ""))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_LUI (imm, rd) =>
+    if (Bool.and (bne rd zreg) (Bool.and (bne rd sp) (bne imm (0b000000 : (BitVec 6)))))
+    then
+      (pure (String.append "c.lui"
+          (String.append (spc_forwards ())
+            (String.append (reg_name_forwards rd)
+              (String.append (sep_forwards ())
+                (String.append (← (hex_bits_signed_6_forwards imm)) ""))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_SRLI (shamt, rsd) =>
+    if (bne shamt (0b000000 : (BitVec 6)))
+    then
+      (pure (String.append "c.srli"
+          (String.append (spc_forwards ())
+            (String.append (creg_name_forwards rsd)
+              (String.append (sep_forwards ()) (String.append (← (hex_bits_6_forwards shamt)) ""))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_SRAI (shamt, rsd) =>
+    if (bne shamt (0b000000 : (BitVec 6)))
+    then
+      (pure (String.append "c.srai"
+          (String.append (spc_forwards ())
+            (String.append (creg_name_forwards rsd)
+              (String.append (sep_forwards ()) (String.append (← (hex_bits_6_forwards shamt)) ""))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_ANDI (imm, rsd) =>
+    (pure (String.append "c.andi"
+        (String.append (spc_forwards ())
+          (String.append (creg_name_forwards rsd)
+            (String.append (sep_forwards ())
+              (String.append (← (hex_bits_signed_6_forwards imm)) ""))))))
+  | .C_SUB (rsd, rs2) =>
+    (pure (String.append "c.sub"
+        (String.append (spc_forwards ())
+          (String.append (creg_name_forwards rsd)
+            (String.append (sep_forwards ()) (String.append (creg_name_forwards rs2) ""))))))
+  | .C_XOR (rsd, rs2) =>
+    (pure (String.append "c.xor"
+        (String.append (spc_forwards ())
+          (String.append (creg_name_forwards rsd)
+            (String.append (sep_forwards ()) (String.append (creg_name_forwards rs2) ""))))))
+  | .C_OR (rsd, rs2) =>
+    (pure (String.append "c.or"
+        (String.append (spc_forwards ())
+          (String.append (creg_name_forwards rsd)
+            (String.append (sep_forwards ()) (String.append (creg_name_forwards rs2) ""))))))
+  | .C_AND (rsd, rs2) =>
+    (pure (String.append "c.and"
+        (String.append (spc_forwards ())
+          (String.append (creg_name_forwards rsd)
+            (String.append (sep_forwards ()) (String.append (creg_name_forwards rs2) ""))))))
+  | .C_SUBW (rsd, rs2) =>
+    if (BEq.beq xlen 64)
+    then
+      (pure (String.append "c.subw"
+          (String.append (spc_forwards ())
+            (String.append (creg_name_forwards rsd)
+              (String.append (sep_forwards ()) (String.append (creg_name_forwards rs2) ""))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_ADDW (rsd, rs2) =>
+    if (BEq.beq xlen 64)
+    then
+      (pure (String.append "c.addw"
+          (String.append (spc_forwards ())
+            (String.append (creg_name_forwards rsd)
+              (String.append (sep_forwards ()) (String.append (creg_name_forwards rs2) ""))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_J imm =>
+    (pure (String.append "c.j"
+        (String.append (spc_forwards ())
+          (String.append
+            (← (hex_bits_signed_12_forwards ((imm : (BitVec 11)) ++ (0b0 : (BitVec 1))))) ""))))
+  | .C_BEQZ (imm, rs) =>
+    (pure (String.append "c.beqz"
+        (String.append (spc_forwards ())
+          (String.append (creg_name_forwards rs)
+            (String.append (sep_forwards ())
+              (String.append (← (hex_bits_signed_8_forwards imm)) ""))))))
+  | .C_BNEZ (imm, rs) =>
+    (pure (String.append "c.bnez"
+        (String.append (spc_forwards ())
+          (String.append (creg_name_forwards rs)
+            (String.append (sep_forwards ())
+              (String.append (← (hex_bits_signed_8_forwards imm)) ""))))))
+  | .C_SLLI (shamt, rsd) =>
+    if (Bool.and (bne shamt (0b000000 : (BitVec 6))) (bne rsd zreg))
+    then
+      (pure (String.append "c.slli"
+          (String.append (spc_forwards ())
+            (String.append (reg_name_forwards rsd)
+              (String.append (sep_forwards ()) (String.append (← (hex_bits_6_forwards shamt)) ""))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_LWSP (uimm, rd) =>
+    if (bne rd zreg)
+    then
+      (pure (String.append "c.lwsp"
+          (String.append (spc_forwards ())
+            (String.append (reg_name_forwards rd)
+              (String.append (sep_forwards ()) (String.append (← (hex_bits_6_forwards uimm)) ""))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_LDSP (uimm, rd) =>
+    if (Bool.and (bne rd zreg) (BEq.beq xlen 64))
+    then
+      (pure (String.append "c.ldsp"
+          (String.append (spc_forwards ())
+            (String.append (reg_name_forwards rd)
+              (String.append (sep_forwards ()) (String.append (← (hex_bits_6_forwards uimm)) ""))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_SWSP (uimm, rs2) =>
+    (pure (String.append "c.swsp"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rs2)
+            (String.append (sep_forwards ()) (String.append (← (hex_bits_6_forwards uimm)) ""))))))
+  | .C_SDSP (uimm, rs2) =>
+    if (BEq.beq xlen 64)
+    then
+      (pure (String.append "c.sdsp"
+          (String.append (spc_forwards ())
+            (String.append (reg_name_forwards rs2)
+              (String.append (sep_forwards ()) (String.append (← (hex_bits_6_forwards uimm)) ""))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_JR rs1 =>
+    if (bne rs1 zreg)
+    then
+      (pure (String.append "c.jr"
+          (String.append (spc_forwards ()) (String.append (reg_name_forwards rs1) ""))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_JALR rs1 =>
+    if (bne rs1 zreg)
+    then
+      (pure (String.append "c.jalr"
+          (String.append (spc_forwards ()) (String.append (reg_name_forwards rs1) ""))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_MV (rd, rs2) =>
+    if (Bool.and (bne rd zreg) (bne rs2 zreg))
+    then
+      (pure (String.append "c.mv"
+          (String.append (spc_forwards ())
+            (String.append (reg_name_forwards rd)
+              (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_EBREAK () => (pure "c.ebreak")
+  | .C_ADD (rsd, rs2) =>
+    if (Bool.and (bne rsd zreg) (bne rs2 zreg))
+    then
+      (pure (String.append "c.add"
+          (String.append (spc_forwards ())
+            (String.append (reg_name_forwards rsd)
+              (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .MUL (rs2, rs1, rd, mul_op) =>
+    (pure (String.append (← (mul_mnemonic_forwards mul_op))
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .DIV (rs2, rs1, rd, s) =>
+    (pure (String.append "div"
+        (String.append (maybe_not_u_forwards s)
+          (String.append (spc_forwards ())
+            (String.append (reg_name_forwards rd)
+              (String.append (sep_forwards ())
+                (String.append (reg_name_forwards rs1)
+                  (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) "")))))))))
+  | .REM (rs2, rs1, rd, s) =>
+    (pure (String.append "rem"
+        (String.append (maybe_not_u_forwards s)
+          (String.append (spc_forwards ())
+            (String.append (reg_name_forwards rd)
+              (String.append (sep_forwards ())
+                (String.append (reg_name_forwards rs1)
+                  (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) "")))))))))
+  | .MULW (rs2, rs1, rd) =>
+    if (BEq.beq xlen 64)
+    then
+      (pure (String.append "mulw"
+          (String.append (spc_forwards ())
+            (String.append (reg_name_forwards rd)
+              (String.append (sep_forwards ())
+                (String.append (reg_name_forwards rs1)
+                  (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .DIVW (rs2, rs1, rd, s) =>
+    if (BEq.beq xlen 64)
+    then
+      (pure (String.append "div"
+          (String.append (maybe_not_u_forwards s)
+            (String.append "w"
+              (String.append (spc_forwards ())
+                (String.append (reg_name_forwards rd)
+                  (String.append (sep_forwards ())
+                    (String.append (reg_name_forwards rs1)
+                      (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .REMW (rs2, rs1, rd, s) =>
+    if (BEq.beq xlen 64)
+    then
+      (pure (String.append "rem"
+          (String.append (maybe_not_u_forwards s)
+            (String.append "w"
+              (String.append (spc_forwards ())
+                (String.append (reg_name_forwards rd)
+                  (String.append (sep_forwards ())
+                    (String.append (reg_name_forwards rs1)
+                      (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .CSR (csr, .Regidx rs1_bits, rd, true, op) =>
+    (pure (String.append (csr_mnemonic_forwards op)
+        (String.append "i"
+          (String.append (spc_forwards ())
+            (String.append (reg_name_forwards rd)
+              (String.append (sep_forwards ())
+                (String.append (← (csr_name_map_forwards csr))
+                  (String.append (sep_forwards ())
+                    (String.append (← (hex_bits_5_forwards rs1_bits)) "")))))))))
+  | .CSR (csr, rs1, rd, false, op) =>
+    (pure (String.append (csr_mnemonic_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (← (csr_name_map_forwards csr))
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))))
+  | .C_NOP_HINT imm =>
+    (pure (String.append "c.nop.hint." (String.append (← (hex_bits_6_forwards imm)) "")))
+  | .C_ADDI_HINT rsd =>
+    if (bne rsd zreg)
+    then (pure (String.append "c.addi.hint." (String.append (reg_name_forwards rsd) "")))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_LI_HINT imm =>
+    (pure (String.append "c.li.hint." (String.append (← (hex_bits_6_forwards imm)) "")))
+  | .C_LUI_HINT imm =>
+    if (bne imm (0b000000 : (BitVec 6)))
+    then (pure (String.append "c.lui.hint." (String.append (← (hex_bits_6_forwards imm)) "")))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_MV_HINT rs2 =>
+    if (bne rs2 zreg)
+    then (pure (String.append "c.mv.hint." (String.append (reg_name_forwards rs2) "")))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_ADD_HINT rs2 =>
+    if (bne rs2 zreg)
+    then (pure (String.append "c.add.hint." (String.append (reg_name_forwards rs2) "")))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_SLLI_HINT (shamt, rsd) =>
+    if (Bool.or (BEq.beq shamt (0b000000 : (BitVec 6))) (BEq.beq rsd zreg))
+    then
+      (pure (String.append "c.slli.hint."
+          (String.append (reg_name_forwards rsd)
+            (String.append "." (String.append (← (hex_bits_6_forwards shamt)) "")))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_SRLI_HINT rsd =>
+    (pure (String.append "c.srli.hint." (String.append (creg_name_forwards rsd) "")))
+  | .C_SRAI_HINT rsd =>
+    (pure (String.append "c.srai.hint." (String.append (creg_name_forwards rsd) "")))
+  | .FENCE_RESERVED (fm, pred, succ, rs, rd) =>
+    if (Bool.or (Bool.and (bne fm (0x0 : (BitVec 4))) (bne fm (0x8 : (BitVec 4))))
+         (Bool.or (bne rs zreg) (bne rd zreg)))
+    then
+      (pure (String.append "fence.reserved."
+          (String.append (fence_bits_forwards pred)
+            (String.append "."
+              (String.append (fence_bits_forwards succ)
+                (String.append "."
+                  (String.append (reg_name_forwards rs)
+                    (String.append "."
+                      (String.append (reg_name_forwards rd)
+                        (String.append "." (String.append (← (hex_bits_4_forwards fm)) "")))))))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .FENCEI_RESERVED (imm, rs, rd) =>
+    if (Bool.or (bne imm (0x000 : (BitVec 12))) (Bool.or (bne rs zreg) (bne rd zreg)))
+    then
+      (pure (String.append "fence.i.reserved."
+          (String.append (reg_name_forwards rd)
+            (String.append "."
+              (String.append (reg_name_forwards rs)
+                (String.append "." (String.append (← (hex_bits_12_forwards imm)) "")))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .LOAD_FP (imm, rs1, rd, width) =>
+    (pure (String.append "fl"
+        (String.append (size_mnemonic_forwards width)
+          (String.append (spc_forwards ())
+            (String.append (freg_or_reg_name_forwards rd)
+              (String.append (sep_forwards ())
+                (String.append (← (hex_bits_signed_12_forwards imm))
+                  (String.append (opt_spc_forwards ())
+                    (String.append "("
+                      (String.append (opt_spc_forwards ())
+                        (String.append (reg_name_forwards rs1)
+                          (String.append (opt_spc_forwards ()) (String.append ")" "")))))))))))))
+  | .STORE_FP (imm, rs2, rs1, width) =>
+    (pure (String.append "fs"
+        (String.append (size_mnemonic_forwards width)
+          (String.append (spc_forwards ())
+            (String.append (freg_name_forwards rs2)
+              (String.append (sep_forwards ())
+                (String.append (← (hex_bits_signed_12_forwards imm))
+                  (String.append (opt_spc_forwards ())
+                    (String.append "("
+                      (String.append (opt_spc_forwards ())
+                        (String.append (reg_name_forwards rs1)
+                          (String.append (opt_spc_forwards ()) (String.append ")" "")))))))))))))
+  | .F_MADD_TYPE_S (rs3, rs2, rs1, rm, rd, op) =>
+    (pure (String.append (f_madd_type_mnemonic_S_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (freg_or_reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_or_reg_name_forwards rs1)
+                (String.append (sep_forwards ())
+                  (String.append (freg_or_reg_name_forwards rs2)
+                    (String.append (sep_forwards ())
+                      (String.append (freg_or_reg_name_forwards rs3)
+                        (String.append (sep_forwards ())
+                          (String.append (frm_mnemonic_forwards rm) ""))))))))))))
+  | .F_BIN_RM_TYPE_S (rs2, rs1, rm, rd, op) =>
+    (pure (String.append (f_bin_rm_type_mnemonic_S_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (freg_or_reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_or_reg_name_forwards rs1)
+                (String.append (sep_forwards ())
+                  (String.append (freg_or_reg_name_forwards rs2)
+                    (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))))
+  | .F_UN_RM_FF_TYPE_S (rs1, rm, rd, FSQRT_S) =>
+    (pure (String.append "fsqrt.s"
+        (String.append (spc_forwards ())
+          (String.append (freg_or_reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_or_reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
+  | .F_UN_RM_FX_TYPE_S (rs1, rm, rd, op) =>
+    (pure (String.append (f_un_rm_fx_type_mnemonic_S_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_or_reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
+  | .F_UN_RM_XF_TYPE_S (rs1, rm, rd, op) =>
+    (pure (String.append (f_un_rm_xf_type_mnemonic_S_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (freg_or_reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
+  | .F_BIN_TYPE_F_S (rs2, rs1, rd, op) =>
+    (pure (String.append (f_bin_type_mnemonic_f_S_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (freg_or_reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_or_reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (freg_or_reg_name_forwards rs2) ""))))))))
+  | .F_BIN_TYPE_X_S (rs2, rs1, rd, op) =>
+    (pure (String.append (f_bin_type_mnemonic_x_S_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_or_reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (freg_or_reg_name_forwards rs2) ""))))))))
+  | .F_UN_TYPE_X_S (rs1, rd, op) =>
+    (pure (String.append (f_un_type_mnemonic_x_S_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (freg_name_forwards rs1) ""))))))
+  | .F_UN_TYPE_F_S (rs1, rd, op) =>
+    (pure (String.append (f_un_type_mnemonic_f_S_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (freg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .C_FLWSP (imm, rd) =>
+    if (BEq.beq xlen 32)
+    then
+      (pure (String.append "c.flwsp"
+          (String.append (spc_forwards ())
+            (String.append (freg_name_forwards rd)
+              (String.append (sep_forwards ()) (String.append (← (hex_bits_6_forwards imm)) ""))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_FSWSP (uimm, rs2) =>
+    if (BEq.beq xlen 32)
+    then
+      (pure (String.append "c.fswsp"
+          (String.append (spc_forwards ())
+            (String.append (freg_name_forwards rs2)
+              (String.append (sep_forwards ()) (String.append (← (hex_bits_6_forwards uimm)) ""))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_FLW (uimm, rsc, rdc) =>
+    if (BEq.beq xlen 32)
+    then
+      (pure (String.append "c.flw"
+          (String.append (spc_forwards ())
+            (String.append (creg_name_forwards rdc)
+              (String.append (sep_forwards ())
+                (String.append (creg_name_forwards rsc)
+                  (String.append (sep_forwards ())
+                    (String.append
+                      (← (hex_bits_7_forwards ((uimm : (BitVec 5)) ++ (0b00 : (BitVec 2))))) ""))))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_FSW (uimm, rsc1, rsc2) =>
+    if (BEq.beq xlen 32)
+    then
+      (pure (String.append "c.fsw"
+          (String.append (spc_forwards ())
+            (String.append (creg_name_forwards rsc1)
+              (String.append (sep_forwards ())
+                (String.append (creg_name_forwards rsc2)
+                  (String.append (sep_forwards ())
+                    (String.append
+                      (← (hex_bits_7_forwards ((uimm : (BitVec 5)) ++ (0b00 : (BitVec 2))))) ""))))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .F_MADD_TYPE_D (rs3, rs2, rs1, rm, rd, op) =>
+    (pure (String.append (f_madd_type_mnemonic_D_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (freg_or_reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_or_reg_name_forwards rs1)
+                (String.append (sep_forwards ())
+                  (String.append (freg_or_reg_name_forwards rs2)
+                    (String.append (sep_forwards ())
+                      (String.append (freg_or_reg_name_forwards rs3)
+                        (String.append (sep_forwards ())
+                          (String.append (frm_mnemonic_forwards rm) ""))))))))))))
+  | .F_BIN_RM_TYPE_D (rs2, rs1, rm, rd, op) =>
+    (pure (String.append (f_bin_rm_type_mnemonic_D_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (freg_or_reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_or_reg_name_forwards rs1)
+                (String.append (sep_forwards ())
+                  (String.append (freg_or_reg_name_forwards rs2)
+                    (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))))
+  | .F_UN_RM_FF_TYPE_D (rs1, rm, rd, op) =>
+    (pure (String.append (f_un_rm_ff_type_mnemonic_D_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (freg_or_reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_or_reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
+  | .F_UN_RM_FX_TYPE_D (rs1, rm, rd, op) =>
+    (pure (String.append (f_un_rm_fx_type_mnemonic_D_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_or_reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
+  | .F_UN_RM_XF_TYPE_D (rs1, rm, rd, op) =>
+    (pure (String.append (f_un_rm_xf_type_mnemonic_D_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (freg_or_reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
+  | .F_BIN_F_TYPE_D (rs2, rs1, rd, op) =>
+    (pure (String.append (f_bin_f_type_mnemonic_D_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (freg_or_reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_or_reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (freg_or_reg_name_forwards rs2) ""))))))))
+  | .F_BIN_X_TYPE_D (rs2, rs1, rd, op) =>
+    (pure (String.append (f_bin_x_type_mnemonic_D_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_or_reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (freg_or_reg_name_forwards rs2) ""))))))))
+  | .F_UN_X_TYPE_D (rs1, rd, op) =>
+    (pure (String.append (f_un_x_type_mnemonic_D_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (freg_name_forwards rs1) ""))))))
+  | .F_UN_F_TYPE_D (rs1, rd, op) =>
+    (pure (String.append (f_un_f_type_mnemonic_D_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (freg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .C_FLDSP (uimm, rd) =>
+    if (Bool.or (BEq.beq xlen 32) (BEq.beq xlen 64))
+    then
+      (pure (String.append "c.fldsp"
+          (String.append (spc_forwards ())
+            (String.append (freg_name_forwards rd)
+              (String.append (sep_forwards ()) (String.append (← (hex_bits_6_forwards uimm)) ""))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_FSDSP (uimm, rs2) =>
+    if (Bool.or (BEq.beq xlen 32) (BEq.beq xlen 64))
+    then
+      (pure (String.append "c.fsdsp"
+          (String.append (spc_forwards ())
+            (String.append (freg_name_forwards rs2)
+              (String.append (sep_forwards ()) (String.append (← (hex_bits_6_forwards uimm)) ""))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_FLD (uimm, rsc, rdc) =>
+    if (Bool.or (BEq.beq xlen 32) (BEq.beq xlen 64))
+    then
+      (pure (String.append "c.fld"
+          (String.append (spc_forwards ())
+            (String.append (creg_name_forwards rdc)
+              (String.append (sep_forwards ())
+                (String.append (creg_name_forwards rsc)
+                  (String.append (sep_forwards ())
+                    (String.append
+                      (← (hex_bits_8_forwards ((uimm : (BitVec 5)) ++ (0b000 : (BitVec 3))))) ""))))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .C_FSD (uimm, rsc1, rsc2) =>
+    if (Bool.or (BEq.beq xlen 32) (BEq.beq xlen 64))
+    then
+      (pure (String.append "c.fsd"
+          (String.append (spc_forwards ())
+            (String.append (creg_name_forwards rsc1)
+              (String.append (sep_forwards ())
+                (String.append (creg_name_forwards rsc2)
+                  (String.append (sep_forwards ())
+                    (String.append
+                      (← (hex_bits_8_forwards ((uimm : (BitVec 5)) ++ (0b000 : (BitVec 3))))) ""))))))))
+    else
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit
+  | .SINVAL_VMA (rs1, rs2) =>
+    (pure (String.append "sinval.vma"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rs1)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))
+  | .SFENCE_W_INVAL () => (pure "sfence.w.inval")
+  | .SFENCE_INVAL_IR () => (pure "sfence.inval.ir")
+  | .RISCV_SLLIUW (shamt, rs1, rd) =>
+    (pure (String.append "slli.uw"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ())
+                  (String.append (← (hex_bits_6_forwards shamt)) ""))))))))
+  | .ZBA_RTYPEUW (rs2, rs1, rd, op) =>
+    (pure (String.append (zba_rtypeuw_mnemonic_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .ZBA_RTYPE (rs2, rs1, rd, op) =>
+    (pure (String.append (zba_rtype_mnemonic_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .RISCV_RORIW (shamt, rs1, rd) =>
+    (pure (String.append "roriw"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ())
+                  (String.append (← (hex_bits_5_forwards shamt)) ""))))))))
+  | .RISCV_RORI (shamt, rs1, rd) =>
+    (pure (String.append "rori"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ())
+                  (String.append (← (hex_bits_6_forwards shamt)) ""))))))))
+  | .ZBB_RTYPEW (rs2, rs1, rd, op) =>
+    (pure (String.append (zbb_rtypew_mnemonic_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .ZBB_RTYPE (rs2, rs1, rd, op) =>
+    (pure (String.append (zbb_rtype_mnemonic_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .ZBB_EXTOP (rs1, rd, op) =>
+    (pure (String.append (zbb_extop_mnemonic_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .RISCV_REV8 (rs1, rd) =>
+    (pure (String.append "rev8"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .RISCV_ORCB (rs1, rd) =>
+    (pure (String.append "orc.b"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .RISCV_CPOP (rs1, rd) =>
+    (pure (String.append "cpop"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .RISCV_CPOPW (rs1, rd) =>
+    (pure (String.append "cpopw"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .RISCV_CLZ (rs1, rd) =>
+    (pure (String.append "clz"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .RISCV_CLZW (rs1, rd) =>
+    (pure (String.append "clzw"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .RISCV_CTZ (rs1, rd) =>
+    (pure (String.append "ctz"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .RISCV_CTZW (rs1, rd) =>
+    (pure (String.append "ctzw"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .RISCV_CLMUL (rs2, rs1, rd) =>
+    (pure (String.append "clmul"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .RISCV_CLMULH (rs2, rs1, rd) =>
+    (pure (String.append "clmulh"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .RISCV_CLMULR (rs2, rs1, rd) =>
+    (pure (String.append "clmulr"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .ZBS_IOP (shamt, rs1, rd, op) =>
+    (pure (String.append (zbs_iop_mnemonic_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ())
+                  (String.append (← (hex_bits_6_forwards shamt)) ""))))))))
+  | .ZBS_RTYPE (rs2, rs1, rd, op) =>
+    (pure (String.append (zbs_rtype_mnemonic_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .C_LBU (uimm, rdc, rs1c) =>
+    (pure (String.append "c.lbu"
+        (String.append (spc_forwards ())
+          (String.append (creg_name_forwards rdc)
+            (String.append (sep_forwards ())
+              (String.append (← (hex_bits_2_forwards uimm))
+                (String.append (opt_spc_forwards ())
+                  (String.append "("
+                    (String.append (opt_spc_forwards ())
+                      (String.append (creg_name_forwards rs1c)
+                        (String.append (opt_spc_forwards ()) (String.append ")" ""))))))))))))
+  | .C_LHU (uimm, rdc, rs1c) =>
+    (pure (String.append "c.lhu"
+        (String.append (spc_forwards ())
+          (String.append (creg_name_forwards rdc)
+            (String.append (sep_forwards ())
+              (String.append (← (hex_bits_2_forwards uimm))
+                (String.append (opt_spc_forwards ())
+                  (String.append "("
+                    (String.append (opt_spc_forwards ())
+                      (String.append (creg_name_forwards rs1c)
+                        (String.append (opt_spc_forwards ()) (String.append ")" ""))))))))))))
+  | .C_LH (uimm, rdc, rs1c) =>
+    (pure (String.append "c.lh"
+        (String.append (spc_forwards ())
+          (String.append (creg_name_forwards rdc)
+            (String.append (sep_forwards ())
+              (String.append (← (hex_bits_2_forwards uimm))
+                (String.append (opt_spc_forwards ())
+                  (String.append "("
+                    (String.append (opt_spc_forwards ())
+                      (String.append (creg_name_forwards rs1c)
+                        (String.append (opt_spc_forwards ()) (String.append ")" ""))))))))))))
+  | .C_SB (uimm, rs1c, rs2c) =>
+    (pure (String.append "c.sb"
+        (String.append (spc_forwards ())
+          (String.append (creg_name_forwards rs2c)
+            (String.append (sep_forwards ())
+              (String.append (← (hex_bits_2_forwards uimm))
+                (String.append (opt_spc_forwards ())
+                  (String.append "("
+                    (String.append (opt_spc_forwards ())
+                      (String.append (creg_name_forwards rs1c)
+                        (String.append (opt_spc_forwards ()) (String.append ")" ""))))))))))))
+  | .C_SH (uimm, rs1c, rs2c) =>
+    (pure (String.append "c.sh"
+        (String.append (spc_forwards ())
+          (String.append (creg_name_forwards rs1c)
+            (String.append (sep_forwards ())
+              (String.append (← (hex_bits_2_forwards uimm))
+                (String.append (opt_spc_forwards ())
+                  (String.append "("
+                    (String.append (opt_spc_forwards ())
+                      (String.append (creg_name_forwards rs2c)
+                        (String.append (opt_spc_forwards ()) (String.append ")" ""))))))))))))
+  | .C_ZEXT_B rsdc =>
+    (pure (String.append "c.zext.b"
+        (String.append (spc_forwards ()) (String.append (creg_name_forwards rsdc) ""))))
+  | .C_SEXT_B rsdc =>
+    (pure (String.append "c.sext.b"
+        (String.append (spc_forwards ()) (String.append (creg_name_forwards rsdc) ""))))
+  | .C_ZEXT_H rsdc =>
+    (pure (String.append "c.zext.h"
+        (String.append (spc_forwards ()) (String.append (creg_name_forwards rsdc) ""))))
+  | .C_SEXT_H rsdc =>
+    (pure (String.append "c.sext.h"
+        (String.append (spc_forwards ()) (String.append (creg_name_forwards rsdc) ""))))
+  | .C_ZEXT_W rsdc =>
+    (pure (String.append "c.zext.w"
+        (String.append (spc_forwards ()) (String.append (creg_name_forwards rsdc) ""))))
+  | .C_NOT rsdc =>
+    (pure (String.append "c.not"
+        (String.append (spc_forwards ()) (String.append (creg_name_forwards rsdc) ""))))
+  | .C_MUL (rsdc, rs2c) =>
+    (pure (String.append "c.mul"
+        (String.append (spc_forwards ())
+          (String.append (creg_name_forwards rsdc)
+            (String.append (sep_forwards ()) (String.append (creg_name_forwards rs2c) ""))))))
+  | .F_BIN_RM_TYPE_H (rs2, rs1, rm, rd, op) =>
+    (pure (String.append (f_bin_rm_type_mnemonic_H_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (freg_or_reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_or_reg_name_forwards rs1)
+                (String.append (sep_forwards ())
+                  (String.append (freg_or_reg_name_forwards rs2)
+                    (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))))
+  | .F_MADD_TYPE_H (rs3, rs2, rs1, rm, rd, op) =>
+    (pure (String.append (f_madd_type_mnemonic_H_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (freg_or_reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_or_reg_name_forwards rs1)
+                (String.append (sep_forwards ())
+                  (String.append (freg_or_reg_name_forwards rs2)
+                    (String.append (sep_forwards ())
+                      (String.append (freg_or_reg_name_forwards rs3)
+                        (String.append (sep_forwards ())
+                          (String.append (frm_mnemonic_forwards rm) ""))))))))))))
+  | .F_BIN_F_TYPE_H (rs2, rs1, rd, op) =>
+    (pure (String.append (f_bin_f_type_mnemonic_H_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (freg_or_reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_or_reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (freg_or_reg_name_forwards rs2) ""))))))))
+  | .F_BIN_X_TYPE_H (rs2, rs1, rd, op) =>
+    (pure (String.append (f_bin_x_type_mnemonic_H_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_or_reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (freg_or_reg_name_forwards rs2) ""))))))))
+  | .F_UN_RM_FF_TYPE_H (rs1, rm, rd, op) =>
+    (pure (String.append (f_un_rm_ff_type_mnemonic_H_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (freg_or_reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_or_reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
+  | .F_UN_RM_FX_TYPE_H (rs1, rm, rd, op) =>
+    (pure (String.append (f_un_rm_fx_type_mnemonic_H_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_or_reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
+  | .F_UN_RM_XF_TYPE_H (rs1, rm, rd, op) =>
+    (pure (String.append (f_un_rm_xf_type_mnemonic_H_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (freg_or_reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
+  | .F_UN_F_TYPE_H (rs1, rd, op) =>
+    (pure (String.append (f_un_f_type_mnemonic_H_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (freg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .F_UN_X_TYPE_H (rs1, rd, op) =>
+    (pure (String.append (f_un_x_type_mnemonic_H_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (freg_name_forwards rs1) ""))))))
+  | .RISCV_FLI_H (constantidx, rd) =>
+    (pure (String.append "fli.h"
+        (String.append (spc_forwards ())
+          (String.append (freg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (← (hex_bits_5_forwards constantidx)) ""))))))
+  | .RISCV_FLI_S (constantidx, rd) =>
+    (pure (String.append "fli.s"
+        (String.append (spc_forwards ())
+          (String.append (freg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (← (hex_bits_5_forwards constantidx)) ""))))))
+  | .RISCV_FLI_D (constantidx, rd) =>
+    (pure (String.append "fli.d"
+        (String.append (spc_forwards ())
+          (String.append (freg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (← (hex_bits_5_forwards constantidx)) ""))))))
+  | .RISCV_FMINM_H (rs2, rs1, rd) =>
+    (pure (String.append "fminm.h"
+        (String.append (spc_forwards ())
+          (String.append (freg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
+  | .RISCV_FMAXM_H (rs2, rs1, rd) =>
+    (pure (String.append "fmaxm.h"
+        (String.append (spc_forwards ())
+          (String.append (freg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
+  | .RISCV_FMINM_S (rs2, rs1, rd) =>
+    (pure (String.append "fminm.s"
+        (String.append (spc_forwards ())
+          (String.append (freg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
+  | .RISCV_FMAXM_S (rs2, rs1, rd) =>
+    (pure (String.append "fmaxm.s"
+        (String.append (spc_forwards ())
+          (String.append (freg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
+  | .RISCV_FMINM_D (rs2, rs1, rd) =>
+    (pure (String.append "fminm.d"
+        (String.append (spc_forwards ())
+          (String.append (freg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
+  | .RISCV_FMAXM_D (rs2, rs1, rd) =>
+    (pure (String.append "fmaxm.d"
+        (String.append (spc_forwards ())
+          (String.append (freg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
+  | .RISCV_FROUND_H (rs1, rm, rd) =>
+    (pure (String.append "fround.h"
+        (String.append (spc_forwards ())
+          (String.append (freg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
+  | .RISCV_FROUNDNX_H (rs1, rm, rd) =>
+    (pure (String.append "froundnx.h"
+        (String.append (spc_forwards ())
+          (String.append (freg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
+  | .RISCV_FROUND_S (rs1, rm, rd) =>
+    (pure (String.append "fround.s"
+        (String.append (spc_forwards ())
+          (String.append (freg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
+  | .RISCV_FROUNDNX_S (rs1, rm, rd) =>
+    (pure (String.append "froundnx.s"
+        (String.append (spc_forwards ())
+          (String.append (freg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
+  | .RISCV_FROUND_D (rs1, rm, rd) =>
+    (pure (String.append "fround.d"
+        (String.append (spc_forwards ())
+          (String.append (freg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
+  | .RISCV_FROUNDNX_D (rs1, rm, rd) =>
+    (pure (String.append "froundnx.d"
+        (String.append (spc_forwards ())
+          (String.append (freg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
+  | .RISCV_FMVH_X_D (rs1, rd) =>
+    (pure (String.append "fmvh.x.d"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (freg_name_forwards rs1) ""))))))
+  | .RISCV_FMVP_D_X (rs2, rs1, rd) =>
+    (pure (String.append "fmvp.d.x"
+        (String.append (spc_forwards ())
+          (String.append (freg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .RISCV_FLEQ_H (rs2, rs1, rd) =>
+    (pure (String.append "fleq.h"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
+  | .RISCV_FLTQ_H (rs2, rs1, rd) =>
+    (pure (String.append "fltq.h"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
+  | .RISCV_FLEQ_S (rs2, rs1, rd) =>
+    (pure (String.append "fleq.s"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
+  | .RISCV_FLTQ_S (rs2, rs1, rd) =>
+    (pure (String.append "fltq.s"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
+  | .RISCV_FLEQ_D (rs2, rs1, rd) =>
+    (pure (String.append "fleq.d"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
+  | .RISCV_FLTQ_D (rs2, rs1, rd) =>
+    (pure (String.append "fltq.d"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (freg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
+  | .RISCV_FCVTMOD_W_D (rs1, rd) =>
+    (pure (String.append "fcvtmod.w.d"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (freg_name_forwards rs1) ""))))))
+  | .SHA256SIG0 (rs1, rd) =>
+    (pure (String.append "sha256sig0"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .SHA256SIG1 (rs1, rd) =>
+    (pure (String.append "sha256sig1"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .SHA256SUM0 (rs1, rd) =>
+    (pure (String.append "sha256sum0"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .SHA256SUM1 (rs1, rd) =>
+    (pure (String.append "sha256sum1"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .AES32ESMI (bs, rs2, rs1, rd) =>
+    (pure (String.append "aes32esmi"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ())
+                  (String.append (reg_name_forwards rs2)
+                    (String.append (sep_forwards ())
+                      (String.append (← (hex_bits_2_forwards bs)) ""))))))))))
+  | .AES32ESI (bs, rs2, rs1, rd) =>
+    (pure (String.append "aes32esi"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ())
+                  (String.append (reg_name_forwards rs2)
+                    (String.append (sep_forwards ())
+                      (String.append (← (hex_bits_2_forwards bs)) ""))))))))))
+  | .AES32DSMI (bs, rs2, rs1, rd) =>
+    (pure (String.append "aes32dsmi"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ())
+                  (String.append (reg_name_forwards rs2)
+                    (String.append (sep_forwards ())
+                      (String.append (← (hex_bits_2_forwards bs)) ""))))))))))
+  | .AES32DSI (bs, rs2, rs1, rd) =>
+    (pure (String.append "aes32dsi"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ())
+                  (String.append (reg_name_forwards rs2)
+                    (String.append (sep_forwards ())
+                      (String.append (← (hex_bits_2_forwards bs)) ""))))))))))
+  | .SHA512SIG0L (rs2, rs1, rd) =>
+    (pure (String.append "sha512sig0l"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .SHA512SIG0H (rs2, rs1, rd) =>
+    (pure (String.append "sha512sig0h"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .SHA512SIG1L (rs2, rs1, rd) =>
+    (pure (String.append "sha512sig1l"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .SHA512SIG1H (rs2, rs1, rd) =>
+    (pure (String.append "sha512sig1h"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .SHA512SUM0R (rs2, rs1, rd) =>
+    (pure (String.append "sha512sum0r"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .SHA512SUM1R (rs2, rs1, rd) =>
+    (pure (String.append "sha512sum1r"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .AES64KS1I (rnum, rs1, rd) =>
+    (pure (String.append "aes64ks1i"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (← (hex_bits_4_forwards rnum)) ""))))))))
+  | .AES64KS2 (rs2, rs1, rd) =>
+    (pure (String.append "aes64ks2"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .AES64IM (rs1, rd) =>
+    (pure (String.append "aes64im"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .AES64ESM (rs2, rs1, rd) =>
+    (pure (String.append "aes64esm"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .AES64ES (rs2, rs1, rd) =>
+    (pure (String.append "aes64es"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .AES64DSM (rs2, rs1, rd) =>
+    (pure (String.append "aes64dsm"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .AES64DS (rs2, rs1, rd) =>
+    (pure (String.append "aes64ds"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .SHA512SIG0 (rs1, rd) =>
+    (pure (String.append "sha512sig0"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .SHA512SIG1 (rs1, rd) =>
+    (pure (String.append "sha512sig1"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .SHA512SUM0 (rs1, rd) =>
+    (pure (String.append "sha512sum0"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .SHA512SUM1 (rs1, rd) =>
+    (pure (String.append "sha512sum1"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .SM3P0 (rs1, rd) =>
+    (pure (String.append "sm3p0"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .SM3P1 (rs1, rd) =>
+    (pure (String.append "sm3p1"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .SM4ED (bs, rs2, rs1, rd) =>
+    (pure (String.append "sm4ed"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ())
+                  (String.append (reg_name_forwards rs2)
+                    (String.append (sep_forwards ())
+                      (String.append (← (hex_bits_2_forwards bs)) ""))))))))))
+  | .SM4KS (bs, rs2, rs1, rd) =>
+    (pure (String.append "sm4ks"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ())
+                  (String.append (reg_name_forwards rs2)
+                    (String.append (sep_forwards ())
+                      (String.append (← (hex_bits_2_forwards bs)) ""))))))))))
+  | .ZBKB_RTYPE (rs2, rs1, rd, op) =>
+    (pure (String.append (zbkb_rtype_mnemonic_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .ZBKB_PACKW (rs2, rs1, rd) =>
+    (pure (String.append "packw"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .RISCV_ZIP (rs1, rd) =>
+    (pure (String.append "zip"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .RISCV_UNZIP (rs1, rd) =>
+    (pure (String.append "unzip"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .RISCV_BREV8 (rs1, rd) =>
+    (pure (String.append "brev8"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .RISCV_XPERM8 (rs2, rs1, rd) =>
+    (pure (String.append "xperm8"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .RISCV_XPERM4 (rs2, rs1, rd) =>
+    (pure (String.append "xperm4"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .ZICOND_RTYPE (rs2, rs1, rd, op) =>
+    (pure (String.append (zicond_mnemonic_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .VSETVLI (ma, ta, sew, lmul, rs1, rd) =>
+    (pure (String.append "vsetvli"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ())
+                  (String.append (← (sew_flag_backwards sew))
+                    (String.append (← (maybe_lmul_flag_backwards lmul))
+                      (String.append (maybe_ta_flag_backwards ta)
+                        (String.append (maybe_ma_flag_backwards ma) "")))))))))))
+  | .VSETVL (rs2, rs1, rd) =>
+    (pure (String.append "vsetvl"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
+  | .VSETIVLI (ma, ta, sew, lmul, uimm, rd) =>
+    (pure (String.append "vsetivli"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (← (hex_bits_5_forwards uimm))
+                (String.append (sep_forwards ())
+                  (String.append (← (sew_flag_backwards sew))
+                    (String.append (← (maybe_lmul_flag_backwards lmul))
+                      (String.append (maybe_ta_flag_backwards ta)
+                        (String.append (maybe_ma_flag_backwards ma) "")))))))))))
+  | .VVTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (vvtype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .NVSTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (nvstype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .NVTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (nvtype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .MASKTYPEV (vs2, vs1, vd) =>
+    (pure (String.append "vmerge.vvm"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs1)
+                    (String.append (sep_forwards ()) (String.append "v0" ""))))))))))
+  | .MOVETYPEV (vs1, vd) =>
+    (pure (String.append "vmv.v.v"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs1) ""))))))
+  | .VXTYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (vxtype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (reg_name_forwards rs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .NXSTYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (nxstype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (reg_name_forwards rs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .NXTYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (nxtype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (reg_name_forwards rs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .VXSG (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (vxsg_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (reg_name_forwards rs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .MASKTYPEX (vs2, rs1, vd) =>
+    (pure (String.append "vmerge.vxm"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (reg_name_forwards rs1)
+                    (String.append (sep_forwards ()) (String.append "v0" ""))))))))))
+  | .MOVETYPEX (rs1, vd) =>
+    (pure (String.append "vmv.v.x"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .VITYPE (funct6, vm, vs2, simm, vd) =>
+    (pure (String.append (vitype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (← (hex_bits_5_forwards simm))
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .NISTYPE (funct6, vm, vs2, simm, vd) =>
+    (pure (String.append (nistype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (← (hex_bits_5_forwards simm))
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .NITYPE (funct6, vm, vs2, simm, vd) =>
+    (pure (String.append (nitype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (← (hex_bits_5_forwards simm))
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .VISG (funct6, vm, vs2, simm, vd) =>
+    (pure (String.append (visg_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (← (hex_bits_5_forwards simm))
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .MASKTYPEI (vs2, simm, vd) =>
+    (pure (String.append "vmerge.vim"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (← (hex_bits_5_forwards simm))
+                    (String.append (sep_forwards ()) (String.append "v0" ""))))))))))
+  | .MOVETYPEI (vd, simm) =>
+    (pure (String.append "vmv.v.i"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ()) (String.append (← (hex_bits_5_forwards simm)) ""))))))
+  | .VMVRTYPE (vs2, simm, vd) =>
+    (pure (String.append "vmv"
+        (String.append (← (simm_string_forwards simm))
+          (String.append "r.v"
+            (String.append (spc_forwards ())
+              (String.append (vreg_name_forwards vd)
+                (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs2) ""))))))))
+  | .MVVTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (mvvtype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .MVVMATYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (mvvmatype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs1)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs2)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .WVVTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (wvvtype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .WVTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (wvtype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .WMVVTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (wmvvtype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs1)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs2)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .VEXT2TYPE (funct6, vm, vs2, vd) =>
+    (pure (String.append (vext2type_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
+  | .VEXT4TYPE (funct6, vm, vs2, vd) =>
+    (pure (String.append (vext4type_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
+  | .VEXT8TYPE (funct6, vm, vs2, vd) =>
+    (pure (String.append (vext8type_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
+  | .VMVXS (vs2, rd) =>
+    (pure (String.append "vmv.x.s"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs2) ""))))))
+  | .MVVCOMPRESS (vs2, vs1, vd) =>
+    (pure (String.append "vcompress.vm"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs1) ""))))))))
+  | .MVXTYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (mvxtype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (reg_name_forwards rs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .MVXMATYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (mvxmatype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs2)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .WVXTYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (wvxtype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (reg_name_forwards rs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .WXTYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (wxtype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (reg_name_forwards rs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .WMVXTYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (wmvxtype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs2)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .VMVSX (rs1, vd) =>
+    (pure (String.append "vmv.s.x"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
+  | .FVVTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (fvvtype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .FVVMATYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (fvvmatype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs1)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs2)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .FWVVTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (fwvvtype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .FWVVMATYPE (funct6, vm, vs1, vs2, vd) =>
+    (pure (String.append (fwvvmatype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs1)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs2)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .FWVTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (fwvtype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .VFUNARY0 (vm, vs2, vfunary0, vd) =>
+    (pure (String.append (vfunary0_mnemonic_forwards vfunary0)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
+  | .VFWUNARY0 (vm, vs2, vfwunary0, vd) =>
+    (pure (String.append (vfwunary0_mnemonic_forwards vfwunary0)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
+  | .VFNUNARY0 (vm, vs2, vfnunary0, vd) =>
+    (pure (String.append (vfnunary0_mnemonic_forwards vfnunary0)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
+  | .VFUNARY1 (vm, vs2, vfunary1, vd) =>
+    (pure (String.append (vfunary1_mnemonic_forwards vfunary1)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
+  | .VFMVFS (vs2, rd) =>
+    (pure (String.append "vfmv.f.s"
+        (String.append (spc_forwards ())
+          (String.append (freg_name_forwards rd)
+            (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs2) ""))))))
+  | .FVFTYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (fvftype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (freg_name_forwards rs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .FVFMATYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (fvfmatype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (freg_name_forwards rs1)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs2)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .FWVFTYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (fwvftype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (freg_name_forwards rs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .FWVFMATYPE (funct6, vm, rs1, vs2, vd) =>
+    (pure (String.append (fwvfmatype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (freg_name_forwards rs1)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs2)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .FWFTYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (fwftype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (freg_name_forwards rs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .VFMERGE (vs2, rs1, vd) =>
+    (pure (String.append "vfmerge.vfm"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (freg_name_forwards rs1)
+                    (String.append (sep_forwards ()) (String.append "v0" ""))))))))))
+  | .VFMV (rs1, vd) =>
+    (pure (String.append "vfmv.v.f"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ()) (String.append (freg_name_forwards rs1) ""))))))
+  | .VFMVSF (rs1, vd) =>
+    (pure (String.append "vfmv.s.f"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ()) (String.append (freg_name_forwards rs1) ""))))))
+  | .VLSEGTYPE (nf, vm, rs1, width, vd) =>
+    (pure (String.append "vl"
+        (String.append (nfields_string_forwards nf)
+          (String.append "e"
+            (String.append (vlewidth_bitsnumberstr_forwards width)
+              (String.append ".v"
+                (String.append (spc_forwards ())
+                  (String.append (vreg_name_forwards vd)
+                    (String.append (sep_forwards ())
+                      (String.append "("
+                        (String.append (reg_name_forwards rs1)
+                          (String.append ")" (String.append (maybe_vmask_backwards vm) "")))))))))))))
+  | .VLSEGFFTYPE (nf, vm, rs1, width, vd) =>
+    (pure (String.append "vl"
+        (String.append (nfields_string_forwards nf)
+          (String.append "e"
+            (String.append (vlewidth_bitsnumberstr_forwards width)
+              (String.append "ff.v"
+                (String.append (spc_forwards ())
+                  (String.append (vreg_name_forwards vd)
+                    (String.append (sep_forwards ())
+                      (String.append "("
+                        (String.append (reg_name_forwards rs1)
+                          (String.append ")" (String.append (maybe_vmask_backwards vm) "")))))))))))))
+  | .VSSEGTYPE (nf, vm, rs1, width, vs3) =>
+    (pure (String.append "vs"
+        (String.append (nfields_string_forwards nf)
+          (String.append "e"
+            (String.append (vlewidth_bitsnumberstr_forwards width)
+              (String.append ".v"
+                (String.append (spc_forwards ())
+                  (String.append (vreg_name_forwards vs3)
+                    (String.append (sep_forwards ())
+                      (String.append "("
+                        (String.append (reg_name_forwards rs1)
+                          (String.append ")" (String.append (maybe_vmask_backwards vm) "")))))))))))))
+  | .VLSSEGTYPE (nf, vm, rs2, rs1, width, vd) =>
+    (pure (String.append "vls"
+        (String.append (nfields_string_forwards nf)
+          (String.append "e"
+            (String.append (vlewidth_bitsnumberstr_forwards width)
+              (String.append ".v"
+                (String.append (spc_forwards ())
+                  (String.append (vreg_name_forwards vd)
+                    (String.append (sep_forwards ())
+                      (String.append "("
+                        (String.append (reg_name_forwards rs1)
+                          (String.append ")"
+                            (String.append (sep_forwards ())
+                              (String.append (reg_name_forwards rs2)
+                                (String.append (maybe_vmask_backwards vm) "")))))))))))))))
+  | .VSSSEGTYPE (nf, vm, rs2, rs1, width, vs3) =>
+    (pure (String.append "vss"
+        (String.append (nfields_string_forwards nf)
+          (String.append "e"
+            (String.append (vlewidth_bitsnumberstr_forwards width)
+              (String.append ".v"
+                (String.append (spc_forwards ())
+                  (String.append (vreg_name_forwards vs3)
+                    (String.append (sep_forwards ())
+                      (String.append "("
+                        (String.append (reg_name_forwards rs1)
+                          (String.append ")"
+                            (String.append (sep_forwards ())
+                              (String.append (reg_name_forwards rs2)
+                                (String.append (maybe_vmask_backwards vm) "")))))))))))))))
+  | .VLUXSEGTYPE (nf, vm, vs2, rs1, width, vd) =>
+    (pure (String.append "vlux"
+        (String.append (nfields_string_forwards nf)
+          (String.append "ei"
+            (String.append (vlewidth_bitsnumberstr_forwards width)
+              (String.append ".v"
+                (String.append (spc_forwards ())
+                  (String.append (vreg_name_forwards vd)
+                    (String.append (sep_forwards ())
+                      (String.append "("
+                        (String.append (reg_name_forwards rs1)
+                          (String.append ")"
+                            (String.append (sep_forwards ())
+                              (String.append (vreg_name_forwards vs2)
+                                (String.append (maybe_vmask_backwards vm) "")))))))))))))))
+  | .VLOXSEGTYPE (nf, vm, vs2, rs1, width, vd) =>
+    (pure (String.append "vlox"
+        (String.append (nfields_string_forwards nf)
+          (String.append "ei"
+            (String.append (vlewidth_bitsnumberstr_forwards width)
+              (String.append ".v"
+                (String.append (spc_forwards ())
+                  (String.append (vreg_name_forwards vd)
+                    (String.append (sep_forwards ())
+                      (String.append "("
+                        (String.append (reg_name_forwards rs1)
+                          (String.append ")"
+                            (String.append (sep_forwards ())
+                              (String.append (vreg_name_forwards vs2)
+                                (String.append (maybe_vmask_backwards vm) "")))))))))))))))
+  | .VSUXSEGTYPE (nf, vm, vs2, rs1, width, vs3) =>
+    (pure (String.append "vsux"
+        (String.append (nfields_string_forwards nf)
+          (String.append "ei"
+            (String.append (vlewidth_bitsnumberstr_forwards width)
+              (String.append ".v"
+                (String.append (spc_forwards ())
+                  (String.append (vreg_name_forwards vs3)
+                    (String.append (sep_forwards ())
+                      (String.append "("
+                        (String.append (reg_name_forwards rs1)
+                          (String.append ")"
+                            (String.append (sep_forwards ())
+                              (String.append (vreg_name_forwards vs2)
+                                (String.append (maybe_vmask_backwards vm) "")))))))))))))))
+  | .VSOXSEGTYPE (nf, vm, vs2, rs1, width, vs3) =>
+    (pure (String.append "vsox"
+        (String.append (nfields_string_forwards nf)
+          (String.append "ei"
+            (String.append (vlewidth_bitsnumberstr_forwards width)
+              (String.append ".v"
+                (String.append (spc_forwards ())
+                  (String.append (vreg_name_forwards vs3)
+                    (String.append (sep_forwards ())
+                      (String.append "("
+                        (String.append (reg_name_forwards rs1)
+                          (String.append ")"
+                            (String.append (sep_forwards ())
+                              (String.append (vreg_name_forwards vs2)
+                                (String.append (maybe_vmask_backwards vm) "")))))))))))))))
+  | .VLRETYPE (nf, rs1, width, vd) =>
+    (pure (String.append "vl"
+        (String.append (nfields_string_forwards nf)
+          (String.append "re"
+            (String.append (vlewidth_bitsnumberstr_forwards width)
+              (String.append ".v"
+                (String.append (spc_forwards ())
+                  (String.append (vreg_name_forwards vd)
+                    (String.append (sep_forwards ())
+                      (String.append "("
+                        (String.append (reg_name_forwards rs1) (String.append ")" ""))))))))))))
+  | .VSRETYPE (nf, rs1, vs3) =>
+    (pure (String.append "vs"
+        (String.append (nfields_string_forwards nf)
+          (String.append "r.v"
+            (String.append (spc_forwards ())
+              (String.append (vreg_name_forwards vs3)
+                (String.append (sep_forwards ())
+                  (String.append "(" (String.append (reg_name_forwards rs1) (String.append ")" ""))))))))))
+  | .VMTYPE (rs1, vd_or_vs3, op) =>
+    (pure (String.append (vmtype_mnemonic_forwards op)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd_or_vs3)
+            (String.append (sep_forwards ())
+              (String.append "(" (String.append (reg_name_forwards rs1) (String.append ")" ""))))))))
+  | .MMTYPE (funct6, vs2, vs1, vd) =>
+    (pure (String.append (mmtype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs1) ""))))))))
+  | .VCPOP_M (vm, vs2, rd) =>
+    (pure (String.append "vpopc.m"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
+  | .VFIRST_M (vm, vs2, rd) =>
+    (pure (String.append "vfirst.m"
+        (String.append (spc_forwards ())
+          (String.append (reg_name_forwards rd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
+  | .VMSBF_M (vm, vs2, vd) =>
+    (pure (String.append "vmsbf.m"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
+  | .VMSIF_M (vm, vs2, vd) =>
+    (pure (String.append "vmsif.m"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
+  | .VMSOF_M (vm, vs2, vd) =>
+    (pure (String.append "vmsof.m"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
+  | .VIOTA_M (vm, vs2, vd) =>
+    (pure (String.append "viota.m"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
+  | .VID_V (vm, vd) =>
+    (pure (String.append "vid.v"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd) (String.append (maybe_vmask_backwards vm) "")))))
+  | .VVMTYPE (funct6, vs2, vs1, vd) =>
+    (pure (String.append (vvmtype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs1)
+                    (String.append (sep_forwards ()) (String.append "v0" ""))))))))))
+  | .VVMCTYPE (funct6, vs2, vs1, vd) =>
+    (pure (String.append (vvmctype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs1) ""))))))))
+  | .VVMSTYPE (funct6, vs2, vs1, vd) =>
+    (pure (String.append (vvmstype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs1)
+                    (String.append (sep_forwards ()) (String.append "v0" ""))))))))))
+  | .VVCMPTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (vvcmptype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .VXMTYPE (funct6, vs2, rs1, vd) =>
+    (pure (String.append (vxmtype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (reg_name_forwards rs1)
+                    (String.append (sep_forwards ()) (String.append "v0" ""))))))))))
+  | .VXMCTYPE (funct6, vs2, rs1, vd) =>
+    (pure (String.append (vxmctype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))))
+  | .VXMSTYPE (funct6, vs2, rs1, vd) =>
+    (pure (String.append (vxmstype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (reg_name_forwards rs1)
+                    (String.append (sep_forwards ()) (String.append "v0" ""))))))))))
+  | .VXCMPTYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (vxcmptype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (reg_name_forwards rs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .VIMTYPE (funct6, vs2, simm, vd) =>
+    (pure (String.append (vimtype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (← (hex_bits_5_forwards simm))
+                    (String.append (sep_forwards ()) (String.append "v0" ""))))))))))
+  | .VIMCTYPE (funct6, vs2, simm, vd) =>
+    (pure (String.append (vimctype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ()) (String.append (← (hex_bits_5_forwards simm)) ""))))))))
+  | .VIMSTYPE (funct6, vs2, simm, vd) =>
+    (pure (String.append (vimstype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (← (hex_bits_5_forwards simm))
+                    (String.append (sep_forwards ()) (String.append "v0" ""))))))))))
+  | .VICMPTYPE (funct6, vm, vs2, simm, vd) =>
+    (pure (String.append (vicmptype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (← (hex_bits_5_forwards simm))
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .FVVMTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (fvvmtype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .FVFMTYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (fvfmtype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (freg_name_forwards rs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .RIVVTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (rivvtype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .RMVVTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (rmvvtype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .RFVVTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (rfvvtype_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .RISCV_ZICBOM (cbop, rs1) =>
+    (pure (String.append (cbop_mnemonic_forwards cbop)
+        (String.append (spc_forwards ())
+          (String.append "("
+            (String.append (opt_spc_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (opt_spc_forwards ()) (String.append ")" ""))))))))
+  | .RISCV_ZICBOZ rs1 =>
+    (pure (String.append "cbo.zero"
+        (String.append (spc_forwards ())
+          (String.append "("
+            (String.append (opt_spc_forwards ())
+              (String.append (reg_name_forwards rs1)
+                (String.append (opt_spc_forwards ()) (String.append ")" ""))))))))
+  | .ILLEGAL s =>
+    (pure (String.append "illegal"
+        (String.append (spc_forwards ()) (String.append (← (hex_bits_32_forwards s)) ""))))
+  | .C_ILLEGAL s =>
+    (pure (String.append "c.illegal"
+        (String.append (spc_forwards ()) (String.append (← (hex_bits_16_forwards s)) ""))))
+
+def print_insn (insn : ast) : SailM String := do
+  (assembly_forwards insn)
+
+def ptw_error_to_str (e : PTW_Error) : String :=
+  match e with
+  | .PTW_Invalid_Addr () => "invalid-source-addr"
+  | .PTW_Access () => "mem-access-error"
+  | .PTW_Invalid_PTE () => "invalid-pte"
+  | .PTW_No_Permission () => "no-permission"
+  | .PTW_Misaligned () => "misaligned-superpage"
+  | .PTW_PTE_Update () => "pte-update-needed"
+  | .PTW_Ext_Error e => "extension-error"
+
+def undefined_Retired (_ : Unit) : SailM Retired := do
+  (internal_pick [RETIRE_SUCCESS, RETIRE_FAIL])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 1 -/
+def Retired_of_num (arg_ : Nat) : Retired :=
+  match arg_ with
+  | 0 => RETIRE_SUCCESS
+  | _ => RETIRE_FAIL
+
+def num_of_Retired (arg_ : Retired) : Int :=
+  match arg_ with
+  | RETIRE_SUCCESS => 0
+  | RETIRE_FAIL => 1
+
+def undefined_word_width (_ : Unit) : SailM word_width := do
+  (internal_pick [BYTE, HALF, WORD, DOUBLE])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 3 -/
+def word_width_of_num (arg_ : Nat) : word_width :=
+  match arg_ with
+  | 0 => BYTE
+  | 1 => HALF
+  | 2 => WORD
+  | _ => DOUBLE
+
+def num_of_word_width (arg_ : word_width) : Int :=
+  match arg_ with
+  | BYTE => 0
+  | HALF => 1
+  | WORD => 2
+  | DOUBLE => 3
+
+def undefined_InterruptType (_ : Unit) : SailM InterruptType := do
+  (internal_pick
+    [I_U_Software, I_S_Software, I_M_Software, I_U_Timer, I_S_Timer, I_M_Timer, I_U_External, I_S_External, I_M_External])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 8 -/
+def InterruptType_of_num (arg_ : Nat) : InterruptType :=
+  match arg_ with
+  | 0 => I_U_Software
+  | 1 => I_S_Software
+  | 2 => I_M_Software
+  | 3 => I_U_Timer
+  | 4 => I_S_Timer
+  | 5 => I_M_Timer
+  | 6 => I_U_External
+  | 7 => I_S_External
+  | _ => I_M_External
+
+def num_of_InterruptType (arg_ : InterruptType) : Int :=
+  match arg_ with
+  | I_U_Software => 0
+  | I_S_Software => 1
+  | I_M_Software => 2
+  | I_U_Timer => 3
+  | I_S_Timer => 4
+  | I_M_Timer => 5
+  | I_U_External => 6
+  | I_S_External => 7
+  | I_M_External => 8
+
+def interruptType_to_bits (i : InterruptType) : (BitVec 8) :=
+  match i with
+  | I_U_Software => (0x00 : (BitVec 8))
+  | I_S_Software => (0x01 : (BitVec 8))
+  | I_M_Software => (0x03 : (BitVec 8))
+  | I_U_Timer => (0x04 : (BitVec 8))
+  | I_S_Timer => (0x05 : (BitVec 8))
+  | I_M_Timer => (0x07 : (BitVec 8))
+  | I_U_External => (0x08 : (BitVec 8))
+  | I_S_External => (0x09 : (BitVec 8))
+  | I_M_External => (0x0B : (BitVec 8))
+
+def exceptionType_to_bits (e : ExceptionType) : (BitVec 8) :=
+  match e with
+  | .E_Fetch_Addr_Align () => (0x00 : (BitVec 8))
+  | .E_Fetch_Access_Fault () => (0x01 : (BitVec 8))
+  | .E_Illegal_Instr () => (0x02 : (BitVec 8))
+  | .E_Breakpoint () => (0x03 : (BitVec 8))
+  | .E_Load_Addr_Align () => (0x04 : (BitVec 8))
+  | .E_Load_Access_Fault () => (0x05 : (BitVec 8))
+  | .E_SAMO_Addr_Align () => (0x06 : (BitVec 8))
+  | .E_SAMO_Access_Fault () => (0x07 : (BitVec 8))
+  | .E_U_EnvCall () => (0x08 : (BitVec 8))
+  | .E_S_EnvCall () => (0x09 : (BitVec 8))
+  | .E_Reserved_10 () => (0x0A : (BitVec 8))
+  | .E_M_EnvCall () => (0x0B : (BitVec 8))
+  | .E_Fetch_Page_Fault () => (0x0C : (BitVec 8))
+  | .E_Load_Page_Fault () => (0x0D : (BitVec 8))
+  | .E_Reserved_14 () => (0x0E : (BitVec 8))
+  | .E_SAMO_Page_Fault () => (0x0F : (BitVec 8))
+  | .E_Extension e => (ext_exc_type_to_bits e)
+
+def num_of_ExceptionType (e : ExceptionType) : Int :=
+  match e with
+  | .E_Fetch_Addr_Align () => 0
+  | .E_Fetch_Access_Fault () => 1
+  | .E_Illegal_Instr () => 2
+  | .E_Breakpoint () => 3
+  | .E_Load_Addr_Align () => 4
+  | .E_Load_Access_Fault () => 5
+  | .E_SAMO_Addr_Align () => 6
+  | .E_SAMO_Access_Fault () => 7
+  | .E_U_EnvCall () => 8
+  | .E_S_EnvCall () => 9
+  | .E_Reserved_10 () => 10
+  | .E_M_EnvCall () => 11
+  | .E_Fetch_Page_Fault () => 12
+  | .E_Load_Page_Fault () => 13
+  | .E_Reserved_14 () => 14
+  | .E_SAMO_Page_Fault () => 15
+  | .E_Extension e => (num_of_ext_exc_type e)
+
+def undefined_TrapVectorMode (_ : Unit) : SailM TrapVectorMode := do
+  (internal_pick [TV_Direct, TV_Vector, TV_Reserved])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 2 -/
+def TrapVectorMode_of_num (arg_ : Nat) : TrapVectorMode :=
+  match arg_ with
+  | 0 => TV_Direct
+  | 1 => TV_Vector
+  | _ => TV_Reserved
+
+def num_of_TrapVectorMode (arg_ : TrapVectorMode) : Int :=
+  match arg_ with
+  | TV_Direct => 0
+  | TV_Vector => 1
+  | TV_Reserved => 2
+
+def trapVectorMode_of_bits (m : (BitVec 2)) : TrapVectorMode :=
+  let b__0 := m
+  if (BEq.beq b__0 (0b00 : (BitVec 2)))
+  then TV_Direct
+  else
+    if (BEq.beq b__0 (0b01 : (BitVec 2)))
+    then TV_Vector
+    else TV_Reserved
+
+def undefined_ExtStatus (_ : Unit) : SailM ExtStatus := do
+  (internal_pick [Off, Initial, Clean, Dirty])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 3 -/
+def ExtStatus_of_num (arg_ : Nat) : ExtStatus :=
+  match arg_ with
+  | 0 => Off
+  | 1 => Initial
+  | 2 => Clean
+  | _ => Dirty
+
+def num_of_ExtStatus (arg_ : ExtStatus) : Int :=
+  match arg_ with
+  | Off => 0
+  | Initial => 1
+  | Clean => 2
+  | Dirty => 3
+
+def extStatus_to_bits (e : ExtStatus) : (BitVec 2) :=
+  match e with
+  | Off => (0b00 : (BitVec 2))
+  | Initial => (0b01 : (BitVec 2))
+  | Clean => (0b10 : (BitVec 2))
+  | Dirty => (0b11 : (BitVec 2))
+
+def extStatus_of_bits (e : (BitVec 2)) : ExtStatus :=
+  let b__0 := e
+  if (BEq.beq b__0 (0b00 : (BitVec 2)))
+  then Off
+  else
+    if (BEq.beq b__0 (0b01 : (BitVec 2)))
+    then Initial
+    else
+      if (BEq.beq b__0 (0b10 : (BitVec 2)))
+      then Clean
+      else Dirty
+
+def undefined_SATPMode (_ : Unit) : SailM SATPMode := do
+  (internal_pick [Bare, Sv32, Sv39, Sv48, Sv57])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 4 -/
+def SATPMode_of_num (arg_ : Nat) : SATPMode :=
+  match arg_ with
+  | 0 => Bare
+  | 1 => Sv32
+  | 2 => Sv39
+  | 3 => Sv48
+  | _ => Sv57
+
+def num_of_SATPMode (arg_ : SATPMode) : Int :=
+  match arg_ with
+  | Bare => 0
+  | Sv32 => 1
+  | Sv39 => 2
+  | Sv48 => 3
+  | Sv57 => 4
+
+def satpMode_of_bits (a : Architecture) (m : (BitVec 4)) : (Option SATPMode) :=
+  match (a, m) with
+  | (g__0, b__0) =>
+    if (BEq.beq b__0 (0x0 : (BitVec 4)))
+    then (some Bare)
+    else
+      match (g__0, b__0) with
+      | (RV32, b__0) =>
+        if (BEq.beq b__0 (0x1 : (BitVec 4)))
+        then (some Sv32)
+        else
+          match (RV32, b__0) with
+          | (_, _) => none
+      | (RV64, b__0) =>
+        if (BEq.beq b__0 (0x8 : (BitVec 4)))
+        then (some Sv39)
+        else
+          if (BEq.beq b__0 (0x9 : (BitVec 4)))
+          then (some Sv48)
+          else
+            if (BEq.beq b__0 (0xA : (BitVec 4)))
+            then (some Sv57)
+            else
+              match (RV64, b__0) with
+              | (_, _) => none
+      | (_, _) => none
+
+def undefined_uop (_ : Unit) : SailM uop := do
+  (internal_pick [RISCV_LUI, RISCV_AUIPC])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 1 -/
+def uop_of_num (arg_ : Nat) : uop :=
+  match arg_ with
+  | 0 => RISCV_LUI
+  | _ => RISCV_AUIPC
+
+def num_of_uop (arg_ : uop) : Int :=
+  match arg_ with
+  | RISCV_LUI => 0
+  | RISCV_AUIPC => 1
+
+def undefined_bop (_ : Unit) : SailM bop := do
+  (internal_pick [RISCV_BEQ, RISCV_BNE, RISCV_BLT, RISCV_BGE, RISCV_BLTU, RISCV_BGEU])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 5 -/
+def bop_of_num (arg_ : Nat) : bop :=
+  match arg_ with
+  | 0 => RISCV_BEQ
+  | 1 => RISCV_BNE
+  | 2 => RISCV_BLT
+  | 3 => RISCV_BGE
+  | 4 => RISCV_BLTU
+  | _ => RISCV_BGEU
+
+def num_of_bop (arg_ : bop) : Int :=
+  match arg_ with
+  | RISCV_BEQ => 0
+  | RISCV_BNE => 1
+  | RISCV_BLT => 2
+  | RISCV_BGE => 3
+  | RISCV_BLTU => 4
+  | RISCV_BGEU => 5
+
+def undefined_iop (_ : Unit) : SailM iop := do
+  (internal_pick [RISCV_ADDI, RISCV_SLTI, RISCV_SLTIU, RISCV_XORI, RISCV_ORI, RISCV_ANDI])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 5 -/
+def iop_of_num (arg_ : Nat) : iop :=
+  match arg_ with
+  | 0 => RISCV_ADDI
+  | 1 => RISCV_SLTI
+  | 2 => RISCV_SLTIU
+  | 3 => RISCV_XORI
+  | 4 => RISCV_ORI
+  | _ => RISCV_ANDI
+
+def num_of_iop (arg_ : iop) : Int :=
+  match arg_ with
+  | RISCV_ADDI => 0
+  | RISCV_SLTI => 1
+  | RISCV_SLTIU => 2
+  | RISCV_XORI => 3
+  | RISCV_ORI => 4
+  | RISCV_ANDI => 5
+
+def undefined_sop (_ : Unit) : SailM sop := do
+  (internal_pick [RISCV_SLLI, RISCV_SRLI, RISCV_SRAI])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 2 -/
+def sop_of_num (arg_ : Nat) : sop :=
+  match arg_ with
+  | 0 => RISCV_SLLI
+  | 1 => RISCV_SRLI
+  | _ => RISCV_SRAI
+
+def num_of_sop (arg_ : sop) : Int :=
+  match arg_ with
+  | RISCV_SLLI => 0
+  | RISCV_SRLI => 1
+  | RISCV_SRAI => 2
+
+def undefined_rop (_ : Unit) : SailM rop := do
+  (internal_pick
+    [RISCV_ADD, RISCV_SUB, RISCV_SLL, RISCV_SLT, RISCV_SLTU, RISCV_XOR, RISCV_SRL, RISCV_SRA, RISCV_OR, RISCV_AND])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 9 -/
+def rop_of_num (arg_ : Nat) : rop :=
+  match arg_ with
+  | 0 => RISCV_ADD
+  | 1 => RISCV_SUB
+  | 2 => RISCV_SLL
+  | 3 => RISCV_SLT
+  | 4 => RISCV_SLTU
+  | 5 => RISCV_XOR
+  | 6 => RISCV_SRL
+  | 7 => RISCV_SRA
+  | 8 => RISCV_OR
+  | _ => RISCV_AND
+
+def num_of_rop (arg_ : rop) : Int :=
+  match arg_ with
+  | RISCV_ADD => 0
+  | RISCV_SUB => 1
+  | RISCV_SLL => 2
+  | RISCV_SLT => 3
+  | RISCV_SLTU => 4
+  | RISCV_XOR => 5
+  | RISCV_SRL => 6
+  | RISCV_SRA => 7
+  | RISCV_OR => 8
+  | RISCV_AND => 9
+
+def undefined_ropw (_ : Unit) : SailM ropw := do
+  (internal_pick [RISCV_ADDW, RISCV_SUBW, RISCV_SLLW, RISCV_SRLW, RISCV_SRAW])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 4 -/
+def ropw_of_num (arg_ : Nat) : ropw :=
+  match arg_ with
+  | 0 => RISCV_ADDW
+  | 1 => RISCV_SUBW
+  | 2 => RISCV_SLLW
+  | 3 => RISCV_SRLW
+  | _ => RISCV_SRAW
+
+def num_of_ropw (arg_ : ropw) : Int :=
+  match arg_ with
+  | RISCV_ADDW => 0
+  | RISCV_SUBW => 1
+  | RISCV_SLLW => 2
+  | RISCV_SRLW => 3
+  | RISCV_SRAW => 4
+
+def undefined_sopw (_ : Unit) : SailM sopw := do
+  (internal_pick [RISCV_SLLIW, RISCV_SRLIW, RISCV_SRAIW])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 2 -/
+def sopw_of_num (arg_ : Nat) : sopw :=
+  match arg_ with
+  | 0 => RISCV_SLLIW
+  | 1 => RISCV_SRLIW
+  | _ => RISCV_SRAIW
+
+def num_of_sopw (arg_ : sopw) : Int :=
+  match arg_ with
+  | RISCV_SLLIW => 0
+  | RISCV_SRLIW => 1
+  | RISCV_SRAIW => 2
+
+def undefined_amoop (_ : Unit) : SailM amoop := do
+  (internal_pick [AMOSWAP, AMOADD, AMOXOR, AMOAND, AMOOR, AMOMIN, AMOMAX, AMOMINU, AMOMAXU])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 8 -/
+def amoop_of_num (arg_ : Nat) : amoop :=
+  match arg_ with
+  | 0 => AMOSWAP
+  | 1 => AMOADD
+  | 2 => AMOXOR
+  | 3 => AMOAND
+  | 4 => AMOOR
+  | 5 => AMOMIN
+  | 6 => AMOMAX
+  | 7 => AMOMINU
+  | _ => AMOMAXU
+
+def num_of_amoop (arg_ : amoop) : Int :=
+  match arg_ with
+  | AMOSWAP => 0
+  | AMOADD => 1
+  | AMOXOR => 2
+  | AMOAND => 3
+  | AMOOR => 4
+  | AMOMIN => 5
+  | AMOMAX => 6
+  | AMOMINU => 7
+  | AMOMAXU => 8
+
+def undefined_csrop (_ : Unit) : SailM csrop := do
+  (internal_pick [CSRRW, CSRRS, CSRRC])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 2 -/
+def csrop_of_num (arg_ : Nat) : csrop :=
+  match arg_ with
+  | 0 => CSRRW
+  | 1 => CSRRS
+  | _ => CSRRC
+
+def num_of_csrop (arg_ : csrop) : Int :=
+  match arg_ with
+  | CSRRW => 0
+  | CSRRS => 1
+  | CSRRC => 2
+
+def undefined_cbop_zicbom (_ : Unit) : SailM cbop_zicbom := do
+  (internal_pick [CBO_CLEAN, CBO_FLUSH, CBO_INVAL])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 2 -/
+def cbop_zicbom_of_num (arg_ : Nat) : cbop_zicbom :=
+  match arg_ with
+  | 0 => CBO_CLEAN
+  | 1 => CBO_FLUSH
+  | _ => CBO_INVAL
+
+def num_of_cbop_zicbom (arg_ : cbop_zicbom) : Int :=
+  match arg_ with
+  | CBO_CLEAN => 0
+  | CBO_FLUSH => 1
+  | CBO_INVAL => 2
+
+def undefined_brop_zba (_ : Unit) : SailM brop_zba := do
+  (internal_pick [RISCV_SH1ADD, RISCV_SH2ADD, RISCV_SH3ADD])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 2 -/
+def brop_zba_of_num (arg_ : Nat) : brop_zba :=
+  match arg_ with
+  | 0 => RISCV_SH1ADD
+  | 1 => RISCV_SH2ADD
+  | _ => RISCV_SH3ADD
+
+def num_of_brop_zba (arg_ : brop_zba) : Int :=
+  match arg_ with
+  | RISCV_SH1ADD => 0
+  | RISCV_SH2ADD => 1
+  | RISCV_SH3ADD => 2
+
+def undefined_brop_zbb (_ : Unit) : SailM brop_zbb := do
+  (internal_pick
+    [RISCV_ANDN, RISCV_ORN, RISCV_XNOR, RISCV_MAX, RISCV_MAXU, RISCV_MIN, RISCV_MINU, RISCV_ROL, RISCV_ROR])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 8 -/
+def brop_zbb_of_num (arg_ : Nat) : brop_zbb :=
+  match arg_ with
+  | 0 => RISCV_ANDN
+  | 1 => RISCV_ORN
+  | 2 => RISCV_XNOR
+  | 3 => RISCV_MAX
+  | 4 => RISCV_MAXU
+  | 5 => RISCV_MIN
+  | 6 => RISCV_MINU
+  | 7 => RISCV_ROL
+  | _ => RISCV_ROR
+
+def num_of_brop_zbb (arg_ : brop_zbb) : Int :=
+  match arg_ with
+  | RISCV_ANDN => 0
+  | RISCV_ORN => 1
+  | RISCV_XNOR => 2
+  | RISCV_MAX => 3
+  | RISCV_MAXU => 4
+  | RISCV_MIN => 5
+  | RISCV_MINU => 6
+  | RISCV_ROL => 7
+  | RISCV_ROR => 8
+
+def undefined_brop_zbkb (_ : Unit) : SailM brop_zbkb := do
+  (internal_pick [RISCV_PACK, RISCV_PACKH])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 1 -/
+def brop_zbkb_of_num (arg_ : Nat) : brop_zbkb :=
+  match arg_ with
+  | 0 => RISCV_PACK
+  | _ => RISCV_PACKH
+
+def num_of_brop_zbkb (arg_ : brop_zbkb) : Int :=
+  match arg_ with
+  | RISCV_PACK => 0
+  | RISCV_PACKH => 1
+
+def undefined_brop_zbs (_ : Unit) : SailM brop_zbs := do
+  (internal_pick [RISCV_BCLR, RISCV_BEXT, RISCV_BINV, RISCV_BSET])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 3 -/
+def brop_zbs_of_num (arg_ : Nat) : brop_zbs :=
+  match arg_ with
+  | 0 => RISCV_BCLR
+  | 1 => RISCV_BEXT
+  | 2 => RISCV_BINV
+  | _ => RISCV_BSET
+
+def num_of_brop_zbs (arg_ : brop_zbs) : Int :=
+  match arg_ with
+  | RISCV_BCLR => 0
+  | RISCV_BEXT => 1
+  | RISCV_BINV => 2
+  | RISCV_BSET => 3
+
+def undefined_bropw_zba (_ : Unit) : SailM bropw_zba := do
+  (internal_pick [RISCV_ADDUW, RISCV_SH1ADDUW, RISCV_SH2ADDUW, RISCV_SH3ADDUW])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 3 -/
+def bropw_zba_of_num (arg_ : Nat) : bropw_zba :=
+  match arg_ with
+  | 0 => RISCV_ADDUW
+  | 1 => RISCV_SH1ADDUW
+  | 2 => RISCV_SH2ADDUW
+  | _ => RISCV_SH3ADDUW
+
+def num_of_bropw_zba (arg_ : bropw_zba) : Int :=
+  match arg_ with
+  | RISCV_ADDUW => 0
+  | RISCV_SH1ADDUW => 1
+  | RISCV_SH2ADDUW => 2
+  | RISCV_SH3ADDUW => 3
+
+def undefined_bropw_zbb (_ : Unit) : SailM bropw_zbb := do
+  (internal_pick [RISCV_ROLW, RISCV_RORW])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 1 -/
+def bropw_zbb_of_num (arg_ : Nat) : bropw_zbb :=
+  match arg_ with
+  | 0 => RISCV_ROLW
+  | _ => RISCV_RORW
+
+def num_of_bropw_zbb (arg_ : bropw_zbb) : Int :=
+  match arg_ with
+  | RISCV_ROLW => 0
+  | RISCV_RORW => 1
+
+def undefined_biop_zbs (_ : Unit) : SailM biop_zbs := do
+  (internal_pick [RISCV_BCLRI, RISCV_BEXTI, RISCV_BINVI, RISCV_BSETI])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 3 -/
+def biop_zbs_of_num (arg_ : Nat) : biop_zbs :=
+  match arg_ with
+  | 0 => RISCV_BCLRI
+  | 1 => RISCV_BEXTI
+  | 2 => RISCV_BINVI
+  | _ => RISCV_BSETI
+
+def num_of_biop_zbs (arg_ : biop_zbs) : Int :=
+  match arg_ with
+  | RISCV_BCLRI => 0
+  | RISCV_BEXTI => 1
+  | RISCV_BINVI => 2
+  | RISCV_BSETI => 3
+
+def undefined_extop_zbb (_ : Unit) : SailM extop_zbb := do
+  (internal_pick [RISCV_SEXTB, RISCV_SEXTH, RISCV_ZEXTH])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 2 -/
+def extop_zbb_of_num (arg_ : Nat) : extop_zbb :=
+  match arg_ with
+  | 0 => RISCV_SEXTB
+  | 1 => RISCV_SEXTH
+  | _ => RISCV_ZEXTH
+
+def num_of_extop_zbb (arg_ : extop_zbb) : Int :=
+  match arg_ with
+  | RISCV_SEXTB => 0
+  | RISCV_SEXTH => 1
+  | RISCV_ZEXTH => 2
+
+def undefined_zicondop (_ : Unit) : SailM zicondop := do
+  (internal_pick [RISCV_CZERO_EQZ, RISCV_CZERO_NEZ])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 1 -/
+def zicondop_of_num (arg_ : Nat) : zicondop :=
+  match arg_ with
+  | 0 => RISCV_CZERO_EQZ
+  | _ => RISCV_CZERO_NEZ
+
+def num_of_zicondop (arg_ : zicondop) : Int :=
+  match arg_ with
+  | RISCV_CZERO_EQZ => 0
+  | RISCV_CZERO_NEZ => 1
+
+def size_enc_forwards (arg_ : word_width) : (BitVec 2) :=
+  match arg_ with
+  | BYTE => (0b00 : (BitVec 2))
+  | HALF => (0b01 : (BitVec 2))
+  | WORD => (0b10 : (BitVec 2))
+  | DOUBLE => (0b11 : (BitVec 2))
+
+def size_enc_backwards (arg_ : (BitVec 2)) : word_width :=
+  let b__0 := arg_
+  if (BEq.beq b__0 (0b00 : (BitVec 2)))
+  then BYTE
+  else
+    if (BEq.beq b__0 (0b01 : (BitVec 2)))
+    then HALF
+    else
+      if (BEq.beq b__0 (0b10 : (BitVec 2)))
+      then WORD
+      else DOUBLE
+
+def size_enc_forwards_matches (arg_ : word_width) : Bool :=
+  match arg_ with
+  | BYTE => true
+  | HALF => true
+  | WORD => true
+  | DOUBLE => true
+
+def size_enc_backwards_matches (arg_ : (BitVec 2)) : Bool :=
+  let b__0 := arg_
+  if (BEq.beq b__0 (0b00 : (BitVec 2)))
+  then true
+  else
+    if (BEq.beq b__0 (0b01 : (BitVec 2)))
+    then true
+    else
+      if (BEq.beq b__0 (0b10 : (BitVec 2)))
+      then true
+      else
+        if (BEq.beq b__0 (0b11 : (BitVec 2)))
+        then true
+        else false
+
+def size_mnemonic_backwards (arg_ : String) : SailM word_width := do
+  match arg_ with
+  | "b" => (pure BYTE)
+  | "h" => (pure HALF)
+  | "w" => (pure WORD)
+  | "d" => (pure DOUBLE)
+  | _ =>
+    assert false "Pattern match failure at unknown location"
+    throw Error.Exit
+
+def size_mnemonic_forwards_matches (arg_ : word_width) : Bool :=
+  match arg_ with
+  | BYTE => true
+  | HALF => true
+  | WORD => true
+  | DOUBLE => true
+
+def size_mnemonic_backwards_matches (arg_ : String) : Bool :=
+  match arg_ with
+  | "b" => true
+  | "h" => true
+  | "w" => true
+  | "d" => true
+  | _ => false
+
+def size_bytes_forwards (arg_ : word_width) : Int :=
+  match arg_ with
+  | BYTE => 1
+  | HALF => 2
+  | WORD => 4
+  | DOUBLE => 8
+
+/-- Type quantifiers: arg_ : Nat, arg_ ∈ {1, 2, 4, 8} -/
+def size_bytes_backwards (arg_ : Nat) : word_width :=
+  match arg_ with
+  | 1 => BYTE
+  | 2 => HALF
+  | 4 => WORD
+  | _ => DOUBLE
+
+def size_bytes_forwards_matches (arg_ : word_width) : Bool :=
+  match arg_ with
+  | BYTE => true
+  | HALF => true
+  | WORD => true
+  | DOUBLE => true
+
+/-- Type quantifiers: arg_ : Nat, arg_ ∈ {1, 2, 4, 8} -/
+def size_bytes_backwards_matches (arg_ : Nat) : Bool :=
+  match arg_ with
+  | 1 => true
+  | 2 => true
+  | 4 => true
+  | 8 => true
+  | _ => false
+
+def undefined_mul_op (_ : Unit) : SailM mul_op := do
+  (pure { high := (← (undefined_bool ()))
+          signed_rs1 := (← (undefined_bool ()))
+          signed_rs2 := (← (undefined_bool ())) })
+
