@@ -1,13 +1,27 @@
 #!/usr/bin/env python3
 
-f = open("LeanRV64DLEAN.lean")
-linesmodel = f.readlines()
+import os
 
-# The number of lines in the file
-linecountmodel = len(linesmodel)
-defcount = list(filter(lambda x: "def " in x, linesmodel))
-inductivecount = list(filter(lambda x: "inductive " in x, linesmodel))
-abbrevcount = list(filter(lambda x: "abbrev " in x, linesmodel))
+# Initialize counters for all .lean files
+total_lines = 0
+total_defs = 0
+total_inductives = 0
+total_abbrevs = 0
+
+# Traverse all directories starting from the current folder
+for root, dirs, files in os.walk("."):
+    for file in files:
+        if file.endswith(".lean"):
+            filepath = os.path.join(root, file)
+            try:
+                with open(filepath, 'r') as f:
+                    lines = f.readlines()
+                    total_lines += len(lines)
+                    total_defs += len(list(filter(lambda x: "def " in x, lines)))
+                    total_inductives += len(list(filter(lambda x: "inductive " in x, lines)))
+                    total_abbrevs += len(list(filter(lambda x: "abbrev " in x, lines)))
+            except Exception as e:
+                print(f"Error reading {filepath}: {e}")
 
 f = open("build_log.txt")
 lines = f.readlines()
@@ -29,10 +43,10 @@ errors.sort(reverse=True)
 
 print(f"# RISC-V Lean Statistics\n")
 
-print(f"Lines: {linecountmodel}  ")
-print(f"Definitions: {len(defcount)}  ")
-print(f"Inductive definitions: {len(inductivecount)}  ")
-print(f"Abbreviations: {len(abbrevcount)}  ")
+print(f"Lines: {total_lines}  ")
+print(f"Definitions: {total_defs}  ")
+print(f"Inductive definitions: {total_inductives}  ")
+print(f"Abbreviations: {total_abbrevs}  ")
 
 print("")
 print("# Warnings and Errors\n")
