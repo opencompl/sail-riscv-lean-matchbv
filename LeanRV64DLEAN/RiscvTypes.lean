@@ -2709,7 +2709,7 @@ def itype_mnemonic_forwards (arg_ : iop) : String :=
   | RISCV_ORI => "ori"
   | RISCV_ANDI => "andi"
 
-/-- Type quantifiers: k_ex297567# : Bool -/
+/-- Type quantifiers: k_ex308155# : Bool -/
 def maybe_aq_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".aq"
@@ -2753,13 +2753,13 @@ def maybe_ma_flag_backwards (arg_ : (BitVec 1)) : String :=
     then (String.append (sep_forwards ()) (String.append "ma" ""))
     else (String.append (sep_forwards ()) (String.append "mu" ""))
 
-/-- Type quantifiers: k_ex297578# : Bool -/
+/-- Type quantifiers: k_ex308166# : Bool -/
 def maybe_not_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | false => "u"
   | true => ""
 
-/-- Type quantifiers: k_ex297579# : Bool -/
+/-- Type quantifiers: k_ex308167# : Bool -/
 def maybe_rl_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".rl"
@@ -2774,7 +2774,7 @@ def maybe_ta_flag_backwards (arg_ : (BitVec 1)) : String :=
     then (String.append (sep_forwards ()) (String.append "ta" ""))
     else (String.append (sep_forwards ()) (String.append "tu" ""))
 
-/-- Type quantifiers: k_ex297582# : Bool -/
+/-- Type quantifiers: k_ex308170# : Bool -/
 def maybe_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => "u"
@@ -5778,6 +5778,135 @@ def assembly_forwards (arg_ : ast) : SailM String := do
             (String.append (opt_spc_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (opt_spc_forwards ()) (String.append ")" ""))))))))
+  | .VANDN_VV (vm, vs1, vs2, vd) =>
+    (pure (String.append "vandn.vv"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .VANDN_VX (vm, vs2, rs1, vd) =>
+    (pure (String.append "vandn.vx"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (reg_name_forwards rs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .VBREV_V (vm, vs2, vd) =>
+    (pure (String.append "vbrev.v"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
+  | .VBREV8_V (vm, vs2, vd) =>
+    (pure (String.append "vbrev8.v"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
+  | .VREV8_V (vm, vs2, vd) =>
+    (pure (String.append "vrev8.v"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
+  | .VCLZ_V (vm, vs2, vd) =>
+    (pure (String.append "vclz.v"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ()) (String.append (maybe_vmask_backwards vm) ""))))))))
+  | .VCTZ_V (vm, vs2, vd) =>
+    (pure (String.append "vctz.v"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ()) (String.append (maybe_vmask_backwards vm) ""))))))))
+  | .VCPOP_V (vm, vs2, vd) =>
+    (pure (String.append "vcpop.v"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ()) (String.append (maybe_vmask_backwards vm) ""))))))))
+  | .VROL_VV (vm, vs1, vs2, vd) =>
+    (pure (String.append "vrol.vv"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .VROL_VX (vm, vs2, rs1, vd) =>
+    (pure (String.append "vrol.vx"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (reg_name_forwards rs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .VROR_VV (vm, vs1, vs2, vd) =>
+    (pure (String.append "vror.vv"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .VROR_VX (vm, vs2, rs1, vd) =>
+    (pure (String.append "vror.vx"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (reg_name_forwards rs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .VROR_VI (vm, vs2, uimm, vd) =>
+    (pure (String.append "vror.vi"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (← (hex_bits_5_forwards uimm))
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .VWSLL_VV (vm, vs2, vs1, vd) =>
+    (pure (String.append "vwsll.vv"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs1)
+                    (String.append (sep_forwards ()) (String.append (maybe_vmask_backwards vm) ""))))))))))
+  | .VWSLL_VX (vm, vs2, rs1, vd) =>
+    (pure (String.append "vwsll.vx"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (reg_name_forwards rs1)
+                    (String.append (sep_forwards ()) (String.append (maybe_vmask_backwards vm) ""))))))))))
+  | .VWSLL_VI (vm, vs2, uimm, vd) =>
+    (pure (String.append "vwsll.vi"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (← (hex_bits_5_forwards uimm))
+                    (String.append (sep_forwards ()) (String.append (maybe_vmask_backwards vm) ""))))))))))
   | .ILLEGAL s =>
     (pure (String.append "illegal"
         (String.append (spc_forwards ()) (String.append (← (hex_bits_32_forwards s)) ""))))

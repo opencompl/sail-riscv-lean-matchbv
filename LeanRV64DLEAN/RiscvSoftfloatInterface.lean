@@ -164,381 +164,381 @@ open AccessType
 
 def riscv_f16Add (rm : (BitVec 3)) (v1 : (BitVec 16)) (v2 : (BitVec 16)) : SailM ((BitVec 5) × (BitVec 16)) := do
   let _ : Unit := (extern_f16Add rm v1 v2)
-  let t__4470 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4471 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
-  (pure (t__4470, t__4471))
+  let t__4534 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4535 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
+  (pure (t__4534, t__4535))
 
 def riscv_f16Sub (rm : (BitVec 3)) (v1 : (BitVec 16)) (v2 : (BitVec 16)) : SailM ((BitVec 5) × (BitVec 16)) := do
   let _ : Unit := (extern_f16Sub rm v1 v2)
-  let t__4468 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4469 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
-  (pure (t__4468, t__4469))
+  let t__4532 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4533 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
+  (pure (t__4532, t__4533))
 
 def riscv_f16Mul (rm : (BitVec 3)) (v1 : (BitVec 16)) (v2 : (BitVec 16)) : SailM ((BitVec 5) × (BitVec 16)) := do
   let _ : Unit := (extern_f16Mul rm v1 v2)
-  let t__4466 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4467 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
-  (pure (t__4466, t__4467))
+  let t__4530 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4531 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
+  (pure (t__4530, t__4531))
 
 def riscv_f16Div (rm : (BitVec 3)) (v1 : (BitVec 16)) (v2 : (BitVec 16)) : SailM ((BitVec 5) × (BitVec 16)) := do
   let _ : Unit := (extern_f16Div rm v1 v2)
-  let t__4464 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4465 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
-  (pure (t__4464, t__4465))
+  let t__4528 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4529 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
+  (pure (t__4528, t__4529))
 
 def riscv_f32Add (rm : (BitVec 3)) (v1 : (BitVec 32)) (v2 : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 32)) := do
   let _ : Unit := (extern_f32Add rm v1 v2)
-  let t__4462 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4463 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
-  (pure (t__4462, t__4463))
+  let t__4526 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4527 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
+  (pure (t__4526, t__4527))
 
 def riscv_f32Sub (rm : (BitVec 3)) (v1 : (BitVec 32)) (v2 : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 32)) := do
   let _ : Unit := (extern_f32Sub rm v1 v2)
-  let t__4460 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4461 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
-  (pure (t__4460, t__4461))
+  let t__4524 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4525 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
+  (pure (t__4524, t__4525))
 
 def riscv_f32Mul (rm : (BitVec 3)) (v1 : (BitVec 32)) (v2 : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 32)) := do
   let _ : Unit := (extern_f32Mul rm v1 v2)
-  let t__4458 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4459 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
-  (pure (t__4458, t__4459))
+  let t__4522 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4523 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
+  (pure (t__4522, t__4523))
 
 def riscv_f32Div (rm : (BitVec 3)) (v1 : (BitVec 32)) (v2 : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 32)) := do
   let _ : Unit := (extern_f32Div rm v1 v2)
-  let t__4456 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4457 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
-  (pure (t__4456, t__4457))
+  let t__4520 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4521 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
+  (pure (t__4520, t__4521))
 
 def riscv_f64Add (rm : (BitVec 3)) (v1 : (BitVec 64)) (v2 : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 64)) := do
   let _ : Unit := (extern_f64Add rm v1 v2)
-  let t__4454 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  (pure (t__4454, (← readReg float_result)))
+  let t__4518 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  (pure (t__4518, (← readReg float_result)))
 
 def riscv_f64Sub (rm : (BitVec 3)) (v1 : (BitVec 64)) (v2 : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 64)) := do
   let _ : Unit := (extern_f64Sub rm v1 v2)
-  let t__4452 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  (pure (t__4452, (← readReg float_result)))
+  let t__4516 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  (pure (t__4516, (← readReg float_result)))
 
 def riscv_f64Mul (rm : (BitVec 3)) (v1 : (BitVec 64)) (v2 : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 64)) := do
   let _ : Unit := (extern_f64Mul rm v1 v2)
-  let t__4450 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  (pure (t__4450, (← readReg float_result)))
+  let t__4514 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  (pure (t__4514, (← readReg float_result)))
 
 def riscv_f64Div (rm : (BitVec 3)) (v1 : (BitVec 64)) (v2 : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 64)) := do
   let _ : Unit := (extern_f64Div rm v1 v2)
-  let t__4448 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  (pure (t__4448, (← readReg float_result)))
+  let t__4512 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  (pure (t__4512, (← readReg float_result)))
 
 def riscv_f16MulAdd (rm : (BitVec 3)) (v1 : (BitVec 16)) (v2 : (BitVec 16)) (v3 : (BitVec 16)) : SailM ((BitVec 5) × (BitVec 16)) := do
   let _ : Unit := (extern_f16MulAdd rm v1 v2 v3)
-  let t__4446 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4447 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
-  (pure (t__4446, t__4447))
+  let t__4510 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4511 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
+  (pure (t__4510, t__4511))
 
 def riscv_f32MulAdd (rm : (BitVec 3)) (v1 : (BitVec 32)) (v2 : (BitVec 32)) (v3 : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 32)) := do
   let _ : Unit := (extern_f32MulAdd rm v1 v2 v3)
-  let t__4444 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4445 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
-  (pure (t__4444, t__4445))
+  let t__4508 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4509 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
+  (pure (t__4508, t__4509))
 
 def riscv_f64MulAdd (rm : (BitVec 3)) (v1 : (BitVec 64)) (v2 : (BitVec 64)) (v3 : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 64)) := do
   let _ : Unit := (extern_f64MulAdd rm v1 v2 v3)
-  let t__4442 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  (pure (t__4442, (← readReg float_result)))
+  let t__4506 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  (pure (t__4506, (← readReg float_result)))
 
 def riscv_f16Sqrt (rm : (BitVec 3)) (v : (BitVec 16)) : SailM ((BitVec 5) × (BitVec 16)) := do
   let _ : Unit := (extern_f16Sqrt rm v)
-  let t__4440 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4441 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
-  (pure (t__4440, t__4441))
+  let t__4504 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4505 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
+  (pure (t__4504, t__4505))
 
 def riscv_f32Sqrt (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 32)) := do
   let _ : Unit := (extern_f32Sqrt rm v)
-  let t__4438 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4439 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
-  (pure (t__4438, t__4439))
+  let t__4502 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4503 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
+  (pure (t__4502, t__4503))
 
 def riscv_f64Sqrt (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 64)) := do
   let _ : Unit := (extern_f64Sqrt rm v)
-  let t__4436 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  (pure (t__4436, (← readReg float_result)))
+  let t__4500 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  (pure (t__4500, (← readReg float_result)))
 
 def riscv_f16ToI32 (rm : (BitVec 3)) (v : (BitVec 16)) : SailM ((BitVec 5) × (BitVec 32)) := do
   let _ : Unit := (extern_f16ToI32 rm v)
-  let t__4434 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4435 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
-  (pure (t__4434, t__4435))
+  let t__4498 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4499 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
+  (pure (t__4498, t__4499))
 
 def riscv_f16ToUi32 (rm : (BitVec 3)) (v : (BitVec 16)) : SailM ((BitVec 5) × (BitVec 32)) := do
   let _ : Unit := (extern_f16ToUi32 rm v)
-  let t__4432 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4433 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
-  (pure (t__4432, t__4433))
+  let t__4496 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4497 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
+  (pure (t__4496, t__4497))
 
 def riscv_i32ToF16 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 16)) := do
   let _ : Unit := (extern_i32ToF16 rm v)
-  let t__4430 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4431 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
-  (pure (t__4430, t__4431))
+  let t__4494 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4495 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
+  (pure (t__4494, t__4495))
 
 def riscv_ui32ToF16 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 16)) := do
   let _ : Unit := (extern_ui32ToF16 rm v)
-  let t__4428 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4429 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
-  (pure (t__4428, t__4429))
+  let t__4492 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4493 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
+  (pure (t__4492, t__4493))
 
 def riscv_f16ToI64 (rm : (BitVec 3)) (v : (BitVec 16)) : SailM ((BitVec 5) × (BitVec 64)) := do
   let _ : Unit := (extern_f16ToI64 rm v)
-  let t__4426 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  (pure (t__4426, (← readReg float_result)))
+  let t__4490 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  (pure (t__4490, (← readReg float_result)))
 
 def riscv_f16ToUi64 (rm : (BitVec 3)) (v : (BitVec 16)) : SailM ((BitVec 5) × (BitVec 64)) := do
   let _ : Unit := (extern_f16ToUi64 rm v)
-  let t__4424 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  (pure (t__4424, (← readReg float_result)))
+  let t__4488 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  (pure (t__4488, (← readReg float_result)))
 
 def riscv_i64ToF16 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 16)) := do
   let _ : Unit := (extern_i64ToF16 rm v)
-  let t__4422 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4423 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
-  (pure (t__4422, t__4423))
+  let t__4486 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4487 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
+  (pure (t__4486, t__4487))
 
 def riscv_ui64ToF16 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 16)) := do
   let _ : Unit := (extern_ui64ToF16 rm v)
-  let t__4420 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4421 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
-  (pure (t__4420, t__4421))
+  let t__4484 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4485 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
+  (pure (t__4484, t__4485))
 
 def riscv_f32ToI32 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 32)) := do
   let _ : Unit := (extern_f32ToI32 rm v)
-  let t__4418 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4419 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
-  (pure (t__4418, t__4419))
+  let t__4482 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4483 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
+  (pure (t__4482, t__4483))
 
 def riscv_f32ToUi32 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 32)) := do
   let _ : Unit := (extern_f32ToUi32 rm v)
-  let t__4416 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4417 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
-  (pure (t__4416, t__4417))
+  let t__4480 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4481 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
+  (pure (t__4480, t__4481))
 
 def riscv_i32ToF32 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 32)) := do
   let _ : Unit := (extern_i32ToF32 rm v)
-  let t__4414 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4415 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
-  (pure (t__4414, t__4415))
+  let t__4478 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4479 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
+  (pure (t__4478, t__4479))
 
 def riscv_ui32ToF32 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 32)) := do
   let _ : Unit := (extern_ui32ToF32 rm v)
-  let t__4412 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4413 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
-  (pure (t__4412, t__4413))
+  let t__4476 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4477 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
+  (pure (t__4476, t__4477))
 
 def riscv_f32ToI64 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 64)) := do
   let _ : Unit := (extern_f32ToI64 rm v)
-  let t__4410 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  (pure (t__4410, (← readReg float_result)))
+  let t__4474 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  (pure (t__4474, (← readReg float_result)))
 
 def riscv_f32ToUi64 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 64)) := do
   let _ : Unit := (extern_f32ToUi64 rm v)
-  let t__4408 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  (pure (t__4408, (← readReg float_result)))
+  let t__4472 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  (pure (t__4472, (← readReg float_result)))
 
 def riscv_i64ToF32 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 32)) := do
   let _ : Unit := (extern_i64ToF32 rm v)
+  let t__4470 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4471 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
+  (pure (t__4470, t__4471))
+
+def riscv_ui64ToF32 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 32)) := do
+  let _ : Unit := (extern_ui64ToF32 rm v)
+  let t__4468 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4469 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
+  (pure (t__4468, t__4469))
+
+def riscv_f64ToI32 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 32)) := do
+  let _ : Unit := (extern_f64ToI32 rm v)
+  let t__4466 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4467 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
+  (pure (t__4466, t__4467))
+
+def riscv_f64ToUi32 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 32)) := do
+  let _ : Unit := (extern_f64ToUi32 rm v)
+  let t__4464 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4465 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
+  (pure (t__4464, t__4465))
+
+def riscv_i32ToF64 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 64)) := do
+  let _ : Unit := (extern_i32ToF64 rm v)
+  let t__4462 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  (pure (t__4462, (← readReg float_result)))
+
+def riscv_ui32ToF64 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 64)) := do
+  let _ : Unit := (extern_ui32ToF64 rm v)
+  let t__4460 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  (pure (t__4460, (← readReg float_result)))
+
+def riscv_f64ToI64 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 64)) := do
+  let _ : Unit := (extern_f64ToI64 rm v)
+  let t__4458 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  (pure (t__4458, (← readReg float_result)))
+
+def riscv_f64ToUi64 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 64)) := do
+  let _ : Unit := (extern_f64ToUi64 rm v)
+  let t__4456 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  (pure (t__4456, (← readReg float_result)))
+
+def riscv_i64ToF64 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 64)) := do
+  let _ : Unit := (extern_i64ToF64 rm v)
+  let t__4454 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  (pure (t__4454, (← readReg float_result)))
+
+def riscv_ui64ToF64 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 64)) := do
+  let _ : Unit := (extern_ui64ToF64 rm v)
+  let t__4452 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  (pure (t__4452, (← readReg float_result)))
+
+def riscv_f16ToF32 (rm : (BitVec 3)) (v : (BitVec 16)) : SailM ((BitVec 5) × (BitVec 32)) := do
+  let _ : Unit := (extern_f16ToF32 rm v)
+  let t__4450 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4451 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
+  (pure (t__4450, t__4451))
+
+def riscv_f16ToF64 (rm : (BitVec 3)) (v : (BitVec 16)) : SailM ((BitVec 5) × (BitVec 64)) := do
+  let _ : Unit := (extern_f16ToF64 rm v)
+  let t__4448 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  (pure (t__4448, (← readReg float_result)))
+
+def riscv_f32ToF64 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 64)) := do
+  let _ : Unit := (extern_f32ToF64 rm v)
+  let t__4446 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  (pure (t__4446, (← readReg float_result)))
+
+def riscv_f32ToF16 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 16)) := do
+  let _ : Unit := (extern_f32ToF16 rm v)
+  let t__4444 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4445 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
+  (pure (t__4444, t__4445))
+
+def riscv_f64ToF16 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 16)) := do
+  let _ : Unit := (extern_f64ToF16 rm v)
+  let t__4442 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4443 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
+  (pure (t__4442, t__4443))
+
+def riscv_f64ToF32 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 32)) := do
+  let _ : Unit := (extern_f64ToF32 rm v)
+  let t__4440 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4441 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
+  (pure (t__4440, t__4441))
+
+def riscv_f16Lt (v1 : (BitVec 16)) (v2 : (BitVec 16)) : SailM ((BitVec 5) × Bool) := do
+  let _ : Unit := (extern_f16Lt v1 v2)
+  let t__4438 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4439 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
+  (pure (t__4438, t__4439))
+
+def riscv_f16Lt_quiet (v1 : (BitVec 16)) (v2 : (BitVec 16)) : SailM ((BitVec 5) × Bool) := do
+  let _ : Unit := (extern_f16Lt_quiet v1 v2)
+  let t__4436 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4437 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
+  (pure (t__4436, t__4437))
+
+def riscv_f16Le (v1 : (BitVec 16)) (v2 : (BitVec 16)) : SailM ((BitVec 5) × Bool) := do
+  let _ : Unit := (extern_f16Le v1 v2)
+  let t__4434 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4435 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
+  (pure (t__4434, t__4435))
+
+def riscv_f16Le_quiet (v1 : (BitVec 16)) (v2 : (BitVec 16)) : SailM ((BitVec 5) × Bool) := do
+  let _ : Unit := (extern_f16Le_quiet v1 v2)
+  let t__4432 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4433 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
+  (pure (t__4432, t__4433))
+
+def riscv_f16Eq (v1 : (BitVec 16)) (v2 : (BitVec 16)) : SailM ((BitVec 5) × Bool) := do
+  let _ : Unit := (extern_f16Eq v1 v2)
+  let t__4430 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4431 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
+  (pure (t__4430, t__4431))
+
+def riscv_f32Lt (v1 : (BitVec 32)) (v2 : (BitVec 32)) : SailM ((BitVec 5) × Bool) := do
+  let _ : Unit := (extern_f32Lt v1 v2)
+  let t__4428 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4429 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
+  (pure (t__4428, t__4429))
+
+def riscv_f32Lt_quiet (v1 : (BitVec 32)) (v2 : (BitVec 32)) : SailM ((BitVec 5) × Bool) := do
+  let _ : Unit := (extern_f32Lt_quiet v1 v2)
+  let t__4426 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4427 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
+  (pure (t__4426, t__4427))
+
+def riscv_f32Le (v1 : (BitVec 32)) (v2 : (BitVec 32)) : SailM ((BitVec 5) × Bool) := do
+  let _ : Unit := (extern_f32Le v1 v2)
+  let t__4424 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4425 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
+  (pure (t__4424, t__4425))
+
+def riscv_f32Le_quiet (v1 : (BitVec 32)) (v2 : (BitVec 32)) : SailM ((BitVec 5) × Bool) := do
+  let _ : Unit := (extern_f32Le_quiet v1 v2)
+  let t__4422 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4423 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
+  (pure (t__4422, t__4423))
+
+def riscv_f32Eq (v1 : (BitVec 32)) (v2 : (BitVec 32)) : SailM ((BitVec 5) × Bool) := do
+  let _ : Unit := (extern_f32Eq v1 v2)
+  let t__4420 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4421 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
+  (pure (t__4420, t__4421))
+
+def riscv_f64Lt (v1 : (BitVec 64)) (v2 : (BitVec 64)) : SailM ((BitVec 5) × Bool) := do
+  let _ : Unit := (extern_f64Lt v1 v2)
+  let t__4418 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4419 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
+  (pure (t__4418, t__4419))
+
+def riscv_f64Lt_quiet (v1 : (BitVec 64)) (v2 : (BitVec 64)) : SailM ((BitVec 5) × Bool) := do
+  let _ : Unit := (extern_f64Lt_quiet v1 v2)
+  let t__4416 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4417 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
+  (pure (t__4416, t__4417))
+
+def riscv_f64Le (v1 : (BitVec 64)) (v2 : (BitVec 64)) : SailM ((BitVec 5) × Bool) := do
+  let _ : Unit := (extern_f64Le v1 v2)
+  let t__4414 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4415 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
+  (pure (t__4414, t__4415))
+
+def riscv_f64Le_quiet (v1 : (BitVec 64)) (v2 : (BitVec 64)) : SailM ((BitVec 5) × Bool) := do
+  let _ : Unit := (extern_f64Le_quiet v1 v2)
+  let t__4412 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4413 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
+  (pure (t__4412, t__4413))
+
+def riscv_f64Eq (v1 : (BitVec 64)) (v2 : (BitVec 64)) : SailM ((BitVec 5) × Bool) := do
+  let _ : Unit := (extern_f64Eq v1 v2)
+  let t__4410 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4411 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
+  (pure (t__4410, t__4411))
+
+/-- Type quantifiers: k_ex310466# : Bool -/
+def riscv_f16roundToInt (rm : (BitVec 3)) (v : (BitVec 16)) (exact : Bool) : SailM ((BitVec 5) × (BitVec 16)) := do
+  let _ : Unit := (extern_f16roundToInt rm v exact)
+  let t__4408 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  let t__4409 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
+  (pure (t__4408, t__4409))
+
+/-- Type quantifiers: k_ex310470# : Bool -/
+def riscv_f32roundToInt (rm : (BitVec 3)) (v : (BitVec 32)) (exact : Bool) : SailM ((BitVec 5) × (BitVec 32)) := do
+  let _ : Unit := (extern_f32roundToInt rm v exact)
   let t__4406 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
   let t__4407 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
   (pure (t__4406, t__4407))
 
-def riscv_ui64ToF32 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 32)) := do
-  let _ : Unit := (extern_ui64ToF32 rm v)
-  let t__4404 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4405 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
-  (pure (t__4404, t__4405))
-
-def riscv_f64ToI32 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 32)) := do
-  let _ : Unit := (extern_f64ToI32 rm v)
-  let t__4402 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4403 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
-  (pure (t__4402, t__4403))
-
-def riscv_f64ToUi32 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 32)) := do
-  let _ : Unit := (extern_f64ToUi32 rm v)
-  let t__4400 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4401 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
-  (pure (t__4400, t__4401))
-
-def riscv_i32ToF64 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 64)) := do
-  let _ : Unit := (extern_i32ToF64 rm v)
-  let t__4398 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  (pure (t__4398, (← readReg float_result)))
-
-def riscv_ui32ToF64 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 64)) := do
-  let _ : Unit := (extern_ui32ToF64 rm v)
-  let t__4396 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  (pure (t__4396, (← readReg float_result)))
-
-def riscv_f64ToI64 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 64)) := do
-  let _ : Unit := (extern_f64ToI64 rm v)
-  let t__4394 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  (pure (t__4394, (← readReg float_result)))
-
-def riscv_f64ToUi64 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 64)) := do
-  let _ : Unit := (extern_f64ToUi64 rm v)
-  let t__4392 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  (pure (t__4392, (← readReg float_result)))
-
-def riscv_i64ToF64 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 64)) := do
-  let _ : Unit := (extern_i64ToF64 rm v)
-  let t__4390 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  (pure (t__4390, (← readReg float_result)))
-
-def riscv_ui64ToF64 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 64)) := do
-  let _ : Unit := (extern_ui64ToF64 rm v)
-  let t__4388 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  (pure (t__4388, (← readReg float_result)))
-
-def riscv_f16ToF32 (rm : (BitVec 3)) (v : (BitVec 16)) : SailM ((BitVec 5) × (BitVec 32)) := do
-  let _ : Unit := (extern_f16ToF32 rm v)
-  let t__4386 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4387 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
-  (pure (t__4386, t__4387))
-
-def riscv_f16ToF64 (rm : (BitVec 3)) (v : (BitVec 16)) : SailM ((BitVec 5) × (BitVec 64)) := do
-  let _ : Unit := (extern_f16ToF64 rm v)
-  let t__4384 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  (pure (t__4384, (← readReg float_result)))
-
-def riscv_f32ToF64 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 64)) := do
-  let _ : Unit := (extern_f32ToF64 rm v)
-  let t__4382 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  (pure (t__4382, (← readReg float_result)))
-
-def riscv_f32ToF16 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 16)) := do
-  let _ : Unit := (extern_f32ToF16 rm v)
-  let t__4380 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4381 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
-  (pure (t__4380, t__4381))
-
-def riscv_f64ToF16 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 16)) := do
-  let _ : Unit := (extern_f64ToF16 rm v)
-  let t__4378 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4379 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
-  (pure (t__4378, t__4379))
-
-def riscv_f64ToF32 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 32)) := do
-  let _ : Unit := (extern_f64ToF32 rm v)
-  let t__4376 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4377 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
-  (pure (t__4376, t__4377))
-
-def riscv_f16Lt (v1 : (BitVec 16)) (v2 : (BitVec 16)) : SailM ((BitVec 5) × Bool) := do
-  let _ : Unit := (extern_f16Lt v1 v2)
-  let t__4374 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4375 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
-  (pure (t__4374, t__4375))
-
-def riscv_f16Lt_quiet (v1 : (BitVec 16)) (v2 : (BitVec 16)) : SailM ((BitVec 5) × Bool) := do
-  let _ : Unit := (extern_f16Lt_quiet v1 v2)
-  let t__4372 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4373 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
-  (pure (t__4372, t__4373))
-
-def riscv_f16Le (v1 : (BitVec 16)) (v2 : (BitVec 16)) : SailM ((BitVec 5) × Bool) := do
-  let _ : Unit := (extern_f16Le v1 v2)
-  let t__4370 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4371 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
-  (pure (t__4370, t__4371))
-
-def riscv_f16Le_quiet (v1 : (BitVec 16)) (v2 : (BitVec 16)) : SailM ((BitVec 5) × Bool) := do
-  let _ : Unit := (extern_f16Le_quiet v1 v2)
-  let t__4368 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4369 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
-  (pure (t__4368, t__4369))
-
-def riscv_f16Eq (v1 : (BitVec 16)) (v2 : (BitVec 16)) : SailM ((BitVec 5) × Bool) := do
-  let _ : Unit := (extern_f16Eq v1 v2)
-  let t__4366 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4367 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
-  (pure (t__4366, t__4367))
-
-def riscv_f32Lt (v1 : (BitVec 32)) (v2 : (BitVec 32)) : SailM ((BitVec 5) × Bool) := do
-  let _ : Unit := (extern_f32Lt v1 v2)
-  let t__4364 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4365 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
-  (pure (t__4364, t__4365))
-
-def riscv_f32Lt_quiet (v1 : (BitVec 32)) (v2 : (BitVec 32)) : SailM ((BitVec 5) × Bool) := do
-  let _ : Unit := (extern_f32Lt_quiet v1 v2)
-  let t__4362 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4363 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
-  (pure (t__4362, t__4363))
-
-def riscv_f32Le (v1 : (BitVec 32)) (v2 : (BitVec 32)) : SailM ((BitVec 5) × Bool) := do
-  let _ : Unit := (extern_f32Le v1 v2)
-  let t__4360 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4361 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
-  (pure (t__4360, t__4361))
-
-def riscv_f32Le_quiet (v1 : (BitVec 32)) (v2 : (BitVec 32)) : SailM ((BitVec 5) × Bool) := do
-  let _ : Unit := (extern_f32Le_quiet v1 v2)
-  let t__4358 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4359 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
-  (pure (t__4358, t__4359))
-
-def riscv_f32Eq (v1 : (BitVec 32)) (v2 : (BitVec 32)) : SailM ((BitVec 5) × Bool) := do
-  let _ : Unit := (extern_f32Eq v1 v2)
-  let t__4356 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4357 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
-  (pure (t__4356, t__4357))
-
-def riscv_f64Lt (v1 : (BitVec 64)) (v2 : (BitVec 64)) : SailM ((BitVec 5) × Bool) := do
-  let _ : Unit := (extern_f64Lt v1 v2)
-  let t__4354 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4355 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
-  (pure (t__4354, t__4355))
-
-def riscv_f64Lt_quiet (v1 : (BitVec 64)) (v2 : (BitVec 64)) : SailM ((BitVec 5) × Bool) := do
-  let _ : Unit := (extern_f64Lt_quiet v1 v2)
-  let t__4352 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4353 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
-  (pure (t__4352, t__4353))
-
-def riscv_f64Le (v1 : (BitVec 64)) (v2 : (BitVec 64)) : SailM ((BitVec 5) × Bool) := do
-  let _ : Unit := (extern_f64Le v1 v2)
-  let t__4350 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4351 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
-  (pure (t__4350, t__4351))
-
-def riscv_f64Le_quiet (v1 : (BitVec 64)) (v2 : (BitVec 64)) : SailM ((BitVec 5) × Bool) := do
-  let _ : Unit := (extern_f64Le_quiet v1 v2)
-  let t__4348 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4349 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
-  (pure (t__4348, t__4349))
-
-def riscv_f64Eq (v1 : (BitVec 64)) (v2 : (BitVec 64)) : SailM ((BitVec 5) × Bool) := do
-  let _ : Unit := (extern_f64Eq v1 v2)
-  let t__4346 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4347 ← do (bit_to_bool (BitVec.access (← readReg float_result) 0))
-  (pure (t__4346, t__4347))
-
-/-- Type quantifiers: k_ex299816# : Bool -/
-def riscv_f16roundToInt (rm : (BitVec 3)) (v : (BitVec 16)) (exact : Bool) : SailM ((BitVec 5) × (BitVec 16)) := do
-  let _ : Unit := (extern_f16roundToInt rm v exact)
-  let t__4344 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4345 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 15 0))
-  (pure (t__4344, t__4345))
-
-/-- Type quantifiers: k_ex299820# : Bool -/
-def riscv_f32roundToInt (rm : (BitVec 3)) (v : (BitVec 32)) (exact : Bool) : SailM ((BitVec 5) × (BitVec 32)) := do
-  let _ : Unit := (extern_f32roundToInt rm v exact)
-  let t__4342 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  let t__4343 ← do (pure (Sail.BitVec.extractLsb (← readReg float_result) 31 0))
-  (pure (t__4342, t__4343))
-
-/-- Type quantifiers: k_ex299824# : Bool -/
+/-- Type quantifiers: k_ex310474# : Bool -/
 def riscv_f64roundToInt (rm : (BitVec 3)) (v : (BitVec 64)) (exact : Bool) : SailM ((BitVec 5) × (BitVec 64)) := do
   let _ : Unit := (extern_f64roundToInt rm v exact)
-  let t__4340 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
-  (pure (t__4340, (← readReg float_result)))
+  let t__4404 ← do (pure (Sail.BitVec.extractLsb (← readReg float_fflags) 4 0))
+  (pure (t__4404, (← readReg float_result)))
 

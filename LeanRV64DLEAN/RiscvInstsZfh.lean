@@ -163,10 +163,10 @@ open Architecture
 open AccessType
 
 def fsplit_H (xf16 : (BitVec 16)) : ((BitVec 1) × (BitVec 5) × (BitVec 10)) :=
-  let t__3820 := (Sail.BitVec.extractLsb xf16 15 15)
-  let t__3821 := (Sail.BitVec.extractLsb xf16 14 10)
-  let t__3822 := (Sail.BitVec.extractLsb xf16 9 0)
-  (t__3820, t__3821, t__3822)
+  let t__3884 := (Sail.BitVec.extractLsb xf16 15 15)
+  let t__3885 := (Sail.BitVec.extractLsb xf16 14 10)
+  let t__3886 := (Sail.BitVec.extractLsb xf16 9 0)
+  (t__3884, t__3885, t__3886)
 
 def fmake_H (sign : (BitVec 1)) (exp : (BitVec 5)) (mant : (BitVec 10)) : (BitVec 16) :=
   (sign ++ (exp ++ mant))
@@ -232,7 +232,7 @@ def f_is_NaN_H (xf16 : (BitVec 16)) : Bool :=
   let (sign, exp, mant) := (fsplit_H xf16)
   (Bool.and (BEq.beq exp (ones (n := 5))) (bne mant (zeros_implicit (n := 10))))
 
-/-- Type quantifiers: k_ex303700# : Bool -/
+/-- Type quantifiers: k_ex314350# : Bool -/
 def fle_H (v1 : (BitVec 16)) (v2 : (BitVec 16)) (is_quiet : Bool) : (Bool × (BitVec 5)) :=
   let (s1, e1, m1) := (fsplit_H v1)
   let (s2, e2, m2) := (fsplit_H v2)

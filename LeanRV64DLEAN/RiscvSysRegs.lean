@@ -912,6 +912,8 @@ def extensionEnabled (merge_var : extension) : SailM Bool := do
   | Ext_Zicond => (pure true)
   | Ext_Zicbom => (pure (sys_enable_zicbom ()))
   | Ext_Zicboz => (pure (sys_enable_zicboz ()))
+  | Ext_Zvbb => (pure true)
+  | Ext_Zvkb => (pure (Bool.or (sys_enable_zvkb ()) (← (extensionEnabled Ext_Zvbb))))
 
 def lowest_supported_privLevel (_ : Unit) : SailM Privilege := do
   if (← (extensionEnabled Ext_U))
@@ -2268,7 +2270,7 @@ def get_sew (_ : Unit) : SailM Int := do
   | 5 => (pure 32)
   | 6 => (pure 64)
   | _ =>
-    (internal_error "riscv_sys_regs.sail" 978 "invalid SEW")
+    (internal_error "riscv_sys_regs.sail" 981 "invalid SEW")
     (pure 8)
 
 def get_sew_bytes (_ : Unit) : SailM Int := do
@@ -2278,7 +2280,7 @@ def get_sew_bytes (_ : Unit) : SailM Int := do
   | 5 => (pure 4)
   | 6 => (pure 8)
   | _ =>
-    (internal_error "riscv_sys_regs.sail" 989 "invalid SEW")
+    (internal_error "riscv_sys_regs.sail" 992 "invalid SEW")
     (pure 1)
 
 def get_lmul_pow (_ : Unit) : SailM Int := do
