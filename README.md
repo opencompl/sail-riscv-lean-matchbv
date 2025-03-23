@@ -8,18 +8,17 @@ is still work-in-progress. As a result, our semantics are still full of warnings
 and errors. Similarly, our output is not yet polished for readability.
 # RISC-V Lean Statistics
 
-Lines: 125542  
+Lines: 125543  
 Definitions: 3471  
 Inductive definitions: 157  
 Abbreviations: 127  
 
 # Warnings and Errors
 
-Errors found: 3  
+Errors found: 2  
 Warnings found: 0  
 
 ## Error Classes
 
 - 1x unsolved goals
-- 1x unknown identifier 'sys_enable_zvkb'
 - 1x Lean exited with code 1
