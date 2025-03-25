@@ -2709,7 +2709,7 @@ def itype_mnemonic_forwards (arg_ : iop) : String :=
   | RISCV_ORI => "ori"
   | RISCV_ANDI => "andi"
 
-/-- Type quantifiers: k_ex308243# : Bool -/
+/-- Type quantifiers: k_ex307667# : Bool -/
 def maybe_aq_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".aq"
@@ -2753,13 +2753,13 @@ def maybe_ma_flag_backwards (arg_ : (BitVec 1)) : String :=
     then (String.append (sep_forwards ()) (String.append "ma" ""))
     else (String.append (sep_forwards ()) (String.append "mu" ""))
 
-/-- Type quantifiers: k_ex308254# : Bool -/
+/-- Type quantifiers: k_ex307678# : Bool -/
 def maybe_not_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | false => "u"
   | true => ""
 
-/-- Type quantifiers: k_ex308255# : Bool -/
+/-- Type quantifiers: k_ex307679# : Bool -/
 def maybe_rl_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".rl"
@@ -2774,7 +2774,7 @@ def maybe_ta_flag_backwards (arg_ : (BitVec 1)) : String :=
     then (String.append (sep_forwards ()) (String.append "ta" ""))
     else (String.append (sep_forwards ()) (String.append "tu" ""))
 
-/-- Type quantifiers: k_ex308258# : Bool -/
+/-- Type quantifiers: k_ex307682# : Bool -/
 def maybe_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => "u"

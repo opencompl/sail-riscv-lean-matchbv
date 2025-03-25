@@ -1413,7 +1413,7 @@ def write_CSR (b__0 : (BitVec 12)) (value : (BitVec (2 ^ 3 * 8))) : SailM (BitVe
                                                                                                                             (BitVec.toFormatted
                                                                                                                               b__0)))
 
-/-- Type quantifiers: k_ex314796# : Bool -/
+/-- Type quantifiers: k_ex314220# : Bool -/
 def doCSR (csr : (BitVec 12)) (rs1_val : (BitVec (2 ^ 3 * 8))) (rd : regidx) (op : csrop) (is_CSR_Write : Bool) : SailM Retired := do
   if (not (← (check_CSR csr (← readReg cur_privilege) is_CSR_Write)))
   then
