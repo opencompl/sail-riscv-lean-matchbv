@@ -2709,7 +2709,7 @@ def itype_mnemonic_forwards (arg_ : iop) : String :=
   | RISCV_ORI => "ori"
   | RISCV_ANDI => "andi"
 
-/-- Type quantifiers: k_ex308155# : Bool -/
+/-- Type quantifiers: k_ex308243# : Bool -/
 def maybe_aq_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".aq"
@@ -2753,13 +2753,13 @@ def maybe_ma_flag_backwards (arg_ : (BitVec 1)) : String :=
     then (String.append (sep_forwards ()) (String.append "ma" ""))
     else (String.append (sep_forwards ()) (String.append "mu" ""))
 
-/-- Type quantifiers: k_ex308166# : Bool -/
+/-- Type quantifiers: k_ex308254# : Bool -/
 def maybe_not_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | false => "u"
   | true => ""
 
-/-- Type quantifiers: k_ex308167# : Bool -/
+/-- Type quantifiers: k_ex308255# : Bool -/
 def maybe_rl_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".rl"
@@ -2774,7 +2774,7 @@ def maybe_ta_flag_backwards (arg_ : (BitVec 1)) : String :=
     then (String.append (sep_forwards ()) (String.append "ta" ""))
     else (String.append (sep_forwards ()) (String.append "tu" ""))
 
-/-- Type quantifiers: k_ex308170# : Bool -/
+/-- Type quantifiers: k_ex308258# : Bool -/
 def maybe_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => "u"
@@ -3949,7 +3949,7 @@ def assembly_forwards (arg_ : ast) : SailM String := do
     else
       assert false "Pattern match failure at unknown location"
       throw Error.Exit
-  | .CSR (csr, .Regidx rs1_bits, rd, true, op) =>
+  | .CSRImm (csr, imm, rd, op) =>
     (pure (String.append (csr_mnemonic_forwards op)
         (String.append "i"
           (String.append (spc_forwards ())
@@ -3957,8 +3957,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
               (String.append (sep_forwards ())
                 (String.append (← (csr_name_map_forwards csr))
                   (String.append (sep_forwards ())
-                    (String.append (← (hex_bits_5_forwards rs1_bits)) "")))))))))
-  | .CSR (csr, rs1, rd, false, op) =>
+                    (String.append (← (hex_bits_5_forwards imm)) "")))))))))
+  | .CSRReg (csr, rs1, rd, op) =>
     (pure (String.append (csr_mnemonic_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)

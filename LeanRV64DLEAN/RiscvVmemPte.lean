@@ -217,7 +217,7 @@ def pte_is_invalid (pte_flags : (BitVec 8)) (pte_ext : (BitVec 10)) : SailM Bool
               (not (← (extensionEnabled Ext_Svpbmt))))
             (bne (_get_PTE_Ext_reserved pte_ext) (zeros_implicit (n := 7))))))))
 
-/-- Type quantifiers: k_ex312356# : Bool, k_ex312355# : Bool -/
+/-- Type quantifiers: k_ex312444# : Bool, k_ex312443# : Bool -/
 def check_PTE_permission (ac : (AccessType Unit)) (priv : Privilege) (mxr : Bool) (do_sum : Bool) (pte_flags : (BitVec 8)) (ext : (BitVec 10)) (ext_ptw : Unit) : SailM PTE_Check := do
   let pte_U := (_get_PTE_Flags_U pte_flags)
   let pte_R := (_get_PTE_Flags_R pte_flags)

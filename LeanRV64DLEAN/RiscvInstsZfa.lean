@@ -175,33 +175,33 @@ def fcvtmod_helper (x64 : (BitVec 64)) : ((BitVec 5) × (BitVec 32)) :=
   let is_too_small := (true_exp <b 0)
   if is_zero
   then
-    let t__3849 := (zeros_implicit (n := 5))
-    let t__3850 := (zeros_implicit (n := 32))
-    (t__3849, t__3850)
+    let t__3717 := (zeros_implicit (n := 5))
+    let t__3718 := (zeros_implicit (n := 32))
+    (t__3717, t__3718)
   else
     if is_subnorm
     then
-      let t__3847 := (nxFlag ())
-      let t__3848 := (zeros_implicit (n := 32))
-      (t__3847, t__3848)
+      let t__3715 := (nxFlag ())
+      let t__3716 := (zeros_implicit (n := 32))
+      (t__3715, t__3716)
     else
       if is_nan_or_inf
       then
-        let t__3845 := (nvFlag ())
-        let t__3846 := (zeros_implicit (n := 32))
-        (t__3845, t__3846)
+        let t__3713 := (nvFlag ())
+        let t__3714 := (zeros_implicit (n := 32))
+        (t__3713, t__3714)
       else
         if is_too_large
         then
-          let t__3843 := (nvFlag ())
-          let t__3844 := (zeros_implicit (n := 32))
-          (t__3843, t__3844)
+          let t__3711 := (nvFlag ())
+          let t__3712 := (zeros_implicit (n := 32))
+          (t__3711, t__3712)
         else
           if is_too_small
           then
-            let t__3841 := (nxFlag ())
-            let t__3842 := (zeros_implicit (n := 32))
-            (t__3841, t__3842)
+            let t__3709 := (nxFlag ())
+            let t__3710 := (zeros_implicit (n := 32))
+            (t__3709, t__3710)
           else
             let fixedpoint : (BitVec 84) := (shiftl (zero_extend (m := 84) true_mant) true_exp)
             let integer := (Sail.BitVec.extractLsb fixedpoint 83 52)

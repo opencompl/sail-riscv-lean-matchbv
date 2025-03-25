@@ -163,10 +163,10 @@ open Architecture
 open AccessType
 
 def fsplit_D (x64 : (BitVec 64)) : ((BitVec 1) × (BitVec 11) × (BitVec 52)) :=
-  let t__3947 := (Sail.BitVec.extractLsb x64 63 63)
-  let t__3948 := (Sail.BitVec.extractLsb x64 62 52)
-  let t__3949 := (Sail.BitVec.extractLsb x64 51 0)
-  (t__3947, t__3948, t__3949)
+  let t__3815 := (Sail.BitVec.extractLsb x64 63 63)
+  let t__3816 := (Sail.BitVec.extractLsb x64 62 52)
+  let t__3817 := (Sail.BitVec.extractLsb x64 51 0)
+  (t__3815, t__3816, t__3817)
 
 def fmake_D (sign : (BitVec 1)) (exp : (BitVec 11)) (mant : (BitVec 52)) : (BitVec 64) :=
   (sign ++ (exp ++ mant))
@@ -244,7 +244,7 @@ def feq_quiet_D (v1 : (BitVec 64)) (v2 : (BitVec 64)) : (Bool × (BitVec 5)) :=
     else (zeros_implicit (n := 5))
   (result, fflags)
 
-/-- Type quantifiers: k_ex314105# : Bool -/
+/-- Type quantifiers: k_ex315184# : Bool -/
 def flt_D (v1 : (BitVec 64)) (v2 : (BitVec 64)) (is_quiet : Bool) : (Bool × (BitVec 5)) :=
   let (s1, e1, m1) := (fsplit_D v1)
   let (s2, e2, m2) := (fsplit_D v2)
@@ -276,7 +276,7 @@ def flt_D (v1 : (BitVec 64)) (v2 : (BitVec 64)) (is_quiet : Bool) : (Bool × (Bi
       else (zeros_implicit (n := 5))
   (result, fflags)
 
-/-- Type quantifiers: k_ex314173# : Bool -/
+/-- Type quantifiers: k_ex315252# : Bool -/
 def fle_D (v1 : (BitVec 64)) (v2 : (BitVec 64)) (is_quiet : Bool) : (Bool × (BitVec 5)) :=
   let (s1, e1, m1) := (fsplit_D v1)
   let (s2, e2, m2) := (fsplit_D v2)
