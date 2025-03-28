@@ -683,7 +683,7 @@ def process_vsseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (load_width_bytes
                     match (← (mem_write_value paddr load_width_bytes elem_val false false false)) with
                     | .Ok true => (pure ())
                     | .Ok false =>
-                      (internal_error "riscv_insts_vext_mem.sail" 272
+                      (internal_error "riscv_insts_vext_mem.sail" 275
                         "store got false from mem_write_value")
                     | .Err e =>
                       throw (← do
@@ -830,7 +830,7 @@ def process_vssseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (load_width_byte
                     match (← (mem_write_value paddr load_width_bytes elem_val false false false)) with
                     | .Ok true => (pure ())
                     | .Ok false =>
-                      (internal_error "riscv_insts_vext_mem.sail" 411
+                      (internal_error "riscv_insts_vext_mem.sail" 416
                         "store got false from mem_write_value")
                     | .Err e =>
                       throw (← do
@@ -982,7 +982,7 @@ def process_vsxseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (EEW_index_bytes
                     match (← (mem_write_value paddr EEW_data_bytes elem_val false false false)) with
                     | .Ok true => (pure ())
                     | .Ok false =>
-                      (internal_error "riscv_insts_vext_mem.sail" 578
+                      (internal_error "riscv_insts_vext_mem.sail" 586
                         "store got false from mem_write_value")
                     | .Err e =>
                       throw (← do
@@ -1149,7 +1149,7 @@ def process_vsre (nf : Nat) (load_width_bytes : Nat) (rs1 : regidx) (vs3 : vregi
                       match (← (mem_write_value paddr load_width_bytes elem false false false)) with
                       | .Ok true => (pure ())
                       | .Ok false =>
-                        (internal_error "riscv_insts_vext_mem.sail" 754
+                        (internal_error "riscv_insts_vext_mem.sail" 765
                           "store got false from mem_write_value")
                       | .Err e =>
                         throw (← do
@@ -1206,7 +1206,7 @@ def process_vsre (nf : Nat) (load_width_bytes : Nat) (rs1 : regidx) (vs3 : vregi
                           (GetElem?.getElem! vs3_val i) false false false)) with
                       | .Ok true => (pure ())
                       | .Ok false =>
-                        (internal_error "riscv_insts_vext_mem.sail" 785
+                        (internal_error "riscv_insts_vext_mem.sail" 796
                           "store got false from mem_write_value")
                       | .Err e =>
                         throw (← do
@@ -1318,7 +1318,7 @@ def process_vm (vd_or_vs3 : vregidx) (rs1 : regidx) (num_elem : Nat) (evl : Nat)
                         false false)) with
                     | .Ok true => (pure ())
                     | .Ok false =>
-                      (internal_error "riscv_insts_vext_mem.sail" 866
+                      (internal_error "riscv_insts_vext_mem.sail" 878
                         "store got false from mem_write_value")
                     | .Err e =>
                       throw (← do

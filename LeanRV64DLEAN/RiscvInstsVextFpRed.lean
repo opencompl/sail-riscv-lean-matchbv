@@ -234,7 +234,7 @@ def process_rfvv_single (funct6 : rfvvfunct6) (vm : (BitVec 1)) (vs2 : vregidx) 
     (handle_illegal ())
     (pure RETIRE_FAIL)
   else
-    assert (bne SEW 8) "riscv_insts_vext_fp_red.sail:35.17-35.18"
+    assert (bne SEW 8) "riscv_insts_vext_fp_red.sail:36.17-36.18"
     if (BEq.beq (BitVec.toNat (← readReg vl)) 0)
     then (pure RETIRE_SUCCESS)
     else
@@ -261,7 +261,7 @@ def process_rfvv_single (funct6 : rfvvfunct6) (vm : (BitVec 1)) (vs2 : vregidx) 
               | FVV_VFREDUSUM => (fp_add rm_3b sum (GetElem?.getElem! vs2_val i))
               | FVV_VFREDMAX => (fp_max sum (GetElem?.getElem! vs2_val i))
               | FVV_VFREDMIN => (fp_min sum (GetElem?.getElem! vs2_val i))
-              | _ => (internal_error "riscv_insts_vext_fp_red.sail" 57 "Widening op unexpected")
+              | _ => (internal_error "riscv_insts_vext_fp_red.sail" 58 "Widening op unexpected")
             else (pure sum)
         (pure loop_vars) ) : SailM (BitVec m) )
       (write_single_element SEW 0 vd sum)
@@ -280,7 +280,7 @@ def process_rfvv_widen (funct6 : rfvvfunct6) (vm : (BitVec 1)) (vs2 : vregidx) (
     (handle_illegal ())
     (pure RETIRE_FAIL)
   else
-    assert (Bool.and (SEW ≥b 16) (SEW_widen ≤b 64)) "riscv_insts_vext_fp_red.sail:77.36-77.37"
+    assert (Bool.and (SEW ≥b 16) (SEW_widen ≤b 64)) "riscv_insts_vext_fp_red.sail:78.36-78.37"
     if (BEq.beq (BitVec.toNat (← readReg vl)) 0)
     then (pure RETIRE_SUCCESS)
     else
