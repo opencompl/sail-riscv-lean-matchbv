@@ -164,27 +164,27 @@ open AccessType
 
 def nfields_int_forwards (arg_ : (BitVec 3)) : Int :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
   then 1
   else
-    if (BEq.beq b__0 (0b001 : (BitVec 3)))
+    (bif (BEq.beq b__0 (0b001 : (BitVec 3)))
     then 2
     else
-      if (BEq.beq b__0 (0b010 : (BitVec 3)))
+      (bif (BEq.beq b__0 (0b010 : (BitVec 3)))
       then 3
       else
-        if (BEq.beq b__0 (0b011 : (BitVec 3)))
+        (bif (BEq.beq b__0 (0b011 : (BitVec 3)))
         then 4
         else
-          if (BEq.beq b__0 (0b100 : (BitVec 3)))
+          (bif (BEq.beq b__0 (0b100 : (BitVec 3)))
           then 5
           else
-            if (BEq.beq b__0 (0b101 : (BitVec 3)))
+            (bif (BEq.beq b__0 (0b101 : (BitVec 3)))
             then 6
             else
-              if (BEq.beq b__0 (0b110 : (BitVec 3)))
+              (bif (BEq.beq b__0 (0b110 : (BitVec 3)))
               then 7
-              else 8
+              else 8))))))
 
 /-- Type quantifiers: arg_ : Nat, arg_ ∈ {1, 2, 3, 4, 5, 6, 7, 8} -/
 def nfields_int_backwards (arg_ : Nat) : (BitVec 3) :=
@@ -200,30 +200,30 @@ def nfields_int_backwards (arg_ : Nat) : (BitVec 3) :=
 
 def nfields_int_forwards_matches (arg_ : (BitVec 3)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
   then true
   else
-    if (BEq.beq b__0 (0b001 : (BitVec 3)))
+    (bif (BEq.beq b__0 (0b001 : (BitVec 3)))
     then true
     else
-      if (BEq.beq b__0 (0b010 : (BitVec 3)))
+      (bif (BEq.beq b__0 (0b010 : (BitVec 3)))
       then true
       else
-        if (BEq.beq b__0 (0b011 : (BitVec 3)))
+        (bif (BEq.beq b__0 (0b011 : (BitVec 3)))
         then true
         else
-          if (BEq.beq b__0 (0b100 : (BitVec 3)))
+          (bif (BEq.beq b__0 (0b100 : (BitVec 3)))
           then true
           else
-            if (BEq.beq b__0 (0b101 : (BitVec 3)))
+            (bif (BEq.beq b__0 (0b101 : (BitVec 3)))
             then true
             else
-              if (BEq.beq b__0 (0b110 : (BitVec 3)))
+              (bif (BEq.beq b__0 (0b110 : (BitVec 3)))
               then true
               else
-                if (BEq.beq b__0 (0b111 : (BitVec 3)))
+                (bif (BEq.beq b__0 (0b111 : (BitVec 3)))
                 then true
-                else false
+                else false)))))))
 
 /-- Type quantifiers: arg_ : Nat, arg_ ∈ {1, 2, 3, 4, 5, 6, 7, 8} -/
 def nfields_int_backwards_matches (arg_ : Nat) : Bool :=
@@ -248,36 +248,36 @@ def nfields_string_backwards (arg_ : String) : SailM (BitVec 3) := do
   | "seg6" => (pure (0b101 : (BitVec 3)))
   | "seg7" => (pure (0b110 : (BitVec 3)))
   | "seg8" => (pure (0b111 : (BitVec 3)))
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def nfields_string_forwards_matches (arg_ : (BitVec 3)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
   then true
   else
-    if (BEq.beq b__0 (0b001 : (BitVec 3)))
+    (bif (BEq.beq b__0 (0b001 : (BitVec 3)))
     then true
     else
-      if (BEq.beq b__0 (0b010 : (BitVec 3)))
+      (bif (BEq.beq b__0 (0b010 : (BitVec 3)))
       then true
       else
-        if (BEq.beq b__0 (0b011 : (BitVec 3)))
+        (bif (BEq.beq b__0 (0b011 : (BitVec 3)))
         then true
         else
-          if (BEq.beq b__0 (0b100 : (BitVec 3)))
+          (bif (BEq.beq b__0 (0b100 : (BitVec 3)))
           then true
           else
-            if (BEq.beq b__0 (0b101 : (BitVec 3)))
+            (bif (BEq.beq b__0 (0b101 : (BitVec 3)))
             then true
             else
-              if (BEq.beq b__0 (0b110 : (BitVec 3)))
+              (bif (BEq.beq b__0 (0b110 : (BitVec 3)))
               then true
               else
-                if (BEq.beq b__0 (0b111 : (BitVec 3)))
+                (bif (BEq.beq b__0 (0b111 : (BitVec 3)))
                 then true
-                else false
+                else false)))))))
 
 def nfields_string_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -297,9 +297,9 @@ def vlewidth_bitsnumberstr_backwards (arg_ : String) : SailM vlewidth := do
   | "16" => (pure VLE16)
   | "32" => (pure VLE32)
   | "64" => (pure VLE64)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def vlewidth_bitsnumberstr_forwards_matches (arg_ : vlewidth) : Bool :=
   match arg_ with
@@ -325,20 +325,24 @@ def encdec_vlewidth_forwards (arg_ : vlewidth) : (BitVec 3) :=
 
 def encdec_vlewidth_backwards (arg_ : (BitVec 3)) : SailM vlewidth := do
   let b__0 := arg_
-  if (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
   then (pure VLE8)
   else
-    if (BEq.beq b__0 (0b101 : (BitVec 3)))
-    then (pure VLE16)
-    else
-      if (BEq.beq b__0 (0b110 : (BitVec 3)))
-      then (pure VLE32)
+    (do
+      bif (BEq.beq b__0 (0b101 : (BitVec 3)))
+      then (pure VLE16)
       else
-        if (BEq.beq b__0 (0b111 : (BitVec 3)))
-        then (pure VLE64)
-        else
-          assert false "Pattern match failure at unknown location"
-          throw Error.Exit
+        (do
+          bif (BEq.beq b__0 (0b110 : (BitVec 3)))
+          then (pure VLE32)
+          else
+            (do
+              bif (BEq.beq b__0 (0b111 : (BitVec 3)))
+              then (pure VLE64)
+              else
+                (do
+                  assert false "Pattern match failure at unknown location"
+                  throw Error.Exit))))
 
 def encdec_vlewidth_forwards_matches (arg_ : vlewidth) : Bool :=
   match arg_ with
@@ -349,18 +353,18 @@ def encdec_vlewidth_forwards_matches (arg_ : vlewidth) : Bool :=
 
 def encdec_vlewidth_backwards_matches (arg_ : (BitVec 3)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
   then true
   else
-    if (BEq.beq b__0 (0b101 : (BitVec 3)))
+    (bif (BEq.beq b__0 (0b101 : (BitVec 3)))
     then true
     else
-      if (BEq.beq b__0 (0b110 : (BitVec 3)))
+      (bif (BEq.beq b__0 (0b110 : (BitVec 3)))
       then true
       else
-        if (BEq.beq b__0 (0b111 : (BitVec 3)))
+        (bif (BEq.beq b__0 (0b111 : (BitVec 3)))
         then true
-        else false
+        else false)))
 
 def vlewidth_bytesnumber_forwards (arg_ : vlewidth) : Int :=
   match arg_ with
@@ -428,7 +432,7 @@ def vlewidth_pow_backwards_matches (arg_ : Nat) : Bool :=
   nf ≤ 8 ∧ load_width_bytes ∈ {1, 2, 4, 8} ∧ num_elem > 0 -/
 def process_vlseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_bytes : Nat) (rs1 : regidx) (EMUL_pow : Int) (num_elem : Nat) : SailM Retired := SailME.run do
   let EMUL_reg : Int :=
-    if (EMUL_pow ≤b 0)
+    bif (EMUL_pow ≤b 0)
     then 1
     else (2 ^i EMUL_pow)
   let width_type : word_width := (size_bytes_backwards load_width_bytes)
@@ -440,60 +444,59 @@ def process_vlseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_bytes 
   let loop_i_lower := 0
   let loop_i_upper := (num_elem -i 1)
   let mut loop_vars := ()
-  for i in [loop_i_lower:loop_i_upper + 1:1]i do
+  for i in [loop_i_lower:loop_i_upper:1]i do
     let () := loop_vars
     loop_vars ← do
-      if (BEq.beq (BitVec.access mask i) 1#1)
+      bif (BEq.beq (BitVec.access mask i) 1#1)
       then
-        (set_vstart (to_bits 16 i))
-        let loop_j_lower := 0
-        let loop_j_upper := (nf -i 1)
-        let mut loop_vars_1 := ()
-        for j in [loop_j_lower:loop_j_upper + 1:1]i do
-          let () := loop_vars_1
-          loop_vars_1 ← do
-            let elem_offset := (((i *i nf) +i j) *i load_width_bytes)
-            match (← (ext_data_get_addr rs1 (to_bits xlen elem_offset) (Read Data)
-                load_width_bytes)) with
-            | .Ext_DataAddr_Error e =>
-              throw (let _ : Unit := (ext_handle_data_check_error e)
-                RETIRE_FAIL : Retired)
-            | .Ext_DataAddr_OK vaddr =>
-              if (check_misaligned vaddr width_type)
-              then
-                throw (← do
-                    (handle_mem_exception vaddr (E_Load_Addr_Align ()))
-                    (pure RETIRE_FAIL))
-              else
-                match (← (translateAddr vaddr (Read Data))) with
-                | .TR_Failure (e, _) =>
-                  throw (← do
-                      (handle_mem_exception vaddr e)
-                      (pure RETIRE_FAIL))
-                | .TR_Address (paddr, _) =>
-                  match (← (mem_read (Read Data) paddr load_width_bytes false false false)) with
-                  | .Ok elem =>
-                    (write_single_element (load_width_bytes *i 8) i
-                      (vregidx_offset vd (to_bits 5 (j *i EMUL_reg))) elem)
-                  | .Err e =>
+        (do
+          (set_vstart (to_bits 16 i))
+          let loop_j_lower := 0
+          let loop_j_upper := (nf -i 1)
+          let mut loop_vars_2 := ()
+          for j in [loop_j_lower:loop_j_upper:1]i do
+            let () := loop_vars_2
+            loop_vars_2 ← do
+              let elem_offset := (((i *i nf) +i j) *i load_width_bytes)
+              match (← (ext_data_get_addr rs1 (to_bits xlen elem_offset) (Read Data)
+                  load_width_bytes)) with
+              | .Ext_DataAddr_Error e => throw (let _ : Unit := (ext_handle_data_check_error e)
+                  RETIRE_FAIL : Retired)
+              | .Ext_DataAddr_OK vaddr => (do
+                  bif (check_misaligned vaddr width_type)
+                  then
                     throw (← do
-                        (handle_mem_exception vaddr e)
+                        (handle_mem_exception vaddr (E_Load_Addr_Align ()))
                         (pure RETIRE_FAIL))
-        (pure loop_vars_1)
+                  else
+                    (do
+                      match (← (translateAddr vaddr (Read Data))) with
+                      | .TR_Failure (e, _) => throw (← do
+                            (handle_mem_exception vaddr e)
+                            (pure RETIRE_FAIL))
+                      | .TR_Address (paddr, _) => (do
+                          match (← (mem_read (Read Data) paddr load_width_bytes false false false)) with
+                          | .Ok elem => (write_single_element (load_width_bytes *i 8) i
+                              (vregidx_offset vd (to_bits 5 (j *i EMUL_reg))) elem)
+                          | .Err e => throw (← do
+                                (handle_mem_exception vaddr e)
+                                (pure RETIRE_FAIL)))))
+          (pure loop_vars_2))
       else
-        let loop_j_lower := 0
-        let loop_j_upper := (nf -i 1)
-        let mut loop_vars_1 := ()
-        for j in [loop_j_lower:loop_j_upper + 1:1]i do
-          let () := loop_vars_1
-          loop_vars_1 ← do
-            let skipped_elem :=
-              (Sail.BitVec.extractLsb
-                (shiftr (GetElem?.getElem! result i) ((j *i load_width_bytes) *i 8))
-                ((load_width_bytes *i 8) -i 1) 0)
-            (write_single_element (load_width_bytes *i 8) i
-              (vregidx_offset vd (to_bits 5 (j *i EMUL_reg))) skipped_elem)
-        (pure loop_vars_1)
+        (do
+          let loop_j_lower := 0
+          let loop_j_upper := (nf -i 1)
+          let mut loop_vars_1 := ()
+          for j in [loop_j_lower:loop_j_upper:1]i do
+            let () := loop_vars_1
+            loop_vars_1 ← do
+              let skipped_elem :=
+                (Sail.BitVec.extractLsb
+                  (shiftr (GetElem?.getElem! result i) ((j *i load_width_bytes) *i 8))
+                  ((load_width_bytes *i 8) -i 1) 0)
+              (write_single_element (load_width_bytes *i 8) i
+                (vregidx_offset vd (to_bits 5 (j *i EMUL_reg))) skipped_elem)
+          (pure loop_vars_1))
   (pure loop_vars)
   (set_vstart (zeros_implicit (n := 16)))
   (pure RETIRE_SUCCESS)
@@ -502,7 +505,7 @@ def process_vlseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_bytes 
   nf ≤ 8 ∧ load_width_bytes ∈ {1, 2, 4, 8} ∧ num_elem > 0 -/
 def process_vlsegff (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_bytes : Nat) (rs1 : regidx) (EMUL_pow : Int) (num_elem : Nat) : SailM Retired := SailME.run do
   let EMUL_reg : Int :=
-    if (EMUL_pow ≤b 0)
+    bif (EMUL_pow ≤b 0)
     then 1
     else (2 ^i EMUL_pow)
   let width_type : word_width := (size_bytes_backwards load_width_bytes)
@@ -517,109 +520,124 @@ def process_vlsegff (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_byte
     let loop_i_lower := 0
     let loop_i_upper := (num_elem -i 1)
     let mut loop_vars := trimmed
-    for i in [loop_i_lower:loop_i_upper + 1:1]i do
+    for i in [loop_i_lower:loop_i_upper:1]i do
       let trimmed := loop_vars
       loop_vars ← do
-        if (not trimmed)
+        bif (not trimmed)
         then
-          if (BEq.beq (BitVec.access mask i) 1#1)
-          then
-            let loop_j_lower := 0
-            let loop_j_upper := (nf -i 1)
-            let mut loop_vars_1 := trimmed
-            for j in [loop_j_lower:loop_j_upper + 1:1]i do
-              let trimmed := loop_vars_1
-              loop_vars_1 ← do
-                let elem_offset := (((i *i nf) +i j) *i load_width_bytes)
-                match (← (ext_data_get_addr rs1 (to_bits xlen elem_offset) (Read Data)
-                    load_width_bytes)) with
-                | .Ext_DataAddr_Error e =>
-                  if (BEq.beq i 0)
-                  then
-                    throw (let _ : Unit := (ext_handle_data_check_error e)
-                      RETIRE_FAIL : Retired)
-                  else
-                    writeReg vl (to_bits xlen i)
-                    (pure (print_endline
-                        (HAppend.hAppend "CSR vl <- " (BitVec.toFormatted (← readReg vl)))))
-                    (pure true)
-                | .Ext_DataAddr_OK vaddr =>
-                  if (check_misaligned vaddr width_type)
-                  then
-                    if (BEq.beq i 0)
-                    then
-                      throw (← do
-                          (handle_mem_exception vaddr (E_Load_Addr_Align ()))
-                          (pure RETIRE_FAIL))
-                    else
-                      writeReg vl (to_bits xlen i)
-                      (pure (print_endline
-                          (HAppend.hAppend "CSR vl <- " (BitVec.toFormatted (← readReg vl)))))
-                      (pure true)
-                  else
-                    match (← (translateAddr vaddr (Read Data))) with
-                    | .TR_Failure (e, _) =>
-                      if (BEq.beq i 0)
-                      then
-                        throw (← do
-                            (handle_mem_exception vaddr e)
-                            (pure RETIRE_FAIL))
-                      else
-                        writeReg vl (to_bits xlen i)
-                        (pure (print_endline
-                            (HAppend.hAppend "CSR vl <- " (BitVec.toFormatted (← readReg vl)))))
-                        (pure true)
-                    | .TR_Address (paddr, _) =>
-                      match (← (mem_read (Read Data) paddr load_width_bytes false false false)) with
-                      | .Ok elem =>
-                        (write_single_element (load_width_bytes *i 8) i
-                          (vregidx_offset vd (to_bits 5 (j *i EMUL_reg))) elem)
-                        (pure trimmed)
-                      | .Err e =>
-                        if (BEq.beq i 0)
+          (do
+            bif (BEq.beq (BitVec.access mask i) 1#1)
+            then
+              (do
+                let loop_j_lower := 0
+                let loop_j_upper := (nf -i 1)
+                let mut loop_vars_3 := trimmed
+                for j in [loop_j_lower:loop_j_upper:1]i do
+                  let trimmed := loop_vars_3
+                  loop_vars_3 ← do
+                    let elem_offset := (((i *i nf) +i j) *i load_width_bytes)
+                    match (← (ext_data_get_addr rs1 (to_bits xlen elem_offset) (Read Data)
+                        load_width_bytes)) with
+                    | .Ext_DataAddr_Error e => (do
+                        bif (BEq.beq i 0)
                         then
-                          throw (← do
-                              (handle_mem_exception vaddr e)
-                              (pure RETIRE_FAIL))
+                          throw (let _ : Unit := (ext_handle_data_check_error e)
+                            RETIRE_FAIL : Retired)
                         else
-                          writeReg vl (to_bits xlen i)
-                          (pure (print_endline
-                              (HAppend.hAppend "CSR vl <- " (BitVec.toFormatted (← readReg vl)))))
-                          (pure true)
-            (pure loop_vars_1)
-          else
-            let loop_j_lower := 0
-            let loop_j_upper := (nf -i 1)
-            let mut loop_vars_1 := ()
-            for j in [loop_j_lower:loop_j_upper + 1:1]i do
-              let () := loop_vars_1
-              loop_vars_1 ← do
-                let skipped_elem :=
-                  (Sail.BitVec.extractLsb
-                    (shiftr (GetElem?.getElem! result i) ((j *i load_width_bytes) *i 8))
-                    ((load_width_bytes *i 8) -i 1) 0)
-                (write_single_element (load_width_bytes *i 8) i
-                  (vregidx_offset vd (to_bits 5 (j *i EMUL_reg))) skipped_elem)
-            (pure loop_vars_1)
-            (pure trimmed)
+                          (do
+                            writeReg vl (to_bits xlen i)
+                            (pure (print_endline
+                                (HAppend.hAppend "CSR vl <- " (BitVec.toFormatted (← readReg vl)))))
+                            (pure true)))
+                    | .Ext_DataAddr_OK vaddr => (do
+                        bif (check_misaligned vaddr width_type)
+                        then
+                          (do
+                            bif (BEq.beq i 0)
+                            then
+                              throw (← do
+                                  (handle_mem_exception vaddr (E_Load_Addr_Align ()))
+                                  (pure RETIRE_FAIL))
+                            else
+                              (do
+                                writeReg vl (to_bits xlen i)
+                                (pure (print_endline
+                                    (HAppend.hAppend "CSR vl <- "
+                                      (BitVec.toFormatted (← readReg vl)))))
+                                (pure true)))
+                        else
+                          (do
+                            match (← (translateAddr vaddr (Read Data))) with
+                            | .TR_Failure (e, _) => (do
+                                bif (BEq.beq i 0)
+                                then
+                                  throw (← do
+                                      (handle_mem_exception vaddr e)
+                                      (pure RETIRE_FAIL))
+                                else
+                                  (do
+                                    writeReg vl (to_bits xlen i)
+                                    (pure (print_endline
+                                        (HAppend.hAppend "CSR vl <- "
+                                          (BitVec.toFormatted (← readReg vl)))))
+                                    (pure true)))
+                            | .TR_Address (paddr, _) => (do
+                                match (← (mem_read (Read Data) paddr load_width_bytes false false
+                                    false)) with
+                                | .Ok elem => (do
+                                    (write_single_element (load_width_bytes *i 8) i
+                                      (vregidx_offset vd (to_bits 5 (j *i EMUL_reg))) elem)
+                                    (pure trimmed))
+                                | .Err e => (do
+                                    bif (BEq.beq i 0)
+                                    then
+                                      throw (← do
+                                          (handle_mem_exception vaddr e)
+                                          (pure RETIRE_FAIL))
+                                    else
+                                      (do
+                                        writeReg vl (to_bits xlen i)
+                                        (pure (print_endline
+                                            (HAppend.hAppend "CSR vl <- "
+                                              (BitVec.toFormatted (← readReg vl)))))
+                                        (pure true))))))
+                (pure loop_vars_3))
+            else
+              (do
+                let loop_j_lower := 0
+                let loop_j_upper := (nf -i 1)
+                let mut loop_vars_2 := ()
+                for j in [loop_j_lower:loop_j_upper:1]i do
+                  let () := loop_vars_2
+                  loop_vars_2 ← do
+                    let skipped_elem :=
+                      (Sail.BitVec.extractLsb
+                        (shiftr (GetElem?.getElem! result i) ((j *i load_width_bytes) *i 8))
+                        ((load_width_bytes *i 8) -i 1) 0)
+                    (write_single_element (load_width_bytes *i 8) i
+                      (vregidx_offset vd (to_bits 5 (j *i EMUL_reg))) skipped_elem)
+                (pure loop_vars_2)
+                (pure trimmed)))
         else
-          if (BEq.beq tail_ag AGNOSTIC)
-          then
-            let loop_j_lower := 0
-            let loop_j_upper := (nf -i 1)
-            let mut loop_vars_1 := ()
-            for j in [loop_j_lower:loop_j_upper + 1:1]i do
-              let () := loop_vars_1
-              loop_vars_1 ← do
-                let skipped_elem :=
-                  (Sail.BitVec.extractLsb
-                    (shiftr (GetElem?.getElem! vd_seg i) ((j *i load_width_bytes) *i 8))
-                    ((load_width_bytes *i 8) -i 1) 0)
-                (write_single_element (load_width_bytes *i 8) i
-                  (vregidx_offset vd (to_bits 5 (j *i EMUL_reg))) skipped_elem)
-            (pure loop_vars_1)
-          else (pure ())
-          (pure trimmed)
+          (do
+            bif (BEq.beq tail_ag AGNOSTIC)
+            then
+              (do
+                let loop_j_lower := 0
+                let loop_j_upper := (nf -i 1)
+                let mut loop_vars_1 := ()
+                for j in [loop_j_lower:loop_j_upper:1]i do
+                  let () := loop_vars_1
+                  loop_vars_1 ← do
+                    let skipped_elem :=
+                      (Sail.BitVec.extractLsb
+                        (shiftr (GetElem?.getElem! vd_seg i) ((j *i load_width_bytes) *i 8))
+                        ((load_width_bytes *i 8) -i 1) 0)
+                    (write_single_element (load_width_bytes *i 8) i
+                      (vregidx_offset vd (to_bits 5 (j *i EMUL_reg))) skipped_elem)
+                (pure loop_vars_1))
+            else (pure ())
+            (pure trimmed))
     (pure loop_vars) ) : SailME _ Bool )
   (set_vstart (zeros_implicit (n := 16)))
   (pure RETIRE_SUCCESS)
@@ -628,7 +646,7 @@ def process_vlsegff (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_byte
   nf ≤ 8 ∧ load_width_bytes ∈ {1, 2, 4, 8} ∧ num_elem > 0 -/
 def process_vsseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (load_width_bytes : Nat) (rs1 : regidx) (EMUL_pow : Int) (num_elem : Nat) : SailM Retired := SailME.run do
   let EMUL_reg : Int :=
-    if (EMUL_pow ≤b 0)
+    bif (EMUL_pow ≤b 0)
     then 1
     else (2 ^i EMUL_pow)
   let width_type : word_width := (size_bytes_backwards load_width_bytes)
@@ -639,57 +657,55 @@ def process_vsseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (load_width_bytes
   let loop_i_lower := 0
   let loop_i_upper := (num_elem -i 1)
   let mut loop_vars := ()
-  for i in [loop_i_lower:loop_i_upper + 1:1]i do
+  for i in [loop_i_lower:loop_i_upper:1]i do
     let () := loop_vars
     loop_vars ← do
-      if (BEq.beq (BitVec.access mask i) 1#1)
+      bif (BEq.beq (BitVec.access mask i) 1#1)
       then
-        (set_vstart (to_bits 16 i))
-        let loop_j_lower := 0
-        let loop_j_upper := (nf -i 1)
-        let mut loop_vars_1 := ()
-        for j in [loop_j_lower:loop_j_upper + 1:1]i do
-          let () := loop_vars_1
-          loop_vars_1 ← do
-            let elem_offset := (((i *i nf) +i j) *i load_width_bytes)
-            match (← (ext_data_get_addr rs1 (to_bits xlen elem_offset) (Write Data)
-                load_width_bytes)) with
-            | .Ext_DataAddr_Error e =>
-              throw (let _ : Unit := (ext_handle_data_check_error e)
-                RETIRE_FAIL : Retired)
-            | .Ext_DataAddr_OK vaddr =>
-              if (check_misaligned vaddr width_type)
-              then
-                throw (← do
-                    (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
-                    (pure RETIRE_FAIL))
-              else
-                match (← (translateAddr vaddr (Write Data))) with
-                | .TR_Failure (e, _) =>
-                  throw (← do
-                      (handle_mem_exception vaddr e)
-                      (pure RETIRE_FAIL))
-                | .TR_Address (paddr, _) =>
-                  match (← (mem_write_ea paddr load_width_bytes false false false)) with
-                  | .Err e =>
+        (do
+          (set_vstart (to_bits 16 i))
+          let loop_j_lower := 0
+          let loop_j_upper := (nf -i 1)
+          let mut loop_vars_1 := ()
+          for j in [loop_j_lower:loop_j_upper:1]i do
+            let () := loop_vars_1
+            loop_vars_1 ← do
+              let elem_offset := (((i *i nf) +i j) *i load_width_bytes)
+              match (← (ext_data_get_addr rs1 (to_bits xlen elem_offset) (Write Data)
+                  load_width_bytes)) with
+              | .Ext_DataAddr_Error e => throw (let _ : Unit := (ext_handle_data_check_error e)
+                  RETIRE_FAIL : Retired)
+              | .Ext_DataAddr_OK vaddr => (do
+                  bif (check_misaligned vaddr width_type)
+                  then
                     throw (← do
-                        (handle_mem_exception vaddr e)
+                        (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
                         (pure RETIRE_FAIL))
-                  | .Ok _ =>
-                    let elem_val ← (( do
-                      (read_single_element (load_width_bytes *i 8) i
-                        (vregidx_offset vs3 (to_bits 5 (j *i EMUL_reg)))) ) : SailME _
-                      (BitVec (load_width_bytes * 8)) )
-                    match (← (mem_write_value paddr load_width_bytes elem_val false false false)) with
-                    | .Ok true => (pure ())
-                    | .Ok false =>
-                      (internal_error "riscv_insts_vext_mem.sail" 275
-                        "store got false from mem_write_value")
-                    | .Err e =>
-                      throw (← do
-                          (handle_mem_exception vaddr e)
-                          (pure RETIRE_FAIL))
-        (pure loop_vars_1)
+                  else
+                    (do
+                      match (← (translateAddr vaddr (Write Data))) with
+                      | .TR_Failure (e, _) => throw (← do
+                            (handle_mem_exception vaddr e)
+                            (pure RETIRE_FAIL))
+                      | .TR_Address (paddr, _) => (do
+                          match (← (mem_write_ea paddr load_width_bytes false false false)) with
+                          | .Err e => throw (← do
+                                (handle_mem_exception vaddr e)
+                                (pure RETIRE_FAIL))
+                          | .Ok _ => (do
+                              let elem_val ← (( do
+                                (read_single_element (load_width_bytes *i 8) i
+                                  (vregidx_offset vs3 (to_bits 5 (j *i EMUL_reg)))) ) : SailME _
+                                (BitVec (load_width_bytes * 8)) )
+                              match (← (mem_write_value paddr load_width_bytes elem_val false
+                                  false false)) with
+                              | .Ok true => (pure ())
+                              | .Ok false => (internal_error "riscv_insts_vext_mem.sail" 275
+                                  "store got false from mem_write_value")
+                              | .Err e => throw (← do
+                                    (handle_mem_exception vaddr e)
+                                    (pure RETIRE_FAIL))))))
+          (pure loop_vars_1))
       else (pure ())
   (pure loop_vars)
   (set_vstart (zeros_implicit (n := 16)))
@@ -699,7 +715,7 @@ def process_vsseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (load_width_bytes
   nf ≤ 8 ∧ load_width_bytes ∈ {1, 2, 4, 8} ∧ num_elem > 0 -/
 def process_vlsseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_bytes : Nat) (rs1 : regidx) (rs2 : regidx) (EMUL_pow : Int) (num_elem : Nat) : SailM Retired := SailME.run do
   let EMUL_reg : Int :=
-    if (EMUL_pow ≤b 0)
+    bif (EMUL_pow ≤b 0)
     then 1
     else (2 ^i EMUL_pow)
   let width_type : word_width := (size_bytes_backwards load_width_bytes)
@@ -712,60 +728,59 @@ def process_vlsseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_bytes
   let loop_i_lower := 0
   let loop_i_upper := (num_elem -i 1)
   let mut loop_vars := ()
-  for i in [loop_i_lower:loop_i_upper + 1:1]i do
+  for i in [loop_i_lower:loop_i_upper:1]i do
     let () := loop_vars
     loop_vars ← do
-      if (BEq.beq (BitVec.access mask i) 1#1)
+      bif (BEq.beq (BitVec.access mask i) 1#1)
       then
-        (set_vstart (to_bits 16 i))
-        let loop_j_lower := 0
-        let loop_j_upper := (nf -i 1)
-        let mut loop_vars_1 := ()
-        for j in [loop_j_lower:loop_j_upper + 1:1]i do
-          let () := loop_vars_1
-          loop_vars_1 ← do
-            let elem_offset := ((i *i rs2_val) +i (j *i load_width_bytes))
-            match (← (ext_data_get_addr rs1 (to_bits xlen elem_offset) (Read Data)
-                load_width_bytes)) with
-            | .Ext_DataAddr_Error e =>
-              throw (let _ : Unit := (ext_handle_data_check_error e)
-                RETIRE_FAIL : Retired)
-            | .Ext_DataAddr_OK vaddr =>
-              if (check_misaligned vaddr width_type)
-              then
-                throw (← do
-                    (handle_mem_exception vaddr (E_Load_Addr_Align ()))
-                    (pure RETIRE_FAIL))
-              else
-                match (← (translateAddr vaddr (Read Data))) with
-                | .TR_Failure (e, _) =>
-                  throw (← do
-                      (handle_mem_exception vaddr e)
-                      (pure RETIRE_FAIL))
-                | .TR_Address (paddr, _) =>
-                  match (← (mem_read (Read Data) paddr load_width_bytes false false false)) with
-                  | .Ok elem =>
-                    (write_single_element (load_width_bytes *i 8) i
-                      (vregidx_offset vd (to_bits 5 (j *i EMUL_reg))) elem)
-                  | .Err e =>
+        (do
+          (set_vstart (to_bits 16 i))
+          let loop_j_lower := 0
+          let loop_j_upper := (nf -i 1)
+          let mut loop_vars_2 := ()
+          for j in [loop_j_lower:loop_j_upper:1]i do
+            let () := loop_vars_2
+            loop_vars_2 ← do
+              let elem_offset := ((i *i rs2_val) +i (j *i load_width_bytes))
+              match (← (ext_data_get_addr rs1 (to_bits xlen elem_offset) (Read Data)
+                  load_width_bytes)) with
+              | .Ext_DataAddr_Error e => throw (let _ : Unit := (ext_handle_data_check_error e)
+                  RETIRE_FAIL : Retired)
+              | .Ext_DataAddr_OK vaddr => (do
+                  bif (check_misaligned vaddr width_type)
+                  then
                     throw (← do
-                        (handle_mem_exception vaddr e)
+                        (handle_mem_exception vaddr (E_Load_Addr_Align ()))
                         (pure RETIRE_FAIL))
-        (pure loop_vars_1)
+                  else
+                    (do
+                      match (← (translateAddr vaddr (Read Data))) with
+                      | .TR_Failure (e, _) => throw (← do
+                            (handle_mem_exception vaddr e)
+                            (pure RETIRE_FAIL))
+                      | .TR_Address (paddr, _) => (do
+                          match (← (mem_read (Read Data) paddr load_width_bytes false false false)) with
+                          | .Ok elem => (write_single_element (load_width_bytes *i 8) i
+                              (vregidx_offset vd (to_bits 5 (j *i EMUL_reg))) elem)
+                          | .Err e => throw (← do
+                                (handle_mem_exception vaddr e)
+                                (pure RETIRE_FAIL)))))
+          (pure loop_vars_2))
       else
-        let loop_j_lower := 0
-        let loop_j_upper := (nf -i 1)
-        let mut loop_vars_1 := ()
-        for j in [loop_j_lower:loop_j_upper + 1:1]i do
-          let () := loop_vars_1
-          loop_vars_1 ← do
-            let skipped_elem :=
-              (Sail.BitVec.extractLsb
-                (shiftr (GetElem?.getElem! result i) ((j *i load_width_bytes) *i 8))
-                ((load_width_bytes *i 8) -i 1) 0)
-            (write_single_element (load_width_bytes *i 8) i
-              (vregidx_offset vd (to_bits 5 (j *i EMUL_reg))) skipped_elem)
-        (pure loop_vars_1)
+        (do
+          let loop_j_lower := 0
+          let loop_j_upper := (nf -i 1)
+          let mut loop_vars_1 := ()
+          for j in [loop_j_lower:loop_j_upper:1]i do
+            let () := loop_vars_1
+            loop_vars_1 ← do
+              let skipped_elem :=
+                (Sail.BitVec.extractLsb
+                  (shiftr (GetElem?.getElem! result i) ((j *i load_width_bytes) *i 8))
+                  ((load_width_bytes *i 8) -i 1) 0)
+              (write_single_element (load_width_bytes *i 8) i
+                (vregidx_offset vd (to_bits 5 (j *i EMUL_reg))) skipped_elem)
+          (pure loop_vars_1))
   (pure loop_vars)
   (set_vstart (zeros_implicit (n := 16)))
   (pure RETIRE_SUCCESS)
@@ -774,7 +789,7 @@ def process_vlsseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_bytes
   nf ≤ 8 ∧ load_width_bytes ∈ {1, 2, 4, 8} ∧ num_elem > 0 -/
 def process_vssseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (load_width_bytes : Nat) (rs1 : regidx) (rs2 : regidx) (EMUL_pow : Int) (num_elem : Nat) : SailM Retired := SailME.run do
   let EMUL_reg : Int :=
-    if (EMUL_pow ≤b 0)
+    bif (EMUL_pow ≤b 0)
     then 1
     else (2 ^i EMUL_pow)
   let width_type : word_width := (size_bytes_backwards load_width_bytes)
@@ -786,57 +801,55 @@ def process_vssseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (load_width_byte
   let loop_i_lower := 0
   let loop_i_upper := (num_elem -i 1)
   let mut loop_vars := ()
-  for i in [loop_i_lower:loop_i_upper + 1:1]i do
+  for i in [loop_i_lower:loop_i_upper:1]i do
     let () := loop_vars
     loop_vars ← do
-      if (BEq.beq (BitVec.access mask i) 1#1)
+      bif (BEq.beq (BitVec.access mask i) 1#1)
       then
-        (set_vstart (to_bits 16 i))
-        let loop_j_lower := 0
-        let loop_j_upper := (nf -i 1)
-        let mut loop_vars_1 := ()
-        for j in [loop_j_lower:loop_j_upper + 1:1]i do
-          let () := loop_vars_1
-          loop_vars_1 ← do
-            let elem_offset := ((i *i rs2_val) +i (j *i load_width_bytes))
-            match (← (ext_data_get_addr rs1 (to_bits xlen elem_offset) (Write Data)
-                load_width_bytes)) with
-            | .Ext_DataAddr_Error e =>
-              throw (let _ : Unit := (ext_handle_data_check_error e)
-                RETIRE_FAIL : Retired)
-            | .Ext_DataAddr_OK vaddr =>
-              if (check_misaligned vaddr width_type)
-              then
-                throw (← do
-                    (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
-                    (pure RETIRE_FAIL))
-              else
-                match (← (translateAddr vaddr (Write Data))) with
-                | .TR_Failure (e, _) =>
-                  throw (← do
-                      (handle_mem_exception vaddr e)
-                      (pure RETIRE_FAIL))
-                | .TR_Address (paddr, _) =>
-                  match (← (mem_write_ea paddr load_width_bytes false false false)) with
-                  | .Err e =>
+        (do
+          (set_vstart (to_bits 16 i))
+          let loop_j_lower := 0
+          let loop_j_upper := (nf -i 1)
+          let mut loop_vars_1 := ()
+          for j in [loop_j_lower:loop_j_upper:1]i do
+            let () := loop_vars_1
+            loop_vars_1 ← do
+              let elem_offset := ((i *i rs2_val) +i (j *i load_width_bytes))
+              match (← (ext_data_get_addr rs1 (to_bits xlen elem_offset) (Write Data)
+                  load_width_bytes)) with
+              | .Ext_DataAddr_Error e => throw (let _ : Unit := (ext_handle_data_check_error e)
+                  RETIRE_FAIL : Retired)
+              | .Ext_DataAddr_OK vaddr => (do
+                  bif (check_misaligned vaddr width_type)
+                  then
                     throw (← do
-                        (handle_mem_exception vaddr e)
+                        (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
                         (pure RETIRE_FAIL))
-                  | .Ok _ =>
-                    let elem_val ← (( do
-                      (read_single_element (load_width_bytes *i 8) i
-                        (vregidx_offset vs3 (to_bits 5 (j *i EMUL_reg)))) ) : SailME _
-                      (BitVec (load_width_bytes * 8)) )
-                    match (← (mem_write_value paddr load_width_bytes elem_val false false false)) with
-                    | .Ok true => (pure ())
-                    | .Ok false =>
-                      (internal_error "riscv_insts_vext_mem.sail" 416
-                        "store got false from mem_write_value")
-                    | .Err e =>
-                      throw (← do
-                          (handle_mem_exception vaddr e)
-                          (pure RETIRE_FAIL))
-        (pure loop_vars_1)
+                  else
+                    (do
+                      match (← (translateAddr vaddr (Write Data))) with
+                      | .TR_Failure (e, _) => throw (← do
+                            (handle_mem_exception vaddr e)
+                            (pure RETIRE_FAIL))
+                      | .TR_Address (paddr, _) => (do
+                          match (← (mem_write_ea paddr load_width_bytes false false false)) with
+                          | .Err e => throw (← do
+                                (handle_mem_exception vaddr e)
+                                (pure RETIRE_FAIL))
+                          | .Ok _ => (do
+                              let elem_val ← (( do
+                                (read_single_element (load_width_bytes *i 8) i
+                                  (vregidx_offset vs3 (to_bits 5 (j *i EMUL_reg)))) ) : SailME _
+                                (BitVec (load_width_bytes * 8)) )
+                              match (← (mem_write_value paddr load_width_bytes elem_val false
+                                  false false)) with
+                              | .Ok true => (pure ())
+                              | .Ok false => (internal_error "riscv_insts_vext_mem.sail" 416
+                                  "store got false from mem_write_value")
+                              | .Err e => throw (← do
+                                    (handle_mem_exception vaddr e)
+                                    (pure RETIRE_FAIL))))))
+          (pure loop_vars_1))
       else (pure ())
   (pure loop_vars)
   (set_vstart (zeros_implicit (n := 16)))
@@ -847,7 +860,7 @@ def process_vssseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (load_width_byte
   EEW_index_bytes ∈ {1, 2, 4, 8} ∧ EEW_data_bytes ∈ {1, 2, 4, 8} ∧ num_elem > 0 -/
 def process_vlxseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (EEW_index_bytes : Nat) (EEW_data_bytes : Nat) (EMUL_index_pow : Int) (EMUL_data_pow : Int) (rs1 : regidx) (vs2 : vregidx) (num_elem : Nat) (mop : Int) : SailM Retired := SailME.run do
   let EMUL_data_reg : Int :=
-    if (EMUL_data_pow ≤b 0)
+    bif (EMUL_data_pow ≤b 0)
     then 1
     else (2 ^i EMUL_data_pow)
   let width_type : word_width := (size_bytes_backwards EEW_data_bytes)
@@ -861,60 +874,60 @@ def process_vlxseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (EEW_index_bytes 
   let loop_i_lower := 0
   let loop_i_upper := (num_elem -i 1)
   let mut loop_vars := ()
-  for i in [loop_i_lower:loop_i_upper + 1:1]i do
+  for i in [loop_i_lower:loop_i_upper:1]i do
     let () := loop_vars
     loop_vars ← do
-      if (BEq.beq (BitVec.access mask i) 1#1)
+      bif (BEq.beq (BitVec.access mask i) 1#1)
       then
-        (set_vstart (to_bits 16 i))
-        let loop_j_lower := 0
-        let loop_j_upper := (nf -i 1)
-        let mut loop_vars_1 := ()
-        for j in [loop_j_lower:loop_j_upper + 1:1]i do
-          let () := loop_vars_1
-          loop_vars_1 ← do
-            let elem_offset : Int :=
-              ((BitVec.toNat (GetElem?.getElem! vs2_val i)) +i (j *i EEW_data_bytes))
-            match (← (ext_data_get_addr rs1 (to_bits xlen elem_offset) (Read Data) EEW_data_bytes)) with
-            | .Ext_DataAddr_Error e =>
-              throw (let _ : Unit := (ext_handle_data_check_error e)
-                RETIRE_FAIL : Retired)
-            | .Ext_DataAddr_OK vaddr =>
-              if (check_misaligned vaddr width_type)
-              then
-                throw (← do
-                    (handle_mem_exception vaddr (E_Load_Addr_Align ()))
-                    (pure RETIRE_FAIL))
-              else
-                match (← (translateAddr vaddr (Read Data))) with
-                | .TR_Failure (e, _) =>
-                  throw (← do
-                      (handle_mem_exception vaddr e)
-                      (pure RETIRE_FAIL))
-                | .TR_Address (paddr, _) =>
-                  match (← (mem_read (Read Data) paddr EEW_data_bytes false false false)) with
-                  | .Ok elem =>
-                    (write_single_element (EEW_data_bytes *i 8) i
-                      (vregidx_offset vd (to_bits 5 (j *i EMUL_data_reg))) elem)
-                  | .Err e =>
+        (do
+          (set_vstart (to_bits 16 i))
+          let loop_j_lower := 0
+          let loop_j_upper := (nf -i 1)
+          let mut loop_vars_2 := ()
+          for j in [loop_j_lower:loop_j_upper:1]i do
+            let () := loop_vars_2
+            loop_vars_2 ← do
+              let elem_offset : Int :=
+                ((BitVec.toNat (GetElem?.getElem! vs2_val i)) +i (j *i EEW_data_bytes))
+              match (← (ext_data_get_addr rs1 (to_bits xlen elem_offset) (Read Data)
+                  EEW_data_bytes)) with
+              | .Ext_DataAddr_Error e => throw (let _ : Unit := (ext_handle_data_check_error e)
+                  RETIRE_FAIL : Retired)
+              | .Ext_DataAddr_OK vaddr => (do
+                  bif (check_misaligned vaddr width_type)
+                  then
                     throw (← do
-                        (handle_mem_exception vaddr e)
+                        (handle_mem_exception vaddr (E_Load_Addr_Align ()))
                         (pure RETIRE_FAIL))
-        (pure loop_vars_1)
+                  else
+                    (do
+                      match (← (translateAddr vaddr (Read Data))) with
+                      | .TR_Failure (e, _) => throw (← do
+                            (handle_mem_exception vaddr e)
+                            (pure RETIRE_FAIL))
+                      | .TR_Address (paddr, _) => (do
+                          match (← (mem_read (Read Data) paddr EEW_data_bytes false false false)) with
+                          | .Ok elem => (write_single_element (EEW_data_bytes *i 8) i
+                              (vregidx_offset vd (to_bits 5 (j *i EMUL_data_reg))) elem)
+                          | .Err e => throw (← do
+                                (handle_mem_exception vaddr e)
+                                (pure RETIRE_FAIL)))))
+          (pure loop_vars_2))
       else
-        let loop_j_lower := 0
-        let loop_j_upper := (nf -i 1)
-        let mut loop_vars_1 := ()
-        for j in [loop_j_lower:loop_j_upper + 1:1]i do
-          let () := loop_vars_1
-          loop_vars_1 ← do
-            let skipped_elem :=
-              (Sail.BitVec.extractLsb
-                (shiftr (GetElem?.getElem! result i) ((j *i EEW_data_bytes) *i 8))
-                ((EEW_data_bytes *i 8) -i 1) 0)
-            (write_single_element (EEW_data_bytes *i 8) i
-              (vregidx_offset vd (to_bits 5 (j *i EMUL_data_reg))) skipped_elem)
-        (pure loop_vars_1)
+        (do
+          let loop_j_lower := 0
+          let loop_j_upper := (nf -i 1)
+          let mut loop_vars_1 := ()
+          for j in [loop_j_lower:loop_j_upper:1]i do
+            let () := loop_vars_1
+            loop_vars_1 ← do
+              let skipped_elem :=
+                (Sail.BitVec.extractLsb
+                  (shiftr (GetElem?.getElem! result i) ((j *i EEW_data_bytes) *i 8))
+                  ((EEW_data_bytes *i 8) -i 1) 0)
+              (write_single_element (EEW_data_bytes *i 8) i
+                (vregidx_offset vd (to_bits 5 (j *i EMUL_data_reg))) skipped_elem)
+          (pure loop_vars_1))
   (pure loop_vars)
   (set_vstart (zeros_implicit (n := 16)))
   (pure RETIRE_SUCCESS)
@@ -924,7 +937,7 @@ def process_vlxseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (EEW_index_bytes 
   EEW_index_bytes ∈ {1, 2, 4, 8} ∧ EEW_data_bytes ∈ {1, 2, 4, 8} ∧ num_elem > 0 -/
 def process_vsxseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (EEW_index_bytes : Nat) (EEW_data_bytes : Nat) (EMUL_index_pow : Int) (EMUL_data_pow : Int) (rs1 : regidx) (vs2 : vregidx) (num_elem : Nat) (mop : Int) : SailM Retired := SailME.run do
   let EMUL_data_reg : Int :=
-    if (EMUL_data_pow ≤b 0)
+    bif (EMUL_data_pow ≤b 0)
     then 1
     else (2 ^i EMUL_data_pow)
   let width_type : word_width := (size_bytes_backwards EEW_data_bytes)
@@ -938,57 +951,56 @@ def process_vsxseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (EEW_index_bytes
   let loop_i_lower := 0
   let loop_i_upper := (num_elem -i 1)
   let mut loop_vars := ()
-  for i in [loop_i_lower:loop_i_upper + 1:1]i do
+  for i in [loop_i_lower:loop_i_upper:1]i do
     let () := loop_vars
     loop_vars ← do
-      if (BEq.beq (BitVec.access mask i) 1#1)
+      bif (BEq.beq (BitVec.access mask i) 1#1)
       then
-        (set_vstart (to_bits 16 i))
-        let loop_j_lower := 0
-        let loop_j_upper := (nf -i 1)
-        let mut loop_vars_1 := ()
-        for j in [loop_j_lower:loop_j_upper + 1:1]i do
-          let () := loop_vars_1
-          loop_vars_1 ← do
-            let elem_offset : Int :=
-              ((BitVec.toNat (GetElem?.getElem! vs2_val i)) +i (j *i EEW_data_bytes))
-            match (← (ext_data_get_addr rs1 (to_bits xlen elem_offset) (Write Data) EEW_data_bytes)) with
-            | .Ext_DataAddr_Error e =>
-              throw (let _ : Unit := (ext_handle_data_check_error e)
-                RETIRE_FAIL : Retired)
-            | .Ext_DataAddr_OK vaddr =>
-              if (check_misaligned vaddr width_type)
-              then
-                throw (← do
-                    (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
-                    (pure RETIRE_FAIL))
-              else
-                match (← (translateAddr vaddr (Write Data))) with
-                | .TR_Failure (e, _) =>
-                  throw (← do
-                      (handle_mem_exception vaddr e)
-                      (pure RETIRE_FAIL))
-                | .TR_Address (paddr, _) =>
-                  match (← (mem_write_ea paddr EEW_data_bytes false false false)) with
-                  | .Err e =>
+        (do
+          (set_vstart (to_bits 16 i))
+          let loop_j_lower := 0
+          let loop_j_upper := (nf -i 1)
+          let mut loop_vars_1 := ()
+          for j in [loop_j_lower:loop_j_upper:1]i do
+            let () := loop_vars_1
+            loop_vars_1 ← do
+              let elem_offset : Int :=
+                ((BitVec.toNat (GetElem?.getElem! vs2_val i)) +i (j *i EEW_data_bytes))
+              match (← (ext_data_get_addr rs1 (to_bits xlen elem_offset) (Write Data)
+                  EEW_data_bytes)) with
+              | .Ext_DataAddr_Error e => throw (let _ : Unit := (ext_handle_data_check_error e)
+                  RETIRE_FAIL : Retired)
+              | .Ext_DataAddr_OK vaddr => (do
+                  bif (check_misaligned vaddr width_type)
+                  then
                     throw (← do
-                        (handle_mem_exception vaddr e)
+                        (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
                         (pure RETIRE_FAIL))
-                  | .Ok _ =>
-                    let elem_val ← (( do
-                      (read_single_element (EEW_data_bytes *i 8) i
-                        (vregidx_offset vs3 (to_bits 5 (j *i EMUL_data_reg)))) ) : SailME _
-                      (BitVec (EEW_data_bytes * 8)) )
-                    match (← (mem_write_value paddr EEW_data_bytes elem_val false false false)) with
-                    | .Ok true => (pure ())
-                    | .Ok false =>
-                      (internal_error "riscv_insts_vext_mem.sail" 586
-                        "store got false from mem_write_value")
-                    | .Err e =>
-                      throw (← do
-                          (handle_mem_exception vaddr e)
-                          (pure RETIRE_FAIL))
-        (pure loop_vars_1)
+                  else
+                    (do
+                      match (← (translateAddr vaddr (Write Data))) with
+                      | .TR_Failure (e, _) => throw (← do
+                            (handle_mem_exception vaddr e)
+                            (pure RETIRE_FAIL))
+                      | .TR_Address (paddr, _) => (do
+                          match (← (mem_write_ea paddr EEW_data_bytes false false false)) with
+                          | .Err e => throw (← do
+                                (handle_mem_exception vaddr e)
+                                (pure RETIRE_FAIL))
+                          | .Ok _ => (do
+                              let elem_val ← (( do
+                                (read_single_element (EEW_data_bytes *i 8) i
+                                  (vregidx_offset vs3 (to_bits 5 (j *i EMUL_data_reg)))) ) : SailME
+                                _ (BitVec (EEW_data_bytes * 8)) )
+                              match (← (mem_write_value paddr EEW_data_bytes elem_val false false
+                                  false)) with
+                              | .Ok true => (pure ())
+                              | .Ok false => (internal_error "riscv_insts_vext_mem.sail" 586
+                                  "store got false from mem_write_value")
+                              | .Err e => throw (← do
+                                    (handle_mem_exception vaddr e)
+                                    (pure RETIRE_FAIL))))))
+          (pure loop_vars_1))
       else (pure ())
   (pure loop_vars)
   (set_vstart (zeros_implicit (n := 16)))
@@ -999,224 +1011,217 @@ def process_vsxseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (EEW_index_bytes
 def process_vlre (nf : Nat) (vd : vregidx) (load_width_bytes : Nat) (rs1 : regidx) (elem_per_reg : Nat) : SailM Retired := SailME.run do
   let width_type : word_width := (size_bytes_backwards load_width_bytes)
   let start_element ← do (get_start_element ())
-  if (start_element ≥b (nf *i elem_per_reg))
+  bif (start_element ≥b (nf *i elem_per_reg))
   then (pure RETIRE_SUCCESS)
   else
-    let elem_to_align : Int := (Int.emod start_element elem_per_reg)
-    let cur_field : Int := (Int.tdiv start_element elem_per_reg)
-    let cur_elem : Int := start_element
-    let (cur_elem, cur_field) ← (( do
-      if (elem_to_align >b 0)
-      then
-        let cur_elem ← (( do
-          let loop_i_lower := elem_to_align
-          let loop_i_upper := (elem_per_reg -i 1)
-          let mut loop_vars := cur_elem
-          for i in [loop_i_lower:loop_i_upper + 1:1]i do
-            let cur_elem := loop_vars
-            loop_vars ← do
-              (set_vstart (to_bits 16 cur_elem))
-              let elem_offset := (cur_elem *i load_width_bytes)
-              match (← (ext_data_get_addr rs1 (to_bits xlen elem_offset) (Read Data)
-                  load_width_bytes)) with
-              | .Ext_DataAddr_Error e =>
-                throw (let _ : Unit := (ext_handle_data_check_error e)
-                  RETIRE_FAIL : Retired)
-              | .Ext_DataAddr_OK vaddr =>
-                if (check_misaligned vaddr width_type)
-                then
-                  throw (← do
-                      (handle_mem_exception vaddr (E_Load_Addr_Align ()))
-                      (pure RETIRE_FAIL))
-                else
-                  match (← (translateAddr vaddr (Read Data))) with
-                  | .TR_Failure (e, _) =>
-                    throw (← do
-                        (handle_mem_exception vaddr e)
-                        (pure RETIRE_FAIL))
-                  | .TR_Address (paddr, _) =>
-                    match (← (mem_read (Read Data) paddr load_width_bytes false false false)) with
-                    | .Ok elem =>
-                      (write_single_element (load_width_bytes *i 8) i
-                        (vregidx_offset vd (to_bits 5 cur_field)) elem)
-                    | .Err e =>
+    (do
+      let elem_to_align : Int := (Int.emod start_element elem_per_reg)
+      let cur_field : Int := (Int.tdiv start_element elem_per_reg)
+      let cur_elem : Int := start_element
+      let (cur_elem, cur_field) ← (( do
+        bif (elem_to_align >b 0)
+        then
+          (do
+            let cur_elem ← (( do
+              let loop_i_lower := elem_to_align
+              let loop_i_upper := (elem_per_reg -i 1)
+              let mut loop_vars := cur_elem
+              for i in [loop_i_lower:loop_i_upper:1]i do
+                let cur_elem := loop_vars
+                loop_vars ← do
+                  (set_vstart (to_bits 16 cur_elem))
+                  let elem_offset := (cur_elem *i load_width_bytes)
+                  match (← (ext_data_get_addr rs1 (to_bits xlen elem_offset) (Read Data)
+                      load_width_bytes)) with
+                  | .Ext_DataAddr_Error e => throw (let _ : Unit := (ext_handle_data_check_error e)
+                      RETIRE_FAIL : Retired)
+                  | .Ext_DataAddr_OK vaddr => (do
+                      bif (check_misaligned vaddr width_type)
+                      then
+                        throw (← do
+                            (handle_mem_exception vaddr (E_Load_Addr_Align ()))
+                            (pure RETIRE_FAIL))
+                      else
+                        (do
+                          match (← (translateAddr vaddr (Read Data))) with
+                          | .TR_Failure (e, _) => throw (← do
+                                (handle_mem_exception vaddr e)
+                                (pure RETIRE_FAIL))
+                          | .TR_Address (paddr, _) => (do
+                              match (← (mem_read (Read Data) paddr load_width_bytes false false
+                                  false)) with
+                              | .Ok elem => (write_single_element (load_width_bytes *i 8) i
+                                  (vregidx_offset vd (to_bits 5 cur_field)) elem)
+                              | .Err e => throw (← do
+                                    (handle_mem_exception vaddr e)
+                                    (pure RETIRE_FAIL)))))
+                  (pure (cur_elem +i 1))
+              (pure loop_vars) ) : SailME _ Int )
+            let cur_field : Int := (cur_field +i 1)
+            (pure (cur_elem, cur_field)))
+        else (pure (cur_elem, cur_field)) ) : SailME _ (Int × Int) )
+      let cur_elem ← (( do
+        let loop_j_lower := cur_field
+        let loop_j_upper := (nf -i 1)
+        let mut loop_vars_1 := cur_elem
+        for j in [loop_j_lower:loop_j_upper:1]i do
+          let cur_elem := loop_vars_1
+          loop_vars_1 ← do
+            let loop_i_lower := 0
+            let loop_i_upper := (elem_per_reg -i 1)
+            let mut loop_vars_2 := cur_elem
+            for i in [loop_i_lower:loop_i_upper:1]i do
+              let cur_elem := loop_vars_2
+              loop_vars_2 ← do
+                (set_vstart (to_bits 16 cur_elem))
+                let elem_offset := (cur_elem *i load_width_bytes)
+                match (← (ext_data_get_addr rs1 (to_bits xlen elem_offset) (Read Data)
+                    load_width_bytes)) with
+                | .Ext_DataAddr_Error e => throw (let _ : Unit := (ext_handle_data_check_error e)
+                    RETIRE_FAIL : Retired)
+                | .Ext_DataAddr_OK vaddr => (do
+                    bif (check_misaligned vaddr width_type)
+                    then
                       throw (← do
-                          (handle_mem_exception vaddr e)
+                          (handle_mem_exception vaddr (E_Load_Addr_Align ()))
                           (pure RETIRE_FAIL))
-              (pure (cur_elem +i 1))
-          (pure loop_vars) ) : SailME _ Int )
-        let cur_field : Int := (cur_field +i 1)
-        (pure (cur_elem, cur_field))
-      else (pure (cur_elem, cur_field)) ) : SailME _ (Int × Int) )
-    let cur_elem ← (( do
-      let loop_j_lower := cur_field
-      let loop_j_upper := (nf -i 1)
-      let mut loop_vars := cur_elem
-      for j in [loop_j_lower:loop_j_upper + 1:1]i do
-        let cur_elem := loop_vars
-        loop_vars ← do
-          let loop_i_lower := 0
-          let loop_i_upper := (elem_per_reg -i 1)
-          let mut loop_vars_1 := cur_elem
-          for i in [loop_i_lower:loop_i_upper + 1:1]i do
-            let cur_elem := loop_vars_1
-            loop_vars_1 ← do
-              (set_vstart (to_bits 16 cur_elem))
-              let elem_offset := (cur_elem *i load_width_bytes)
-              match (← (ext_data_get_addr rs1 (to_bits xlen elem_offset) (Read Data)
-                  load_width_bytes)) with
-              | .Ext_DataAddr_Error e =>
-                throw (let _ : Unit := (ext_handle_data_check_error e)
-                  RETIRE_FAIL : Retired)
-              | .Ext_DataAddr_OK vaddr =>
-                if (check_misaligned vaddr width_type)
-                then
-                  throw (← do
-                      (handle_mem_exception vaddr (E_Load_Addr_Align ()))
-                      (pure RETIRE_FAIL))
-                else
-                  match (← (translateAddr vaddr (Read Data))) with
-                  | .TR_Failure (e, _) =>
-                    throw (← do
-                        (handle_mem_exception vaddr e)
-                        (pure RETIRE_FAIL))
-                  | .TR_Address (paddr, _) =>
-                    match (← (mem_read (Read Data) paddr load_width_bytes false false false)) with
-                    | .Ok elem =>
-                      (write_single_element (load_width_bytes *i 8) i
-                        (vregidx_offset vd (to_bits 5 j)) elem)
-                    | .Err e =>
-                      throw (← do
-                          (handle_mem_exception vaddr e)
-                          (pure RETIRE_FAIL))
-              (pure (cur_elem +i 1))
-          (pure loop_vars_1)
-      (pure loop_vars) ) : SailME _ Int )
-    (set_vstart (zeros_implicit (n := 16)))
-    (pure RETIRE_SUCCESS)
+                    else
+                      (do
+                        match (← (translateAddr vaddr (Read Data))) with
+                        | .TR_Failure (e, _) => throw (← do
+                              (handle_mem_exception vaddr e)
+                              (pure RETIRE_FAIL))
+                        | .TR_Address (paddr, _) => (do
+                            match (← (mem_read (Read Data) paddr load_width_bytes false false
+                                false)) with
+                            | .Ok elem => (write_single_element (load_width_bytes *i 8) i
+                                (vregidx_offset vd (to_bits 5 j)) elem)
+                            | .Err e => throw (← do
+                                  (handle_mem_exception vaddr e)
+                                  (pure RETIRE_FAIL)))))
+                (pure (cur_elem +i 1))
+            (pure loop_vars_2)
+        (pure loop_vars_1) ) : SailME _ Int )
+      (set_vstart (zeros_implicit (n := 16)))
+      (pure RETIRE_SUCCESS))
 
 /-- Type quantifiers: nf : Nat, load_width_bytes : Nat, elem_per_reg : Nat, nf ∈ {1, 2, 4, 8} ∧
   load_width_bytes ∈ {1, 2, 4, 8} ∧ elem_per_reg ≥ 0 -/
 def process_vsre (nf : Nat) (load_width_bytes : Nat) (rs1 : regidx) (vs3 : vregidx) (elem_per_reg : Nat) : SailM Retired := SailME.run do
   let width_type : word_width := BYTE
   let start_element ← do (get_start_element ())
-  if (start_element ≥b (nf *i elem_per_reg))
+  bif (start_element ≥b (nf *i elem_per_reg))
   then (pure RETIRE_SUCCESS)
   else
-    let elem_to_align : Int := (Int.emod start_element elem_per_reg)
-    let cur_field : Int := (Int.tdiv start_element elem_per_reg)
-    let cur_elem : Int := start_element
-    let (cur_elem, cur_field) ← (( do
-      if (elem_to_align >b 0)
-      then
-        let cur_elem ← (( do
-          let loop_i_lower := elem_to_align
-          let loop_i_upper := (elem_per_reg -i 1)
-          let mut loop_vars := cur_elem
-          for i in [loop_i_lower:loop_i_upper + 1:1]i do
-            let cur_elem := loop_vars
-            loop_vars ← do
-              (set_vstart (to_bits 16 cur_elem))
-              let elem_offset : Int := (cur_elem *i load_width_bytes)
-              match (← (ext_data_get_addr rs1 (to_bits xlen elem_offset) (Write Data)
-                  load_width_bytes)) with
-              | .Ext_DataAddr_Error e =>
-                throw (let _ : Unit := (ext_handle_data_check_error e)
-                  RETIRE_FAIL : Retired)
-              | .Ext_DataAddr_OK vaddr =>
-                if (check_misaligned vaddr width_type)
-                then
-                  throw (← do
-                      (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
-                      (pure RETIRE_FAIL))
-                else
-                  match (← (translateAddr vaddr (Write Data))) with
-                  | .TR_Failure (e, _) =>
-                    throw (← do
-                        (handle_mem_exception vaddr e)
-                        (pure RETIRE_FAIL))
-                  | .TR_Address (paddr, _) =>
-                    match (← (mem_write_ea paddr load_width_bytes false false false)) with
-                    | .Err e =>
-                      throw (← do
-                          (handle_mem_exception vaddr e)
-                          (pure RETIRE_FAIL))
-                    | .Ok _ =>
-                      let elem ← (( do
-                        (read_single_element (load_width_bytes *i 8) i
-                          (vregidx_offset vs3 (to_bits 5 cur_field))) ) : SailME _
-                        (BitVec (load_width_bytes * 8)) )
-                      match (← (mem_write_value paddr load_width_bytes elem false false false)) with
-                      | .Ok true => (pure ())
-                      | .Ok false =>
-                        (internal_error "riscv_insts_vext_mem.sail" 765
-                          "store got false from mem_write_value")
-                      | .Err e =>
+    (do
+      let elem_to_align : Int := (Int.emod start_element elem_per_reg)
+      let cur_field : Int := (Int.tdiv start_element elem_per_reg)
+      let cur_elem : Int := start_element
+      let (cur_elem, cur_field) ← (( do
+        bif (elem_to_align >b 0)
+        then
+          (do
+            let cur_elem ← (( do
+              let loop_i_lower := elem_to_align
+              let loop_i_upper := (elem_per_reg -i 1)
+              let mut loop_vars := cur_elem
+              for i in [loop_i_lower:loop_i_upper:1]i do
+                let cur_elem := loop_vars
+                loop_vars ← do
+                  (set_vstart (to_bits 16 cur_elem))
+                  let elem_offset : Int := (cur_elem *i load_width_bytes)
+                  match (← (ext_data_get_addr rs1 (to_bits xlen elem_offset) (Write Data)
+                      load_width_bytes)) with
+                  | .Ext_DataAddr_Error e => throw (let _ : Unit := (ext_handle_data_check_error e)
+                      RETIRE_FAIL : Retired)
+                  | .Ext_DataAddr_OK vaddr => (do
+                      bif (check_misaligned vaddr width_type)
+                      then
                         throw (← do
-                            (handle_mem_exception vaddr e)
+                            (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
                             (pure RETIRE_FAIL))
-              (pure (cur_elem +i 1))
-          (pure loop_vars) ) : SailME _ Int )
-        let cur_field : Int := (cur_field +i 1)
-        (pure (cur_elem, cur_field))
-      else (pure (cur_elem, cur_field)) ) : SailME _ (Int × Int) )
-    let cur_elem ← (( do
-      let loop_j_lower := cur_field
-      let loop_j_upper := (nf -i 1)
-      let mut loop_vars := cur_elem
-      for j in [loop_j_lower:loop_j_upper + 1:1]i do
-        let cur_elem := loop_vars
-        loop_vars ← do
-          let vs3_val ← (( do
-            (read_vreg elem_per_reg (load_width_bytes *i 8) 0 (vregidx_offset vs3 (to_bits 5 j))) )
-            : SailME _ (Vector (BitVec (load_width_bytes * 8)) elem_per_reg) )
-          let loop_i_lower := 0
-          let loop_i_upper := (elem_per_reg -i 1)
-          let mut loop_vars_1 := cur_elem
-          for i in [loop_i_lower:loop_i_upper + 1:1]i do
-            let cur_elem := loop_vars_1
-            loop_vars_1 ← do
-              (set_vstart (to_bits 16 cur_elem))
-              let elem_offset := (cur_elem *i load_width_bytes)
-              match (← (ext_data_get_addr rs1 (to_bits xlen elem_offset) (Write Data)
-                  load_width_bytes)) with
-              | .Ext_DataAddr_Error e =>
-                throw (let _ : Unit := (ext_handle_data_check_error e)
-                  RETIRE_FAIL : Retired)
-              | .Ext_DataAddr_OK vaddr =>
-                if (check_misaligned vaddr width_type)
-                then
-                  throw (← do
-                      (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
-                      (pure RETIRE_FAIL))
-                else
-                  match (← (translateAddr vaddr (Write Data))) with
-                  | .TR_Failure (e, _) =>
-                    throw (← do
-                        (handle_mem_exception vaddr e)
-                        (pure RETIRE_FAIL))
-                  | .TR_Address (paddr, _) =>
-                    match (← (mem_write_ea paddr load_width_bytes false false false)) with
-                    | .Err e =>
+                      else
+                        (do
+                          match (← (translateAddr vaddr (Write Data))) with
+                          | .TR_Failure (e, _) => throw (← do
+                                (handle_mem_exception vaddr e)
+                                (pure RETIRE_FAIL))
+                          | .TR_Address (paddr, _) => (do
+                              match (← (mem_write_ea paddr load_width_bytes false false false)) with
+                              | .Err e => throw (← do
+                                    (handle_mem_exception vaddr e)
+                                    (pure RETIRE_FAIL))
+                              | .Ok _ => (do
+                                  let elem ← (( do
+                                    (read_single_element (load_width_bytes *i 8) i
+                                      (vregidx_offset vs3 (to_bits 5 cur_field))) ) : SailME _
+                                    (BitVec (load_width_bytes * 8)) )
+                                  match (← (mem_write_value paddr load_width_bytes elem false
+                                      false false)) with
+                                  | .Ok true => (pure ())
+                                  | .Ok false => (internal_error "riscv_insts_vext_mem.sail" 765
+                                      "store got false from mem_write_value")
+                                  | .Err e => throw (← do
+                                        (handle_mem_exception vaddr e)
+                                        (pure RETIRE_FAIL))))))
+                  (pure (cur_elem +i 1))
+              (pure loop_vars) ) : SailME _ Int )
+            let cur_field : Int := (cur_field +i 1)
+            (pure (cur_elem, cur_field)))
+        else (pure (cur_elem, cur_field)) ) : SailME _ (Int × Int) )
+      let cur_elem ← (( do
+        let loop_j_lower := cur_field
+        let loop_j_upper := (nf -i 1)
+        let mut loop_vars_1 := cur_elem
+        for j in [loop_j_lower:loop_j_upper:1]i do
+          let cur_elem := loop_vars_1
+          loop_vars_1 ← do
+            let vs3_val ← (( do
+              (read_vreg elem_per_reg (load_width_bytes *i 8) 0 (vregidx_offset vs3 (to_bits 5 j)))
+              ) : SailME _ (Vector (BitVec (load_width_bytes * 8)) elem_per_reg) )
+            let loop_i_lower := 0
+            let loop_i_upper := (elem_per_reg -i 1)
+            let mut loop_vars_2 := cur_elem
+            for i in [loop_i_lower:loop_i_upper:1]i do
+              let cur_elem := loop_vars_2
+              loop_vars_2 ← do
+                (set_vstart (to_bits 16 cur_elem))
+                let elem_offset := (cur_elem *i load_width_bytes)
+                match (← (ext_data_get_addr rs1 (to_bits xlen elem_offset) (Write Data)
+                    load_width_bytes)) with
+                | .Ext_DataAddr_Error e => throw (let _ : Unit := (ext_handle_data_check_error e)
+                    RETIRE_FAIL : Retired)
+                | .Ext_DataAddr_OK vaddr => (do
+                    bif (check_misaligned vaddr width_type)
+                    then
                       throw (← do
-                          (handle_mem_exception vaddr e)
+                          (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
                           (pure RETIRE_FAIL))
-                    | .Ok _ =>
-                      match (← (mem_write_value paddr load_width_bytes
-                          (GetElem?.getElem! vs3_val i) false false false)) with
-                      | .Ok true => (pure ())
-                      | .Ok false =>
-                        (internal_error "riscv_insts_vext_mem.sail" 796
-                          "store got false from mem_write_value")
-                      | .Err e =>
-                        throw (← do
-                            (handle_mem_exception vaddr e)
-                            (pure RETIRE_FAIL))
-              (pure (cur_elem +i 1))
-          (pure loop_vars_1)
-      (pure loop_vars) ) : SailME _ Int )
-    (set_vstart (zeros_implicit (n := 16)))
-    (pure RETIRE_SUCCESS)
+                    else
+                      (do
+                        match (← (translateAddr vaddr (Write Data))) with
+                        | .TR_Failure (e, _) => throw (← do
+                              (handle_mem_exception vaddr e)
+                              (pure RETIRE_FAIL))
+                        | .TR_Address (paddr, _) => (do
+                            match (← (mem_write_ea paddr load_width_bytes false false false)) with
+                            | .Err e => throw (← do
+                                  (handle_mem_exception vaddr e)
+                                  (pure RETIRE_FAIL))
+                            | .Ok _ => (do
+                                match (← (mem_write_value paddr load_width_bytes
+                                    (GetElem?.getElem! vs3_val i) false false false)) with
+                                | .Ok true => (pure ())
+                                | .Ok false => (internal_error "riscv_insts_vext_mem.sail" 796
+                                    "store got false from mem_write_value")
+                                | .Err e => throw (← do
+                                      (handle_mem_exception vaddr e)
+                                      (pure RETIRE_FAIL))))))
+                (pure (cur_elem +i 1))
+            (pure loop_vars_2)
+        (pure loop_vars_1) ) : SailME _ Int )
+      (set_vstart (zeros_implicit (n := 16)))
+      (pure RETIRE_SUCCESS))
 
 def encdec_lsop_forwards (arg_ : vmlsop) : (BitVec 7) :=
   match arg_ with
@@ -1225,14 +1230,16 @@ def encdec_lsop_forwards (arg_ : vmlsop) : (BitVec 7) :=
 
 def encdec_lsop_backwards (arg_ : (BitVec 7)) : SailM vmlsop := do
   let b__0 := arg_
-  if (BEq.beq b__0 (0b0000111 : (BitVec 7)))
+  bif (BEq.beq b__0 (0b0000111 : (BitVec 7)))
   then (pure VLM)
   else
-    if (BEq.beq b__0 (0b0100111 : (BitVec 7)))
-    then (pure VSM)
-    else
-      assert false "Pattern match failure at unknown location"
-      throw Error.Exit
+    (do
+      bif (BEq.beq b__0 (0b0100111 : (BitVec 7)))
+      then (pure VSM)
+      else
+        (do
+          assert false "Pattern match failure at unknown location"
+          throw Error.Exit))
 
 def encdec_lsop_forwards_matches (arg_ : vmlsop) : Bool :=
   match arg_ with
@@ -1241,12 +1248,12 @@ def encdec_lsop_forwards_matches (arg_ : vmlsop) : Bool :=
 
 def encdec_lsop_backwards_matches (arg_ : (BitVec 7)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b0000111 : (BitVec 7)))
+  bif (BEq.beq b__0 (0b0000111 : (BitVec 7)))
   then true
   else
-    if (BEq.beq b__0 (0b0100111 : (BitVec 7)))
+    (bif (BEq.beq b__0 (0b0100111 : (BitVec 7)))
     then true
-    else false
+    else false)
 
 /-- Type quantifiers: num_elem : Nat, evl : Nat, num_elem ≥ 0 ∧ evl ≥ 0 -/
 def process_vm (vd_or_vs3 : vregidx) (rs1 : regidx) (num_elem : Nat) (evl : Nat) (op : vmlsop) : SailM Retired := SailME.run do
@@ -1257,78 +1264,77 @@ def process_vm (vd_or_vs3 : vregidx) (rs1 : regidx) (num_elem : Nat) (evl : Nat)
   let loop_i_lower := start_element
   let loop_i_upper := (num_elem -i 1)
   let mut loop_vars := ()
-  for i in [loop_i_lower:loop_i_upper + 1:1]i do
+  for i in [loop_i_lower:loop_i_upper:1]i do
     let () := loop_vars
     loop_vars ← do
-      if (i <b evl)
+      bif (i <b evl)
       then
-        (set_vstart (to_bits 16 i))
-        if (BEq.beq op VLM)
-        then
-          match (← (ext_data_get_addr rs1 (to_bits xlen i) (Read Data) 1)) with
-          | .Ext_DataAddr_Error e =>
-            throw (let _ : Unit := (ext_handle_data_check_error e)
-              RETIRE_FAIL : Retired)
-          | .Ext_DataAddr_OK vaddr =>
-            if (check_misaligned vaddr width_type)
-            then
-              throw (← do
-                  (handle_mem_exception vaddr (E_Load_Addr_Align ()))
-                  (pure RETIRE_FAIL))
-            else
-              match (← (translateAddr vaddr (Read Data))) with
-              | .TR_Failure (e, _) =>
-                throw (← do
-                    (handle_mem_exception vaddr e)
-                    (pure RETIRE_FAIL))
-              | .TR_Address (paddr, _) =>
-                match (← (mem_read (Read Data) paddr 1 false false false)) with
-                | .Ok elem => (write_single_element 8 i vd_or_vs3 elem)
-                | .Err e =>
-                  throw (← do
-                      (handle_mem_exception vaddr e)
-                      (pure RETIRE_FAIL))
-        else
-          if (BEq.beq op VSM)
+        (do
+          (set_vstart (to_bits 16 i))
+          bif (BEq.beq op VLM)
           then
-            match (← (ext_data_get_addr rs1 (to_bits xlen i) (Write Data) 1)) with
-            | .Ext_DataAddr_Error e =>
-              throw (let _ : Unit := (ext_handle_data_check_error e)
-                RETIRE_FAIL : Retired)
-            | .Ext_DataAddr_OK vaddr =>
-              if (check_misaligned vaddr width_type)
-              then
-                throw (← do
-                    (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
-                    (pure RETIRE_FAIL))
-              else
-                match (← (translateAddr vaddr (Write Data))) with
-                | .TR_Failure (e, _) =>
-                  throw (← do
-                      (handle_mem_exception vaddr e)
-                      (pure RETIRE_FAIL))
-                | .TR_Address (paddr, _) =>
-                  match (← (mem_write_ea paddr 1 false false false)) with
-                  | .Err e =>
+            (do
+              match (← (ext_data_get_addr rs1 (to_bits xlen i) (Read Data) 1)) with
+              | .Ext_DataAddr_Error e => throw (let _ : Unit := (ext_handle_data_check_error e)
+                  RETIRE_FAIL : Retired)
+              | .Ext_DataAddr_OK vaddr => (do
+                  bif (check_misaligned vaddr width_type)
+                  then
                     throw (← do
-                        (handle_mem_exception vaddr e)
+                        (handle_mem_exception vaddr (E_Load_Addr_Align ()))
                         (pure RETIRE_FAIL))
-                  | .Ok _ =>
-                    match (← (mem_write_value paddr 1 (GetElem?.getElem! vd_or_vs3_val i) false
-                        false false)) with
-                    | .Ok true => (pure ())
-                    | .Ok false =>
-                      (internal_error "riscv_insts_vext_mem.sail" 878
-                        "store got false from mem_write_value")
-                    | .Err e =>
-                      throw (← do
-                          (handle_mem_exception vaddr e)
-                          (pure RETIRE_FAIL))
-          else (pure ())
+                  else
+                    (do
+                      match (← (translateAddr vaddr (Read Data))) with
+                      | .TR_Failure (e, _) => throw (← do
+                            (handle_mem_exception vaddr e)
+                            (pure RETIRE_FAIL))
+                      | .TR_Address (paddr, _) => (do
+                          match (← (mem_read (Read Data) paddr 1 false false false)) with
+                          | .Ok elem => (write_single_element 8 i vd_or_vs3 elem)
+                          | .Err e => throw (← do
+                                (handle_mem_exception vaddr e)
+                                (pure RETIRE_FAIL))))))
+          else
+            (do
+              bif (BEq.beq op VSM)
+              then
+                (do
+                  match (← (ext_data_get_addr rs1 (to_bits xlen i) (Write Data) 1)) with
+                  | .Ext_DataAddr_Error e => throw (let _ : Unit := (ext_handle_data_check_error e)
+                      RETIRE_FAIL : Retired)
+                  | .Ext_DataAddr_OK vaddr => (do
+                      bif (check_misaligned vaddr width_type)
+                      then
+                        throw (← do
+                            (handle_mem_exception vaddr (E_SAMO_Addr_Align ()))
+                            (pure RETIRE_FAIL))
+                      else
+                        (do
+                          match (← (translateAddr vaddr (Write Data))) with
+                          | .TR_Failure (e, _) => throw (← do
+                                (handle_mem_exception vaddr e)
+                                (pure RETIRE_FAIL))
+                          | .TR_Address (paddr, _) => (do
+                              match (← (mem_write_ea paddr 1 false false false)) with
+                              | .Err e => throw (← do
+                                    (handle_mem_exception vaddr e)
+                                    (pure RETIRE_FAIL))
+                              | .Ok _ => (do
+                                  match (← (mem_write_value paddr 1
+                                      (GetElem?.getElem! vd_or_vs3_val i) false false false)) with
+                                  | .Ok true => (pure ())
+                                  | .Ok false => (internal_error "riscv_insts_vext_mem.sail" 878
+                                      "store got false from mem_write_value")
+                                  | .Err e => throw (← do
+                                        (handle_mem_exception vaddr e)
+                                        (pure RETIRE_FAIL)))))))
+              else (pure ())))
       else
-        if (BEq.beq op VLM)
-        then (write_single_element 8 i vd_or_vs3 (GetElem?.getElem! vd_or_vs3_val i))
-        else (pure ())
+        (do
+          bif (BEq.beq op VLM)
+          then (write_single_element 8 i vd_or_vs3 (GetElem?.getElem! vd_or_vs3_val i))
+          else (pure ()))
   (pure loop_vars)
   (set_vstart (zeros_implicit (n := 16)))
   (pure RETIRE_SUCCESS)
@@ -1337,9 +1343,9 @@ def vmtype_mnemonic_backwards (arg_ : String) : SailM vmlsop := do
   match arg_ with
   | "vlm.v" => (pure VLM)
   | "vsm.v" => (pure VSM)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def vmtype_mnemonic_forwards_matches (arg_ : vmlsop) : Bool :=
   match arg_ with

@@ -379,6 +379,9 @@ def undefined_bool (_ : Unit) : PreSailM RegisterType c ue Bool :=
 def undefined_int (_ : Unit) : PreSailM RegisterType c ue Int :=
   choose .int
 
+def undefined_range (low high : Int) : PreSailM RegisterType c ue Int := do
+  pure (low + (← choose .int) % (high - low))
+
 def undefined_nat (_ : Unit) : PreSailM RegisterType c ue Nat :=
   choose .nat
 
@@ -421,9 +424,7 @@ def assert (p : Bool) (s : String) : PreSailM RegisterType c ue Unit :=
 section ConcurrencyInterface
 
 def writeByte (addr : Nat) (value : BitVec 8) : PreSailM RegisterType c ue PUnit := do
-  match (← get).mem.containsThenInsert addr value with
-    | (true, m) => modify fun s => { s with mem := m }
-    | (false, _) => throw (.OutOfMemoryRange addr)
+  modify fun s => { s with mem := s.mem.insert addr value }
 
 def writeBytes (addr : Nat) (value : BitVec (8 * n)) : PreSailM RegisterType c ue Bool := do
   let list := List.ofFn (λ i : Fin n => (addr + i.val, value.extractLsb' (8 * i.val) 8))
@@ -453,8 +454,8 @@ def readBytes (size : Nat) (addr : Nat) : PreSailM RegisterType c ue ((BitVec (8
   | n + 1 => do
     let b ← readByte addr
     let (bytes, bool) ← readBytes n (addr+1)
-    have h : 8 + 8 * n = 8 * (n + 1) := by omega
-    return (h ▸ b.append bytes, bool)
+    have h : 8 * n + 8 = 8 * (n + 1) := by omega
+    return (h ▸ bytes.append b, bool)
 
 def sail_mem_read [Arch] (req : Mem_read_request n vasize (BitVec pa_size) ts arch) : PreSailM RegisterType c ue (Result ((BitVec (8 * n)) × (Option Bool)) Arch.abort) := do
   let addr := req.pa.toNat
@@ -572,3 +573,8 @@ notation:50 x "≥b" y => decide (x ≥ y)
 notation:50 x ">b" y => decide (x > y)
 
 macro_rules | `(tactic| decreasing_trivial) => `(tactic| simp_all <;> omega)
+
+-- This lemma replaces `bif` by `if` in functions when Lean is trying to prove
+-- termination.
+@[wf_preprocess]
+theorem cond_eq_ite (b : Bool) (x y : α) : cond b x y = ite b x y := by cases b <;> rfl

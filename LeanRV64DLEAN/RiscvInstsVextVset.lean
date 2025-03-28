@@ -168,9 +168,9 @@ def sew_flag_forwards (arg_ : String) : SailM (BitVec 3) := do
   | "e16" => (pure (0b001 : (BitVec 3)))
   | "e32" => (pure (0b010 : (BitVec 3)))
   | "e64" => (pure (0b011 : (BitVec 3)))
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def sew_flag_forwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -182,18 +182,18 @@ def sew_flag_forwards_matches (arg_ : String) : Bool :=
 
 def sew_flag_backwards_matches (arg_ : (BitVec 3)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
   then true
   else
-    if (BEq.beq b__0 (0b001 : (BitVec 3)))
+    (bif (BEq.beq b__0 (0b001 : (BitVec 3)))
     then true
     else
-      if (BEq.beq b__0 (0b010 : (BitVec 3)))
+      (bif (BEq.beq b__0 (0b010 : (BitVec 3)))
       then true
       else
-        if (BEq.beq b__0 (0b011 : (BitVec 3)))
+        (bif (BEq.beq b__0 (0b011 : (BitVec 3)))
         then true
-        else false
+        else false)))
 
 def maybe_lmul_flag_forwards (arg_ : String) : SailM (BitVec 3) := do
   match arg_ with
@@ -207,30 +207,30 @@ def maybe_lmul_flag_forwards_matches (arg_ : String) : SailM Bool := do
 
 def maybe_lmul_flag_backwards_matches (arg_ : (BitVec 3)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
   then true
   else
-    if (BEq.beq b__0 (0b101 : (BitVec 3)))
+    (bif (BEq.beq b__0 (0b101 : (BitVec 3)))
     then true
     else
-      if (BEq.beq b__0 (0b110 : (BitVec 3)))
+      (bif (BEq.beq b__0 (0b110 : (BitVec 3)))
       then true
       else
-        if (BEq.beq b__0 (0b111 : (BitVec 3)))
+        (bif (BEq.beq b__0 (0b111 : (BitVec 3)))
         then true
         else
-          if (BEq.beq b__0 (0b000 : (BitVec 3)))
+          (bif (BEq.beq b__0 (0b000 : (BitVec 3)))
           then true
           else
-            if (BEq.beq b__0 (0b001 : (BitVec 3)))
+            (bif (BEq.beq b__0 (0b001 : (BitVec 3)))
             then true
             else
-              if (BEq.beq b__0 (0b010 : (BitVec 3)))
+              (bif (BEq.beq b__0 (0b010 : (BitVec 3)))
               then true
               else
-                if (BEq.beq b__0 (0b011 : (BitVec 3)))
+                (bif (BEq.beq b__0 (0b011 : (BitVec 3)))
                 then true
-                else false
+                else false)))))))
 
 def maybe_ta_flag_forwards (arg_ : String) : SailM (BitVec 1) := do
   match arg_ with
@@ -244,15 +244,15 @@ def maybe_ta_flag_forwards_matches (arg_ : String) : SailM Bool := do
 
 def maybe_ta_flag_backwards_matches (arg_ : (BitVec 1)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b0 : (BitVec 1)))
+  bif (BEq.beq b__0 (0b0 : (BitVec 1)))
   then true
   else
-    if (BEq.beq b__0 (0b1 : (BitVec 1)))
+    (bif (BEq.beq b__0 (0b1 : (BitVec 1)))
     then true
     else
-      if (BEq.beq b__0 (0b0 : (BitVec 1)))
+      (bif (BEq.beq b__0 (0b0 : (BitVec 1)))
       then true
-      else false
+      else false))
 
 def maybe_ma_flag_forwards (arg_ : String) : SailM (BitVec 1) := do
   match arg_ with
@@ -266,15 +266,15 @@ def maybe_ma_flag_forwards_matches (arg_ : String) : SailM Bool := do
 
 def maybe_ma_flag_backwards_matches (arg_ : (BitVec 1)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b0 : (BitVec 1)))
+  bif (BEq.beq b__0 (0b0 : (BitVec 1)))
   then true
   else
-    if (BEq.beq b__0 (0b1 : (BitVec 1)))
+    (bif (BEq.beq b__0 (0b1 : (BitVec 1)))
     then true
     else
-      if (BEq.beq b__0 (0b0 : (BitVec 1)))
+      (bif (BEq.beq b__0 (0b0 : (BitVec 1)))
       then true
-      else false
+      else false))
 
 def handle_illegal_vtype (_ : Unit) : SailM Unit := do
   writeReg vtype ((0b1 : (BitVec 1)) ++ (zeros_implicit (n := (xlen -i 1))))
@@ -285,14 +285,14 @@ def handle_illegal_vtype (_ : Unit) : SailM Unit := do
 /-- Type quantifiers: VLMAX : Int, AVL : Int -/
 def calculate_new_vl (AVL : Int) (VLMAX : Int) : (BitVec (2 ^ 3 * 8)) :=
   let new_vl :=
-    if (AVL ≤b VLMAX)
+    bif (AVL ≤b VLMAX)
     then AVL
     else
-      if (AVL <b (2 *i VLMAX))
+      (bif (AVL <b (2 *i VLMAX))
       then
-        if (sys_vext_vl_use_ceil ())
+        (bif (sys_vext_vl_use_ceil ())
         then (Int.tdiv (AVL +i 1) 2)
-        else VLMAX
-      else VLMAX
+        else VLMAX)
+      else VLMAX)
   (to_bits xlen new_vl)
 

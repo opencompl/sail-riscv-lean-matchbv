@@ -173,26 +173,32 @@ def encdec_rfvvfunct6_forwards (arg_ : rfvvfunct6) : (BitVec 6) :=
 
 def encdec_rfvvfunct6_backwards (arg_ : (BitVec 6)) : SailM rfvvfunct6 := do
   let b__0 := arg_
-  if (BEq.beq b__0 (0b000011 : (BitVec 6)))
+  bif (BEq.beq b__0 (0b000011 : (BitVec 6)))
   then (pure FVV_VFREDOSUM)
   else
-    if (BEq.beq b__0 (0b000001 : (BitVec 6)))
-    then (pure FVV_VFREDUSUM)
-    else
-      if (BEq.beq b__0 (0b000111 : (BitVec 6)))
-      then (pure FVV_VFREDMAX)
+    (do
+      bif (BEq.beq b__0 (0b000001 : (BitVec 6)))
+      then (pure FVV_VFREDUSUM)
       else
-        if (BEq.beq b__0 (0b000101 : (BitVec 6)))
-        then (pure FVV_VFREDMIN)
-        else
-          if (BEq.beq b__0 (0b110011 : (BitVec 6)))
-          then (pure FVV_VFWREDOSUM)
+        (do
+          bif (BEq.beq b__0 (0b000111 : (BitVec 6)))
+          then (pure FVV_VFREDMAX)
           else
-            if (BEq.beq b__0 (0b110001 : (BitVec 6)))
-            then (pure FVV_VFWREDUSUM)
-            else
-              assert false "Pattern match failure at unknown location"
-              throw Error.Exit
+            (do
+              bif (BEq.beq b__0 (0b000101 : (BitVec 6)))
+              then (pure FVV_VFREDMIN)
+              else
+                (do
+                  bif (BEq.beq b__0 (0b110011 : (BitVec 6)))
+                  then (pure FVV_VFWREDOSUM)
+                  else
+                    (do
+                      bif (BEq.beq b__0 (0b110001 : (BitVec 6)))
+                      then (pure FVV_VFWREDUSUM)
+                      else
+                        (do
+                          assert false "Pattern match failure at unknown location"
+                          throw Error.Exit))))))
 
 def encdec_rfvvfunct6_forwards_matches (arg_ : rfvvfunct6) : Bool :=
   match arg_ with
@@ -205,68 +211,73 @@ def encdec_rfvvfunct6_forwards_matches (arg_ : rfvvfunct6) : Bool :=
 
 def encdec_rfvvfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b000011 : (BitVec 6)))
+  bif (BEq.beq b__0 (0b000011 : (BitVec 6)))
   then true
   else
-    if (BEq.beq b__0 (0b000001 : (BitVec 6)))
+    (bif (BEq.beq b__0 (0b000001 : (BitVec 6)))
     then true
     else
-      if (BEq.beq b__0 (0b000111 : (BitVec 6)))
+      (bif (BEq.beq b__0 (0b000111 : (BitVec 6)))
       then true
       else
-        if (BEq.beq b__0 (0b000101 : (BitVec 6)))
+        (bif (BEq.beq b__0 (0b000101 : (BitVec 6)))
         then true
         else
-          if (BEq.beq b__0 (0b110011 : (BitVec 6)))
+          (bif (BEq.beq b__0 (0b110011 : (BitVec 6)))
           then true
           else
-            if (BEq.beq b__0 (0b110001 : (BitVec 6)))
+            (bif (BEq.beq b__0 (0b110001 : (BitVec 6)))
             then true
-            else false
+            else false)))))
 
 /-- Type quantifiers: num_elem_vs : Nat, SEW : Nat, LMUL_pow : Int, num_elem_vs > 0 ∧
   SEW ∈ {8, 16, 32, 64} -/
 def process_rfvv_single (funct6 : rfvvfunct6) (vm : (BitVec 1)) (vs2 : vregidx) (vs1 : vregidx) (vd : vregidx) (num_elem_vs : Nat) (SEW : Nat) (LMUL_pow : Int) : SailM Retired := do
   let rm_3b ← do (pure (_get_Fcsr_FRM (← readReg fcsr)))
   let num_elem_vd ← do (get_num_elem 0 SEW)
-  if (← (illegal_fp_reduction SEW rm_3b))
+  bif (← (illegal_fp_reduction SEW rm_3b))
   then
-    (handle_illegal ())
-    (pure RETIRE_FAIL)
+    (do
+      (handle_illegal ())
+      (pure RETIRE_FAIL))
   else
-    assert (bne SEW 8) "riscv_insts_vext_fp_red.sail:36.17-36.18"
-    if (BEq.beq (BitVec.toNat (← readReg vl)) 0)
-    then (pure RETIRE_SUCCESS)
-    else
-      let n := num_elem_vs
-      let d := num_elem_vd
-      let m := SEW
-      let vm_val ← (( do (read_vmask num_elem_vs vm zvreg) ) : SailM (BitVec n) )
-      let vd_val ← (( do (read_vreg num_elem_vd SEW 0 vd) ) : SailM (Vector (BitVec m) d) )
-      let vs2_val ← (( do (read_vreg num_elem_vs SEW LMUL_pow vs2) ) : SailM (Vector (BitVec m) n)
-        )
-      let mask ← (( do (init_masked_source num_elem_vs LMUL_pow vm_val) ) : SailM (BitVec n) )
-      let sum ← (( do (read_single_element SEW 0 vs1) ) : SailM (BitVec m) )
-      let sum ← (( do
-        let loop_i_lower := 0
-        let loop_i_upper := (num_elem_vs -i 1)
-        let mut loop_vars := sum
-        for i in [loop_i_lower:loop_i_upper + 1:1]i do
-          let sum := loop_vars
-          loop_vars ← do
-            if (BEq.beq (BitVec.access mask i) 1#1)
-            then
-              match funct6 with
-              | FVV_VFREDOSUM => (fp_add rm_3b sum (GetElem?.getElem! vs2_val i))
-              | FVV_VFREDUSUM => (fp_add rm_3b sum (GetElem?.getElem! vs2_val i))
-              | FVV_VFREDMAX => (fp_max sum (GetElem?.getElem! vs2_val i))
-              | FVV_VFREDMIN => (fp_min sum (GetElem?.getElem! vs2_val i))
-              | _ => (internal_error "riscv_insts_vext_fp_red.sail" 58 "Widening op unexpected")
-            else (pure sum)
-        (pure loop_vars) ) : SailM (BitVec m) )
-      (write_single_element SEW 0 vd sum)
-      (set_vstart (zeros_implicit (n := 16)))
-      (pure RETIRE_SUCCESS)
+    (do
+      assert (bne SEW 8) "riscv_insts_vext_fp_red.sail:36.17-36.18"
+      bif (BEq.beq (BitVec.toNat (← readReg vl)) 0)
+      then (pure RETIRE_SUCCESS)
+      else
+        (do
+          let n := num_elem_vs
+          let d := num_elem_vd
+          let m := SEW
+          let vm_val ← (( do (read_vmask num_elem_vs vm zvreg) ) : SailM (BitVec n) )
+          let vd_val ← (( do (read_vreg num_elem_vd SEW 0 vd) ) : SailM (Vector (BitVec m) d) )
+          let vs2_val ← (( do (read_vreg num_elem_vs SEW LMUL_pow vs2) ) : SailM
+            (Vector (BitVec m) n) )
+          let mask ← (( do (init_masked_source num_elem_vs LMUL_pow vm_val) ) : SailM (BitVec n) )
+          let sum ← (( do (read_single_element SEW 0 vs1) ) : SailM (BitVec m) )
+          let sum ← (( do
+            let loop_i_lower := 0
+            let loop_i_upper := (num_elem_vs -i 1)
+            let mut loop_vars := sum
+            for i in [loop_i_lower:loop_i_upper:1]i do
+              let sum := loop_vars
+              loop_vars ← do
+                bif (BEq.beq (BitVec.access mask i) 1#1)
+                then
+                  (do
+                    match funct6 with
+                    | FVV_VFREDOSUM => (fp_add rm_3b sum (GetElem?.getElem! vs2_val i))
+                    | FVV_VFREDUSUM => (fp_add rm_3b sum (GetElem?.getElem! vs2_val i))
+                    | FVV_VFREDMAX => (fp_max sum (GetElem?.getElem! vs2_val i))
+                    | FVV_VFREDMIN => (fp_min sum (GetElem?.getElem! vs2_val i))
+                    | _ => (internal_error "riscv_insts_vext_fp_red.sail" 58
+                        "Widening op unexpected"))
+                else (pure sum)
+            (pure loop_vars) ) : SailM (BitVec m) )
+          (write_single_element SEW 0 vd sum)
+          (set_vstart (zeros_implicit (n := 16)))
+          (pure RETIRE_SUCCESS)))
 
 /-- Type quantifiers: num_elem_vs : Nat, SEW : Nat, LMUL_pow : Int, num_elem_vs > 0 ∧
   SEW ∈ {8, 16, 32, 64} -/
@@ -275,39 +286,45 @@ def process_rfvv_widen (funct6 : rfvvfunct6) (vm : (BitVec 1)) (vs2 : vregidx) (
   let SEW_widen := (SEW *i 2)
   let LMUL_pow_widen := (LMUL_pow +i 1)
   let num_elem_vd ← do (get_num_elem 0 SEW_widen)
-  if (← (illegal_fp_reduction_widen SEW rm_3b SEW_widen LMUL_pow_widen))
+  bif (← (illegal_fp_reduction_widen SEW rm_3b SEW_widen LMUL_pow_widen))
   then
-    (handle_illegal ())
-    (pure RETIRE_FAIL)
+    (do
+      (handle_illegal ())
+      (pure RETIRE_FAIL))
   else
-    assert (Bool.and (SEW ≥b 16) (SEW_widen ≤b 64)) "riscv_insts_vext_fp_red.sail:78.36-78.37"
-    if (BEq.beq (BitVec.toNat (← readReg vl)) 0)
-    then (pure RETIRE_SUCCESS)
-    else
-      let n := num_elem_vs
-      let d := num_elem_vd
-      let m := SEW
-      let o := SEW_widen
-      let vm_val ← (( do (read_vmask num_elem_vs vm zvreg) ) : SailM (BitVec n) )
-      let vd_val ← (( do (read_vreg num_elem_vd SEW_widen 0 vd) ) : SailM (Vector (BitVec o) d) )
-      let vs2_val ← (( do (read_vreg num_elem_vs SEW LMUL_pow vs2) ) : SailM (Vector (BitVec m) n)
-        )
-      let mask ← (( do (init_masked_source num_elem_vs LMUL_pow vm_val) ) : SailM (BitVec n) )
-      let sum ← (( do (read_single_element SEW_widen 0 vs1) ) : SailM (BitVec o) )
-      let sum ← (( do
-        let loop_i_lower := 0
-        let loop_i_upper := (num_elem_vs -i 1)
-        let mut loop_vars := sum
-        for i in [loop_i_lower:loop_i_upper + 1:1]i do
-          let sum := loop_vars
-          loop_vars ← do
-            if (BEq.beq (BitVec.access mask i) 1#1)
-            then (fp_add rm_3b sum (← (fp_widen (GetElem?.getElem! vs2_val i))))
-            else (pure sum)
-        (pure loop_vars) ) : SailM (BitVec o) )
-      (write_single_element SEW_widen 0 vd sum)
-      (set_vstart (zeros_implicit (n := 16)))
-      (pure RETIRE_SUCCESS)
+    (do
+      assert (Bool.and (SEW ≥b 16) (SEW_widen ≤b 64)) "riscv_insts_vext_fp_red.sail:78.36-78.37"
+      bif (BEq.beq (BitVec.toNat (← readReg vl)) 0)
+      then (pure RETIRE_SUCCESS)
+      else
+        (do
+          let n := num_elem_vs
+          let d := num_elem_vd
+          let m := SEW
+          let o := SEW_widen
+          let vm_val ← (( do (read_vmask num_elem_vs vm zvreg) ) : SailM (BitVec n) )
+          let vd_val ← (( do (read_vreg num_elem_vd SEW_widen 0 vd) ) : SailM
+            (Vector (BitVec o) d) )
+          let vs2_val ← (( do (read_vreg num_elem_vs SEW LMUL_pow vs2) ) : SailM
+            (Vector (BitVec m) n) )
+          let mask ← (( do (init_masked_source num_elem_vs LMUL_pow vm_val) ) : SailM (BitVec n) )
+          let sum ← (( do (read_single_element SEW_widen 0 vs1) ) : SailM (BitVec o) )
+          let sum ← (( do
+            let loop_i_lower := 0
+            let loop_i_upper := (num_elem_vs -i 1)
+            let mut loop_vars := sum
+            for i in [loop_i_lower:loop_i_upper:1]i do
+              let sum := loop_vars
+              loop_vars ← do
+                bif (BEq.beq (BitVec.access mask i) 1#1)
+                then
+                  (do
+                    (fp_add rm_3b sum (← (fp_widen (GetElem?.getElem! vs2_val i)))))
+                else (pure sum)
+            (pure loop_vars) ) : SailM (BitVec o) )
+          (write_single_element SEW_widen 0 vd sum)
+          (set_vstart (zeros_implicit (n := 16)))
+          (pure RETIRE_SUCCESS)))
 
 def rfvvtype_mnemonic_backwards (arg_ : String) : SailM rfvvfunct6 := do
   match arg_ with
@@ -317,9 +334,9 @@ def rfvvtype_mnemonic_backwards (arg_ : String) : SailM rfvvfunct6 := do
   | "vfredmin.vs" => (pure FVV_VFREDMIN)
   | "vfwredosum.vs" => (pure FVV_VFWREDOSUM)
   | "vfwredusum.vs" => (pure FVV_VFWREDUSUM)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def rfvvtype_mnemonic_forwards_matches (arg_ : rfvvfunct6) : Bool :=
   match arg_ with

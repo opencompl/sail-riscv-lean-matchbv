@@ -183,13 +183,13 @@ def default_sv32_ext_pte : pte_ext_bits := (zeros_implicit (n := 10))
 /-- Type quantifiers: k_pte_size : Nat, k_pte_size ∈ {32, 64} -/
 def ext_bits_of_PTE (pte : (BitVec k_pte_size)) : (BitVec 10) :=
   (Mk_PTE_Ext
-    (if (BEq.beq (Sail.BitVec.length pte) 64)
+    (bif (BEq.beq (Sail.BitVec.length pte) 64)
     then (Sail.BitVec.extractLsb pte 63 54)
     else default_sv32_ext_pte))
 
 /-- Type quantifiers: k_pte_size : Nat, k_pte_size ∈ {32, 64} -/
-def PPN_of_PTE (pte : (BitVec k_pte_size)) : (BitVec (if k_pte_size = 32 then 22 else 44)) :=
-  if (BEq.beq (Sail.BitVec.length pte) 32)
+def PPN_of_PTE (pte : (BitVec k_pte_size)) : (BitVec (bif k_pte_size = 32 then 22 else 44)) :=
+  bif (BEq.beq (Sail.BitVec.length pte) 32)
   then (Sail.BitVec.extractLsb pte 31 10)
   else (Sail.BitVec.extractLsb pte 53 10)
 
@@ -225,36 +225,32 @@ def check_PTE_permission (ac : (AccessType Unit)) (priv : Privilege) (mxr : Bool
   let pte_X := (_get_PTE_Flags_X pte_flags)
   let success ← (( do
     match (ac, priv) with
-    | (.Read _, User) =>
-      (pure (Bool.and (BEq.beq pte_U (0b1 : (BitVec 1)))
+    | (.Read _, User) => (pure (Bool.and (BEq.beq pte_U (0b1 : (BitVec 1)))
           (Bool.or (BEq.beq pte_R (0b1 : (BitVec 1)))
             (Bool.and (BEq.beq pte_X (0b1 : (BitVec 1))) mxr))))
-    | (.Write _, User) =>
-      (pure (Bool.and (BEq.beq pte_U (0b1 : (BitVec 1))) (BEq.beq pte_W (0b1 : (BitVec 1)))))
-    | (.ReadWrite (_, _), User) =>
-      (pure (Bool.and (BEq.beq pte_U (0b1 : (BitVec 1)))
-          (Bool.and (BEq.beq pte_W (0b1 : (BitVec 1)))
-            (Bool.or (BEq.beq pte_R (0b1 : (BitVec 1)))
-              (Bool.and (BEq.beq pte_X (0b1 : (BitVec 1))) mxr)))))
-    | (.Execute (), User) =>
-      (pure (Bool.and (BEq.beq pte_U (0b1 : (BitVec 1))) (BEq.beq pte_X (0b1 : (BitVec 1)))))
-    | (.Read _, Supervisor) =>
-      (pure (Bool.and (Bool.or (BEq.beq pte_U (0b0 : (BitVec 1))) do_sum)
-          (Bool.or (BEq.beq pte_R (0b1 : (BitVec 1)))
-            (Bool.and (BEq.beq pte_X (0b1 : (BitVec 1))) mxr))))
-    | (.Write _, Supervisor) =>
-      (pure (Bool.and (Bool.or (BEq.beq pte_U (0b0 : (BitVec 1))) do_sum)
+    | (.Write _, User) => (pure (Bool.and (BEq.beq pte_U (0b1 : (BitVec 1)))
           (BEq.beq pte_W (0b1 : (BitVec 1)))))
-    | (.ReadWrite (_, _), Supervisor) =>
-      (pure (Bool.and (Bool.or (BEq.beq pte_U (0b0 : (BitVec 1))) do_sum)
+    | (.ReadWrite (_, _), User) => (pure (Bool.and (BEq.beq pte_U (0b1 : (BitVec 1)))
           (Bool.and (BEq.beq pte_W (0b1 : (BitVec 1)))
             (Bool.or (BEq.beq pte_R (0b1 : (BitVec 1)))
               (Bool.and (BEq.beq pte_X (0b1 : (BitVec 1))) mxr)))))
-    | (.Execute (), Supervisor) =>
-      (pure (Bool.and (BEq.beq pte_U (0b0 : (BitVec 1))) (BEq.beq pte_X (0b1 : (BitVec 1)))))
+    | (.Execute (), User) => (pure (Bool.and (BEq.beq pte_U (0b1 : (BitVec 1)))
+          (BEq.beq pte_X (0b1 : (BitVec 1)))))
+    | (.Read _, Supervisor) => (pure (Bool.and (Bool.or (BEq.beq pte_U (0b0 : (BitVec 1))) do_sum)
+          (Bool.or (BEq.beq pte_R (0b1 : (BitVec 1)))
+            (Bool.and (BEq.beq pte_X (0b1 : (BitVec 1))) mxr))))
+    | (.Write _, Supervisor) => (pure (Bool.and (Bool.or (BEq.beq pte_U (0b0 : (BitVec 1))) do_sum)
+          (BEq.beq pte_W (0b1 : (BitVec 1)))))
+    | (.ReadWrite (_, _), Supervisor) => (pure (Bool.and
+          (Bool.or (BEq.beq pte_U (0b0 : (BitVec 1))) do_sum)
+          (Bool.and (BEq.beq pte_W (0b1 : (BitVec 1)))
+            (Bool.or (BEq.beq pte_R (0b1 : (BitVec 1)))
+              (Bool.and (BEq.beq pte_X (0b1 : (BitVec 1))) mxr)))))
+    | (.Execute (), Supervisor) => (pure (Bool.and (BEq.beq pte_U (0b0 : (BitVec 1)))
+          (BEq.beq pte_X (0b1 : (BitVec 1)))))
     | (_, Machine) => (internal_error "riscv_vmem_pte.sail" 130 "m-mode mem perm check") ) : SailM
     Bool )
-  if success
+  bif success
   then (pure (PTE_Check_Success ()))
   else (pure (PTE_Check_Failure ((), ())))
 
@@ -269,13 +265,13 @@ def update_PTE_Bits (pte : (BitVec k_pte_size)) (a : (AccessType Unit)) : (Optio
       | .Write _ => true
       | .ReadWrite (_, _) => true : Bool))
   let update_a := (BEq.beq (_get_PTE_Flags_A pte_flags) (0b0 : (BitVec 1)))
-  if (Bool.or update_d update_a)
+  bif (Bool.or update_d update_a)
   then
-    let pte_flags :=
+    (let pte_flags :=
       (_update_PTE_Flags_D (_update_PTE_Flags_A pte_flags (0b1 : (BitVec 1)))
-        (if update_d
+        (bif update_d
         then (0b1 : (BitVec 1))
         else (_get_PTE_Flags_D pte_flags)))
-    (some (Sail.BitVec.updateSubrange pte 7 0 pte_flags))
+    (some (Sail.BitVec.updateSubrange pte 7 0 pte_flags)))
   else none
 

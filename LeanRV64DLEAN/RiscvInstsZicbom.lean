@@ -174,17 +174,20 @@ def encdec_cbop_forwards (arg_ : cbop_zicbom) : (BitVec 12) :=
 
 def encdec_cbop_backwards (arg_ : (BitVec 12)) : SailM cbop_zicbom := do
   let b__0 := arg_
-  if (BEq.beq b__0 (0x001 : (BitVec 12)))
+  bif (BEq.beq b__0 (0x001 : (BitVec 12)))
   then (pure CBO_CLEAN)
   else
-    if (BEq.beq b__0 (0x002 : (BitVec 12)))
-    then (pure CBO_FLUSH)
-    else
-      if (BEq.beq b__0 (0x000 : (BitVec 12)))
-      then (pure CBO_INVAL)
+    (do
+      bif (BEq.beq b__0 (0x002 : (BitVec 12)))
+      then (pure CBO_FLUSH)
       else
-        assert false "Pattern match failure at unknown location"
-        throw Error.Exit
+        (do
+          bif (BEq.beq b__0 (0x000 : (BitVec 12)))
+          then (pure CBO_INVAL)
+          else
+            (do
+              assert false "Pattern match failure at unknown location"
+              throw Error.Exit)))
 
 def encdec_cbop_forwards_matches (arg_ : cbop_zicbom) : Bool :=
   match arg_ with
@@ -194,24 +197,24 @@ def encdec_cbop_forwards_matches (arg_ : cbop_zicbom) : Bool :=
 
 def encdec_cbop_backwards_matches (arg_ : (BitVec 12)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0x001 : (BitVec 12)))
+  bif (BEq.beq b__0 (0x001 : (BitVec 12)))
   then true
   else
-    if (BEq.beq b__0 (0x002 : (BitVec 12)))
+    (bif (BEq.beq b__0 (0x002 : (BitVec 12)))
     then true
     else
-      if (BEq.beq b__0 (0x000 : (BitVec 12)))
+      (bif (BEq.beq b__0 (0x000 : (BitVec 12)))
       then true
-      else false
+      else false))
 
 def cbop_mnemonic_backwards (arg_ : String) : SailM cbop_zicbom := do
   match arg_ with
   | "cbo.clean" => (pure CBO_CLEAN)
   | "cbo.flush" => (pure CBO_FLUSH)
   | "cbo.inval" => (pure CBO_INVAL)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def cbop_mnemonic_forwards_matches (arg_ : cbop_zicbom) : Bool :=
   match arg_ with
@@ -250,15 +253,17 @@ def encdec_cbie_forwards (arg_ : cbie) : (BitVec 2) :=
 
 def encdec_cbie_backwards (arg_ : (BitVec 2)) : SailM cbie := do
   let b__0 := arg_
-  if (BEq.beq b__0 (0b00 : (BitVec 2)))
+  bif (BEq.beq b__0 (0b00 : (BitVec 2)))
   then (pure CBIE_ILLEGAL)
   else
-    if (BEq.beq b__0 (0b01 : (BitVec 2)))
-    then (pure CBIE_EXEC_FLUSH)
-    else
-      if (BEq.beq b__0 (0b11 : (BitVec 2)))
-      then (pure CBIE_EXEC_INVAL)
-      else (internal_error "riscv_insts_zicbom.sail" 44 "reserved CBIE")
+    (do
+      bif (BEq.beq b__0 (0b01 : (BitVec 2)))
+      then (pure CBIE_EXEC_FLUSH)
+      else
+        (do
+          bif (BEq.beq b__0 (0b11 : (BitVec 2)))
+          then (pure CBIE_EXEC_INVAL)
+          else (internal_error "riscv_insts_zicbom.sail" 44 "reserved CBIE")))
 
 def encdec_cbie_forwards_matches (arg_ : cbie) : Bool :=
   match arg_ with
@@ -268,18 +273,18 @@ def encdec_cbie_forwards_matches (arg_ : cbie) : Bool :=
 
 def encdec_cbie_backwards_matches (arg_ : (BitVec 2)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b00 : (BitVec 2)))
+  bif (BEq.beq b__0 (0b00 : (BitVec 2)))
   then true
   else
-    if (BEq.beq b__0 (0b01 : (BitVec 2)))
+    (bif (BEq.beq b__0 (0b01 : (BitVec 2)))
     then true
     else
-      if (BEq.beq b__0 (0b11 : (BitVec 2)))
+      (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
       then true
       else
-        if (BEq.beq b__0 (0b10 : (BitVec 2)))
+        (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
         then true
-        else false
+        else false)))
 
 def undefined_checked_cbop (_ : Unit) : SailM checked_cbop := do
   (internal_pick [CBOP_ILLEGAL, CBOP_ILLEGAL_VIRTUAL, CBOP_INVAL_FLUSH, CBOP_INVAL_INVAL])
@@ -303,7 +308,7 @@ def cbop_priv_check (p : Privilege) : SailM checked_cbop := do
   let mCBIE ← (( do (encdec_cbie_backwards (_get_MEnvcfg_CBIE (← readReg menvcfg))) ) : SailM
     cbie )
   let sCBIE ← (( do
-    if (← (extensionEnabled Ext_S))
+    bif (← (extensionEnabled Ext_S))
     then (encdec_cbie_backwards (_get_SEnvcfg_CBIE (← readReg senvcfg)))
     else (encdec_cbie_backwards (_get_MEnvcfg_CBIE (← readReg menvcfg))) ) : SailM cbie )
   match (p, mCBIE, sCBIE) with
@@ -322,33 +327,31 @@ def process_clean_inval (rs1 : regidx) (cbop : cbop_zicbom) : SailM Retired := d
     ((rs1_val &&& (Complement.complement
           (zero_extend (m := ((2 ^i 3) *i 8)) (ones (n := cache_block_size_exp))))) - rs1_val)
   match (← (ext_data_get_addr rs1 negative_offset (Read Data) cache_block_size)) with
-  | .Ext_DataAddr_Error e =>
-    let _ : Unit := (ext_handle_data_check_error e)
-    (pure RETIRE_FAIL)
-  | .Ext_DataAddr_OK vaddr =>
-    let res ← (( do
-      match (← (translateAddr vaddr (Read Data))) with
-      | .TR_Address (paddr, _) =>
-        let exc_read ← do
-          (phys_access_check (Read Data) (← readReg cur_privilege) paddr cache_block_size)
-        let exc_write ← do
-          (phys_access_check (Write Data) (← readReg cur_privilege) paddr cache_block_size)
-        match (exc_read, exc_write) with
-        | (.some exc_read, .some exc_write) => (pure (some exc_write))
-        | _ => (pure none)
-      | .TR_Failure (e, _) => (pure (some e)) ) : SailM (Option ExceptionType) )
-    match res with
-    | none => (pure RETIRE_SUCCESS)
-    | .some e =>
-      let e ← (( do
-        match e with
-        | .E_Load_Access_Fault () => (pure (E_SAMO_Access_Fault ()))
-        | .E_SAMO_Access_Fault () => (pure (E_SAMO_Access_Fault ()))
-        | .E_Load_Page_Fault () => (pure (E_SAMO_Page_Fault ()))
-        | .E_SAMO_Page_Fault () => (pure (E_SAMO_Page_Fault ()))
-        | _ =>
-          (internal_error "riscv_insts_zicbom.sail" 119 "unexpected exception for cmo.clean/inval")
-        ) : SailM ExceptionType )
-      (handle_mem_exception (sub_virtaddr_xlenbits vaddr negative_offset) e)
-      (pure RETIRE_FAIL)
+  | .Ext_DataAddr_Error e => (let _ : Unit := (ext_handle_data_check_error e)
+    (pure RETIRE_FAIL))
+  | .Ext_DataAddr_OK vaddr => (do
+      let res ← (( do
+        match (← (translateAddr vaddr (Read Data))) with
+        | .TR_Address (paddr, _) => (do
+            let exc_read ← do
+              (phys_access_check (Read Data) (← readReg cur_privilege) paddr cache_block_size)
+            let exc_write ← do
+              (phys_access_check (Write Data) (← readReg cur_privilege) paddr cache_block_size)
+            match (exc_read, exc_write) with
+            | (.some exc_read, .some exc_write) => (pure (some exc_write))
+            | _ => (pure none))
+        | .TR_Failure (e, _) => (pure (some e)) ) : SailM (Option ExceptionType) )
+      match res with
+      | none => (pure RETIRE_SUCCESS)
+      | .some e => (do
+          let e ← (( do
+            match e with
+            | .E_Load_Access_Fault () => (pure (E_SAMO_Access_Fault ()))
+            | .E_SAMO_Access_Fault () => (pure (E_SAMO_Access_Fault ()))
+            | .E_Load_Page_Fault () => (pure (E_SAMO_Page_Fault ()))
+            | .E_SAMO_Page_Fault () => (pure (E_SAMO_Page_Fault ()))
+            | _ => (internal_error "riscv_insts_zicbom.sail" 119
+                "unexpected exception for cmo.clean/inval") ) : SailM ExceptionType )
+          (handle_mem_exception (sub_virtaddr_xlenbits vaddr negative_offset) e)
+          (pure RETIRE_FAIL)))
 

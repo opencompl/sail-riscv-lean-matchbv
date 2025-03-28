@@ -202,9 +202,8 @@ def phys_mem_read (t : (AccessType Unit)) (paddr : physaddr) (width : Nat) (aq :
   | (.Execute (), none) => (pure (Err (E_Fetch_Access_Fault ())))
   | (.Read Data, none) => (pure (Err (E_Load_Access_Fault ())))
   | (_, none) => (pure (Err (E_SAMO_Access_Fault ())))
-  | (_, .some (v, m)) =>
-    let _ : Unit :=
-      if (get_config_print_mem ())
+  | (_, .some (v, m)) => (let _ : Unit :=
+      bif (get_config_print_mem ())
       then
         (print_endline
           (HAppend.hAppend "mem["
@@ -213,11 +212,11 @@ def phys_mem_read (t : (AccessType Unit)) (paddr : physaddr) (width : Nat) (aq :
                 (HAppend.hAppend (BitVec.toFormatted (physaddr_bits paddr))
                   (HAppend.hAppend "] -> " (BitVec.toFormatted v)))))))
       else ()
-    (pure (Ok (v, m)))
+    (pure (Ok (v, m))))
 
 /-- Type quantifiers: width : Nat, 0 < width ∧ width ≤ max_mem_access -/
 def phys_access_check (t : (AccessType Unit)) (p : Privilege) (paddr : physaddr) (width : Nat) : SailM (Option ExceptionType) := do
-  if (BEq.beq (sys_pmp_count ()) 0)
+  bif (BEq.beq (sys_pmp_count ()) 0)
   then (pure none)
   else (pmpCheck paddr width t p)
 
@@ -226,20 +225,22 @@ def phys_access_check (t : (AccessType Unit)) (p : Privilege) (paddr : physaddr)
 def checked_mem_read (t : (AccessType Unit)) (priv : Privilege) (paddr : physaddr) (width : Nat) (aq : Bool) (rl : Bool) (res : Bool) (meta : Bool) : SailM (Result ((BitVec (8 * width)) × Unit) ExceptionType) := do
   match (← (phys_access_check t priv paddr width)) with
   | .some e => (pure (Err e))
-  | none =>
-    if (within_mmio_readable paddr width)
-    then (pure (MemoryOpResult_add_meta (← (mmio_read t paddr width)) default_meta))
-    else
-      if (within_phys_mem paddr width)
-      then
-        match (ext_check_phys_mem_read t paddr width aq rl res meta) with
-        | .Ext_PhysAddr_OK () => (phys_mem_read t paddr width aq rl res meta)
-        | .Ext_PhysAddr_Error e => (pure (Err e))
+  | none => (do
+      bif (within_mmio_readable paddr width)
+      then (pure (MemoryOpResult_add_meta (← (mmio_read t paddr width)) default_meta))
       else
-        match t with
-        | .Execute () => (pure (Err (E_Fetch_Access_Fault ())))
-        | .Read Data => (pure (Err (E_Load_Access_Fault ())))
-        | _ => (pure (Err (E_SAMO_Access_Fault ())))
+        (do
+          bif (within_phys_mem paddr width)
+          then
+            (do
+              match (ext_check_phys_mem_read t paddr width aq rl res meta) with
+              | .Ext_PhysAddr_OK () => (phys_mem_read t paddr width aq rl res meta)
+              | .Ext_PhysAddr_Error e => (pure (Err e)))
+          else
+            (match t with
+            | .Execute () => (pure (Err (E_Fetch_Access_Fault ())))
+            | .Read Data => (pure (Err (E_Load_Access_Fault ())))
+            | _ => (pure (Err (E_SAMO_Access_Fault ()))))))
 
 /-- Type quantifiers: width : Nat, width > 0 -/
 def rvfi_read (app_0 : physaddr) (width : Nat) (result : (Result ((BitVec (8 * width)) × Unit) ExceptionType)) : Unit :=
@@ -250,13 +251,14 @@ def rvfi_read (app_0 : physaddr) (width : Nat) (result : (Result ((BitVec (8 * w
   : Nat, 0 < width ∧ width ≤ max_mem_access -/
 def mem_read_priv_meta (typ : (AccessType Unit)) (priv : Privilege) (paddr : physaddr) (width : Nat) (aq : Bool) (rl : Bool) (res : Bool) (meta : Bool) : SailM (Result ((BitVec (8 * width)) × Unit) ExceptionType) := do
   let result ← (( do
-    if (Bool.and (Bool.or aq res) (not (is_aligned_addr paddr width)))
+    bif (Bool.and (Bool.or aq res) (not (is_aligned_addr paddr width)))
     then (pure (Err (E_Load_Addr_Align ())))
     else
-      match (aq, rl, res) with
-      | (false, true, false) => sailThrow ((Error_not_implemented "load.rl"))
-      | (false, true, true) => sailThrow ((Error_not_implemented "lr.rl"))
-      | (_, _, _) => (checked_mem_read typ priv paddr width aq rl res meta) ) : SailM
+      (do
+        match (aq, rl, res) with
+        | (false, true, false) => sailThrow ((Error_not_implemented "load.rl"))
+        | (false, true, true) => sailThrow ((Error_not_implemented "lr.rl"))
+        | (_, _, _) => (checked_mem_read typ priv paddr width aq rl res meta)) ) : SailM
     (MemoryOpResult ((BitVec (8 * width)) × mem_meta)) )
   let _ : Unit := (rvfi_read paddr width result)
   (pure result)
@@ -283,7 +285,7 @@ def mem_read (typ : (AccessType Unit)) (paddr : physaddr) (width : Nat) (aq : Bo
 /-- Type quantifiers: k_ex311510# : Bool, k_ex311509# : Bool, k_ex311508# : Bool, width : Nat, 0 <
   width ∧ width ≤ max_mem_access -/
 def mem_write_ea (addr : physaddr) (width : Nat) (aq : Bool) (rl : Bool) (con : Bool) : SailM (Result Unit ExceptionType) := do
-  if (Bool.and (Bool.or rl con) (not (is_aligned_addr addr width)))
+  bif (Bool.and (Bool.or rl con) (not (is_aligned_addr addr width)))
   then (pure (Err (E_SAMO_Addr_Align ())))
   else (pure (Ok (write_ram_ea (← (write_kind_of_flags aq rl con)) addr width)))
 
@@ -296,7 +298,7 @@ def rvfi_write (app_0 : physaddr) (width : Nat) (value : (BitVec (8 * width))) (
 def phys_mem_write (wk : write_kind) (paddr : physaddr) (width : Nat) (data : (BitVec (8 * width))) (meta : Unit) : SailM (Result Bool ExceptionType) := do
   let result ← do (write_ram wk paddr width data meta)
   let _ : Unit :=
-    if (get_config_print_mem ())
+    bif (get_config_print_mem ())
     then
       (print_endline
         (HAppend.hAppend "mem["
@@ -310,27 +312,30 @@ def phys_mem_write (wk : write_kind) (paddr : physaddr) (width : Nat) (data : (B
 def checked_mem_write (paddr : physaddr) (width : Nat) (data : (BitVec (8 * width))) (typ : (AccessType Unit)) (priv : Privilege) (meta : Unit) (aq : Bool) (rl : Bool) (con : Bool) : SailM (Result Bool ExceptionType) := do
   match (← (phys_access_check typ priv paddr width)) with
   | .some e => (pure (Err e))
-  | none =>
-    if (within_mmio_writable paddr width)
-    then (mmio_write paddr width data)
-    else
-      if (within_phys_mem paddr width)
-      then
-        let wk ← do (write_kind_of_flags aq rl con)
-        match (ext_check_phys_mem_write wk paddr width data meta) with
-        | .Ext_PhysAddr_OK () => (phys_mem_write wk paddr width data meta)
-        | .Ext_PhysAddr_Error e => (pure (Err e))
-      else (pure (Err (E_SAMO_Access_Fault ())))
+  | none => (do
+      bif (within_mmio_writable paddr width)
+      then (mmio_write paddr width data)
+      else
+        (do
+          bif (within_phys_mem paddr width)
+          then
+            (do
+              let wk ← do (write_kind_of_flags aq rl con)
+              match (ext_check_phys_mem_write wk paddr width data meta) with
+              | .Ext_PhysAddr_OK () => (phys_mem_write wk paddr width data meta)
+              | .Ext_PhysAddr_Error e => (pure (Err e)))
+          else (pure (Err (E_SAMO_Access_Fault ())))))
 
 /-- Type quantifiers: k_ex311542# : Bool, k_ex311541# : Bool, k_ex311540# : Bool, width : Nat, 0 <
   width ∧ width ≤ max_mem_access -/
 def mem_write_value_priv_meta (paddr : physaddr) (width : Nat) (value : (BitVec (8 * width))) (typ : (AccessType Unit)) (priv : Privilege) (meta : Unit) (aq : Bool) (rl : Bool) (con : Bool) : SailM (Result Bool ExceptionType) := do
-  if (Bool.and (Bool.or rl con) (not (is_aligned_addr paddr width)))
+  bif (Bool.and (Bool.or rl con) (not (is_aligned_addr paddr width)))
   then (pure (Err (E_SAMO_Addr_Align ())))
   else
-    let result ← do (checked_mem_write paddr width value typ priv meta aq rl con)
-    let _ : Unit := (rvfi_write paddr width value meta result)
-    (pure result)
+    (do
+      let result ← do (checked_mem_write paddr width value typ priv meta aq rl con)
+      let _ : Unit := (rvfi_write paddr width value meta result)
+      (pure result))
 
 /-- Type quantifiers: k_ex311553# : Bool, k_ex311552# : Bool, k_ex311551# : Bool, width : Nat, 0 <
   width ∧ width ≤ max_mem_access -/

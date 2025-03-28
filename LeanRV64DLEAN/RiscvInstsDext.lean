@@ -227,7 +227,7 @@ def f_is_NaN_D (x64 : (BitVec 64)) : Bool :=
 def negate_D (x64 : (BitVec 64)) : (BitVec 64) :=
   let (sign, exp, mant) := (fsplit_D x64)
   let new_sign :=
-    if (BEq.beq sign (0b0 : (BitVec 1)))
+    bif (BEq.beq sign (0b0 : (BitVec 1)))
     then (0b1 : (BitVec 1))
     else (0b0 : (BitVec 1))
   (fmake_D new_sign exp mant)
@@ -239,7 +239,7 @@ def feq_quiet_D (v1 : (BitVec 64)) (v2 : (BitVec 64)) : (Bool × (BitVec 5)) :=
   let v2Is0 := (Bool.or (f_is_neg_zero_D v2) (f_is_pos_zero_D v2))
   let result := (Bool.or (BEq.beq v1 v2) (Bool.and v1Is0 v2Is0))
   let fflags :=
-    if (Bool.or (f_is_SNaN_D v1) (f_is_SNaN_D v2))
+    bif (Bool.or (f_is_SNaN_D v1) (f_is_SNaN_D v2))
     then (nvFlag ())
     else (zeros_implicit (n := 5))
   (result, fflags)
@@ -249,31 +249,31 @@ def flt_D (v1 : (BitVec 64)) (v2 : (BitVec 64)) (is_quiet : Bool) : (Bool × (Bi
   let (s1, e1, m1) := (fsplit_D v1)
   let (s2, e2, m2) := (fsplit_D v2)
   let result : Bool :=
-    if (Bool.and (BEq.beq s1 (0b0 : (BitVec 1))) (BEq.beq s2 (0b0 : (BitVec 1))))
+    bif (Bool.and (BEq.beq s1 (0b0 : (BitVec 1))) (BEq.beq s2 (0b0 : (BitVec 1))))
     then
-      if (BEq.beq e1 e2)
+      (bif (BEq.beq e1 e2)
       then ((BitVec.toNat m1) <b (BitVec.toNat m2))
-      else ((BitVec.toNat e1) <b (BitVec.toNat e2))
+      else ((BitVec.toNat e1) <b (BitVec.toNat e2)))
     else
-      if (Bool.and (BEq.beq s1 (0b0 : (BitVec 1))) (BEq.beq s2 (0b1 : (BitVec 1))))
+      (bif (Bool.and (BEq.beq s1 (0b0 : (BitVec 1))) (BEq.beq s2 (0b1 : (BitVec 1))))
       then false
       else
-        if (Bool.and (BEq.beq s1 (0b1 : (BitVec 1))) (BEq.beq s2 (0b0 : (BitVec 1))))
+        (bif (Bool.and (BEq.beq s1 (0b1 : (BitVec 1))) (BEq.beq s2 (0b0 : (BitVec 1))))
         then true
         else
-          if (BEq.beq e1 e2)
+          (bif (BEq.beq e1 e2)
           then ((BitVec.toNat m1) >b (BitVec.toNat m2))
-          else ((BitVec.toNat e1) >b (BitVec.toNat e2))
+          else ((BitVec.toNat e1) >b (BitVec.toNat e2)))))
   let fflags :=
-    if is_quiet
+    bif is_quiet
     then
-      if (Bool.or (f_is_SNaN_D v1) (f_is_SNaN_D v2))
+      (bif (Bool.or (f_is_SNaN_D v1) (f_is_SNaN_D v2))
       then (nvFlag ())
-      else (zeros_implicit (n := 5))
+      else (zeros_implicit (n := 5)))
     else
-      if (Bool.or (f_is_NaN_D v1) (f_is_NaN_D v2))
+      (bif (Bool.or (f_is_NaN_D v1) (f_is_NaN_D v2))
       then (nvFlag ())
-      else (zeros_implicit (n := 5))
+      else (zeros_implicit (n := 5)))
   (result, fflags)
 
 /-- Type quantifiers: k_ex314676# : Bool -/
@@ -283,31 +283,31 @@ def fle_D (v1 : (BitVec 64)) (v2 : (BitVec 64)) (is_quiet : Bool) : (Bool × (Bi
   let v1Is0 := (Bool.or (f_is_neg_zero_D v1) (f_is_pos_zero_D v1))
   let v2Is0 := (Bool.or (f_is_neg_zero_D v2) (f_is_pos_zero_D v2))
   let result : Bool :=
-    if (Bool.and (BEq.beq s1 (0b0 : (BitVec 1))) (BEq.beq s2 (0b0 : (BitVec 1))))
+    bif (Bool.and (BEq.beq s1 (0b0 : (BitVec 1))) (BEq.beq s2 (0b0 : (BitVec 1))))
     then
-      if (BEq.beq e1 e2)
+      (bif (BEq.beq e1 e2)
       then ((BitVec.toNat m1) ≤b (BitVec.toNat m2))
-      else ((BitVec.toNat e1) <b (BitVec.toNat e2))
+      else ((BitVec.toNat e1) <b (BitVec.toNat e2)))
     else
-      if (Bool.and (BEq.beq s1 (0b0 : (BitVec 1))) (BEq.beq s2 (0b1 : (BitVec 1))))
+      (bif (Bool.and (BEq.beq s1 (0b0 : (BitVec 1))) (BEq.beq s2 (0b1 : (BitVec 1))))
       then (Bool.and v1Is0 v2Is0)
       else
-        if (Bool.and (BEq.beq s1 (0b1 : (BitVec 1))) (BEq.beq s2 (0b0 : (BitVec 1))))
+        (bif (Bool.and (BEq.beq s1 (0b1 : (BitVec 1))) (BEq.beq s2 (0b0 : (BitVec 1))))
         then true
         else
-          if (BEq.beq e1 e2)
+          (bif (BEq.beq e1 e2)
           then ((BitVec.toNat m1) ≥b (BitVec.toNat m2))
-          else ((BitVec.toNat e1) >b (BitVec.toNat e2))
+          else ((BitVec.toNat e1) >b (BitVec.toNat e2)))))
   let fflags :=
-    if is_quiet
+    bif is_quiet
     then
-      if (Bool.or (f_is_SNaN_D v1) (f_is_SNaN_D v2))
+      (bif (Bool.or (f_is_SNaN_D v1) (f_is_SNaN_D v2))
       then (nvFlag ())
-      else (zeros_implicit (n := 5))
+      else (zeros_implicit (n := 5)))
     else
-      if (Bool.or (f_is_NaN_D v1) (f_is_NaN_D v2))
+      (bif (Bool.or (f_is_NaN_D v1) (f_is_NaN_D v2))
       then (nvFlag ())
-      else (zeros_implicit (n := 5))
+      else (zeros_implicit (n := 5)))
   (result, fflags)
 
 def haveDoubleFPU (_ : Unit) : SailM Bool := do
@@ -315,18 +315,19 @@ def haveDoubleFPU (_ : Unit) : SailM Bool := do
 
 /-- Type quantifiers: n : Nat, n > 0 -/
 def validDoubleRegs {n : _} (regs : (Vector fregidx n)) : SailM Bool := SailME.run do
-  if (Bool.and (← (extensionEnabled Ext_Zdinx)) (BEq.beq xlen 32))
+  bif (Bool.and (← (extensionEnabled Ext_Zdinx)) (BEq.beq xlen 32))
   then
-    let loop_i_lower := 0
-    let loop_i_upper := (n -i 1)
-    let mut loop_vars := ()
-    for i in [loop_i_lower:loop_i_upper + 1:1]i do
-      let () := loop_vars
-      loop_vars ← do
-        if (BEq.beq (BitVec.access (fregidx_bits (GetElem?.getElem! regs i)) 0) 1#1)
-        then throw (false : Bool)
-        else (pure ())
-    (pure loop_vars)
+    (do
+      let loop_i_lower := 0
+      let loop_i_upper := (n -i 1)
+      let mut loop_vars := ()
+      for i in [loop_i_lower:loop_i_upper:1]i do
+        let () := loop_vars
+        loop_vars ← do
+          bif (BEq.beq (BitVec.access (fregidx_bits (GetElem?.getElem! regs i)) 0) 1#1)
+          then throw (false : Bool)
+          else (pure ())
+      (pure loop_vars))
   else (pure ())
   (pure true)
 
@@ -336,9 +337,9 @@ def f_madd_type_mnemonic_D_backwards (arg_ : String) : SailM f_madd_op_D := do
   | "fmsub.d" => (pure FMSUB_D)
   | "fnmsub.d" => (pure FNMSUB_D)
   | "fnmadd.d" => (pure FNMADD_D)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def f_madd_type_mnemonic_D_forwards_matches (arg_ : f_madd_op_D) : Bool :=
   match arg_ with
@@ -361,9 +362,9 @@ def f_bin_rm_type_mnemonic_D_backwards (arg_ : String) : SailM f_bin_rm_op_D := 
   | "fsub.d" => (pure FSUB_D)
   | "fmul.d" => (pure FMUL_D)
   | "fdiv.d" => (pure FDIV_D)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def f_bin_rm_type_mnemonic_D_forwards_matches (arg_ : f_bin_rm_op_D) : Bool :=
   match arg_ with
@@ -385,9 +386,9 @@ def f_un_rm_ff_type_mnemonic_D_backwards (arg_ : String) : SailM f_un_rm_ff_op_D
   | "fsqrt.d" => (pure FSQRT_D)
   | "fcvt.s.d" => (pure FCVT_S_D)
   | "fcvt.d.s" => (pure FCVT_D_S)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def f_un_rm_ff_type_mnemonic_D_forwards_matches (arg_ : f_un_rm_ff_op_D) : Bool :=
   match arg_ with
@@ -408,9 +409,9 @@ def f_un_rm_fx_type_mnemonic_D_backwards (arg_ : String) : SailM f_un_rm_fx_op_D
   | "fcvt.wu.d" => (pure FCVT_WU_D)
   | "fcvt.l.d" => (pure FCVT_L_D)
   | "fcvt.lu.d" => (pure FCVT_LU_D)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def f_un_rm_fx_type_mnemonic_D_forwards_matches (arg_ : f_un_rm_fx_op_D) : Bool :=
   match arg_ with
@@ -433,9 +434,9 @@ def f_un_rm_xf_type_mnemonic_D_backwards (arg_ : String) : SailM f_un_rm_xf_op_D
   | "fcvt.d.wu" => (pure FCVT_D_WU)
   | "fcvt.d.l" => (pure FCVT_D_L)
   | "fcvt.d.lu" => (pure FCVT_D_LU)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def f_un_rm_xf_type_mnemonic_D_forwards_matches (arg_ : f_un_rm_xf_op_D) : Bool :=
   match arg_ with
@@ -459,9 +460,9 @@ def f_bin_f_type_mnemonic_D_backwards (arg_ : String) : SailM f_bin_f_op_D := do
   | "fsgnjx.d" => (pure FSGNJX_D)
   | "fmin.d" => (pure FMIN_D)
   | "fmax.d" => (pure FMAX_D)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def f_bin_f_type_mnemonic_D_forwards_matches (arg_ : f_bin_f_op_D) : Bool :=
   match arg_ with
@@ -485,9 +486,9 @@ def f_bin_x_type_mnemonic_D_backwards (arg_ : String) : SailM f_bin_x_op_D := do
   | "feq.d" => (pure FEQ_D)
   | "flt.d" => (pure FLT_D)
   | "fle.d" => (pure FLE_D)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def f_bin_x_type_mnemonic_D_forwards_matches (arg_ : f_bin_x_op_D) : Bool :=
   match arg_ with
@@ -506,9 +507,9 @@ def f_un_x_type_mnemonic_D_backwards (arg_ : String) : SailM f_un_x_op_D := do
   match arg_ with
   | "fmv.x.d" => (pure FMV_X_D)
   | "fclass.d" => (pure FCLASS_D)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def f_un_x_type_mnemonic_D_forwards_matches (arg_ : f_un_x_op_D) : Bool :=
   match arg_ with
@@ -524,9 +525,9 @@ def f_un_x_type_mnemonic_D_backwards_matches (arg_ : String) : Bool :=
 def f_un_f_type_mnemonic_D_backwards (arg_ : String) : SailM f_un_f_op_D := do
   match arg_ with
   | "fmv.d.x" => (pure FMV_D_X)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def f_un_f_type_mnemonic_D_forwards_matches (arg_ : f_un_f_op_D) : Bool :=
   match arg_ with

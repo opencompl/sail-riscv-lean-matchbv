@@ -168,38 +168,42 @@ def encdec_mul_op_forwards (arg_ : mul_op) : SailM (BitVec 3) := do
   | { high := true, signed_rs1 := true, signed_rs2 := true } => (pure (0b001 : (BitVec 3)))
   | { high := true, signed_rs1 := true, signed_rs2 := false } => (pure (0b010 : (BitVec 3)))
   | { high := true, signed_rs1 := false, signed_rs2 := false } => (pure (0b011 : (BitVec 3)))
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def encdec_mul_op_backwards (arg_ : (BitVec 3)) : SailM mul_op := do
   let b__0 := arg_
-  if (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
   then
     (pure { high := false
             signed_rs1 := true
             signed_rs2 := true })
   else
-    if (BEq.beq b__0 (0b001 : (BitVec 3)))
-    then
-      (pure { high := true
-              signed_rs1 := true
-              signed_rs2 := true })
-    else
-      if (BEq.beq b__0 (0b010 : (BitVec 3)))
+    (do
+      bif (BEq.beq b__0 (0b001 : (BitVec 3)))
       then
         (pure { high := true
                 signed_rs1 := true
-                signed_rs2 := false })
+                signed_rs2 := true })
       else
-        if (BEq.beq b__0 (0b011 : (BitVec 3)))
-        then
-          (pure { high := true
-                  signed_rs1 := false
-                  signed_rs2 := false })
-        else
-          assert false "Pattern match failure at unknown location"
-          throw Error.Exit
+        (do
+          bif (BEq.beq b__0 (0b010 : (BitVec 3)))
+          then
+            (pure { high := true
+                    signed_rs1 := true
+                    signed_rs2 := false })
+          else
+            (do
+              bif (BEq.beq b__0 (0b011 : (BitVec 3)))
+              then
+                (pure { high := true
+                        signed_rs1 := false
+                        signed_rs2 := false })
+              else
+                (do
+                  assert false "Pattern match failure at unknown location"
+                  throw Error.Exit))))
 
 def encdec_mul_op_forwards_matches (arg_ : mul_op) : Bool :=
   match arg_ with
@@ -211,40 +215,36 @@ def encdec_mul_op_forwards_matches (arg_ : mul_op) : Bool :=
 
 def encdec_mul_op_backwards_matches (arg_ : (BitVec 3)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
   then true
   else
-    if (BEq.beq b__0 (0b001 : (BitVec 3)))
+    (bif (BEq.beq b__0 (0b001 : (BitVec 3)))
     then true
     else
-      if (BEq.beq b__0 (0b010 : (BitVec 3)))
+      (bif (BEq.beq b__0 (0b010 : (BitVec 3)))
       then true
       else
-        if (BEq.beq b__0 (0b011 : (BitVec 3)))
+        (bif (BEq.beq b__0 (0b011 : (BitVec 3)))
         then true
-        else false
+        else false)))
 
 def mul_mnemonic_backwards (arg_ : String) : SailM mul_op := do
   match arg_ with
-  | "mul" =>
-    (pure { high := false
-            signed_rs1 := true
-            signed_rs2 := true })
-  | "mulh" =>
-    (pure { high := true
-            signed_rs1 := true
-            signed_rs2 := true })
-  | "mulhsu" =>
-    (pure { high := true
-            signed_rs1 := true
-            signed_rs2 := false })
-  | "mulhu" =>
-    (pure { high := true
-            signed_rs1 := false
-            signed_rs2 := false })
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | "mul" => (pure { high := false
+                     signed_rs1 := true
+                     signed_rs2 := true })
+  | "mulh" => (pure { high := true
+                      signed_rs1 := true
+                      signed_rs2 := true })
+  | "mulhsu" => (pure { high := true
+                        signed_rs1 := true
+                        signed_rs2 := false })
+  | "mulhu" => (pure { high := true
+                       signed_rs1 := false
+                       signed_rs2 := false })
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def mul_mnemonic_forwards_matches (arg_ : mul_op) : Bool :=
   match arg_ with
@@ -266,9 +266,9 @@ def maybe_not_u_backwards (arg_ : String) : SailM Bool := do
   match arg_ with
   | "u" => (pure false)
   | "" => (pure true)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 /-- Type quantifiers: k_ex313236# : Bool -/
 def maybe_not_u_forwards_matches (arg_ : Bool) : Bool :=

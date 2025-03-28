@@ -164,7 +164,7 @@ open AccessType
 
 def xt2 (x : (BitVec 8)) : SailM (BitVec 8) := do
   (pure ((shiftl x 1) ^^^ (← do
-        if (← (bit_to_bool (BitVec.access x 7)))
+        bif (← (bit_to_bool (BitVec.access x 7)))
         then (pure (0x1B : (BitVec 8)))
         else (pure (0x00 : (BitVec 8))))))
 
@@ -173,16 +173,16 @@ def xt3 (x : (BitVec 8)) : SailM (BitVec 8) := do
 
 def gfmul (x : (BitVec 8)) (y : (BitVec 4)) : SailM (BitVec 8) := do
   (pure ((← do
-        if (← (bit_to_bool (BitVec.access y 0)))
+        bif (← (bit_to_bool (BitVec.access y 0)))
         then (pure x)
         else (pure (0x00 : (BitVec 8)))) ^^^ ((← do
-          if (← (bit_to_bool (BitVec.access y 1)))
+          bif (← (bit_to_bool (BitVec.access y 1)))
           then (xt2 x)
           else (pure (0x00 : (BitVec 8)))) ^^^ ((← do
-            if (← (bit_to_bool (BitVec.access y 2)))
+            bif (← (bit_to_bool (BitVec.access y 2)))
             then (xt2 (← (xt2 x)))
             else (pure (0x00 : (BitVec 8)))) ^^^ (← do
-            if (← (bit_to_bool (BitVec.access y 3)))
+            bif (← (bit_to_bool (BitVec.access y 3)))
             then (xt2 (← (xt2 (← (xt2 x)))))
             else (pure (0x00 : (BitVec 8))))))))
 
@@ -234,36 +234,47 @@ def aes_mixcolumn_inv (x : (BitVec 32)) : SailM (BitVec 32) := do
 def aes_decode_rcon (r : (BitVec 4)) : SailM (BitVec 32) := do
   assert (zopz0zI_u r (0xA : (BitVec 4))) "riscv_types_kext.sail:87.18-87.19"
   let b__0 := r
-  if (BEq.beq b__0 (0x0 : (BitVec 4)))
+  bif (BEq.beq b__0 (0x0 : (BitVec 4)))
   then (pure (0x00000001 : (BitVec 32)))
   else
-    if (BEq.beq b__0 (0x1 : (BitVec 4)))
-    then (pure (0x00000002 : (BitVec 32)))
-    else
-      if (BEq.beq b__0 (0x2 : (BitVec 4)))
-      then (pure (0x00000004 : (BitVec 32)))
+    (do
+      bif (BEq.beq b__0 (0x1 : (BitVec 4)))
+      then (pure (0x00000002 : (BitVec 32)))
       else
-        if (BEq.beq b__0 (0x3 : (BitVec 4)))
-        then (pure (0x00000008 : (BitVec 32)))
-        else
-          if (BEq.beq b__0 (0x4 : (BitVec 4)))
-          then (pure (0x00000010 : (BitVec 32)))
+        (do
+          bif (BEq.beq b__0 (0x2 : (BitVec 4)))
+          then (pure (0x00000004 : (BitVec 32)))
           else
-            if (BEq.beq b__0 (0x5 : (BitVec 4)))
-            then (pure (0x00000020 : (BitVec 32)))
-            else
-              if (BEq.beq b__0 (0x6 : (BitVec 4)))
-              then (pure (0x00000040 : (BitVec 32)))
+            (do
+              bif (BEq.beq b__0 (0x3 : (BitVec 4)))
+              then (pure (0x00000008 : (BitVec 32)))
               else
-                if (BEq.beq b__0 (0x7 : (BitVec 4)))
-                then (pure (0x00000080 : (BitVec 32)))
-                else
-                  if (BEq.beq b__0 (0x8 : (BitVec 4)))
-                  then (pure (0x0000001B : (BitVec 32)))
+                (do
+                  bif (BEq.beq b__0 (0x4 : (BitVec 4)))
+                  then (pure (0x00000010 : (BitVec 32)))
                   else
-                    if (BEq.beq b__0 (0x9 : (BitVec 4)))
-                    then (pure (0x00000036 : (BitVec 32)))
-                    else (internal_error "riscv_types_kext.sail" 99 "Unexpected AES r")
+                    (do
+                      bif (BEq.beq b__0 (0x5 : (BitVec 4)))
+                      then (pure (0x00000020 : (BitVec 32)))
+                      else
+                        (do
+                          bif (BEq.beq b__0 (0x6 : (BitVec 4)))
+                          then (pure (0x00000040 : (BitVec 32)))
+                          else
+                            (do
+                              bif (BEq.beq b__0 (0x7 : (BitVec 4)))
+                              then (pure (0x00000080 : (BitVec 32)))
+                              else
+                                (do
+                                  bif (BEq.beq b__0 (0x8 : (BitVec 4)))
+                                  then (pure (0x0000001B : (BitVec 32)))
+                                  else
+                                    (do
+                                      bif (BEq.beq b__0 (0x9 : (BitVec 4)))
+                                      then (pure (0x00000036 : (BitVec 32)))
+                                      else
+                                        (internal_error "riscv_types_kext.sail" 99
+                                          "Unexpected AES r"))))))))))
 
 def sm4_sbox_table : (Vector (BitVec 8) 256) :=
   #v[(0x48 : (BitVec 8)), (0x39 : (BitVec 8)), (0xCB : (BitVec 8)), (0xD7 : (BitVec 8)), (0x3E : (BitVec 8)), (0x5F : (BitVec 8)), (0xEE : (BitVec 8)), (0x79 : (BitVec 8)), (0x20 : (BitVec 8)), (0x4D : (BitVec 8)), (0xDC : (BitVec 8)), (0x3A : (BitVec 8)), (0xEC : (BitVec 8)), (0x7D : (BitVec 8)), (0xF0 : (BitVec 8)), (0x18 : (BitVec 8)), (0x84 : (BitVec 8)), (0xC6 : (BitVec 8)), (0x6E : (BitVec 8)), (0xC5 : (BitVec 8)), (0x09 : (BitVec 8)), (0xF1 : (BitVec 8)), (0xB9 : (BitVec 8)), (0x65 : (BitVec 8)), (0x7E : (BitVec 8)), (0x77 : (BitVec 8)), (0x96 : (BitVec 8)), (0x0C : (BitVec 8)), (0x4A : (BitVec 8)), (0x97 : (BitVec 8)), (0x69 : (BitVec 8)), (0x89 : (BitVec 8)), (0xB0 : (BitVec 8)), (0xB4 : (BitVec 8)), (0xE5 : (BitVec 8)), (0xB8 : (BitVec 8)), (0x12 : (BitVec 8)), (0xD0 : (BitVec 8)), (0x74 : (BitVec 8)), (0x2D : (BitVec 8)), (0xBD : (BitVec 8)), (0x7B : (BitVec 8)), (0xCD : (BitVec 8)), (0xA5 : (BitVec 8)), (0x88 : (BitVec 8)), (0x31 : (BitVec 8)), (0xC1 : (BitVec 8)), (0x0A : (BitVec 8)), (0xD8 : (BitVec 8)), (0x5A : (BitVec 8)), (0x10 : (BitVec 8)), (0x1F : (BitVec 8)), (0x41 : (BitVec 8)), (0x5C : (BitVec 8)), (0xD9 : (BitVec 8)), (0x11 : (BitVec 8)), (0x7F : (BitVec 8)), (0xBC : (BitVec 8)), (0xDD : (BitVec 8)), (0xBB : (BitVec 8)), (0x92 : (BitVec 8)), (0xAF : (BitVec 8)), (0x1B : (BitVec 8)), (0x8D : (BitVec 8)), (0x51 : (BitVec 8)), (0x5B : (BitVec 8)), (0x6C : (BitVec 8)), (0x6D : (BitVec 8)), (0x72 : (BitVec 8)), (0x6A : (BitVec 8)), (0xFF : (BitVec 8)), (0x03 : (BitVec 8)), (0x2F : (BitVec 8)), (0x8E : (BitVec 8)), (0xFD : (BitVec 8)), (0xDE : (BitVec 8)), (0x45 : (BitVec 8)), (0x37 : (BitVec 8)), (0xDB : (BitVec 8)), (0xD5 : (BitVec 8)), (0x6F : (BitVec 8)), (0x4E : (BitVec 8)), (0x53 : (BitVec 8)), (0x0D : (BitVec 8)), (0xAB : (BitVec 8)), (0x23 : (BitVec 8)), (0x29 : (BitVec 8)), (0xC0 : (BitVec 8)), (0x60 : (BitVec 8)), (0xCA : (BitVec 8)), (0x66 : (BitVec 8)), (0x82 : (BitVec 8)), (0x2E : (BitVec 8)), (0xE2 : (BitVec 8)), (0xF6 : (BitVec 8)), (0x1D : (BitVec 8)), (0xE3 : (BitVec 8)), (0xB1 : (BitVec 8)), (0x8C : (BitVec 8)), (0xF5 : (BitVec 8)), (0x30 : (BitVec 8)), (0x32 : (BitVec 8)), (0x93 : (BitVec 8)), (0xAD : (BitVec 8)), (0x55 : (BitVec 8)), (0x1A : (BitVec 8)), (0x34 : (BitVec 8)), (0x9B : (BitVec 8)), (0xA4 : (BitVec 8)), (0x5D : (BitVec 8)), (0xAE : (BitVec 8)), (0xE0 : (BitVec 8)), (0xA1 : (BitVec 8)), (0x15 : (BitVec 8)), (0x61 : (BitVec 8)), (0xF9 : (BitVec 8)), (0xCE : (BitVec 8)), (0xF2 : (BitVec 8)), (0xF7 : (BitVec 8)), (0xA3 : (BitVec 8)), (0xB5 : (BitVec 8)), (0x38 : (BitVec 8)), (0xC7 : (BitVec 8)), (0x40 : (BitVec 8)), (0xD2 : (BitVec 8)), (0x8A : (BitVec 8)), (0xBF : (BitVec 8)), (0xEA : (BitVec 8)), (0x9E : (BitVec 8)), (0xC8 : (BitVec 8)), (0xC4 : (BitVec 8)), (0xA0 : (BitVec 8)), (0xE7 : (BitVec 8)), (0x02 : (BitVec 8)), (0x36 : (BitVec 8)), (0x4C : (BitVec 8)), (0x52 : (BitVec 8)), (0x27 : (BitVec 8)), (0xD3 : (BitVec 8)), (0x9F : (BitVec 8)), (0x57 : (BitVec 8)), (0x46 : (BitVec 8)), (0x00 : (BitVec 8)), (0xD4 : (BitVec 8)), (0x87 : (BitVec 8)), (0x78 : (BitVec 8)), (0x21 : (BitVec 8)), (0x01 : (BitVec 8)), (0x3B : (BitVec 8)), (0x7C : (BitVec 8)), (0x22 : (BitVec 8)), (0x25 : (BitVec 8)), (0xA2 : (BitVec 8)), (0xD1 : (BitVec 8)), (0x58 : (BitVec 8)), (0x63 : (BitVec 8)), (0x5E : (BitVec 8)), (0x0E : (BitVec 8)), (0x24 : (BitVec 8)), (0x1E : (BitVec 8)), (0x35 : (BitVec 8)), (0x9D : (BitVec 8)), (0x56 : (BitVec 8)), (0x70 : (BitVec 8)), (0x4B : (BitVec 8)), (0x0F : (BitVec 8)), (0xEB : (BitVec 8)), (0xF8 : (BitVec 8)), (0x8B : (BitVec 8)), (0xDA : (BitVec 8)), (0x64 : (BitVec 8)), (0x71 : (BitVec 8)), (0xB2 : (BitVec 8)), (0x81 : (BitVec 8)), (0x6B : (BitVec 8)), (0x68 : (BitVec 8)), (0xA8 : (BitVec 8)), (0x4F : (BitVec 8)), (0x85 : (BitVec 8)), (0xE6 : (BitVec 8)), (0x19 : (BitVec 8)), (0x3C : (BitVec 8)), (0x59 : (BitVec 8)), (0x83 : (BitVec 8)), (0xBA : (BitVec 8)), (0x17 : (BitVec 8)), (0x73 : (BitVec 8)), (0xF3 : (BitVec 8)), (0xFC : (BitVec 8)), (0xA7 : (BitVec 8)), (0x07 : (BitVec 8)), (0x47 : (BitVec 8)), (0xA6 : (BitVec 8)), (0x3F : (BitVec 8)), (0x8F : (BitVec 8)), (0x75 : (BitVec 8)), (0xFA : (BitVec 8)), (0x94 : (BitVec 8)), (0xDF : (BitVec 8)), (0x80 : (BitVec 8)), (0x95 : (BitVec 8)), (0xE8 : (BitVec 8)), (0x08 : (BitVec 8)), (0xC9 : (BitVec 8)), (0xA9 : (BitVec 8)), (0x1C : (BitVec 8)), (0xB3 : (BitVec 8)), (0xE4 : (BitVec 8)), (0x62 : (BitVec 8)), (0xAC : (BitVec 8)), (0xCF : (BitVec 8)), (0xED : (BitVec 8)), (0x43 : (BitVec 8)), (0x0B : (BitVec 8)), (0x54 : (BitVec 8)), (0x33 : (BitVec 8)), (0x7A : (BitVec 8)), (0x98 : (BitVec 8)), (0xEF : (BitVec 8)), (0x91 : (BitVec 8)), (0xF4 : (BitVec 8)), (0x50 : (BitVec 8)), (0x42 : (BitVec 8)), (0x9C : (BitVec 8)), (0x99 : (BitVec 8)), (0x06 : (BitVec 8)), (0x86 : (BitVec 8)), (0x49 : (BitVec 8)), (0x26 : (BitVec 8)), (0x13 : (BitVec 8)), (0x44 : (BitVec 8)), (0xAA : (BitVec 8)), (0xC3 : (BitVec 8)), (0x04 : (BitVec 8)), (0xBE : (BitVec 8)), (0x2A : (BitVec 8)), (0x76 : (BitVec 8)), (0x9A : (BitVec 8)), (0x67 : (BitVec 8)), (0x2B : (BitVec 8)), (0x05 : (BitVec 8)), (0x2C : (BitVec 8)), (0xFB : (BitVec 8)), (0x28 : (BitVec 8)), (0xC2 : (BitVec 8)), (0x14 : (BitVec 8)), (0xB6 : (BitVec 8)), (0x16 : (BitVec 8)), (0xB7 : (BitVec 8)), (0x3D : (BitVec 8)), (0xE1 : (BitVec 8)), (0xCC : (BitVec 8)), (0xFE : (BitVec 8)), (0xE9 : (BitVec 8)), (0x90 : (BitVec 8)), (0xD6 : (BitVec 8))]

@@ -166,9 +166,9 @@ def zbb_rtypew_mnemonic_backwards (arg_ : String) : SailM bropw_zbb := do
   match arg_ with
   | "rolw" => (pure RISCV_ROLW)
   | "rorw" => (pure RISCV_RORW)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def zbb_rtypew_mnemonic_forwards_matches (arg_ : bropw_zbb) : Bool :=
   match arg_ with
@@ -192,9 +192,9 @@ def zbb_rtype_mnemonic_backwards (arg_ : String) : SailM brop_zbb := do
   | "minu" => (pure RISCV_MINU)
   | "rol" => (pure RISCV_ROL)
   | "ror" => (pure RISCV_ROR)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def zbb_rtype_mnemonic_forwards_matches (arg_ : brop_zbb) : Bool :=
   match arg_ with
@@ -226,9 +226,9 @@ def zbb_extop_mnemonic_backwards (arg_ : String) : SailM extop_zbb := do
   | "sext.b" => (pure RISCV_SEXTB)
   | "sext.h" => (pure RISCV_SEXTH)
   | "zext.h" => (pure RISCV_ZEXTH)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def zbb_extop_mnemonic_forwards_matches (arg_ : extop_zbb) : Bool :=
   match arg_ with

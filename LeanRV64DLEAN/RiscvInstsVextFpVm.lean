@@ -171,20 +171,24 @@ def encdec_fvvmfunct6_forwards (arg_ : fvvmfunct6) : (BitVec 6) :=
 
 def encdec_fvvmfunct6_backwards (arg_ : (BitVec 6)) : SailM fvvmfunct6 := do
   let b__0 := arg_
-  if (BEq.beq b__0 (0b011000 : (BitVec 6)))
+  bif (BEq.beq b__0 (0b011000 : (BitVec 6)))
   then (pure FVVM_VMFEQ)
   else
-    if (BEq.beq b__0 (0b011001 : (BitVec 6)))
-    then (pure FVVM_VMFLE)
-    else
-      if (BEq.beq b__0 (0b011011 : (BitVec 6)))
-      then (pure FVVM_VMFLT)
+    (do
+      bif (BEq.beq b__0 (0b011001 : (BitVec 6)))
+      then (pure FVVM_VMFLE)
       else
-        if (BEq.beq b__0 (0b011100 : (BitVec 6)))
-        then (pure FVVM_VMFNE)
-        else
-          assert false "Pattern match failure at unknown location"
-          throw Error.Exit
+        (do
+          bif (BEq.beq b__0 (0b011011 : (BitVec 6)))
+          then (pure FVVM_VMFLT)
+          else
+            (do
+              bif (BEq.beq b__0 (0b011100 : (BitVec 6)))
+              then (pure FVVM_VMFNE)
+              else
+                (do
+                  assert false "Pattern match failure at unknown location"
+                  throw Error.Exit))))
 
 def encdec_fvvmfunct6_forwards_matches (arg_ : fvvmfunct6) : Bool :=
   match arg_ with
@@ -195,18 +199,18 @@ def encdec_fvvmfunct6_forwards_matches (arg_ : fvvmfunct6) : Bool :=
 
 def encdec_fvvmfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b011000 : (BitVec 6)))
+  bif (BEq.beq b__0 (0b011000 : (BitVec 6)))
   then true
   else
-    if (BEq.beq b__0 (0b011001 : (BitVec 6)))
+    (bif (BEq.beq b__0 (0b011001 : (BitVec 6)))
     then true
     else
-      if (BEq.beq b__0 (0b011011 : (BitVec 6)))
+      (bif (BEq.beq b__0 (0b011011 : (BitVec 6)))
       then true
       else
-        if (BEq.beq b__0 (0b011100 : (BitVec 6)))
+        (bif (BEq.beq b__0 (0b011100 : (BitVec 6)))
         then true
-        else false
+        else false)))
 
 def fvvmtype_mnemonic_backwards (arg_ : String) : SailM fvvmfunct6 := do
   match arg_ with
@@ -214,9 +218,9 @@ def fvvmtype_mnemonic_backwards (arg_ : String) : SailM fvvmfunct6 := do
   | "vmfle.vv" => (pure FVVM_VMFLE)
   | "vmflt.vv" => (pure FVVM_VMFLT)
   | "vmfne.vv" => (pure FVVM_VMFNE)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def fvvmtype_mnemonic_forwards_matches (arg_ : fvvmfunct6) : Bool :=
   match arg_ with
@@ -244,26 +248,32 @@ def encdec_fvfmfunct6_forwards (arg_ : fvfmfunct6) : (BitVec 6) :=
 
 def encdec_fvfmfunct6_backwards (arg_ : (BitVec 6)) : SailM fvfmfunct6 := do
   let b__0 := arg_
-  if (BEq.beq b__0 (0b011000 : (BitVec 6)))
+  bif (BEq.beq b__0 (0b011000 : (BitVec 6)))
   then (pure VFM_VMFEQ)
   else
-    if (BEq.beq b__0 (0b011001 : (BitVec 6)))
-    then (pure VFM_VMFLE)
-    else
-      if (BEq.beq b__0 (0b011011 : (BitVec 6)))
-      then (pure VFM_VMFLT)
+    (do
+      bif (BEq.beq b__0 (0b011001 : (BitVec 6)))
+      then (pure VFM_VMFLE)
       else
-        if (BEq.beq b__0 (0b011100 : (BitVec 6)))
-        then (pure VFM_VMFNE)
-        else
-          if (BEq.beq b__0 (0b011101 : (BitVec 6)))
-          then (pure VFM_VMFGT)
+        (do
+          bif (BEq.beq b__0 (0b011011 : (BitVec 6)))
+          then (pure VFM_VMFLT)
           else
-            if (BEq.beq b__0 (0b011111 : (BitVec 6)))
-            then (pure VFM_VMFGE)
-            else
-              assert false "Pattern match failure at unknown location"
-              throw Error.Exit
+            (do
+              bif (BEq.beq b__0 (0b011100 : (BitVec 6)))
+              then (pure VFM_VMFNE)
+              else
+                (do
+                  bif (BEq.beq b__0 (0b011101 : (BitVec 6)))
+                  then (pure VFM_VMFGT)
+                  else
+                    (do
+                      bif (BEq.beq b__0 (0b011111 : (BitVec 6)))
+                      then (pure VFM_VMFGE)
+                      else
+                        (do
+                          assert false "Pattern match failure at unknown location"
+                          throw Error.Exit))))))
 
 def encdec_fvfmfunct6_forwards_matches (arg_ : fvfmfunct6) : Bool :=
   match arg_ with
@@ -276,24 +286,24 @@ def encdec_fvfmfunct6_forwards_matches (arg_ : fvfmfunct6) : Bool :=
 
 def encdec_fvfmfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b011000 : (BitVec 6)))
+  bif (BEq.beq b__0 (0b011000 : (BitVec 6)))
   then true
   else
-    if (BEq.beq b__0 (0b011001 : (BitVec 6)))
+    (bif (BEq.beq b__0 (0b011001 : (BitVec 6)))
     then true
     else
-      if (BEq.beq b__0 (0b011011 : (BitVec 6)))
+      (bif (BEq.beq b__0 (0b011011 : (BitVec 6)))
       then true
       else
-        if (BEq.beq b__0 (0b011100 : (BitVec 6)))
+        (bif (BEq.beq b__0 (0b011100 : (BitVec 6)))
         then true
         else
-          if (BEq.beq b__0 (0b011101 : (BitVec 6)))
+          (bif (BEq.beq b__0 (0b011101 : (BitVec 6)))
           then true
           else
-            if (BEq.beq b__0 (0b011111 : (BitVec 6)))
+            (bif (BEq.beq b__0 (0b011111 : (BitVec 6)))
             then true
-            else false
+            else false)))))
 
 def fvfmtype_mnemonic_backwards (arg_ : String) : SailM fvfmfunct6 := do
   match arg_ with
@@ -303,9 +313,9 @@ def fvfmtype_mnemonic_backwards (arg_ : String) : SailM fvfmfunct6 := do
   | "vmfne.vf" => (pure VFM_VMFNE)
   | "vmfgt.vf" => (pure VFM_VMFGT)
   | "vmfge.vf" => (pure VFM_VMFGE)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def fvfmtype_mnemonic_forwards_matches (arg_ : fvfmfunct6) : Bool :=
   match arg_ with

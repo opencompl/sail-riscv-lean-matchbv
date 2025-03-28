@@ -169,14 +169,16 @@ def encdec_uop_forwards (arg_ : uop) : (BitVec 7) :=
 
 def encdec_uop_backwards (arg_ : (BitVec 7)) : SailM uop := do
   let b__0 := arg_
-  if (BEq.beq b__0 (0b0110111 : (BitVec 7)))
+  bif (BEq.beq b__0 (0b0110111 : (BitVec 7)))
   then (pure RISCV_LUI)
   else
-    if (BEq.beq b__0 (0b0010111 : (BitVec 7)))
-    then (pure RISCV_AUIPC)
-    else
-      assert false "Pattern match failure at unknown location"
-      throw Error.Exit
+    (do
+      bif (BEq.beq b__0 (0b0010111 : (BitVec 7)))
+      then (pure RISCV_AUIPC)
+      else
+        (do
+          assert false "Pattern match failure at unknown location"
+          throw Error.Exit))
 
 def encdec_uop_forwards_matches (arg_ : uop) : Bool :=
   match arg_ with
@@ -185,20 +187,20 @@ def encdec_uop_forwards_matches (arg_ : uop) : Bool :=
 
 def encdec_uop_backwards_matches (arg_ : (BitVec 7)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b0110111 : (BitVec 7)))
+  bif (BEq.beq b__0 (0b0110111 : (BitVec 7)))
   then true
   else
-    if (BEq.beq b__0 (0b0010111 : (BitVec 7)))
+    (bif (BEq.beq b__0 (0b0010111 : (BitVec 7)))
     then true
-    else false
+    else false)
 
 def utype_mnemonic_backwards (arg_ : String) : SailM uop := do
   match arg_ with
   | "lui" => (pure RISCV_LUI)
   | "auipc" => (pure RISCV_AUIPC)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def utype_mnemonic_forwards_matches (arg_ : uop) : Bool :=
   match arg_ with
@@ -222,26 +224,32 @@ def encdec_bop_forwards (arg_ : bop) : (BitVec 3) :=
 
 def encdec_bop_backwards (arg_ : (BitVec 3)) : SailM bop := do
   let b__0 := arg_
-  if (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
   then (pure RISCV_BEQ)
   else
-    if (BEq.beq b__0 (0b001 : (BitVec 3)))
-    then (pure RISCV_BNE)
-    else
-      if (BEq.beq b__0 (0b100 : (BitVec 3)))
-      then (pure RISCV_BLT)
+    (do
+      bif (BEq.beq b__0 (0b001 : (BitVec 3)))
+      then (pure RISCV_BNE)
       else
-        if (BEq.beq b__0 (0b101 : (BitVec 3)))
-        then (pure RISCV_BGE)
-        else
-          if (BEq.beq b__0 (0b110 : (BitVec 3)))
-          then (pure RISCV_BLTU)
+        (do
+          bif (BEq.beq b__0 (0b100 : (BitVec 3)))
+          then (pure RISCV_BLT)
           else
-            if (BEq.beq b__0 (0b111 : (BitVec 3)))
-            then (pure RISCV_BGEU)
-            else
-              assert false "Pattern match failure at unknown location"
-              throw Error.Exit
+            (do
+              bif (BEq.beq b__0 (0b101 : (BitVec 3)))
+              then (pure RISCV_BGE)
+              else
+                (do
+                  bif (BEq.beq b__0 (0b110 : (BitVec 3)))
+                  then (pure RISCV_BLTU)
+                  else
+                    (do
+                      bif (BEq.beq b__0 (0b111 : (BitVec 3)))
+                      then (pure RISCV_BGEU)
+                      else
+                        (do
+                          assert false "Pattern match failure at unknown location"
+                          throw Error.Exit))))))
 
 def encdec_bop_forwards_matches (arg_ : bop) : Bool :=
   match arg_ with
@@ -254,24 +262,24 @@ def encdec_bop_forwards_matches (arg_ : bop) : Bool :=
 
 def encdec_bop_backwards_matches (arg_ : (BitVec 3)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
   then true
   else
-    if (BEq.beq b__0 (0b001 : (BitVec 3)))
+    (bif (BEq.beq b__0 (0b001 : (BitVec 3)))
     then true
     else
-      if (BEq.beq b__0 (0b100 : (BitVec 3)))
+      (bif (BEq.beq b__0 (0b100 : (BitVec 3)))
       then true
       else
-        if (BEq.beq b__0 (0b101 : (BitVec 3)))
+        (bif (BEq.beq b__0 (0b101 : (BitVec 3)))
         then true
         else
-          if (BEq.beq b__0 (0b110 : (BitVec 3)))
+          (bif (BEq.beq b__0 (0b110 : (BitVec 3)))
           then true
           else
-            if (BEq.beq b__0 (0b111 : (BitVec 3)))
+            (bif (BEq.beq b__0 (0b111 : (BitVec 3)))
             then true
-            else false
+            else false)))))
 
 def btype_mnemonic_backwards (arg_ : String) : SailM bop := do
   match arg_ with
@@ -281,9 +289,9 @@ def btype_mnemonic_backwards (arg_ : String) : SailM bop := do
   | "bge" => (pure RISCV_BGE)
   | "bltu" => (pure RISCV_BLTU)
   | "bgeu" => (pure RISCV_BGEU)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def btype_mnemonic_forwards_matches (arg_ : bop) : Bool :=
   match arg_ with
@@ -315,26 +323,32 @@ def encdec_iop_forwards (arg_ : iop) : (BitVec 3) :=
 
 def encdec_iop_backwards (arg_ : (BitVec 3)) : SailM iop := do
   let b__0 := arg_
-  if (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
   then (pure RISCV_ADDI)
   else
-    if (BEq.beq b__0 (0b010 : (BitVec 3)))
-    then (pure RISCV_SLTI)
-    else
-      if (BEq.beq b__0 (0b011 : (BitVec 3)))
-      then (pure RISCV_SLTIU)
+    (do
+      bif (BEq.beq b__0 (0b010 : (BitVec 3)))
+      then (pure RISCV_SLTI)
       else
-        if (BEq.beq b__0 (0b111 : (BitVec 3)))
-        then (pure RISCV_ANDI)
-        else
-          if (BEq.beq b__0 (0b110 : (BitVec 3)))
-          then (pure RISCV_ORI)
+        (do
+          bif (BEq.beq b__0 (0b011 : (BitVec 3)))
+          then (pure RISCV_SLTIU)
           else
-            if (BEq.beq b__0 (0b100 : (BitVec 3)))
-            then (pure RISCV_XORI)
-            else
-              assert false "Pattern match failure at unknown location"
-              throw Error.Exit
+            (do
+              bif (BEq.beq b__0 (0b111 : (BitVec 3)))
+              then (pure RISCV_ANDI)
+              else
+                (do
+                  bif (BEq.beq b__0 (0b110 : (BitVec 3)))
+                  then (pure RISCV_ORI)
+                  else
+                    (do
+                      bif (BEq.beq b__0 (0b100 : (BitVec 3)))
+                      then (pure RISCV_XORI)
+                      else
+                        (do
+                          assert false "Pattern match failure at unknown location"
+                          throw Error.Exit))))))
 
 def encdec_iop_forwards_matches (arg_ : iop) : Bool :=
   match arg_ with
@@ -347,24 +361,24 @@ def encdec_iop_forwards_matches (arg_ : iop) : Bool :=
 
 def encdec_iop_backwards_matches (arg_ : (BitVec 3)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
   then true
   else
-    if (BEq.beq b__0 (0b010 : (BitVec 3)))
+    (bif (BEq.beq b__0 (0b010 : (BitVec 3)))
     then true
     else
-      if (BEq.beq b__0 (0b011 : (BitVec 3)))
+      (bif (BEq.beq b__0 (0b011 : (BitVec 3)))
       then true
       else
-        if (BEq.beq b__0 (0b111 : (BitVec 3)))
+        (bif (BEq.beq b__0 (0b111 : (BitVec 3)))
         then true
         else
-          if (BEq.beq b__0 (0b110 : (BitVec 3)))
+          (bif (BEq.beq b__0 (0b110 : (BitVec 3)))
           then true
           else
-            if (BEq.beq b__0 (0b100 : (BitVec 3)))
+            (bif (BEq.beq b__0 (0b100 : (BitVec 3)))
             then true
-            else false
+            else false)))))
 
 def itype_mnemonic_backwards (arg_ : String) : SailM iop := do
   match arg_ with
@@ -374,9 +388,9 @@ def itype_mnemonic_backwards (arg_ : String) : SailM iop := do
   | "xori" => (pure RISCV_XORI)
   | "ori" => (pure RISCV_ORI)
   | "andi" => (pure RISCV_ANDI)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def itype_mnemonic_forwards_matches (arg_ : iop) : Bool :=
   match arg_ with
@@ -405,17 +419,20 @@ def encdec_sop_forwards (arg_ : sop) : (BitVec 3) :=
 
 def encdec_sop_backwards (arg_ : (BitVec 3)) : SailM sop := do
   let b__0 := arg_
-  if (BEq.beq b__0 (0b001 : (BitVec 3)))
+  bif (BEq.beq b__0 (0b001 : (BitVec 3)))
   then (pure RISCV_SLLI)
   else
-    if (BEq.beq b__0 (0b101 : (BitVec 3)))
-    then (pure RISCV_SRLI)
-    else
-      if (BEq.beq b__0 (0b101 : (BitVec 3)))
-      then (pure RISCV_SRAI)
+    (do
+      bif (BEq.beq b__0 (0b101 : (BitVec 3)))
+      then (pure RISCV_SRLI)
       else
-        assert false "Pattern match failure at unknown location"
-        throw Error.Exit
+        (do
+          bif (BEq.beq b__0 (0b101 : (BitVec 3)))
+          then (pure RISCV_SRAI)
+          else
+            (do
+              assert false "Pattern match failure at unknown location"
+              throw Error.Exit)))
 
 def encdec_sop_forwards_matches (arg_ : sop) : Bool :=
   match arg_ with
@@ -425,24 +442,24 @@ def encdec_sop_forwards_matches (arg_ : sop) : Bool :=
 
 def encdec_sop_backwards_matches (arg_ : (BitVec 3)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b001 : (BitVec 3)))
+  bif (BEq.beq b__0 (0b001 : (BitVec 3)))
   then true
   else
-    if (BEq.beq b__0 (0b101 : (BitVec 3)))
+    (bif (BEq.beq b__0 (0b101 : (BitVec 3)))
     then true
     else
-      if (BEq.beq b__0 (0b101 : (BitVec 3)))
+      (bif (BEq.beq b__0 (0b101 : (BitVec 3)))
       then true
-      else false
+      else false))
 
 def shiftiop_mnemonic_backwards (arg_ : String) : SailM sop := do
   match arg_ with
   | "slli" => (pure RISCV_SLLI)
   | "srli" => (pure RISCV_SRLI)
   | "srai" => (pure RISCV_SRAI)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def shiftiop_mnemonic_forwards_matches (arg_ : sop) : Bool :=
   match arg_ with
@@ -469,9 +486,9 @@ def rtype_mnemonic_backwards (arg_ : String) : SailM rop := do
   | "srl" => (pure RISCV_SRL)
   | "sub" => (pure RISCV_SUB)
   | "sra" => (pure RISCV_SRA)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def rtype_mnemonic_forwards_matches (arg_ : rop) : Bool :=
   match arg_ with
@@ -502,7 +519,7 @@ def rtype_mnemonic_backwards_matches (arg_ : String) : Bool :=
 
 /-- Type quantifiers: k_ex313135# : Bool, k_n : Nat, 0 < k_n ∧ k_n ≤ xlen -/
 def extend_value (is_unsigned : Bool) (value : (BitVec k_n)) : (BitVec (2 ^ 3 * 8)) :=
-  if is_unsigned
+  bif is_unsigned
   then (zero_extend (m := ((2 ^i 3) *i 8)) value)
   else (sign_extend (m := ((2 ^i 3) *i 8)) value)
 
@@ -520,9 +537,9 @@ def maybe_aq_backwards (arg_ : String) : SailM Bool := do
   match arg_ with
   | ".aq" => (pure true)
   | "" => (pure false)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 /-- Type quantifiers: k_ex313150# : Bool -/
 def maybe_aq_forwards_matches (arg_ : Bool) : Bool :=
@@ -540,9 +557,9 @@ def maybe_rl_backwards (arg_ : String) : SailM Bool := do
   match arg_ with
   | ".rl" => (pure true)
   | "" => (pure false)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 /-- Type quantifiers: k_ex313151# : Bool -/
 def maybe_rl_forwards_matches (arg_ : Bool) : Bool :=
@@ -560,9 +577,9 @@ def maybe_u_backwards (arg_ : String) : SailM Bool := do
   match arg_ with
   | "u" => (pure true)
   | "" => (pure false)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 /-- Type quantifiers: k_ex313152# : Bool -/
 def maybe_u_forwards_matches (arg_ : Bool) : Bool :=
@@ -583,9 +600,9 @@ def rtypew_mnemonic_backwards (arg_ : String) : SailM ropw := do
   | "sllw" => (pure RISCV_SLLW)
   | "srlw" => (pure RISCV_SRLW)
   | "sraw" => (pure RISCV_SRAW)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def rtypew_mnemonic_forwards_matches (arg_ : ropw) : Bool :=
   match arg_ with
@@ -609,9 +626,9 @@ def shiftiwop_mnemonic_backwards (arg_ : String) : SailM sopw := do
   | "slliw" => (pure RISCV_SLLIW)
   | "srliw" => (pure RISCV_SRLIW)
   | "sraiw" => (pure RISCV_SRAIW)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def shiftiwop_mnemonic_forwards_matches (arg_ : sopw) : Bool :=
   match arg_ with
@@ -628,7 +645,7 @@ def shiftiwop_mnemonic_backwards_matches (arg_ : String) : Bool :=
 
 /-- Type quantifiers: k_ex313153# : Bool -/
 def effective_fence_set (set : (BitVec 4)) (fiom : Bool) : (BitVec 4) :=
-  if fiom
+  bif fiom
   then
     ((Sail.BitVec.extractLsb set 3 2) ++ ((Sail.BitVec.extractLsb set 1 0) ||| (Sail.BitVec.extractLsb
           set 3 2)))
@@ -638,18 +655,18 @@ def bit_maybe_r_backwards (arg_ : String) : SailM (BitVec 1) := do
   match arg_ with
   | "r" => (pure (0b1 : (BitVec 1)))
   | "" => (pure (0b0 : (BitVec 1)))
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def bit_maybe_r_forwards_matches (arg_ : (BitVec 1)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b1 : (BitVec 1)))
+  bif (BEq.beq b__0 (0b1 : (BitVec 1)))
   then true
   else
-    if (BEq.beq b__0 (0b0 : (BitVec 1)))
+    (bif (BEq.beq b__0 (0b0 : (BitVec 1)))
     then true
-    else false
+    else false)
 
 def bit_maybe_r_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -661,18 +678,18 @@ def bit_maybe_w_backwards (arg_ : String) : SailM (BitVec 1) := do
   match arg_ with
   | "w" => (pure (0b1 : (BitVec 1)))
   | "" => (pure (0b0 : (BitVec 1)))
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def bit_maybe_w_forwards_matches (arg_ : (BitVec 1)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b1 : (BitVec 1)))
+  bif (BEq.beq b__0 (0b1 : (BitVec 1)))
   then true
   else
-    if (BEq.beq b__0 (0b0 : (BitVec 1)))
+    (bif (BEq.beq b__0 (0b0 : (BitVec 1)))
     then true
-    else false
+    else false)
 
 def bit_maybe_w_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -684,18 +701,18 @@ def bit_maybe_i_backwards (arg_ : String) : SailM (BitVec 1) := do
   match arg_ with
   | "i" => (pure (0b1 : (BitVec 1)))
   | "" => (pure (0b0 : (BitVec 1)))
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def bit_maybe_i_forwards_matches (arg_ : (BitVec 1)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b1 : (BitVec 1)))
+  bif (BEq.beq b__0 (0b1 : (BitVec 1)))
   then true
   else
-    if (BEq.beq b__0 (0b0 : (BitVec 1)))
+    (bif (BEq.beq b__0 (0b0 : (BitVec 1)))
     then true
-    else false
+    else false)
 
 def bit_maybe_i_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -707,18 +724,18 @@ def bit_maybe_o_backwards (arg_ : String) : SailM (BitVec 1) := do
   match arg_ with
   | "o" => (pure (0b1 : (BitVec 1)))
   | "" => (pure (0b0 : (BitVec 1)))
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def bit_maybe_o_forwards_matches (arg_ : (BitVec 1)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b1 : (BitVec 1)))
+  bif (BEq.beq b__0 (0b1 : (BitVec 1)))
   then true
   else
-    if (BEq.beq b__0 (0b0 : (BitVec 1)))
+    (bif (BEq.beq b__0 (0b0 : (BitVec 1)))
     then true
-    else false
+    else false)
 
 def bit_maybe_o_backwards_matches (arg_ : String) : Bool :=
   match arg_ with

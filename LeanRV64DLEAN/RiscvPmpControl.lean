@@ -166,22 +166,20 @@ def pmpAddrRange (cfg : (BitVec 8)) (pmpaddr : (BitVec (2 ^ 3 * 8))) (prev_pmpad
   match (pmpAddrMatchType_of_bits (_get_Pmpcfg_ent_A cfg)) with
   | OFF => (pure none)
   | TOR => (pure (some (prev_pmpaddr, pmpaddr)))
-  | NA4 =>
-    assert ((sys_pmp_grain ()) <b 1) "NA4 cannot be selected when PMP grain G >= 1."
-    let lo := pmpaddr
-    (pure (some (lo, (BitVec.addInt lo 1))))
-  | NAPOT =>
-    let mask := (pmpaddr ^^^ (BitVec.addInt pmpaddr 1))
+  | NA4 => (do
+      assert ((sys_pmp_grain ()) <b 1) "NA4 cannot be selected when PMP grain G >= 1."
+      let lo := pmpaddr
+      (pure (some (lo, (BitVec.addInt lo 1)))))
+  | NAPOT => (let mask := (pmpaddr ^^^ (BitVec.addInt pmpaddr 1))
     let lo := (pmpaddr &&& (Complement.complement mask))
     let len := (BitVec.addInt mask 1)
-    (pure (some (lo, (lo + len))))
+    (pure (some (lo, (lo + len)))))
 
 def pmpCheckRWX (ent : (BitVec 8)) (acc : (AccessType Unit)) : Bool :=
   match acc with
   | .Read _ => (BEq.beq (_get_Pmpcfg_ent_R ent) (0b1 : (BitVec 1)))
   | .Write _ => (BEq.beq (_get_Pmpcfg_ent_W ent) (0b1 : (BitVec 1)))
-  | .ReadWrite _ =>
-    (Bool.and (BEq.beq (_get_Pmpcfg_ent_R ent) (0b1 : (BitVec 1)))
+  | .ReadWrite _ => (Bool.and (BEq.beq (_get_Pmpcfg_ent_R ent) (0b1 : (BitVec 1)))
       (BEq.beq (_get_Pmpcfg_ent_W ent) (0b1 : (BitVec 1))))
   | .Execute () => (BEq.beq (_get_Pmpcfg_ent_X ent) (0b1 : (BitVec 1)))
 
@@ -205,20 +203,19 @@ def pmpMatchAddr (typ_0 : physaddr) (width : (BitVec (2 ^ 3 * 8))) (rng : (Optio
   let .physaddr addr : physaddr := typ_0
   match rng with
   | none => PMP_NoMatch
-  | .some (lo, hi) =>
-    let addr := (BitVec.toNat addr)
+  | .some (lo, hi) => (let addr := (BitVec.toNat addr)
     let width := (BitVec.toNat width)
     let lo := ((BitVec.toNat lo) *i 4)
     let hi := ((BitVec.toNat hi) *i 4)
-    if (hi ≤b lo)
+    bif (hi ≤b lo)
     then PMP_NoMatch
     else
-      if (Bool.or ((addr +i width) ≤b lo) (hi ≤b addr))
+      (bif (Bool.or ((addr +i width) ≤b lo) (hi ≤b addr))
       then PMP_NoMatch
       else
-        if (Bool.and (lo ≤b addr) ((addr +i width) ≤b hi))
+        (bif (Bool.and (lo ≤b addr) ((addr +i width) ≤b hi))
         then PMP_Match
-        else PMP_PartialMatch
+        else PMP_PartialMatch)))
 
 def undefined_pmpMatch (_ : Unit) : SailM pmpMatch := do
   (internal_pick [PMP_Success, PMP_Continue, PMP_Fail])
@@ -241,10 +238,10 @@ def pmpMatchEntry (addr : physaddr) (width : (BitVec (2 ^ 3 * 8))) (acc : (Acces
   match (pmpMatchAddr addr width rng) with
   | PMP_NoMatch => (pure PMP_Continue)
   | PMP_PartialMatch => (pure PMP_Fail)
-  | PMP_Match =>
-    if (Bool.or (pmpCheckRWX ent acc) (Bool.and (BEq.beq priv Machine) (not (pmpLocked ent))))
+  | PMP_Match => (bif (Bool.or (pmpCheckRWX ent acc)
+         (Bool.and (BEq.beq priv Machine) (not (pmpLocked ent))))
     then (pure PMP_Success)
-    else (pure PMP_Fail)
+    else (pure PMP_Fail))
 
 def accessToFault (acc : (AccessType Unit)) : ExceptionType :=
   match acc with
@@ -259,11 +256,11 @@ def pmpCheck (addr : physaddr) (width : Nat) (acc : (AccessType Unit)) (priv : P
   let loop_i_lower := 0
   let loop_i_upper := 63
   let mut loop_vars := ()
-  for i in [loop_i_lower:loop_i_upper + 1:1]i do
+  for i in [loop_i_lower:loop_i_upper:1]i do
     let () := loop_vars
     loop_vars ← do
       let prev_pmpaddr ← do
-        if (i >b 0)
+        bif (i >b 0)
         then (pmpReadAddrReg (i -i 1))
         else (pure (zeros_implicit (n := ((2 ^i 3) *i 8))))
       match (← (pmpMatchEntry addr width acc priv (GetElem?.getElem! (← readReg pmpcfg_n) i)
@@ -272,7 +269,7 @@ def pmpCheck (addr : physaddr) (width : Nat) (acc : (AccessType Unit)) (priv : P
       | PMP_Fail => throw ((some (accessToFault acc)) : (Option ExceptionType))
       | PMP_Continue => (pure ())
   (pure loop_vars)
-  if (BEq.beq priv Machine)
+  bif (BEq.beq priv Machine)
   then (pure none)
   else (pure (some (accessToFault acc)))
 
@@ -282,7 +279,7 @@ def reset_pmp (_ : Unit) : SailM Unit := do
   let loop_i_lower := 0
   let loop_i_upper := 63
   let mut loop_vars := ()
-  for i in [loop_i_lower:loop_i_upper + 1:1]i do
+  for i in [loop_i_lower:loop_i_upper:1]i do
     let () := loop_vars
     loop_vars ← do
       writeReg pmpcfg_n (vectorUpdate (← readReg pmpcfg_n) i

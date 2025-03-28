@@ -166,9 +166,9 @@ def zbkb_rtype_mnemonic_backwards (arg_ : String) : SailM brop_zbkb := do
   match arg_ with
   | "pack" => (pure RISCV_PACK)
   | "packh" => (pure RISCV_PACKH)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def zbkb_rtype_mnemonic_forwards_matches (arg_ : brop_zbkb) : Bool :=
   match arg_ with

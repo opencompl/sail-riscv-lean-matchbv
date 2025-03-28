@@ -165,14 +165,13 @@ open AccessType
 /-- Type quantifiers: n : Nat, n ∈ {16, 32, 64, 128} -/
 def canonical_NaN {n : _} : (BitVec n) :=
   match n with
-  | 16 =>
-    ((0b0 : (BitVec 1)) ++ ((ones (n := 5)) ++ ((0b1 : (BitVec 1)) ++ (zeros_implicit (n := 9)))))
-  | 32 =>
-    ((0b0 : (BitVec 1)) ++ ((ones (n := 8)) ++ ((0b1 : (BitVec 1)) ++ (zeros_implicit (n := 22)))))
-  | 64 =>
-    ((0b0 : (BitVec 1)) ++ ((ones (n := 11)) ++ ((0b1 : (BitVec 1)) ++ (zeros_implicit (n := 51)))))
-  | _ =>
-    ((0b0 : (BitVec 1)) ++ ((ones (n := 15)) ++ ((0b1 : (BitVec 1)) ++ (zeros_implicit (n := 111)))))
+  | 16 => ((0b0 : (BitVec 1)) ++ ((ones (n := 5)) ++ ((0b1 : (BitVec 1)) ++ (zeros_implicit (n := 9)))))
+  | 32 => ((0b0 : (BitVec 1)) ++ ((ones (n := 8)) ++ ((0b1 : (BitVec 1)) ++ (zeros_implicit
+            (n := 22)))))
+  | 64 => ((0b0 : (BitVec 1)) ++ ((ones (n := 11)) ++ ((0b1 : (BitVec 1)) ++ (zeros_implicit
+            (n := 51)))))
+  | _ => ((0b0 : (BitVec 1)) ++ ((ones (n := 15)) ++ ((0b1 : (BitVec 1)) ++ (zeros_implicit
+            (n := 111)))))
 
 def canonical_NaN_H (_ : Unit) : (BitVec 16) :=
   (canonical_NaN (n := 16))
@@ -192,13 +191,13 @@ def nan_box {n : _} (x : (BitVec k_n)) : (BitVec n) :=
 
 /-- Type quantifiers: k_n : Nat, m : Nat, m ∈ {16, 32, 64, 128} ∧ k_n ≥ m -/
 def nan_unbox {m : _} (x : (BitVec k_n)) : (BitVec m) :=
-  if (BEq.beq (Sail.BitVec.length x) m)
+  bif (BEq.beq (Sail.BitVec.length x) m)
   then x
   else
-    if (BEq.beq (Sail.BitVec.extractLsb x ((Sail.BitVec.length x) -i 1) m)
+    (bif (BEq.beq (Sail.BitVec.extractLsb x ((Sail.BitVec.length x) -i 1) m)
          (ones (n := ((((Sail.BitVec.length x) -i 1) -i m) +i 1))))
     then (Sail.BitVec.extractLsb x (m -i 1) 0)
-    else (canonical_NaN (n := m))
+    else (canonical_NaN (n := m)))
 
 def fregidx_to_fregno (app_0 : fregidx) : fregno :=
   let .Fregidx b := app_0
@@ -240,7 +239,7 @@ def dirty_fd_context (_ : Unit) : SailM Unit := do
 
 def dirty_fd_context_if_present (_ : Unit) : SailM Unit := do
   assert (neq_bool (sys_enable_fdext ()) (sys_enable_zfinx ())) "riscv_fdext_regs.sail:112.49-112.50"
-  if (sys_enable_fdext ())
+  bif (sys_enable_fdext ())
   then (dirty_fd_context ())
   else (pure ())
 
@@ -281,9 +280,9 @@ def rF (app_0 : fregno) : SailM (BitVec (8 * 8)) := do
     | 29 => readReg f29
     | 30 => readReg f30
     | 31 => readReg f31
-    | _ =>
-      assert false "invalid floating point register number"
-      throw Error.Exit ) : SailM fregtype )
+    | _ => (do
+        assert false "invalid floating point register number"
+        throw Error.Exit) ) : SailM fregtype )
   (pure (fregval_from_freg v))
 
 def wF (typ_0 : fregno) (in_v : (BitVec (8 * 8))) : SailM Unit := do
@@ -325,7 +324,7 @@ def wF (typ_0 : fregno) (in_v : (BitVec (8 * 8))) : SailM Unit := do
   | 31 => writeReg f31 v
   | _ => assert false "invalid floating point register number"
   (dirty_fd_context ())
-  if (get_config_print_reg ())
+  bif (get_config_print_reg ())
   then
     (pure (print_endline
         (HAppend.hAppend "f" (HAppend.hAppend (Int.repr r) (HAppend.hAppend " <- " (FRegStr v))))))
@@ -370,42 +369,42 @@ def wF_D (i : fregidx) (data : (BitVec 64)) : SailM Unit := do
 def rF_or_X_H (i : fregidx) : SailM (BitVec 16) := do
   assert (flen ≥b 16) "riscv_fdext_regs.sail:260.19-260.20"
   assert (neq_bool (sys_enable_fdext ()) (sys_enable_zfinx ())) "riscv_fdext_regs.sail:261.49-261.50"
-  if (sys_enable_fdext ())
+  bif (sys_enable_fdext ())
   then (rF_H i)
   else (pure (Sail.BitVec.extractLsb (← (rX_bits (fregidx_to_regidx i))) 15 0))
 
 def rF_or_X_S (i : fregidx) : SailM (BitVec 32) := do
   assert (flen ≥b 32) "riscv_fdext_regs.sail:269.19-269.20"
   assert (neq_bool (sys_enable_fdext ()) (sys_enable_zfinx ())) "riscv_fdext_regs.sail:270.49-270.50"
-  if (sys_enable_fdext ())
+  bif (sys_enable_fdext ())
   then (rF_S i)
   else (pure (Sail.BitVec.extractLsb (← (rX_bits (fregidx_to_regidx i))) 31 0))
 
 def rF_or_X_D (i : fregidx) : SailM (BitVec 64) := do
   assert (flen ≥b 64) "riscv_fdext_regs.sail:278.19-278.20"
   assert (neq_bool (sys_enable_fdext ()) (sys_enable_zfinx ())) "riscv_fdext_regs.sail:279.49-279.50"
-  if (sys_enable_fdext ())
+  bif (sys_enable_fdext ())
   then (rF_D i)
   else (pure (Sail.BitVec.extractLsb (← (rX_bits (fregidx_to_regidx i))) 63 0))
 
 def wF_or_X_H (i : fregidx) (data : (BitVec 16)) : SailM Unit := do
   assert (flen ≥b 16) "riscv_fdext_regs.sail:293.19-293.20"
   assert (neq_bool (sys_enable_fdext ()) (sys_enable_zfinx ())) "riscv_fdext_regs.sail:294.49-294.50"
-  if (sys_enable_fdext ())
+  bif (sys_enable_fdext ())
   then (wF_H i data)
   else (wX_bits (fregidx_to_regidx i) (sign_extend (m := ((2 ^i 3) *i 8)) data))
 
 def wF_or_X_S (i : fregidx) (data : (BitVec 32)) : SailM Unit := do
   assert (flen ≥b 32) "riscv_fdext_regs.sail:302.19-302.20"
   assert (neq_bool (sys_enable_fdext ()) (sys_enable_zfinx ())) "riscv_fdext_regs.sail:303.49-303.50"
-  if (sys_enable_fdext ())
+  bif (sys_enable_fdext ())
   then (wF_S i data)
   else (wX_bits (fregidx_to_regidx i) (sign_extend (m := ((2 ^i 3) *i 8)) data))
 
 def wF_or_X_D (i : fregidx) (data : (BitVec 64)) : SailM Unit := do
   assert (flen ≥b 64) "riscv_fdext_regs.sail:311.20-311.21"
   assert (neq_bool (sys_enable_fdext ()) (sys_enable_zfinx ())) "riscv_fdext_regs.sail:312.49-312.50"
-  if (sys_enable_fdext ())
+  bif (sys_enable_fdext ())
   then (wF_D i data)
   else (wX_bits (fregidx_to_regidx i) (sign_extend (m := ((2 ^i 3) *i 8)) data))
 
@@ -443,110 +442,111 @@ def freg_name_raw_backwards (arg_ : String) : SailM (BitVec 5) := do
   | "ft9" => (pure (0b11101 : (BitVec 5)))
   | "ft10" => (pure (0b11110 : (BitVec 5)))
   | "ft11" => (pure (0b11111 : (BitVec 5)))
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def freg_name_raw_forwards_matches (arg_ : (BitVec 5)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b00000 : (BitVec 5)))
+  bif (BEq.beq b__0 (0b00000 : (BitVec 5)))
   then true
   else
-    if (BEq.beq b__0 (0b00001 : (BitVec 5)))
+    (bif (BEq.beq b__0 (0b00001 : (BitVec 5)))
     then true
     else
-      if (BEq.beq b__0 (0b00010 : (BitVec 5)))
+      (bif (BEq.beq b__0 (0b00010 : (BitVec 5)))
       then true
       else
-        if (BEq.beq b__0 (0b00011 : (BitVec 5)))
+        (bif (BEq.beq b__0 (0b00011 : (BitVec 5)))
         then true
         else
-          if (BEq.beq b__0 (0b00100 : (BitVec 5)))
+          (bif (BEq.beq b__0 (0b00100 : (BitVec 5)))
           then true
           else
-            if (BEq.beq b__0 (0b00101 : (BitVec 5)))
+            (bif (BEq.beq b__0 (0b00101 : (BitVec 5)))
             then true
             else
-              if (BEq.beq b__0 (0b00110 : (BitVec 5)))
+              (bif (BEq.beq b__0 (0b00110 : (BitVec 5)))
               then true
               else
-                if (BEq.beq b__0 (0b00111 : (BitVec 5)))
+                (bif (BEq.beq b__0 (0b00111 : (BitVec 5)))
                 then true
                 else
-                  if (BEq.beq b__0 (0b01000 : (BitVec 5)))
+                  (bif (BEq.beq b__0 (0b01000 : (BitVec 5)))
                   then true
                   else
-                    if (BEq.beq b__0 (0b01001 : (BitVec 5)))
+                    (bif (BEq.beq b__0 (0b01001 : (BitVec 5)))
                     then true
                     else
-                      if (BEq.beq b__0 (0b01010 : (BitVec 5)))
+                      (bif (BEq.beq b__0 (0b01010 : (BitVec 5)))
                       then true
                       else
-                        if (BEq.beq b__0 (0b01011 : (BitVec 5)))
+                        (bif (BEq.beq b__0 (0b01011 : (BitVec 5)))
                         then true
                         else
-                          if (BEq.beq b__0 (0b01100 : (BitVec 5)))
+                          (bif (BEq.beq b__0 (0b01100 : (BitVec 5)))
                           then true
                           else
-                            if (BEq.beq b__0 (0b01101 : (BitVec 5)))
+                            (bif (BEq.beq b__0 (0b01101 : (BitVec 5)))
                             then true
                             else
-                              if (BEq.beq b__0 (0b01110 : (BitVec 5)))
+                              (bif (BEq.beq b__0 (0b01110 : (BitVec 5)))
                               then true
                               else
-                                if (BEq.beq b__0 (0b01111 : (BitVec 5)))
+                                (bif (BEq.beq b__0 (0b01111 : (BitVec 5)))
                                 then true
                                 else
-                                  if (BEq.beq b__0 (0b10000 : (BitVec 5)))
+                                  (bif (BEq.beq b__0 (0b10000 : (BitVec 5)))
                                   then true
                                   else
-                                    if (BEq.beq b__0 (0b10001 : (BitVec 5)))
+                                    (bif (BEq.beq b__0 (0b10001 : (BitVec 5)))
                                     then true
                                     else
-                                      if (BEq.beq b__0 (0b10010 : (BitVec 5)))
+                                      (bif (BEq.beq b__0 (0b10010 : (BitVec 5)))
                                       then true
                                       else
-                                        if (BEq.beq b__0 (0b10011 : (BitVec 5)))
+                                        (bif (BEq.beq b__0 (0b10011 : (BitVec 5)))
                                         then true
                                         else
-                                          if (BEq.beq b__0 (0b10100 : (BitVec 5)))
+                                          (bif (BEq.beq b__0 (0b10100 : (BitVec 5)))
                                           then true
                                           else
-                                            if (BEq.beq b__0 (0b10101 : (BitVec 5)))
+                                            (bif (BEq.beq b__0 (0b10101 : (BitVec 5)))
                                             then true
                                             else
-                                              if (BEq.beq b__0 (0b10110 : (BitVec 5)))
+                                              (bif (BEq.beq b__0 (0b10110 : (BitVec 5)))
                                               then true
                                               else
-                                                if (BEq.beq b__0 (0b10111 : (BitVec 5)))
+                                                (bif (BEq.beq b__0 (0b10111 : (BitVec 5)))
                                                 then true
                                                 else
-                                                  if (BEq.beq b__0 (0b11000 : (BitVec 5)))
+                                                  (bif (BEq.beq b__0 (0b11000 : (BitVec 5)))
                                                   then true
                                                   else
-                                                    if (BEq.beq b__0 (0b11001 : (BitVec 5)))
+                                                    (bif (BEq.beq b__0 (0b11001 : (BitVec 5)))
                                                     then true
                                                     else
-                                                      if (BEq.beq b__0 (0b11010 : (BitVec 5)))
+                                                      (bif (BEq.beq b__0 (0b11010 : (BitVec 5)))
                                                       then true
                                                       else
-                                                        if (BEq.beq b__0 (0b11011 : (BitVec 5)))
+                                                        (bif (BEq.beq b__0 (0b11011 : (BitVec 5)))
                                                         then true
                                                         else
-                                                          if (BEq.beq b__0 (0b11100 : (BitVec 5)))
+                                                          (bif (BEq.beq b__0 (0b11100 : (BitVec 5)))
                                                           then true
                                                           else
-                                                            if (BEq.beq b__0 (0b11101 : (BitVec 5)))
+                                                            (bif (BEq.beq b__0
+                                                                 (0b11101 : (BitVec 5)))
                                                             then true
                                                             else
-                                                              if (BEq.beq b__0
+                                                              (bif (BEq.beq b__0
                                                                    (0b11110 : (BitVec 5)))
                                                               then true
                                                               else
-                                                                if (BEq.beq b__0
+                                                                (bif (BEq.beq b__0
                                                                      (0b11111 : (BitVec 5)))
                                                                 then true
-                                                                else false
+                                                                else false)))))))))))))))))))))))))))))))
 
 def freg_name_raw_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -588,15 +588,16 @@ def freg_name_backwards (arg_ : String) : SailM fregidx := do
   let head_exp_ := arg_
   match (← do
     let mapping0_ := head_exp_
-    if (freg_name_raw_backwards_matches mapping0_)
+    bif (freg_name_raw_backwards_matches mapping0_)
     then
-      match (← (freg_name_raw_backwards mapping0_)) with
-      | i => (pure (some (Fregidx i)))
+      (do
+        match (← (freg_name_raw_backwards mapping0_)) with
+        | i => (pure (some (Fregidx i))))
     else (pure none)) with
   | .some result => (pure result)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def freg_name_forwards_matches (arg_ : fregidx) : Bool :=
   match arg_ with
@@ -606,45 +607,46 @@ def freg_name_backwards_matches (arg_ : String) : SailM Bool := do
   let head_exp_ := arg_
   match (← do
     let mapping0_ := head_exp_
-    if (freg_name_raw_backwards_matches mapping0_)
+    bif (freg_name_raw_backwards_matches mapping0_)
     then
-      match (← (freg_name_raw_backwards mapping0_)) with
-      | i => (pure (some true))
+      (do
+        match (← (freg_name_raw_backwards mapping0_)) with
+        | i => (pure (some true)))
     else (pure none)) with
   | .some result => (pure result)
-  | none =>
-    match head_exp_ with
-    | _ => (pure false)
+  | none => (match head_exp_ with
+    | _ => (pure false))
 
 def freg_or_reg_name_backwards (arg_ : String) : SailM fregidx := do
   let head_exp_ := arg_
   match (← do
     let mapping0_ := head_exp_
-    if (← (reg_name_backwards_matches mapping0_))
+    bif (← (reg_name_backwards_matches mapping0_))
     then
-      match (← (reg_name_backwards mapping0_)) with
-      | .Regidx i =>
-        if (sys_enable_zfinx ())
-        then (pure (some (Fregidx (zero_extend (m := 5) i))))
-        else (pure none)
+      (do
+        match (← (reg_name_backwards mapping0_)) with
+        | .Regidx i => (bif (sys_enable_zfinx ())
+          then (pure (some (Fregidx (zero_extend (m := 5) i))))
+          else (pure none)))
     else (pure none)) with
   | .some result => (pure result)
-  | none =>
-    match (← do
-      let mapping1_ := head_exp_
-      if (← (freg_name_backwards_matches mapping1_))
-      then
-        match (← (freg_name_backwards mapping1_)) with
-        | f => (pure (some f))
-      else (pure none)) with
-    | .some result => (pure result)
-    | _ =>
-      assert false "Pattern match failure at unknown location"
-      throw Error.Exit
+  | none => (do
+      match (← do
+        let mapping1_ := head_exp_
+        bif (← (freg_name_backwards_matches mapping1_))
+        then
+          (do
+            match (← (freg_name_backwards mapping1_)) with
+            | f => (pure (some f)))
+        else (pure none)) with
+      | .some result => (pure result)
+      | _ => (do
+          assert false "Pattern match failure at unknown location"
+          throw Error.Exit))
 
 def freg_or_reg_name_forwards_matches (arg_ : fregidx) : Bool :=
   let f := arg_
-  if (sys_enable_zfinx ())
+  bif (sys_enable_zfinx ())
   then true
   else true
 
@@ -652,27 +654,27 @@ def freg_or_reg_name_backwards_matches (arg_ : String) : SailM Bool := do
   let head_exp_ := arg_
   match (← do
     let mapping0_ := head_exp_
-    if (← (reg_name_backwards_matches mapping0_))
+    bif (← (reg_name_backwards_matches mapping0_))
     then
-      match (← (reg_name_backwards mapping0_)) with
-      | .Regidx i =>
-        if (sys_enable_zfinx ())
-        then (pure (some true))
-        else (pure none)
+      (do
+        match (← (reg_name_backwards mapping0_)) with
+        | .Regidx i => (bif (sys_enable_zfinx ())
+          then (pure (some true))
+          else (pure none)))
     else (pure none)) with
   | .some result => (pure result)
-  | none =>
-    match (← do
-      let mapping1_ := head_exp_
-      if (← (freg_name_backwards_matches mapping1_))
-      then
-        match (← (freg_name_backwards mapping1_)) with
-        | f => (pure (some true))
-      else (pure none)) with
-    | .some result => (pure result)
-    | none =>
-      match head_exp_ with
-      | _ => (pure false)
+  | none => (do
+      match (← do
+        let mapping1_ := head_exp_
+        bif (← (freg_name_backwards_matches mapping1_))
+        then
+          (do
+            match (← (freg_name_backwards mapping1_)) with
+            | f => (pure (some true)))
+        else (pure none)) with
+      | .some result => (pure result)
+      | none => (match head_exp_ with
+        | _ => (pure false)))
 
 def undefined_Fcsr (_ : Unit) : SailM (BitVec 32) := do
   (undefined_bitvector 32)
@@ -707,9 +709,10 @@ def write_fcsr (frm : (BitVec 3)) (fflags : (BitVec 5)) : SailM Unit := do
 
 def accrue_fflags (flags : (BitVec 5)) : SailM Unit := do
   let f ← do (pure ((_get_Fcsr_FFLAGS (← readReg fcsr)) ||| flags))
-  if (bne (_get_Fcsr_FFLAGS (← readReg fcsr)) f)
+  bif (bne (_get_Fcsr_FFLAGS (← readReg fcsr)) f)
   then
-    writeReg fcsr (Sail.BitVec.updateSubrange (← readReg fcsr) 4 0 f)
-    (dirty_fd_context_if_present ())
+    (do
+      writeReg fcsr (Sail.BitVec.updateSubrange (← readReg fcsr) 4 0 f)
+      (dirty_fd_context_if_present ()))
   else (pure ())
 

@@ -850,9 +850,9 @@ abbrev csrRW := (BitVec 2)
 
 abbrev level_range (k_v : Nat) := Nat
 
-abbrev pte_bits k_v := (BitVec (if k_v = 32 then 32 else 64))
+abbrev pte_bits k_v := (BitVec (bif k_v = 32 then 32 else 64))
 
-abbrev ppn_bits k_v := (BitVec (if k_v = 32 then 22 else 44))
+abbrev ppn_bits k_v := (BitVec (bif k_v = 32 then 22 else 44))
 
 abbrev vpn_bits k_v := (BitVec (k_v - 12))
 

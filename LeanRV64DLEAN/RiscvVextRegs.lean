@@ -226,110 +226,111 @@ def vreg_name_raw_backwards (arg_ : String) : SailM (BitVec 5) := do
   | "v29" => (pure (0b11101 : (BitVec 5)))
   | "v30" => (pure (0b11110 : (BitVec 5)))
   | "v31" => (pure (0b11111 : (BitVec 5)))
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def vreg_name_raw_forwards_matches (arg_ : (BitVec 5)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b00000 : (BitVec 5)))
+  bif (BEq.beq b__0 (0b00000 : (BitVec 5)))
   then true
   else
-    if (BEq.beq b__0 (0b00001 : (BitVec 5)))
+    (bif (BEq.beq b__0 (0b00001 : (BitVec 5)))
     then true
     else
-      if (BEq.beq b__0 (0b00010 : (BitVec 5)))
+      (bif (BEq.beq b__0 (0b00010 : (BitVec 5)))
       then true
       else
-        if (BEq.beq b__0 (0b00011 : (BitVec 5)))
+        (bif (BEq.beq b__0 (0b00011 : (BitVec 5)))
         then true
         else
-          if (BEq.beq b__0 (0b00100 : (BitVec 5)))
+          (bif (BEq.beq b__0 (0b00100 : (BitVec 5)))
           then true
           else
-            if (BEq.beq b__0 (0b00101 : (BitVec 5)))
+            (bif (BEq.beq b__0 (0b00101 : (BitVec 5)))
             then true
             else
-              if (BEq.beq b__0 (0b00110 : (BitVec 5)))
+              (bif (BEq.beq b__0 (0b00110 : (BitVec 5)))
               then true
               else
-                if (BEq.beq b__0 (0b00111 : (BitVec 5)))
+                (bif (BEq.beq b__0 (0b00111 : (BitVec 5)))
                 then true
                 else
-                  if (BEq.beq b__0 (0b01000 : (BitVec 5)))
+                  (bif (BEq.beq b__0 (0b01000 : (BitVec 5)))
                   then true
                   else
-                    if (BEq.beq b__0 (0b01001 : (BitVec 5)))
+                    (bif (BEq.beq b__0 (0b01001 : (BitVec 5)))
                     then true
                     else
-                      if (BEq.beq b__0 (0b01010 : (BitVec 5)))
+                      (bif (BEq.beq b__0 (0b01010 : (BitVec 5)))
                       then true
                       else
-                        if (BEq.beq b__0 (0b01011 : (BitVec 5)))
+                        (bif (BEq.beq b__0 (0b01011 : (BitVec 5)))
                         then true
                         else
-                          if (BEq.beq b__0 (0b01100 : (BitVec 5)))
+                          (bif (BEq.beq b__0 (0b01100 : (BitVec 5)))
                           then true
                           else
-                            if (BEq.beq b__0 (0b01101 : (BitVec 5)))
+                            (bif (BEq.beq b__0 (0b01101 : (BitVec 5)))
                             then true
                             else
-                              if (BEq.beq b__0 (0b01110 : (BitVec 5)))
+                              (bif (BEq.beq b__0 (0b01110 : (BitVec 5)))
                               then true
                               else
-                                if (BEq.beq b__0 (0b01111 : (BitVec 5)))
+                                (bif (BEq.beq b__0 (0b01111 : (BitVec 5)))
                                 then true
                                 else
-                                  if (BEq.beq b__0 (0b10000 : (BitVec 5)))
+                                  (bif (BEq.beq b__0 (0b10000 : (BitVec 5)))
                                   then true
                                   else
-                                    if (BEq.beq b__0 (0b10001 : (BitVec 5)))
+                                    (bif (BEq.beq b__0 (0b10001 : (BitVec 5)))
                                     then true
                                     else
-                                      if (BEq.beq b__0 (0b10010 : (BitVec 5)))
+                                      (bif (BEq.beq b__0 (0b10010 : (BitVec 5)))
                                       then true
                                       else
-                                        if (BEq.beq b__0 (0b10011 : (BitVec 5)))
+                                        (bif (BEq.beq b__0 (0b10011 : (BitVec 5)))
                                         then true
                                         else
-                                          if (BEq.beq b__0 (0b10100 : (BitVec 5)))
+                                          (bif (BEq.beq b__0 (0b10100 : (BitVec 5)))
                                           then true
                                           else
-                                            if (BEq.beq b__0 (0b10101 : (BitVec 5)))
+                                            (bif (BEq.beq b__0 (0b10101 : (BitVec 5)))
                                             then true
                                             else
-                                              if (BEq.beq b__0 (0b10110 : (BitVec 5)))
+                                              (bif (BEq.beq b__0 (0b10110 : (BitVec 5)))
                                               then true
                                               else
-                                                if (BEq.beq b__0 (0b10111 : (BitVec 5)))
+                                                (bif (BEq.beq b__0 (0b10111 : (BitVec 5)))
                                                 then true
                                                 else
-                                                  if (BEq.beq b__0 (0b11000 : (BitVec 5)))
+                                                  (bif (BEq.beq b__0 (0b11000 : (BitVec 5)))
                                                   then true
                                                   else
-                                                    if (BEq.beq b__0 (0b11001 : (BitVec 5)))
+                                                    (bif (BEq.beq b__0 (0b11001 : (BitVec 5)))
                                                     then true
                                                     else
-                                                      if (BEq.beq b__0 (0b11010 : (BitVec 5)))
+                                                      (bif (BEq.beq b__0 (0b11010 : (BitVec 5)))
                                                       then true
                                                       else
-                                                        if (BEq.beq b__0 (0b11011 : (BitVec 5)))
+                                                        (bif (BEq.beq b__0 (0b11011 : (BitVec 5)))
                                                         then true
                                                         else
-                                                          if (BEq.beq b__0 (0b11100 : (BitVec 5)))
+                                                          (bif (BEq.beq b__0 (0b11100 : (BitVec 5)))
                                                           then true
                                                           else
-                                                            if (BEq.beq b__0 (0b11101 : (BitVec 5)))
+                                                            (bif (BEq.beq b__0
+                                                                 (0b11101 : (BitVec 5)))
                                                             then true
                                                             else
-                                                              if (BEq.beq b__0
+                                                              (bif (BEq.beq b__0
                                                                    (0b11110 : (BitVec 5)))
                                                               then true
                                                               else
-                                                                if (BEq.beq b__0
+                                                                (bif (BEq.beq b__0
                                                                      (0b11111 : (BitVec 5)))
                                                                 then true
-                                                                else false
+                                                                else false)))))))))))))))))))))))))))))))
 
 def vreg_name_raw_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -371,15 +372,16 @@ def vreg_name_backwards (arg_ : String) : SailM vregidx := do
   let head_exp_ := arg_
   match (← do
     let mapping0_ := head_exp_
-    if (vreg_name_raw_backwards_matches mapping0_)
+    bif (vreg_name_raw_backwards_matches mapping0_)
     then
-      match (← (vreg_name_raw_backwards mapping0_)) with
-      | i => (pure (some (Vregidx i)))
+      (do
+        match (← (vreg_name_raw_backwards mapping0_)) with
+        | i => (pure (some (Vregidx i))))
     else (pure none)) with
   | .some result => (pure result)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def vreg_name_forwards_matches (arg_ : vregidx) : Bool :=
   match arg_ with
@@ -389,15 +391,15 @@ def vreg_name_backwards_matches (arg_ : String) : SailM Bool := do
   let head_exp_ := arg_
   match (← do
     let mapping0_ := head_exp_
-    if (vreg_name_raw_backwards_matches mapping0_)
+    bif (vreg_name_raw_backwards_matches mapping0_)
     then
-      match (← (vreg_name_raw_backwards mapping0_)) with
-      | i => (pure (some true))
+      (do
+        match (← (vreg_name_raw_backwards mapping0_)) with
+        | i => (pure (some true)))
     else (pure none)) with
   | .some result => (pure result)
-  | none =>
-    match head_exp_ with
-    | _ => (pure false)
+  | none => (match head_exp_ with
+    | _ => (pure false))
 
 def dirty_v_context (_ : Unit) : SailM Unit := do
   assert (sys_enable_vext ()) "riscv_vext_regs.sail:91.26-91.27"
@@ -478,7 +480,7 @@ def wV (typ_0 : vregno) (v : (BitVec 65536)) : SailM Unit := do
   | _ => writeReg vr31 v
   (dirty_v_context ())
   assert (Bool.and (0 <b VLEN) (VLEN ≤b 65536)) "riscv_vext_regs.sail:171.43-171.44"
-  if (get_config_print_reg ())
+  bif (get_config_print_reg ())
   then
     (pure (print_endline
         (HAppend.hAppend "v"
@@ -561,7 +563,7 @@ def ext_write_vcsr (vxrm_val : (BitVec 2)) (vxsat_val : (BitVec 1)) : SailM Unit
 /-- Type quantifiers: SEW : Int, LMUL_pow : Int -/
 def get_num_elem (LMUL_pow : Int) (SEW : Int) : SailM Int := do
   let LMUL_pow_reg :=
-    if (LMUL_pow <b 0)
+    bif (LMUL_pow <b 0)
     then 0
     else LMUL_pow
   let num_elem := (Int.tdiv ((2 ^i LMUL_pow_reg) *i VLEN) SEW)
@@ -576,7 +578,7 @@ def read_single_vreg (num_elem : Nat) (SEW : Nat) (vrid : vregidx) : SailM (Vect
   let loop_i_lower := 0
   let loop_i_upper := (num_elem -i 1)
   let mut loop_vars := result
-  for i in [loop_i_lower:loop_i_upper + 1:1]i do
+  for i in [loop_i_lower:loop_i_upper:1]i do
     let result := loop_vars
     loop_vars :=
       let start_index := (i *i SEW)
@@ -591,7 +593,7 @@ def write_single_vreg (num_elem : Nat) (SEW : Int) (vrid : vregidx) (v : (Vector
     let loop_i_lower := 0
     let loop_i_upper := (num_elem -i 1)
     let mut loop_vars := r
-    for i in [loop_i_upper:loop_i_lower + 1:1]i do
+    for i in [loop_i_upper:loop_i_lower:-1]i do
       let r := loop_vars
       loop_vars :=
         let r : vregtype := (shiftl r SEW)
@@ -604,47 +606,54 @@ def read_vreg (num_elem : Nat) (SEW : Nat) (LMUL_pow : Int) (vrid : vregidx) : S
   let vrid_val := (BitVec.toNat (vregidx_bits vrid))
   let result : (Vector (BitVec SEW) num_elem) := (vectorInit (zeros_implicit (n := SEW)))
   let LMUL_pow_reg :=
-    if (LMUL_pow <b 0)
+    bif (LMUL_pow <b 0)
     then 0
     else LMUL_pow
-  if ((vrid_val +i (2 ^i LMUL_pow_reg)) >b 32)
+  bif ((vrid_val +i (2 ^i LMUL_pow_reg)) >b 32)
   then
-    assert false "invalid register group: vrid overflow the largest number"
-    throw Error.Exit
+    (do
+      assert false "invalid register group: vrid overflow the largest number"
+      throw Error.Exit)
   else
-    if (bne (Int.emod vrid_val (2 ^i LMUL_pow_reg)) 0)
-    then
-      assert false "invalid register group: vrid is not a multiple of EMUL"
-      throw Error.Exit
-    else
-      if (LMUL_pow <b 0)
-      then (read_single_vreg (Vector.length result) SEW vrid)
+    (do
+      bif (bne (Int.emod vrid_val (2 ^i LMUL_pow_reg)) 0)
+      then
+        (do
+          assert false "invalid register group: vrid is not a multiple of EMUL"
+          throw Error.Exit)
       else
-        let num_elem_single : Int := (Int.tdiv VLEN SEW)
-        assert (num_elem_single ≥b 0) "riscv_vext_regs.sail:294.34-294.35"
-        let loop_i_lmul_lower := 0
-        let loop_i_lmul_upper := ((2 ^i LMUL_pow_reg) -i 1)
-        let mut loop_vars := result
-        for i_lmul in [loop_i_lmul_lower:loop_i_lmul_upper + 1:1]i do
-          let result := loop_vars
-          loop_vars ← do
-            let r_start_i : Int := (i_lmul *i num_elem_single)
-            let r_end_i : Int := ((r_start_i +i num_elem_single) -i 1)
-            let vrid_lmul : vregidx := (vregidx_offset vrid (to_bits 5 i_lmul))
-            let single_result ← (( do (read_single_vreg num_elem_single SEW vrid_lmul) ) : SailM
-              (Vector (BitVec SEW) num_elem_single) )
-            let loop_r_i_lower := r_start_i
-            let loop_r_i_upper := r_end_i
-            let mut loop_vars_1 := result
-            for r_i in [loop_r_i_lower:loop_r_i_upper + 1:1]i do
-              let result := loop_vars_1
-              loop_vars_1 ← do
-                let s_i : Int := (r_i -i r_start_i)
-                assert (Bool.and (0 ≤b r_i) (r_i <b num_elem)) "riscv_vext_regs.sail:302.42-302.43"
-                assert (Bool.and (0 ≤b s_i) (s_i <b num_elem_single)) "riscv_vext_regs.sail:303.50-303.51"
-                (pure (vectorUpdate result r_i (GetElem?.getElem! single_result s_i)))
-            (pure loop_vars_1)
-        (pure loop_vars)
+        (do
+          bif (LMUL_pow <b 0)
+          then
+            (do
+              (read_single_vreg (Vector.length result) SEW vrid))
+          else
+            (do
+              let num_elem_single : Int := (Int.tdiv VLEN SEW)
+              assert (num_elem_single ≥b 0) "riscv_vext_regs.sail:294.34-294.35"
+              let loop_i_lmul_lower := 0
+              let loop_i_lmul_upper := ((2 ^i LMUL_pow_reg) -i 1)
+              let mut loop_vars := result
+              for i_lmul in [loop_i_lmul_lower:loop_i_lmul_upper:1]i do
+                let result := loop_vars
+                loop_vars ← do
+                  let r_start_i : Int := (i_lmul *i num_elem_single)
+                  let r_end_i : Int := ((r_start_i +i num_elem_single) -i 1)
+                  let vrid_lmul : vregidx := (vregidx_offset vrid (to_bits 5 i_lmul))
+                  let single_result ← (( do (read_single_vreg num_elem_single SEW vrid_lmul) ) :
+                    SailM (Vector (BitVec SEW) num_elem_single) )
+                  let loop_r_i_lower := r_start_i
+                  let loop_r_i_upper := r_end_i
+                  let mut loop_vars_1 := result
+                  for r_i in [loop_r_i_lower:loop_r_i_upper:1]i do
+                    let result := loop_vars_1
+                    loop_vars_1 ← do
+                      let s_i : Int := (r_i -i r_start_i)
+                      assert (Bool.and (0 ≤b r_i) (r_i <b num_elem)) "riscv_vext_regs.sail:302.42-302.43"
+                      assert (Bool.and (0 ≤b s_i) (s_i <b num_elem_single)) "riscv_vext_regs.sail:303.50-303.51"
+                      (pure (vectorUpdate result r_i (GetElem?.getElem! single_result s_i)))
+                  (pure loop_vars_1)
+              (pure loop_vars))))
 
 /-- Type quantifiers: EEW : Nat, index : Int, 8 ≤ EEW ∧ EEW ≤ 128 -/
 def read_single_element (EEW : Nat) (index : Int) (vrid : vregidx) : SailM (BitVec EEW) := do
@@ -661,7 +670,7 @@ def read_single_element (EEW : Nat) (index : Int) (vrid : vregidx) : SailM (BitV
 /-- Type quantifiers: num_elem : Nat, SEW : Nat, LMUL_pow : Int, num_elem ≥ 0 ∧ SEW ≥ 0 -/
 def write_vreg (num_elem : Nat) (SEW : Nat) (LMUL_pow : Int) (vrid : vregidx) (vec : (Vector (BitVec SEW) num_elem)) : SailM Unit := do
   let LMUL_pow_reg :=
-    if (LMUL_pow <b 0)
+    bif (LMUL_pow <b 0)
     then 0
     else LMUL_pow
   let num_elem_single : Int := (Int.tdiv VLEN SEW)
@@ -669,7 +678,7 @@ def write_vreg (num_elem : Nat) (SEW : Nat) (LMUL_pow : Int) (vrid : vregidx) (v
   let loop_i_lmul_lower := 0
   let loop_i_lmul_upper := ((2 ^i LMUL_pow_reg) -i 1)
   let mut loop_vars := ()
-  for i_lmul in [loop_i_lmul_lower:loop_i_lmul_upper + 1:1]i do
+  for i_lmul in [loop_i_lmul_lower:loop_i_lmul_upper:1]i do
     let () := loop_vars
     loop_vars ← do
       let single_vec : (Vector (BitVec SEW) num_elem_single) :=
@@ -681,7 +690,7 @@ def write_vreg (num_elem : Nat) (SEW : Nat) (LMUL_pow : Int) (vrid : vregidx) (v
         let loop_r_i_lower := r_start_i
         let loop_r_i_upper := r_end_i
         let mut loop_vars_1 := single_vec
-        for r_i in [loop_r_i_lower:loop_r_i_upper + 1:1]i do
+        for r_i in [loop_r_i_lower:loop_r_i_upper:1]i do
           let single_vec := loop_vars_1
           loop_vars_1 ← do
             let s_i : Int := (r_i -i r_start_i)
@@ -705,11 +714,11 @@ def write_single_element (EEW : Nat) (index : Int) (vrid : vregidx) (value : (Bi
     let loop_i_lower := 0
     let loop_i_upper := (elem_per_reg -i 1)
     let mut loop_vars := r
-    for i in [loop_i_upper:loop_i_lower + 1:1]i do
+    for i in [loop_i_upper:loop_i_lower:-1]i do
       let r := loop_vars
       loop_vars :=
         let r : vregtype := (shiftl r EEW)
-        if (BEq.beq i real_index)
+        bif (BEq.beq i real_index)
         then (r ||| (zero_extend (m := 65536) value))
         else (r ||| (zero_extend (m := 65536) (GetElem?.getElem! vrid_val i)))
     (pure loop_vars) ) : SailM (BitVec 65536) )
@@ -720,32 +729,34 @@ def read_vmask (num_elem : Nat) (vm : (BitVec 1)) (vrid : vregidx) : SailM (BitV
   assert (num_elem ≤b 65536) "riscv_vext_regs.sail:372.36-372.37"
   let vreg_val ← (( do (rV_bits vrid) ) : SailM vregtype )
   let result : (BitVec num_elem) := (ones (n := num_elem))
-  if (BEq.beq vm (0b1 : (BitVec 1)))
+  bif (BEq.beq vm (0b1 : (BitVec 1)))
   then (pure result)
   else
-    let loop_i_lower := 0
-    let loop_i_upper := (num_elem -i 1)
-    let mut loop_vars := result
-    for i in [loop_i_lower:loop_i_upper + 1:1]i do
-      let result := loop_vars
-      loop_vars := (BitVec.update result i (BitVec.access vreg_val i))
-    (pure loop_vars)
+    (do
+      let loop_i_lower := 0
+      let loop_i_upper := (num_elem -i 1)
+      let mut loop_vars := result
+      for i in [loop_i_lower:loop_i_upper:1]i do
+        let result := loop_vars
+        loop_vars := (BitVec.update result i (BitVec.access vreg_val i))
+      (pure loop_vars))
 
 /-- Type quantifiers: num_elem : Nat, num_elem > 0 -/
 def read_vmask_carry (num_elem : Nat) (vm : (BitVec 1)) (vrid : vregidx) : SailM (BitVec num_elem) := do
   assert (num_elem ≤b 65536) "riscv_vext_regs.sail:390.36-390.37"
   let vreg_val ← (( do (rV_bits vrid) ) : SailM vregtype )
   let result : (BitVec num_elem) := (zeros_implicit (n := num_elem))
-  if (BEq.beq vm (0b1 : (BitVec 1)))
+  bif (BEq.beq vm (0b1 : (BitVec 1)))
   then (pure result)
   else
-    let loop_i_lower := 0
-    let loop_i_upper := (num_elem -i 1)
-    let mut loop_vars := result
-    for i in [loop_i_lower:loop_i_upper + 1:1]i do
-      let result := loop_vars
-      loop_vars := (BitVec.update result i (BitVec.access vreg_val i))
-    (pure loop_vars)
+    (do
+      let loop_i_lower := 0
+      let loop_i_upper := (num_elem -i 1)
+      let mut loop_vars := result
+      for i in [loop_i_lower:loop_i_upper:1]i do
+        let result := loop_vars
+        loop_vars := (BitVec.update result i (BitVec.access vreg_val i))
+      (pure loop_vars))
 
 /-- Type quantifiers: num_elem : Nat, num_elem > 0 -/
 def write_vmask (num_elem : Nat) (vrid : vregidx) (v : (BitVec num_elem)) : SailM Unit := do
@@ -757,17 +768,17 @@ def write_vmask (num_elem : Nat) (vrid : vregidx) (v : (BitVec num_elem)) : Sail
     let loop_i_lower := 0
     let loop_i_upper := (num_elem -i 1)
     let mut loop_vars := result
-    for i in [loop_i_lower:loop_i_upper + 1:1]i do
+    for i in [loop_i_lower:loop_i_upper:1]i do
       let result := loop_vars
       loop_vars := (BitVec.update result i (BitVec.access v i))
     (pure loop_vars) ) : SailM (BitVec 65536) )
   let result ← (( do
     let loop_i_lower := num_elem
     let loop_i_upper := (VLEN -i 1)
-    let mut loop_vars := result
-    for i in [loop_i_lower:loop_i_upper + 1:1]i do
-      let result := loop_vars
-      loop_vars := (BitVec.update result i (BitVec.access vreg_val i))
-    (pure loop_vars) ) : SailM (BitVec 65536) )
+    let mut loop_vars_1 := result
+    for i in [loop_i_lower:loop_i_upper:1]i do
+      let result := loop_vars_1
+      loop_vars_1 := (BitVec.update result i (BitVec.access vreg_val i))
+    (pure loop_vars_1) ) : SailM (BitVec 65536) )
   (wV_bits vrid result)
 

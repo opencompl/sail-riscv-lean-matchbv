@@ -173,15 +173,15 @@ def within_phys_mem (typ_0 : physaddr) (width : Int) : Bool :=
   let rom_base_int := (BitVec.toNat (plat_rom_base ()))
   let ram_size_int := (BitVec.toNat (plat_ram_size ()))
   let rom_size_int := (BitVec.toNat (plat_rom_size ()))
-  if (Bool.and (ram_base_int ≤b addr_int)
+  bif (Bool.and (ram_base_int ≤b addr_int)
        ((addr_int +i width) ≤b (ram_base_int +i ram_size_int)))
   then true
   else
-    if (Bool.and (rom_base_int ≤b addr_int)
+    (bif (Bool.and (rom_base_int ≤b addr_int)
          ((addr_int +i width) ≤b (rom_base_int +i rom_size_int)))
     then true
     else
-      let _ : Unit :=
+      (let _ : Unit :=
         (print_endline
           (HAppend.hAppend "within_phys_mem: "
             (HAppend.hAppend (BitVec.toFormatted addr) " not within phys-mem:")))
@@ -193,7 +193,7 @@ def within_phys_mem (typ_0 : physaddr) (width : Int) : Bool :=
         (print_endline (HAppend.hAppend "  plat_ram_base: " (BitVec.toFormatted (plat_ram_base ()))))
       let _ : Unit :=
         (print_endline (HAppend.hAppend "  plat_ram_size: " (BitVec.toFormatted (plat_ram_size ()))))
-      false
+      false))
 
 /-- Type quantifiers: width : Nat, 0 < width ∧ width ≤ max_mem_access -/
 def within_clint (typ_0 : physaddr) (width : Nat) : Bool :=
@@ -230,106 +230,127 @@ def MTIME_BASE_HI : physaddrbits := (zero_extend (m := 64) (0x0BFFC : (BitVec 20
 def clint_load (t : (AccessType Unit)) (app_1 : physaddr) (width : Nat) : SailM (Result (BitVec (8 * width)) ExceptionType) := do
   let .physaddr addr := app_1
   let addr := (addr - (plat_clint_base ()))
-  if (Bool.and (BEq.beq addr MSIP_BASE) (Bool.or (BEq.beq width 8) (BEq.beq width 4)))
+  bif (Bool.and (BEq.beq addr MSIP_BASE) (Bool.or (BEq.beq width 8) (BEq.beq width 4)))
   then
-    if (get_config_print_platform ())
-    then
-      (pure (print_endline
-          (HAppend.hAppend "clint["
-            (HAppend.hAppend (BitVec.toFormatted addr)
-              (HAppend.hAppend "] -> " (BitVec.toFormatted (_get_Minterrupts_MSI (← readReg mip))))))))
-    else (pure ())
-    (pure (Ok (zero_extend (m := (8 *i width)) (_get_Minterrupts_MSI (← readReg mip)))))
-  else
-    if (Bool.and (BEq.beq addr MTIMECMP_BASE) (BEq.beq width 4))
-    then
-      if (get_config_print_platform ())
+    (do
+      bif (get_config_print_platform ())
       then
         (pure (print_endline
-            (HAppend.hAppend "clint<4>["
+            (HAppend.hAppend "clint["
               (HAppend.hAppend (BitVec.toFormatted addr)
                 (HAppend.hAppend "] -> "
-                  (BitVec.toFormatted (Sail.BitVec.extractLsb (← readReg mtimecmp) 31 0)))))))
+                  (BitVec.toFormatted (_get_Minterrupts_MSI (← readReg mip))))))))
       else (pure ())
-      (pure (Ok (zero_extend (m := 32) (Sail.BitVec.extractLsb (← readReg mtimecmp) 31 0))))
-    else
-      if (Bool.and (BEq.beq addr MTIMECMP_BASE) (BEq.beq width 8))
+      (pure (Ok (zero_extend (m := (8 *i width)) (_get_Minterrupts_MSI (← readReg mip))))))
+  else
+    (do
+      bif (Bool.and (BEq.beq addr MTIMECMP_BASE) (BEq.beq width 4))
       then
-        if (get_config_print_platform ())
-        then
-          (pure (print_endline
-              (HAppend.hAppend "clint<8>["
-                (HAppend.hAppend (BitVec.toFormatted addr)
-                  (HAppend.hAppend "] -> " (BitVec.toFormatted (← readReg mtimecmp)))))))
-        else (pure ())
-        (pure (Ok (zero_extend (m := 64) (← readReg mtimecmp))))
-      else
-        if (Bool.and (BEq.beq addr MTIMECMP_BASE_HI) (BEq.beq width 4))
-        then
-          if (get_config_print_platform ())
+        (do
+          bif (get_config_print_platform ())
           then
             (pure (print_endline
-                (HAppend.hAppend "clint-hi<4>["
+                (HAppend.hAppend "clint<4>["
                   (HAppend.hAppend (BitVec.toFormatted addr)
                     (HAppend.hAppend "] -> "
-                      (BitVec.toFormatted (Sail.BitVec.extractLsb (← readReg mtimecmp) 63 32)))))))
+                      (BitVec.toFormatted (Sail.BitVec.extractLsb (← readReg mtimecmp) 31 0)))))))
           else (pure ())
-          (pure (Ok (zero_extend (m := 32) (Sail.BitVec.extractLsb (← readReg mtimecmp) 63 32))))
-        else
-          if (Bool.and (BEq.beq addr MTIME_BASE) (BEq.beq width 4))
+          (pure (Ok (zero_extend (m := 32) (Sail.BitVec.extractLsb (← readReg mtimecmp) 31 0)))))
+      else
+        (do
+          bif (Bool.and (BEq.beq addr MTIMECMP_BASE) (BEq.beq width 8))
           then
-            if (get_config_print_platform ())
-            then
-              (pure (print_endline
-                  (HAppend.hAppend "clint["
-                    (HAppend.hAppend (BitVec.toFormatted addr)
-                      (HAppend.hAppend "] -> " (BitVec.toFormatted (← readReg mtime)))))))
-            else (pure ())
-            (pure (Ok (zero_extend (m := 32) (Sail.BitVec.extractLsb (← readReg mtime) 31 0))))
-          else
-            if (Bool.and (BEq.beq addr MTIME_BASE) (BEq.beq width 8))
-            then
-              if (get_config_print_platform ())
+            (do
+              bif (get_config_print_platform ())
               then
                 (pure (print_endline
-                    (HAppend.hAppend "clint["
+                    (HAppend.hAppend "clint<8>["
                       (HAppend.hAppend (BitVec.toFormatted addr)
-                        (HAppend.hAppend "] -> " (BitVec.toFormatted (← readReg mtime)))))))
+                        (HAppend.hAppend "] -> " (BitVec.toFormatted (← readReg mtimecmp)))))))
               else (pure ())
-              (pure (Ok (zero_extend (m := 64) (← readReg mtime))))
-            else
-              if (Bool.and (BEq.beq addr MTIME_BASE_HI) (BEq.beq width 4))
+              (pure (Ok (zero_extend (m := 64) (← readReg mtimecmp)))))
+          else
+            (do
+              bif (Bool.and (BEq.beq addr MTIMECMP_BASE_HI) (BEq.beq width 4))
               then
-                if (get_config_print_platform ())
-                then
-                  (pure (print_endline
-                      (HAppend.hAppend "clint["
-                        (HAppend.hAppend (BitVec.toFormatted addr)
-                          (HAppend.hAppend "] -> " (BitVec.toFormatted (← readReg mtime)))))))
-                else (pure ())
-                (pure (Ok (zero_extend (m := 32) (Sail.BitVec.extractLsb (← readReg mtime) 63 32))))
-              else
-                let _ : Unit :=
-                  if (get_config_print_platform ())
+                (do
+                  bif (get_config_print_platform ())
                   then
-                    (print_endline
-                      (HAppend.hAppend "clint["
-                        (HAppend.hAppend (BitVec.toFormatted addr) "] -> <not-mapped>")))
-                  else ()
-                match t with
-                | .Execute () => (pure (Err (E_Fetch_Access_Fault ())))
-                | .Read Data => (pure (Err (E_Load_Access_Fault ())))
-                | _ => (pure (Err (E_SAMO_Access_Fault ())))
+                    (pure (print_endline
+                        (HAppend.hAppend "clint-hi<4>["
+                          (HAppend.hAppend (BitVec.toFormatted addr)
+                            (HAppend.hAppend "] -> "
+                              (BitVec.toFormatted
+                                (Sail.BitVec.extractLsb (← readReg mtimecmp) 63 32)))))))
+                  else (pure ())
+                  (pure (Ok
+                      (zero_extend (m := 32) (Sail.BitVec.extractLsb (← readReg mtimecmp) 63 32)))))
+              else
+                (do
+                  bif (Bool.and (BEq.beq addr MTIME_BASE) (BEq.beq width 4))
+                  then
+                    (do
+                      bif (get_config_print_platform ())
+                      then
+                        (pure (print_endline
+                            (HAppend.hAppend "clint["
+                              (HAppend.hAppend (BitVec.toFormatted addr)
+                                (HAppend.hAppend "] -> " (BitVec.toFormatted (← readReg mtime)))))))
+                      else (pure ())
+                      (pure (Ok
+                          (zero_extend (m := 32) (Sail.BitVec.extractLsb (← readReg mtime) 31 0)))))
+                  else
+                    (do
+                      bif (Bool.and (BEq.beq addr MTIME_BASE) (BEq.beq width 8))
+                      then
+                        (do
+                          bif (get_config_print_platform ())
+                          then
+                            (pure (print_endline
+                                (HAppend.hAppend "clint["
+                                  (HAppend.hAppend (BitVec.toFormatted addr)
+                                    (HAppend.hAppend "] -> "
+                                      (BitVec.toFormatted (← readReg mtime)))))))
+                          else (pure ())
+                          (pure (Ok (zero_extend (m := 64) (← readReg mtime)))))
+                      else
+                        (do
+                          bif (Bool.and (BEq.beq addr MTIME_BASE_HI) (BEq.beq width 4))
+                          then
+                            (do
+                              bif (get_config_print_platform ())
+                              then
+                                (pure (print_endline
+                                    (HAppend.hAppend "clint["
+                                      (HAppend.hAppend (BitVec.toFormatted addr)
+                                        (HAppend.hAppend "] -> "
+                                          (BitVec.toFormatted (← readReg mtime)))))))
+                              else (pure ())
+                              (pure (Ok
+                                  (zero_extend (m := 32)
+                                    (Sail.BitVec.extractLsb (← readReg mtime) 63 32)))))
+                          else
+                            (let _ : Unit :=
+                              bif (get_config_print_platform ())
+                              then
+                                (print_endline
+                                  (HAppend.hAppend "clint["
+                                    (HAppend.hAppend (BitVec.toFormatted addr) "] -> <not-mapped>")))
+                              else ()
+                            match t with
+                            | .Execute () => (pure (Err (E_Fetch_Access_Fault ())))
+                            | .Read Data => (pure (Err (E_Load_Access_Fault ())))
+                            | _ => (pure (Err (E_SAMO_Access_Fault ()))))))))))
 
 def clint_dispatch (_ : Unit) : SailM Unit := do
   writeReg mip (Sail.BitVec.updateSubrange (← readReg mip) 7 7
     (bool_to_bits (zopz0zIzJ_u (← readReg mtimecmp) (← readReg mtime))))
-  if (← (extensionEnabled Ext_Sstc))
+  bif (← (extensionEnabled Ext_Sstc))
   then
     writeReg mip (Sail.BitVec.updateSubrange (← readReg mip) 5 5
       (bool_to_bits (zopz0zIzJ_u (← readReg stimecmp) (← readReg mtime))))
   else (pure ())
-  if (get_config_print_platform ())
+  bif (get_config_print_platform ())
   then
     (pure (print_endline
         (HAppend.hAppend "clint mtime "
@@ -338,7 +359,7 @@ def clint_dispatch (_ : Unit) : SailM Unit := do
               (HAppend.hAppend (BitVec.toFormatted (_get_Minterrupts_MTI (← readReg mip)))
                 (HAppend.hAppend
                   (← do
-                    if (← (extensionEnabled Ext_Sstc))
+                    bif (← (extensionEnabled Ext_Sstc))
                     then
                       (pure (HAppend.hAppend ", mip.STI <- "
                           (BitVec.toFormatted (_get_Minterrupts_STI (← readReg mip)))))
@@ -349,126 +370,142 @@ def clint_dispatch (_ : Unit) : SailM Unit := do
 def clint_store (app_0 : physaddr) (width : Nat) (data : (BitVec (8 * width))) : SailM (Result Bool ExceptionType) := do
   let .physaddr addr := app_0
   let addr := (addr - (plat_clint_base ()))
-  if (Bool.and (BEq.beq addr MSIP_BASE) (Bool.or (BEq.beq width 8) (BEq.beq width 4)))
+  bif (Bool.and (BEq.beq addr MSIP_BASE) (Bool.or (BEq.beq width 8) (BEq.beq width 4)))
   then
-    if (get_config_print_platform ())
-    then
-      (pure (print_endline
-          (HAppend.hAppend "clint["
-            (HAppend.hAppend (BitVec.toFormatted addr)
-              (HAppend.hAppend "] <- "
-                (HAppend.hAppend (BitVec.toFormatted data)
-                  (HAppend.hAppend " (mip.MSI <- "
-                    (HAppend.hAppend (← (bit_str (BitVec.access data 0))) ")"))))))))
-    else (pure ())
-    writeReg mip (Sail.BitVec.updateSubrange (← readReg mip) 3 3
-      (BitVec.join1 [(BitVec.access data 0)]))
-    (clint_dispatch ())
-    (pure (Ok true))
-  else
-    if (Bool.and (BEq.beq addr MTIMECMP_BASE) (BEq.beq width 8))
-    then
-      let _ : Unit :=
-        if (get_config_print_platform ())
-        then
-          (print_endline
-            (HAppend.hAppend "clint<8>["
-              (HAppend.hAppend (BitVec.toFormatted addr)
-                (HAppend.hAppend "] <- " (HAppend.hAppend (BitVec.toFormatted data) " (mtimecmp)")))))
-        else ()
-      writeReg mtimecmp (zero_extend (m := 64) data)
-      (clint_dispatch ())
-      (pure (Ok true))
-    else
-      if (Bool.and (BEq.beq addr MTIMECMP_BASE) (BEq.beq width 4))
+    (do
+      bif (get_config_print_platform ())
       then
-        let _ : Unit :=
-          if (get_config_print_platform ())
-          then
-            (print_endline
-              (HAppend.hAppend "clint<4>["
-                (HAppend.hAppend (BitVec.toFormatted addr)
-                  (HAppend.hAppend "] <- " (HAppend.hAppend (BitVec.toFormatted data) " (mtimecmp)")))))
-          else ()
-        writeReg mtimecmp (Sail.BitVec.updateSubrange (← readReg mtimecmp) 31 0
-          (zero_extend (m := 32) data))
-        (clint_dispatch ())
-        (pure (Ok true))
-      else
-        if (Bool.and (BEq.beq addr MTIMECMP_BASE_HI) (BEq.beq width 4))
-        then
+        (pure (print_endline
+            (HAppend.hAppend "clint["
+              (HAppend.hAppend (BitVec.toFormatted addr)
+                (HAppend.hAppend "] <- "
+                  (HAppend.hAppend (BitVec.toFormatted data)
+                    (HAppend.hAppend " (mip.MSI <- "
+                      (HAppend.hAppend (← (bit_str (BitVec.access data 0))) ")"))))))))
+      else (pure ())
+      writeReg mip (Sail.BitVec.updateSubrange (← readReg mip) 3 3
+        (BitVec.join1 [(BitVec.access data 0)]))
+      (clint_dispatch ())
+      (pure (Ok true)))
+  else
+    (do
+      bif (Bool.and (BEq.beq addr MTIMECMP_BASE) (BEq.beq width 8))
+      then
+        (do
           let _ : Unit :=
-            if (get_config_print_platform ())
+            bif (get_config_print_platform ())
             then
               (print_endline
-                (HAppend.hAppend "clint<4>["
+                (HAppend.hAppend "clint<8>["
                   (HAppend.hAppend (BitVec.toFormatted addr)
                     (HAppend.hAppend "] <- "
                       (HAppend.hAppend (BitVec.toFormatted data) " (mtimecmp)")))))
             else ()
-          writeReg mtimecmp (Sail.BitVec.updateSubrange (← readReg mtimecmp) 63 32
-            (zero_extend (m := 32) data))
+          writeReg mtimecmp (zero_extend (m := 64) data)
           (clint_dispatch ())
-          (pure (Ok true))
-        else
-          if (Bool.and (BEq.beq addr MTIME_BASE) (BEq.beq width 8))
+          (pure (Ok true)))
+      else
+        (do
+          bif (Bool.and (BEq.beq addr MTIMECMP_BASE) (BEq.beq width 4))
           then
-            let _ : Unit :=
-              if (get_config_print_platform ())
-              then
-                (print_endline
-                  (HAppend.hAppend "clint<8>["
-                    (HAppend.hAppend (BitVec.toFormatted addr)
-                      (HAppend.hAppend "] <- "
-                        (HAppend.hAppend (BitVec.toFormatted data) " (mtime)")))))
-              else ()
-            writeReg mtime data
-            (clint_dispatch ())
-            (pure (Ok true))
-          else
-            if (Bool.and (BEq.beq addr MTIME_BASE) (BEq.beq width 4))
-            then
+            (do
               let _ : Unit :=
-                if (get_config_print_platform ())
+                bif (get_config_print_platform ())
                 then
                   (print_endline
                     (HAppend.hAppend "clint<4>["
                       (HAppend.hAppend (BitVec.toFormatted addr)
                         (HAppend.hAppend "] <- "
-                          (HAppend.hAppend (BitVec.toFormatted data) " (mtime)")))))
+                          (HAppend.hAppend (BitVec.toFormatted data) " (mtimecmp)")))))
                 else ()
-              writeReg mtime (Sail.BitVec.updateSubrange (← readReg mtime) 31 0 data)
+              writeReg mtimecmp (Sail.BitVec.updateSubrange (← readReg mtimecmp) 31 0
+                (zero_extend (m := 32) data))
               (clint_dispatch ())
-              (pure (Ok true))
-            else
-              if (Bool.and (BEq.beq addr MTIME_BASE_HI) (BEq.beq width 4))
+              (pure (Ok true)))
+          else
+            (do
+              bif (Bool.and (BEq.beq addr MTIMECMP_BASE_HI) (BEq.beq width 4))
               then
-                let _ : Unit :=
-                  if (get_config_print_platform ())
-                  then
-                    (print_endline
-                      (HAppend.hAppend "clint<4>["
-                        (HAppend.hAppend (BitVec.toFormatted addr)
-                          (HAppend.hAppend "] <- "
-                            (HAppend.hAppend (BitVec.toFormatted data) " (mtime)")))))
-                  else ()
-                writeReg mtime (Sail.BitVec.updateSubrange (← readReg mtime) 63 32 data)
-                (clint_dispatch ())
-                (pure (Ok true))
+                (do
+                  let _ : Unit :=
+                    bif (get_config_print_platform ())
+                    then
+                      (print_endline
+                        (HAppend.hAppend "clint<4>["
+                          (HAppend.hAppend (BitVec.toFormatted addr)
+                            (HAppend.hAppend "] <- "
+                              (HAppend.hAppend (BitVec.toFormatted data) " (mtimecmp)")))))
+                    else ()
+                  writeReg mtimecmp (Sail.BitVec.updateSubrange (← readReg mtimecmp) 63 32
+                    (zero_extend (m := 32) data))
+                  (clint_dispatch ())
+                  (pure (Ok true)))
               else
-                let _ : Unit :=
-                  if (get_config_print_platform ())
+                (do
+                  bif (Bool.and (BEq.beq addr MTIME_BASE) (BEq.beq width 8))
                   then
-                    (print_endline
-                      (HAppend.hAppend "clint["
-                        (HAppend.hAppend (BitVec.toFormatted addr)
-                          (HAppend.hAppend "] <- "
-                            (HAppend.hAppend (BitVec.toFormatted data) " (<unmapped>)")))))
-                  else ()
-                (pure (Err (E_SAMO_Access_Fault ())))
+                    (do
+                      let _ : Unit :=
+                        bif (get_config_print_platform ())
+                        then
+                          (print_endline
+                            (HAppend.hAppend "clint<8>["
+                              (HAppend.hAppend (BitVec.toFormatted addr)
+                                (HAppend.hAppend "] <- "
+                                  (HAppend.hAppend (BitVec.toFormatted data) " (mtime)")))))
+                        else ()
+                      writeReg mtime data
+                      (clint_dispatch ())
+                      (pure (Ok true)))
+                  else
+                    (do
+                      bif (Bool.and (BEq.beq addr MTIME_BASE) (BEq.beq width 4))
+                      then
+                        (do
+                          let _ : Unit :=
+                            bif (get_config_print_platform ())
+                            then
+                              (print_endline
+                                (HAppend.hAppend "clint<4>["
+                                  (HAppend.hAppend (BitVec.toFormatted addr)
+                                    (HAppend.hAppend "] <- "
+                                      (HAppend.hAppend (BitVec.toFormatted data) " (mtime)")))))
+                            else ()
+                          writeReg mtime (Sail.BitVec.updateSubrange (← readReg mtime) 31 0 data)
+                          (clint_dispatch ())
+                          (pure (Ok true)))
+                      else
+                        (do
+                          bif (Bool.and (BEq.beq addr MTIME_BASE_HI) (BEq.beq width 4))
+                          then
+                            (do
+                              let _ : Unit :=
+                                bif (get_config_print_platform ())
+                                then
+                                  (print_endline
+                                    (HAppend.hAppend "clint<4>["
+                                      (HAppend.hAppend (BitVec.toFormatted addr)
+                                        (HAppend.hAppend "] <- "
+                                          (HAppend.hAppend (BitVec.toFormatted data) " (mtime)")))))
+                                else ()
+                              writeReg mtime (Sail.BitVec.updateSubrange (← readReg mtime) 63 32
+                                data)
+                              (clint_dispatch ())
+                              (pure (Ok true)))
+                          else
+                            (let _ : Unit :=
+                              bif (get_config_print_platform ())
+                              then
+                                (print_endline
+                                  (HAppend.hAppend "clint["
+                                    (HAppend.hAppend (BitVec.toFormatted addr)
+                                      (HAppend.hAppend "] <- "
+                                        (HAppend.hAppend (BitVec.toFormatted data) " (<unmapped>)")))))
+                              else ()
+                            (pure (Err (E_SAMO_Access_Fault ()))))))))))
 
 def tick_clock (_ : Unit) : SailM Unit := do
-  if (← (should_inc_mcycle (← readReg cur_privilege)))
+  bif (← (should_inc_mcycle (← readReg cur_privilege)))
   then writeReg mcycle (BitVec.addInt (← readReg mcycle) 1)
   else (pure ())
   writeReg mtime (BitVec.addInt (← readReg mtime) 1)
@@ -518,107 +555,124 @@ def reset_htif (_ : Unit) : SailM Unit := do
 /-- Type quantifiers: width : Nat, width > 0 -/
 def htif_load (t : (AccessType Unit)) (app_1 : physaddr) (width : Nat) : SailM (Result (BitVec (8 * width)) ExceptionType) := do
   let .physaddr paddr := app_1
-  if (get_config_print_platform ())
+  bif (get_config_print_platform ())
   then
     (pure (print_endline
         (HAppend.hAppend "htif["
           (HAppend.hAppend (BitVec.toFormatted paddr)
             (HAppend.hAppend "] -> " (BitVec.toFormatted (← readReg htif_tohost)))))))
   else (pure ())
-  if (Bool.and (BEq.beq width 8) (BEq.beq paddr (plat_htif_tohost ())))
+  bif (Bool.and (BEq.beq width 8) (BEq.beq paddr (plat_htif_tohost ())))
   then (pure (Ok (zero_extend (m := 64) (← readReg htif_tohost))))
   else
-    if (Bool.and (BEq.beq width 4) (BEq.beq paddr (plat_htif_tohost ())))
-    then (pure (Ok (zero_extend (m := 32) (Sail.BitVec.extractLsb (← readReg htif_tohost) 31 0))))
-    else
-      if (Bool.and (BEq.beq width 4) (BEq.beq paddr (BitVec.addInt (plat_htif_tohost ()) 4)))
+    (do
+      bif (Bool.and (BEq.beq width 4) (BEq.beq paddr (plat_htif_tohost ())))
       then
-        (pure (Ok (zero_extend (m := 32) (Sail.BitVec.extractLsb (← readReg htif_tohost) 63 32))))
+        (pure (Ok (zero_extend (m := 32) (Sail.BitVec.extractLsb (← readReg htif_tohost) 31 0))))
       else
-        match t with
-        | .Execute () => (pure (Err (E_Fetch_Access_Fault ())))
-        | .Read Data => (pure (Err (E_Load_Access_Fault ())))
-        | _ => (pure (Err (E_SAMO_Access_Fault ())))
+        (do
+          bif (Bool.and (BEq.beq width 4) (BEq.beq paddr (BitVec.addInt (plat_htif_tohost ()) 4)))
+          then
+            (pure (Ok
+                (zero_extend (m := 32) (Sail.BitVec.extractLsb (← readReg htif_tohost) 63 32))))
+          else
+            (match t with
+            | .Execute () => (pure (Err (E_Fetch_Access_Fault ())))
+            | .Read Data => (pure (Err (E_Load_Access_Fault ())))
+            | _ => (pure (Err (E_SAMO_Access_Fault ()))))))
 
 /-- Type quantifiers: width : Nat, 0 < width ∧ width ≤ 8 -/
 def htif_store (app_0 : physaddr) (width : Nat) (data : (BitVec (8 * width))) : SailM (Result Bool ExceptionType) := do
   let .physaddr paddr := app_0
   let _ : Unit :=
-    if (get_config_print_platform ())
+    bif (get_config_print_platform ())
     then
       (print_endline
         (HAppend.hAppend "htif["
           (HAppend.hAppend (BitVec.toFormatted paddr)
             (HAppend.hAppend "] <- " (BitVec.toFormatted data)))))
     else ()
-  if (BEq.beq width 8)
+  bif (BEq.beq width 8)
   then
-    writeReg htif_cmd_write 1#1
-    writeReg htif_payload_writes (BitVec.addInt (← readReg htif_payload_writes) 1)
-    writeReg htif_tohost (zero_extend (m := 64) data)
+    (do
+      writeReg htif_cmd_write 1#1
+      writeReg htif_payload_writes (BitVec.addInt (← readReg htif_payload_writes) 1)
+      writeReg htif_tohost (zero_extend (m := 64) data))
   else
-    if (Bool.and (BEq.beq width 4) (BEq.beq paddr (plat_htif_tohost ())))
-    then
-      if (BEq.beq data (Sail.BitVec.extractLsb (← readReg htif_tohost) 31 0))
-      then writeReg htif_payload_writes (BitVec.addInt (← readReg htif_payload_writes) 1)
-      else writeReg htif_payload_writes (0x1 : (BitVec 4))
-      writeReg htif_tohost (Sail.BitVec.updateSubrange (← readReg htif_tohost) 31 0 data)
-    else
-      if (Bool.and (BEq.beq width 4) (BEq.beq paddr (BitVec.addInt (plat_htif_tohost ()) 4)))
+    (do
+      bif (Bool.and (BEq.beq width 4) (BEq.beq paddr (plat_htif_tohost ())))
       then
-        if (BEq.beq (Sail.BitVec.extractLsb data 15 0)
-             (Sail.BitVec.extractLsb (← readReg htif_tohost) 47 32))
-        then writeReg htif_payload_writes (BitVec.addInt (← readReg htif_payload_writes) 1)
-        else writeReg htif_payload_writes (0x1 : (BitVec 4))
-        writeReg htif_cmd_write 1#1
-        writeReg htif_tohost (Sail.BitVec.updateSubrange (← readReg htif_tohost) 63 32 data)
-      else writeReg htif_tohost (zero_extend (m := 64) data)
-  if (Bool.or
+        (do
+          bif (BEq.beq data (Sail.BitVec.extractLsb (← readReg htif_tohost) 31 0))
+          then writeReg htif_payload_writes (BitVec.addInt (← readReg htif_payload_writes) 1)
+          else writeReg htif_payload_writes (0x1 : (BitVec 4))
+          writeReg htif_tohost (Sail.BitVec.updateSubrange (← readReg htif_tohost) 31 0 data))
+      else
+        (do
+          bif (Bool.and (BEq.beq width 4) (BEq.beq paddr (BitVec.addInt (plat_htif_tohost ()) 4)))
+          then
+            (do
+              bif (BEq.beq (Sail.BitVec.extractLsb data 15 0)
+                   (Sail.BitVec.extractLsb (← readReg htif_tohost) 47 32))
+              then writeReg htif_payload_writes (BitVec.addInt (← readReg htif_payload_writes) 1)
+              else writeReg htif_payload_writes (0x1 : (BitVec 4))
+              writeReg htif_cmd_write 1#1
+              writeReg htif_tohost (Sail.BitVec.updateSubrange (← readReg htif_tohost) 63 32 data))
+          else writeReg htif_tohost (zero_extend (m := 64) data)))
+  bif (Bool.or
        (Bool.and (BEq.beq (← readReg htif_cmd_write) 1#1)
          (← do
            (pure ((BitVec.toNat (← readReg htif_payload_writes)) >b 0))))
        (← do
          (pure ((BitVec.toNat (← readReg htif_payload_writes)) >b 2))))
   then
-    let cmd ← do (pure (Mk_htif_cmd (← readReg htif_tohost)))
-    let b__0 := (_get_htif_cmd_device cmd)
-    if (BEq.beq b__0 (0x00 : (BitVec 8)))
-    then
-      let _ : Unit :=
-        if (get_config_print_platform ())
-        then
-          (print_endline
-            (HAppend.hAppend "htif-syscall-proxy cmd: "
-              (BitVec.toFormatted (_get_htif_cmd_payload cmd))))
-        else ()
-      if (BEq.beq (BitVec.access (_get_htif_cmd_payload cmd) 0) 1#1)
+    (do
+      let cmd ← do (pure (Mk_htif_cmd (← readReg htif_tohost)))
+      let b__0 := (_get_htif_cmd_device cmd)
+      bif (BEq.beq b__0 (0x00 : (BitVec 8)))
       then
-        writeReg htif_done true
-        writeReg htif_exit_code (shiftr (zero_extend (m := 64) (_get_htif_cmd_payload cmd)) 1)
-      else (pure ())
-    else
-      if (BEq.beq b__0 (0x01 : (BitVec 8)))
-      then
-        let _ : Unit :=
-          if (get_config_print_platform ())
+        (do
+          let _ : Unit :=
+            bif (get_config_print_platform ())
+            then
+              (print_endline
+                (HAppend.hAppend "htif-syscall-proxy cmd: "
+                  (BitVec.toFormatted (_get_htif_cmd_payload cmd))))
+            else ()
+          bif (BEq.beq (BitVec.access (_get_htif_cmd_payload cmd) 0) 1#1)
           then
-            (print_endline
-              (HAppend.hAppend "htif-term cmd: " (BitVec.toFormatted (_get_htif_cmd_payload cmd))))
-          else ()
-        let b__2 := (_get_htif_cmd_cmd cmd)
-        if (BEq.beq b__2 (0x00 : (BitVec 8)))
-        then (pure ())
-        else
-          if (BEq.beq b__2 (0x01 : (BitVec 8)))
-          then (plat_term_write (Sail.BitVec.extractLsb (_get_htif_cmd_payload cmd) 7 0))
-          else (pure (print (HAppend.hAppend "Unknown term cmd: " (BitVec.toFormatted b__2))))
-        (reset_htif ())
-      else (pure (print (HAppend.hAppend "htif-???? cmd: " (BitVec.toFormatted data))))
+            (do
+              writeReg htif_done true
+              writeReg htif_exit_code (shiftr (zero_extend (m := 64) (_get_htif_cmd_payload cmd)) 1))
+          else (pure ()))
+      else
+        (do
+          bif (BEq.beq b__0 (0x01 : (BitVec 8)))
+          then
+            (do
+              let _ : Unit :=
+                bif (get_config_print_platform ())
+                then
+                  (print_endline
+                    (HAppend.hAppend "htif-term cmd: "
+                      (BitVec.toFormatted (_get_htif_cmd_payload cmd))))
+                else ()
+              let b__2 := (_get_htif_cmd_cmd cmd)
+              bif (BEq.beq b__2 (0x00 : (BitVec 8)))
+              then (pure ())
+              else
+                (do
+                  bif (BEq.beq b__2 (0x01 : (BitVec 8)))
+                  then (plat_term_write (Sail.BitVec.extractLsb (_get_htif_cmd_payload cmd) 7 0))
+                  else
+                    (pure (print (HAppend.hAppend "Unknown term cmd: " (BitVec.toFormatted b__2)))))
+              (reset_htif ()))
+          else (pure (print (HAppend.hAppend "htif-???? cmd: " (BitVec.toFormatted data))))))
   else (pure ())
   (pure (Ok true))
 
 def htif_tick (_ : Unit) : SailM Unit := do
-  if (get_config_print_platform ())
+  bif (get_config_print_platform ())
   then
     (pure (print_endline
         (HAppend.hAppend "htif::tick " (BitVec.toFormatted (← readReg htif_tohost)))))
@@ -635,25 +689,27 @@ def within_mmio_writable (addr : physaddr) (width : Nat) : Bool :=
 
 /-- Type quantifiers: width : Nat, 0 < width ∧ width ≤ max_mem_access -/
 def mmio_read (t : (AccessType Unit)) (paddr : physaddr) (width : Nat) : SailM (Result (BitVec (8 * width)) ExceptionType) := do
-  if (within_clint paddr width)
+  bif (within_clint paddr width)
   then (clint_load t paddr width)
   else
-    if (Bool.and (within_htif_readable paddr width) (1 ≤b width))
-    then (htif_load t paddr width)
-    else
-      match t with
-      | .Execute () => (pure (Err (E_Fetch_Access_Fault ())))
-      | .Read Data => (pure (Err (E_Load_Access_Fault ())))
-      | _ => (pure (Err (E_SAMO_Access_Fault ())))
+    (do
+      bif (Bool.and (within_htif_readable paddr width) (1 ≤b width))
+      then (htif_load t paddr width)
+      else
+        (match t with
+        | .Execute () => (pure (Err (E_Fetch_Access_Fault ())))
+        | .Read Data => (pure (Err (E_Load_Access_Fault ())))
+        | _ => (pure (Err (E_SAMO_Access_Fault ())))))
 
 /-- Type quantifiers: width : Nat, 0 < width ∧ width ≤ max_mem_access -/
 def mmio_write (paddr : physaddr) (width : Nat) (data : (BitVec (8 * width))) : SailM (Result Bool ExceptionType) := do
-  if (within_clint paddr width)
+  bif (within_clint paddr width)
   then (clint_store paddr width data)
   else
-    if (Bool.and (within_htif_writable paddr width) (width ≤b 8))
-    then (htif_store paddr width data)
-    else (pure (Err (E_SAMO_Access_Fault ())))
+    (do
+      bif (Bool.and (within_htif_writable paddr width) (width ≤b 8))
+      then (htif_store paddr width data)
+      else (pure (Err (E_SAMO_Access_Fault ()))))
 
 def init_platform (_ : Unit) : SailM Unit := do
   writeReg htif_tohost (zeros_implicit (n := 64))
@@ -667,7 +723,7 @@ def tick_platform (_ : Unit) : SailM Unit := do
 
 def handle_illegal (_ : Unit) : SailM Unit := do
   let info ← do
-    if (plat_mtval_has_illegal_inst_bits ())
+    bif (plat_mtval_has_illegal_inst_bits ())
     then (pure (some (← readReg instbits)))
     else (pure none)
   let t : sync_exception :=

@@ -175,32 +175,40 @@ def encdec_mmfunct6_forwards (arg_ : mmfunct6) : (BitVec 6) :=
 
 def encdec_mmfunct6_backwards (arg_ : (BitVec 6)) : SailM mmfunct6 := do
   let b__0 := arg_
-  if (BEq.beq b__0 (0b011001 : (BitVec 6)))
+  bif (BEq.beq b__0 (0b011001 : (BitVec 6)))
   then (pure MM_VMAND)
   else
-    if (BEq.beq b__0 (0b011101 : (BitVec 6)))
-    then (pure MM_VMNAND)
-    else
-      if (BEq.beq b__0 (0b011000 : (BitVec 6)))
-      then (pure MM_VMANDN)
+    (do
+      bif (BEq.beq b__0 (0b011101 : (BitVec 6)))
+      then (pure MM_VMNAND)
       else
-        if (BEq.beq b__0 (0b011011 : (BitVec 6)))
-        then (pure MM_VMXOR)
-        else
-          if (BEq.beq b__0 (0b011010 : (BitVec 6)))
-          then (pure MM_VMOR)
+        (do
+          bif (BEq.beq b__0 (0b011000 : (BitVec 6)))
+          then (pure MM_VMANDN)
           else
-            if (BEq.beq b__0 (0b011110 : (BitVec 6)))
-            then (pure MM_VMNOR)
-            else
-              if (BEq.beq b__0 (0b011100 : (BitVec 6)))
-              then (pure MM_VMORN)
+            (do
+              bif (BEq.beq b__0 (0b011011 : (BitVec 6)))
+              then (pure MM_VMXOR)
               else
-                if (BEq.beq b__0 (0b011111 : (BitVec 6)))
-                then (pure MM_VMXNOR)
-                else
-                  assert false "Pattern match failure at unknown location"
-                  throw Error.Exit
+                (do
+                  bif (BEq.beq b__0 (0b011010 : (BitVec 6)))
+                  then (pure MM_VMOR)
+                  else
+                    (do
+                      bif (BEq.beq b__0 (0b011110 : (BitVec 6)))
+                      then (pure MM_VMNOR)
+                      else
+                        (do
+                          bif (BEq.beq b__0 (0b011100 : (BitVec 6)))
+                          then (pure MM_VMORN)
+                          else
+                            (do
+                              bif (BEq.beq b__0 (0b011111 : (BitVec 6)))
+                              then (pure MM_VMXNOR)
+                              else
+                                (do
+                                  assert false "Pattern match failure at unknown location"
+                                  throw Error.Exit))))))))
 
 def encdec_mmfunct6_forwards_matches (arg_ : mmfunct6) : Bool :=
   match arg_ with
@@ -215,30 +223,30 @@ def encdec_mmfunct6_forwards_matches (arg_ : mmfunct6) : Bool :=
 
 def encdec_mmfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b011001 : (BitVec 6)))
+  bif (BEq.beq b__0 (0b011001 : (BitVec 6)))
   then true
   else
-    if (BEq.beq b__0 (0b011101 : (BitVec 6)))
+    (bif (BEq.beq b__0 (0b011101 : (BitVec 6)))
     then true
     else
-      if (BEq.beq b__0 (0b011000 : (BitVec 6)))
+      (bif (BEq.beq b__0 (0b011000 : (BitVec 6)))
       then true
       else
-        if (BEq.beq b__0 (0b011011 : (BitVec 6)))
+        (bif (BEq.beq b__0 (0b011011 : (BitVec 6)))
         then true
         else
-          if (BEq.beq b__0 (0b011010 : (BitVec 6)))
+          (bif (BEq.beq b__0 (0b011010 : (BitVec 6)))
           then true
           else
-            if (BEq.beq b__0 (0b011110 : (BitVec 6)))
+            (bif (BEq.beq b__0 (0b011110 : (BitVec 6)))
             then true
             else
-              if (BEq.beq b__0 (0b011100 : (BitVec 6)))
+              (bif (BEq.beq b__0 (0b011100 : (BitVec 6)))
               then true
               else
-                if (BEq.beq b__0 (0b011111 : (BitVec 6)))
+                (bif (BEq.beq b__0 (0b011111 : (BitVec 6)))
                 then true
-                else false
+                else false)))))))
 
 def mmtype_mnemonic_backwards (arg_ : String) : SailM mmfunct6 := do
   match arg_ with
@@ -250,9 +258,9 @@ def mmtype_mnemonic_backwards (arg_ : String) : SailM mmfunct6 := do
   | "vmnor.mm" => (pure MM_VMNOR)
   | "vmorn.mm" => (pure MM_VMORN)
   | "vmxnor.mm" => (pure MM_VMXNOR)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def mmtype_mnemonic_forwards_matches (arg_ : mmfunct6) : Bool :=
   match arg_ with

@@ -182,15 +182,15 @@ def num_of_PmpAddrMatchType (arg_ : PmpAddrMatchType) : Int :=
 
 def pmpAddrMatchType_of_bits (bs : (BitVec 2)) : PmpAddrMatchType :=
   let b__0 := bs
-  if (BEq.beq b__0 (0b00 : (BitVec 2)))
+  bif (BEq.beq b__0 (0b00 : (BitVec 2)))
   then OFF
   else
-    if (BEq.beq b__0 (0b01 : (BitVec 2)))
+    (bif (BEq.beq b__0 (0b01 : (BitVec 2)))
     then TOR
     else
-      if (BEq.beq b__0 (0b10 : (BitVec 2)))
+      (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
       then NA4
-      else NAPOT
+      else NAPOT))
 
 def pmpAddrMatchType_to_bits (bs : PmpAddrMatchType) : (BitVec 2) :=
   match bs with
@@ -222,19 +222,17 @@ def pmpReadAddrReg (n : Nat) : SailM (BitVec (2 ^ 3 * 8)) := do
   let match_type ← do (pure (_get_Pmpcfg_ent_A (GetElem?.getElem! (← readReg pmpcfg_n) n)))
   let addr ← do (pure (GetElem?.getElem! (← readReg pmpaddr_n) n))
   match (BitVec.access match_type 1) with
-  | 1#1 =>
-    if (G ≥b 2)
+  | 1#1 => (bif (G ≥b 2)
     then
-      let mask : xlenbits :=
+      (let mask : xlenbits :=
         (zero_extend (m := ((2 ^i 3) *i 8)) (ones (n := (Min.min (G -i 1) xlen))))
-      (pure (addr ||| mask))
-    else (pure addr)
-  | 0#1 =>
-    if (G ≥b 1)
+      (pure (addr ||| mask)))
+    else (pure addr))
+  | 0#1 => (bif (G ≥b 1)
     then
-      let mask : xlenbits := (zero_extend (m := ((2 ^i 3) *i 8)) (ones (n := (Min.min G xlen))))
-      (pure (addr &&& (Complement.complement mask)))
-    else (pure addr)
+      (let mask : xlenbits := (zero_extend (m := ((2 ^i 3) *i 8)) (ones (n := (Min.min G xlen))))
+      (pure (addr &&& (Complement.complement mask))))
+    else (pure addr))
   | _ => (pure addr)
 
 def pmpLocked (cfg : (BitVec 8)) : Bool :=
@@ -246,22 +244,22 @@ def pmpTORLocked (cfg : (BitVec 8)) : Bool :=
 
 /-- Type quantifiers: n : Nat, 0 ≤ n ∧ n ≤ 63 -/
 def pmpWriteCfg (n : Nat) (cfg : (BitVec 8)) (v : (BitVec 8)) : (BitVec 8) :=
-  if (pmpLocked cfg)
+  bif (pmpLocked cfg)
   then cfg
   else
-    let cfg := (Mk_Pmpcfg_ent (v &&& (0x9F : (BitVec 8))))
+    (let cfg := (Mk_Pmpcfg_ent (v &&& (0x9F : (BitVec 8))))
     let cfg :=
-      if (Bool.and (BEq.beq (_get_Pmpcfg_ent_W cfg) (0b1 : (BitVec 1)))
+      bif (Bool.and (BEq.beq (_get_Pmpcfg_ent_W cfg) (0b1 : (BitVec 1)))
            (BEq.beq (_get_Pmpcfg_ent_R cfg) (0b0 : (BitVec 1))))
       then
         (_update_Pmpcfg_ent_R
           (_update_Pmpcfg_ent_W (_update_Pmpcfg_ent_X cfg (0b0 : (BitVec 1))) (0b0 : (BitVec 1)))
           (0b0 : (BitVec 1)))
       else cfg
-    if (Bool.and ((sys_pmp_grain ()) ≥b 1)
+    bif (Bool.and ((sys_pmp_grain ()) ≥b 1)
          (BEq.beq (pmpAddrMatchType_of_bits (_get_Pmpcfg_ent_A cfg)) NA4))
     then (_update_Pmpcfg_ent_A cfg (pmpAddrMatchType_to_bits OFF))
-    else cfg
+    else cfg)
 
 /-- Type quantifiers: n : Nat, 0 ≤ n ∧ n ≤ 15 -/
 def pmpWriteCfgReg (n : Nat) (v : (BitVec (2 ^ 3 * 8))) : SailM Unit := do
@@ -269,7 +267,7 @@ def pmpWriteCfgReg (n : Nat) (v : (BitVec (2 ^ 3 * 8))) : SailM Unit := do
   let loop_i_lower := 0
   let loop_i_upper := 7
   let mut loop_vars := ()
-  for i in [loop_i_lower:loop_i_upper + 1:1]i do
+  for i in [loop_i_lower:loop_i_upper:1]i do
     let () := loop_vars
     loop_vars ← do
       let idx := ((n *i 4) +i i)
@@ -280,7 +278,7 @@ def pmpWriteCfgReg (n : Nat) (v : (BitVec (2 ^ 3 * 8))) : SailM Unit := do
 
 /-- Type quantifiers: k_ex309095# : Bool, k_ex309094# : Bool -/
 def pmpWriteAddr (locked : Bool) (tor_locked : Bool) (reg : (BitVec (2 ^ 3 * 8))) (v : (BitVec (2 ^ 3 * 8))) : (BitVec (2 ^ 3 * 8)) :=
-  if (Bool.or locked tor_locked)
+  bif (Bool.or locked tor_locked)
   then reg
   else (zero_extend (m := ((2 ^i 3) *i 8)) (Sail.BitVec.extractLsb v 53 0))
 
@@ -289,7 +287,7 @@ def pmpWriteAddrReg (n : Nat) (v : (BitVec (2 ^ 3 * 8))) : SailM Unit := do
   writeReg pmpaddr_n (vectorUpdate (← readReg pmpaddr_n) n
     (pmpWriteAddr (pmpLocked (GetElem?.getElem! (← readReg pmpcfg_n) n))
       (← do
-        if ((n +i 1) <b 64)
+        bif ((n +i 1) <b 64)
         then (pure (pmpTORLocked (GetElem?.getElem! (← readReg pmpcfg_n) (n +i 1))))
         else (pure false)) (GetElem?.getElem! (← readReg pmpaddr_n) n) v))
 

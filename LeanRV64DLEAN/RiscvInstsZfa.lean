@@ -173,56 +173,56 @@ def fcvtmod_helper (x64 : (BitVec 64)) : ((BitVec 5) × (BitVec 32)) :=
   let true_exp := ((BitVec.toNat exp) -i 1023)
   let is_too_large := (true_exp ≥b 84)
   let is_too_small := (true_exp <b 0)
-  if is_zero
+  bif is_zero
   then
-    let t__3717 := (zeros_implicit (n := 5))
+    (let t__3717 := (zeros_implicit (n := 5))
     let t__3718 := (zeros_implicit (n := 32))
-    (t__3717, t__3718)
+    (t__3717, t__3718))
   else
-    if is_subnorm
+    (bif is_subnorm
     then
-      let t__3715 := (nxFlag ())
+      (let t__3715 := (nxFlag ())
       let t__3716 := (zeros_implicit (n := 32))
-      (t__3715, t__3716)
+      (t__3715, t__3716))
     else
-      if is_nan_or_inf
+      (bif is_nan_or_inf
       then
-        let t__3713 := (nvFlag ())
+        (let t__3713 := (nvFlag ())
         let t__3714 := (zeros_implicit (n := 32))
-        (t__3713, t__3714)
+        (t__3713, t__3714))
       else
-        if is_too_large
+        (bif is_too_large
         then
-          let t__3711 := (nvFlag ())
+          (let t__3711 := (nvFlag ())
           let t__3712 := (zeros_implicit (n := 32))
-          (t__3711, t__3712)
+          (t__3711, t__3712))
         else
-          if is_too_small
+          (bif is_too_small
           then
-            let t__3709 := (nxFlag ())
+            (let t__3709 := (nxFlag ())
             let t__3710 := (zeros_implicit (n := 32))
-            (t__3709, t__3710)
+            (t__3709, t__3710))
           else
-            let fixedpoint : (BitVec 84) := (shiftl (zero_extend (m := 84) true_mant) true_exp)
+            (let fixedpoint : (BitVec 84) := (shiftl (zero_extend (m := 84) true_mant) true_exp)
             let integer := (Sail.BitVec.extractLsb fixedpoint 83 52)
             let fractional := (Sail.BitVec.extractLsb fixedpoint 51 0)
             let result :=
-              if (BEq.beq sign (0b1 : (BitVec 1)))
+              bif (BEq.beq sign (0b1 : (BitVec 1)))
               then (BitVec.addInt (Complement.complement integer) 1)
               else integer
             let max_integer :=
-              if (BEq.beq sign (0b1 : (BitVec 1)))
+              bif (BEq.beq sign (0b1 : (BitVec 1)))
               then (BitVec.toNat (0x80000000 : (BitVec 32)))
               else (BitVec.toNat (0x7FFFFFFF : (BitVec 32)))
             let flags : (BitVec 5) :=
-              if (true_exp >b 31)
+              bif (true_exp >b 31)
               then (nvFlag ())
               else
-                if ((BitVec.toNat integer) >b max_integer)
+                (bif ((BitVec.toNat integer) >b max_integer)
                 then (nvFlag ())
                 else
-                  if (bne fractional (zeros_implicit (n := ((51 -i 0) +i 1))))
+                  (bif (bne fractional (zeros_implicit (n := ((51 -i 0) +i 1))))
                   then (nxFlag ())
-                  else (zeros_implicit (n := 5))
-            (flags, result)
+                  else (zeros_implicit (n := 5))))
+            (flags, result))))))
 

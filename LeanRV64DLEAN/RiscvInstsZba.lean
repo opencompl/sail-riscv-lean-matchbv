@@ -168,9 +168,9 @@ def zba_rtypeuw_mnemonic_backwards (arg_ : String) : SailM bropw_zba := do
   | "sh1add.uw" => (pure RISCV_SH1ADDUW)
   | "sh2add.uw" => (pure RISCV_SH2ADDUW)
   | "sh3add.uw" => (pure RISCV_SH3ADDUW)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def zba_rtypeuw_mnemonic_forwards_matches (arg_ : bropw_zba) : Bool :=
   match arg_ with
@@ -192,9 +192,9 @@ def zba_rtype_mnemonic_backwards (arg_ : String) : SailM brop_zba := do
   | "sh1add" => (pure RISCV_SH1ADD)
   | "sh2add" => (pure RISCV_SH2ADD)
   | "sh3add" => (pure RISCV_SH3ADD)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def zba_rtype_mnemonic_forwards_matches (arg_ : brop_zba) : Bool :=
   match arg_ with

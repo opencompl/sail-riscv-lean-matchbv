@@ -204,35 +204,44 @@ def encdec_amoop_forwards (arg_ : amoop) : (BitVec 5) :=
 
 def encdec_amoop_backwards (arg_ : (BitVec 5)) : SailM amoop := do
   let b__0 := arg_
-  if (BEq.beq b__0 (0b00001 : (BitVec 5)))
+  bif (BEq.beq b__0 (0b00001 : (BitVec 5)))
   then (pure AMOSWAP)
   else
-    if (BEq.beq b__0 (0b00000 : (BitVec 5)))
-    then (pure AMOADD)
-    else
-      if (BEq.beq b__0 (0b00100 : (BitVec 5)))
-      then (pure AMOXOR)
+    (do
+      bif (BEq.beq b__0 (0b00000 : (BitVec 5)))
+      then (pure AMOADD)
       else
-        if (BEq.beq b__0 (0b01100 : (BitVec 5)))
-        then (pure AMOAND)
-        else
-          if (BEq.beq b__0 (0b01000 : (BitVec 5)))
-          then (pure AMOOR)
+        (do
+          bif (BEq.beq b__0 (0b00100 : (BitVec 5)))
+          then (pure AMOXOR)
           else
-            if (BEq.beq b__0 (0b10000 : (BitVec 5)))
-            then (pure AMOMIN)
-            else
-              if (BEq.beq b__0 (0b10100 : (BitVec 5)))
-              then (pure AMOMAX)
+            (do
+              bif (BEq.beq b__0 (0b01100 : (BitVec 5)))
+              then (pure AMOAND)
               else
-                if (BEq.beq b__0 (0b11000 : (BitVec 5)))
-                then (pure AMOMINU)
-                else
-                  if (BEq.beq b__0 (0b11100 : (BitVec 5)))
-                  then (pure AMOMAXU)
+                (do
+                  bif (BEq.beq b__0 (0b01000 : (BitVec 5)))
+                  then (pure AMOOR)
                   else
-                    assert false "Pattern match failure at unknown location"
-                    throw Error.Exit
+                    (do
+                      bif (BEq.beq b__0 (0b10000 : (BitVec 5)))
+                      then (pure AMOMIN)
+                      else
+                        (do
+                          bif (BEq.beq b__0 (0b10100 : (BitVec 5)))
+                          then (pure AMOMAX)
+                          else
+                            (do
+                              bif (BEq.beq b__0 (0b11000 : (BitVec 5)))
+                              then (pure AMOMINU)
+                              else
+                                (do
+                                  bif (BEq.beq b__0 (0b11100 : (BitVec 5)))
+                                  then (pure AMOMAXU)
+                                  else
+                                    (do
+                                      assert false "Pattern match failure at unknown location"
+                                      throw Error.Exit)))))))))
 
 def encdec_amoop_forwards_matches (arg_ : amoop) : Bool :=
   match arg_ with
@@ -248,33 +257,33 @@ def encdec_amoop_forwards_matches (arg_ : amoop) : Bool :=
 
 def encdec_amoop_backwards_matches (arg_ : (BitVec 5)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b00001 : (BitVec 5)))
+  bif (BEq.beq b__0 (0b00001 : (BitVec 5)))
   then true
   else
-    if (BEq.beq b__0 (0b00000 : (BitVec 5)))
+    (bif (BEq.beq b__0 (0b00000 : (BitVec 5)))
     then true
     else
-      if (BEq.beq b__0 (0b00100 : (BitVec 5)))
+      (bif (BEq.beq b__0 (0b00100 : (BitVec 5)))
       then true
       else
-        if (BEq.beq b__0 (0b01100 : (BitVec 5)))
+        (bif (BEq.beq b__0 (0b01100 : (BitVec 5)))
         then true
         else
-          if (BEq.beq b__0 (0b01000 : (BitVec 5)))
+          (bif (BEq.beq b__0 (0b01000 : (BitVec 5)))
           then true
           else
-            if (BEq.beq b__0 (0b10000 : (BitVec 5)))
+            (bif (BEq.beq b__0 (0b10000 : (BitVec 5)))
             then true
             else
-              if (BEq.beq b__0 (0b10100 : (BitVec 5)))
+              (bif (BEq.beq b__0 (0b10100 : (BitVec 5)))
               then true
               else
-                if (BEq.beq b__0 (0b11000 : (BitVec 5)))
+                (bif (BEq.beq b__0 (0b11000 : (BitVec 5)))
                 then true
                 else
-                  if (BEq.beq b__0 (0b11100 : (BitVec 5)))
+                  (bif (BEq.beq b__0 (0b11100 : (BitVec 5)))
                   then true
-                  else false
+                  else false))))))))
 
 def amo_mnemonic_backwards (arg_ : String) : SailM amoop := do
   match arg_ with
@@ -287,9 +296,9 @@ def amo_mnemonic_backwards (arg_ : String) : SailM amoop := do
   | "amomax" => (pure AMOMAX)
   | "amominu" => (pure AMOMINU)
   | "amomaxu" => (pure AMOMAXU)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def amo_mnemonic_forwards_matches (arg_ : amoop) : Bool :=
   match arg_ with

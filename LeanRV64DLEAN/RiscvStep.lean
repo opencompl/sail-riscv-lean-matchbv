@@ -170,68 +170,69 @@ def step (step_no : Int) : SailM Bool := do
   writeReg minstreth_write none
   let (retired, stepped) ← (( do
     match (← (dispatchInterrupt (← readReg cur_privilege))) with
-    | .some (intr, priv) =>
-      let _ : Unit :=
-        if (get_config_print_instr ())
-        then (print_bits "Handling interrupt: " (interruptType_to_bits intr))
-        else ()
-      (handle_interrupt intr priv)
-      (pure (RETIRE_FAIL, false))
-    | none =>
-      match (ext_fetch_hook (← (fetch ()))) with
-      | .F_Ext_Error e =>
-        let _ : Unit := (ext_handle_fetch_check_error e)
-        (pure (RETIRE_FAIL, false))
-      | .F_Error (e, addr) =>
-        (handle_mem_exception (virtaddr addr) e)
-        (pure (RETIRE_FAIL, false))
-      | .F_RVC h =>
-        let _ : Unit := (sail_instr_announce h)
-        writeReg instbits (zero_extend (m := ((2 ^i 3) *i 8)) h)
-        let ast ← do (ext_decode_compressed h)
-        if (get_config_print_instr ())
-        then
-          (pure (print_endline
-              (HAppend.hAppend "["
-                (HAppend.hAppend (Int.repr step_no)
-                  (HAppend.hAppend "] ["
-                    (HAppend.hAppend (privLevel_to_str (← readReg cur_privilege))
-                      (HAppend.hAppend "]: "
-                        (HAppend.hAppend (BitVec.toFormatted (← readReg PC))
-                          (HAppend.hAppend " ("
-                            (HAppend.hAppend (BitVec.toFormatted h)
-                              (HAppend.hAppend ") " (← (print_insn ast)))))))))))))
-        else (pure ())
-        if (← (extensionEnabled Ext_Zca))
-        then
-          writeReg nextPC (BitVec.addInt (← readReg PC) 2)
-          let t__4 ← do (execute ast)
-          (pure (t__4, true))
-        else
-          (handle_illegal ())
-          (pure (RETIRE_FAIL, true))
-      | .F_Base w =>
-        let _ : Unit := (sail_instr_announce w)
-        writeReg instbits (zero_extend (m := ((2 ^i 3) *i 8)) w)
-        let ast ← do (ext_decode w)
-        if (get_config_print_instr ())
-        then
-          (pure (print_endline
-              (HAppend.hAppend "["
-                (HAppend.hAppend (Int.repr step_no)
-                  (HAppend.hAppend "] ["
-                    (HAppend.hAppend (privLevel_to_str (← readReg cur_privilege))
-                      (HAppend.hAppend "]: "
-                        (HAppend.hAppend (BitVec.toFormatted (← readReg PC))
-                          (HAppend.hAppend " ("
-                            (HAppend.hAppend (BitVec.toFormatted w)
-                              (HAppend.hAppend ") " (← (print_insn ast)))))))))))))
-        else (pure ())
-        writeReg nextPC (BitVec.addInt (← readReg PC) 4)
-        let t__6 ← do (execute ast)
-        (pure (t__6, true)) ) : SailM (Retired × Bool) )
+    | .some (intr, priv) => (do
+        let _ : Unit :=
+          bif (get_config_print_instr ())
+          then (print_bits "Handling interrupt: " (interruptType_to_bits intr))
+          else ()
+        (handle_interrupt intr priv)
+        (pure (RETIRE_FAIL, false)))
+    | none => (do
+        match (ext_fetch_hook (← (fetch ()))) with
+        | .F_Ext_Error e => (let _ : Unit := (ext_handle_fetch_check_error e)
+          (pure (RETIRE_FAIL, false)))
+        | .F_Error (e, addr) => (do
+            (handle_mem_exception (virtaddr addr) e)
+            (pure (RETIRE_FAIL, false)))
+        | .F_RVC h => (do
+            let _ : Unit := (sail_instr_announce h)
+            writeReg instbits (zero_extend (m := ((2 ^i 3) *i 8)) h)
+            let ast ← do (ext_decode_compressed h)
+            bif (get_config_print_instr ())
+            then
+              (pure (print_endline
+                  (HAppend.hAppend "["
+                    (HAppend.hAppend (Int.repr step_no)
+                      (HAppend.hAppend "] ["
+                        (HAppend.hAppend (privLevel_to_str (← readReg cur_privilege))
+                          (HAppend.hAppend "]: "
+                            (HAppend.hAppend (BitVec.toFormatted (← readReg PC))
+                              (HAppend.hAppend " ("
+                                (HAppend.hAppend (BitVec.toFormatted h)
+                                  (HAppend.hAppend ") " (← (print_insn ast)))))))))))))
+            else (pure ())
+            bif (← (extensionEnabled Ext_Zca))
+            then
+              (do
+                writeReg nextPC (BitVec.addInt (← readReg PC) 2)
+                let t__4 ← do (execute ast)
+                (pure (t__4, true)))
+            else
+              (do
+                (handle_illegal ())
+                (pure (RETIRE_FAIL, true))))
+        | .F_Base w => (do
+            let _ : Unit := (sail_instr_announce w)
+            writeReg instbits (zero_extend (m := ((2 ^i 3) *i 8)) w)
+            let ast ← do (ext_decode w)
+            bif (get_config_print_instr ())
+            then
+              (pure (print_endline
+                  (HAppend.hAppend "["
+                    (HAppend.hAppend (Int.repr step_no)
+                      (HAppend.hAppend "] ["
+                        (HAppend.hAppend (privLevel_to_str (← readReg cur_privilege))
+                          (HAppend.hAppend "]: "
+                            (HAppend.hAppend (BitVec.toFormatted (← readReg PC))
+                              (HAppend.hAppend " ("
+                                (HAppend.hAppend (BitVec.toFormatted w)
+                                  (HAppend.hAppend ") " (← (print_insn ast)))))))))))))
+            else (pure ())
+            writeReg nextPC (BitVec.addInt (← readReg PC) 4)
+            let t__6 ← do (execute ast)
+            (pure (t__6, true)))) ) : SailM (Retired × Bool) )
   (tick_pc ())
-  if (bne retired RETIRE_SUCCESS)
+  bif (bne retired RETIRE_SUCCESS)
   then writeReg minstret_increment false
   else (pure ())
   (update_minstret ())
@@ -249,33 +250,37 @@ def loop (_ : Unit) : SailM Unit := do
       loop_vars ← do
         let stepped ← do (step step_no)
         let step_no ← (( do
-          if stepped
+          bif stepped
           then
-            let step_no : Int := (step_no +i 1)
-            let _ : Unit :=
-              if (get_config_print_instr ())
-              then (print_step ())
-              else ()
-            (cycle_count ())
-            (pure step_no)
+            (do
+              let step_no : Int := (step_no +i 1)
+              let _ : Unit :=
+                bif (get_config_print_instr ())
+                then (print_step ())
+                else ()
+              (cycle_count ())
+              (pure step_no))
           else (pure step_no) ) : SailM Int )
         let i ← (( do
-          if (← readReg htif_done)
+          bif (← readReg htif_done)
           then
-            let exit_val ← do (pure (BitVec.toNat (← readReg htif_exit_code)))
-            let _ : Unit :=
-              if (BEq.beq exit_val 0)
-              then (print "SUCCESS")
-              else (print_int "FAILURE: " exit_val)
-            (pure i)
+            (do
+              let exit_val ← do (pure (BitVec.toNat (← readReg htif_exit_code)))
+              let _ : Unit :=
+                bif (BEq.beq exit_val 0)
+                then (print "SUCCESS")
+                else (print_int "FAILURE: " exit_val)
+              (pure i))
           else
-            let i : Int := (i +i 1)
-            if (BEq.beq i insns_per_tick)
-            then
-              (tick_clock ())
-              (tick_platform ())
-              (pure 0)
-            else (pure i) ) : SailM Int )
+            (do
+              let i : Int := (i +i 1)
+              bif (BEq.beq i insns_per_tick)
+              then
+                (do
+                  (tick_clock ())
+                  (tick_platform ())
+                  (pure 0))
+              else (pure i)) ) : SailM Int )
         (pure (i, step_no))
     (pure loop_vars) ) : SailM (Int × Int) )
   (pure ())

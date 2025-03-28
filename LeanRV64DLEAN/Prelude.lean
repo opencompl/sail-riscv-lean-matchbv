@@ -163,7 +163,7 @@ open Architecture
 open AccessType
 
 def not_bit (b : (BitVec 1)) : (BitVec 1) :=
-  if (BEq.beq b 1#1)
+  bif (BEq.beq b 1#1)
   then 0#1
   else 1#1
 
@@ -175,9 +175,9 @@ def bit_str (b : (BitVec 1)) : SailM String := do
   match b with
   | 0#1 => (pure "0b0")
   | 1#1 => (pure "0b1")
-  | _ =>
-    assert false "Pattern match failure at prelude.sail:35.2-38.3"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at prelude.sail:35.2-38.3"
+      throw Error.Exit)
 
 def print_step (_ : Unit) : Unit :=
   ()
@@ -220,9 +220,9 @@ def bool_bit_backwards (arg_ : (BitVec 1)) : SailM Bool := do
   match arg_ with
   | 1#1 => (pure true)
   | 0#1 => (pure false)
-  | _ =>
-    assert false "Pattern match failure at unknown location"
-    throw Error.Exit
+  | _ => (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 /-- Type quantifiers: k_ex307020# : Bool -/
 def bool_bit_forwards_matches (arg_ : Bool) : Bool :=
@@ -244,7 +244,7 @@ def bool_bits_forwards (arg_ : Bool) : (BitVec 1) :=
 
 def bool_bits_backwards (arg_ : (BitVec 1)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b1 : (BitVec 1)))
+  bif (BEq.beq b__0 (0b1 : (BitVec 1)))
   then true
   else false
 
@@ -256,12 +256,12 @@ def bool_bits_forwards_matches (arg_ : Bool) : Bool :=
 
 def bool_bits_backwards_matches (arg_ : (BitVec 1)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b1 : (BitVec 1)))
+  bif (BEq.beq b__0 (0b1 : (BitVec 1)))
   then true
   else
-    if (BEq.beq b__0 (0b0 : (BitVec 1)))
+    (bif (BEq.beq b__0 (0b0 : (BitVec 1)))
     then true
-    else false
+    else false)
 
 /-- Type quantifiers: k_ex307026# : Bool -/
 def bool_not_bits_forwards (arg_ : Bool) : (BitVec 1) :=
@@ -271,7 +271,7 @@ def bool_not_bits_forwards (arg_ : Bool) : (BitVec 1) :=
 
 def bool_not_bits_backwards (arg_ : (BitVec 1)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b0 : (BitVec 1)))
+  bif (BEq.beq b__0 (0b0 : (BitVec 1)))
   then true
   else false
 
@@ -283,12 +283,12 @@ def bool_not_bits_forwards_matches (arg_ : Bool) : Bool :=
 
 def bool_not_bits_backwards_matches (arg_ : (BitVec 1)) : Bool :=
   let b__0 := arg_
-  if (BEq.beq b__0 (0b0 : (BitVec 1)))
+  bif (BEq.beq b__0 (0b0 : (BitVec 1)))
   then true
   else
-    if (BEq.beq b__0 (0b1 : (BitVec 1)))
+    (bif (BEq.beq b__0 (0b1 : (BitVec 1)))
     then true
-    else false
+    else false)
 
 /-- Type quantifiers: k_ex307031# : Bool -/
 def bool_to_bit (x : Bool) : (BitVec 1) :=
@@ -372,7 +372,7 @@ def reverse_bits_in_byte (xs : (BitVec 8)) : (BitVec 8) := Id.run do
   let loop_i_lower := 0
   let loop_i_upper := 7
   let mut loop_vars := ys
-  for i in [loop_i_lower:loop_i_upper + 1:1]i do
+  for i in [loop_i_lower:loop_i_upper:1]i do
     let ys := loop_vars
     loop_vars := (BitVec.update ys i (BitVec.access xs (7 -i i)))
   (pure loop_vars)

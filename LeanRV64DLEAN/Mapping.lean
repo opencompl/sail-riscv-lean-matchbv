@@ -201,8 +201,7 @@ def def_spc_backwards_matches (s : String) : Bool :=
 
 def sep_forwards (arg_ : Unit) : String :=
   match arg_ with
-  | () =>
-    (String.append (opt_spc_forwards ())
+  | () => (String.append (opt_spc_forwards ())
       (String.append "," (String.append (def_spc_forwards ()) "")))
 
 def sep_backwards (arg_ : String) : SailM Unit := do

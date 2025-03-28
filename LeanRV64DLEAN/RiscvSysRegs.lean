@@ -813,19 +813,19 @@ def ext_veto_disable_C (_ : Unit) : Bool :=
 
 def legalize_misa (m : (BitVec (2 ^ 3 * 8))) (v : (BitVec (2 ^ 3 * 8))) : SailM (BitVec (2 ^ 3 * 8)) := do
   let v := (Mk_Misa v)
-  if (Bool.or (not (sys_enable_writable_misa ()))
+  bif (Bool.or (not (sys_enable_writable_misa ()))
        (Bool.and (BEq.beq (_get_Misa_C v) (0b0 : (BitVec 1)))
          (Bool.or (BEq.beq (BitVec.access (← readReg nextPC) 1) 1#1) (ext_veto_disable_C ()))))
   then (pure m)
   else
-    let m :=
-      if (not (sys_enable_rvc ()))
+    (let m :=
+      bif (not (sys_enable_rvc ()))
       then m
       else (_update_Misa_C m (_get_Misa_C v))
-    if (not (sys_enable_fdext ()))
+    bif (not (sys_enable_fdext ()))
     then (pure m)
     else
-      (pure (_update_Misa_D (_update_Misa_F m (_get_Misa_F v)) ((_get_Misa_D v) &&& (_get_Misa_F v))))
+      (pure (_update_Misa_D (_update_Misa_F m (_get_Misa_F v)) ((_get_Misa_D v) &&& (_get_Misa_F v)))))
 
 def sys_enable_user (_ : Unit) : Bool :=
   true
@@ -856,18 +856,15 @@ def extensionEnabled (merge_var : extension) : SailM Bool := do
   | Ext_Sstc => (pure (sys_enable_sstc ()))
   | Ext_U => (pure (BEq.beq (_get_Misa_U (← readReg misa)) (0b1 : (BitVec 1))))
   | Ext_S => (pure (BEq.beq (_get_Misa_S (← readReg misa)) (0b1 : (BitVec 1))))
-  | Ext_V =>
-    (pure (Bool.and (BEq.beq (_get_Misa_V (← readReg misa)) (0b1 : (BitVec 1)))
+  | Ext_V => (pure (Bool.and (BEq.beq (_get_Misa_V (← readReg misa)) (0b1 : (BitVec 1)))
         (bne (_get_Mstatus_VS (← readReg mstatus)) (0b00 : (BitVec 2)))))
   | Ext_Zihpm => (pure true)
   | Ext_Sscofpmf => (pure (Bool.and (sys_enable_sscofpmf ()) (← (extensionEnabled Ext_Zihpm))))
   | Ext_Zkr => (pure true)
   | Ext_Zicntr => (pure true)
-  | Ext_F =>
-    (pure (Bool.and (BEq.beq (_get_Misa_F (← readReg misa)) (0b1 : (BitVec 1)))
+  | Ext_F => (pure (Bool.and (BEq.beq (_get_Misa_F (← readReg misa)) (0b1 : (BitVec 1)))
         (bne (_get_Mstatus_FS (← readReg mstatus)) (0b00 : (BitVec 2)))))
-  | Ext_D =>
-    (pure (Bool.and (BEq.beq (_get_Misa_D (← readReg misa)) (0b1 : (BitVec 1)))
+  | Ext_D => (pure (Bool.and (BEq.beq (_get_Misa_D (← readReg misa)) (0b1 : (BitVec 1)))
         (Bool.and (bne (_get_Mstatus_FS (← readReg mstatus)) (0b00 : (BitVec 2))) (flen ≥b 64))))
   | Ext_Zfinx => (pure (sys_enable_zfinx ()))
   | Ext_Smcntrpmf => (pure true)
@@ -881,16 +878,13 @@ def extensionEnabled (merge_var : extension) : SailM Bool := do
   | Ext_Zaamo => (pure (BEq.beq (_get_Misa_A (← readReg misa)) (0b1 : (BitVec 1))))
   | Ext_M => (pure (BEq.beq (_get_Misa_M (← readReg misa)) (0b1 : (BitVec 1))))
   | Ext_Zmmul => (pure true)
-  | Ext_Zfh =>
-    (pure (Bool.and (BEq.beq (_get_Misa_F (← readReg misa)) (0b1 : (BitVec 1)))
+  | Ext_Zfh => (pure (Bool.and (BEq.beq (_get_Misa_F (← readReg misa)) (0b1 : (BitVec 1)))
         (bne (_get_Mstatus_FS (← readReg mstatus)) (0b00 : (BitVec 2)))))
   | Ext_Zfhmin => (extensionEnabled Ext_Zfh)
-  | Ext_Zcf =>
-    (pure (Bool.and (← (extensionEnabled Ext_Zca))
+  | Ext_Zcf => (pure (Bool.and (← (extensionEnabled Ext_Zca))
         (Bool.and (← (extensionEnabled Ext_F)) (BEq.beq xlen 32))))
   | Ext_Zdinx => (pure (Bool.and (sys_enable_zfinx ()) (flen ≥b 64)))
-  | Ext_Zcd =>
-    (pure (Bool.and (← (extensionEnabled Ext_Zca))
+  | Ext_Zcd => (pure (Bool.and (← (extensionEnabled Ext_Zca))
         (Bool.and (← (extensionEnabled Ext_D)) (Bool.or (BEq.beq xlen 32) (BEq.beq xlen 64)))))
   | Ext_Svinval => (pure (sys_enable_svinval ()))
   | Ext_B => (pure (BEq.beq (_get_Misa_B (← readReg misa)) (0b1 : (BitVec 1))))
@@ -916,21 +910,22 @@ def extensionEnabled (merge_var : extension) : SailM Bool := do
   | Ext_Zvkb => (pure (Bool.or (sys_enable_zvkb ()) (← (extensionEnabled Ext_Zvbb))))
 
 def lowest_supported_privLevel (_ : Unit) : SailM Privilege := do
-  if (← (extensionEnabled Ext_U))
+  bif (← (extensionEnabled Ext_U))
   then (pure User)
   else (pure Machine)
 
 def have_privLevel (priv : (BitVec 2)) : SailM Bool := do
   let b__0 := priv
-  if (BEq.beq b__0 (0b00 : (BitVec 2)))
+  bif (BEq.beq b__0 (0b00 : (BitVec 2)))
   then (extensionEnabled Ext_U)
   else
-    if (BEq.beq b__0 (0b01 : (BitVec 2)))
-    then (extensionEnabled Ext_S)
-    else
-      if (BEq.beq b__0 (0b10 : (BitVec 2)))
-      then (pure false)
-      else (pure true)
+    (do
+      bif (BEq.beq b__0 (0b01 : (BitVec 2)))
+      then (extensionEnabled Ext_S)
+      else
+        (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
+        then (pure false)
+        else (pure true)))
 
 def undefined_Mstatus (_ : Unit) : SailM (BitVec 64) := do
   (undefined_bitvector 64)
@@ -1224,7 +1219,7 @@ def _set_Sstatus_XS (r_ref : (RegisterRef (BitVec 64))) (v : (BitVec 2)) : SailM
   writeRegRef r_ref (_update_Sstatus_XS r v)
 
 def effectivePrivilege (t : (AccessType Unit)) (m : (BitVec 64)) (priv : Privilege) : SailM Privilege := do
-  if (Bool.and (bne t (Execute ())) (BEq.beq (_get_Mstatus_MPRV m) (0b1 : (BitVec 1))))
+  bif (Bool.and (bne t (Execute ())) (BEq.beq (_get_Mstatus_MPRV m) (0b1 : (BitVec 1))))
   then (privLevel_of_bits (_get_Mstatus_MPP m))
   else (pure priv)
 
@@ -1253,46 +1248,46 @@ def legalize_mstatus (o : (BitVec 64)) (v : (BitVec 64)) : SailM (BitVec 64) := 
                                 (_update_Mstatus_TW
                                   (_update_Mstatus_TSR o
                                     (← do
-                                      if (← (extensionEnabled Ext_S))
+                                      bif (← (extensionEnabled Ext_S))
                                       then (pure (_get_Mstatus_TSR v))
                                       else (pure (0b0 : (BitVec 1)))))
                                   (← do
-                                    if (← (extensionEnabled Ext_U))
+                                    bif (← (extensionEnabled Ext_U))
                                     then (pure (_get_Mstatus_TW v))
                                     else (pure (0b0 : (BitVec 1)))))
                                 (← do
-                                  if (← (extensionEnabled Ext_S))
+                                  bif (← (extensionEnabled Ext_S))
                                   then (pure (_get_Mstatus_TVM v))
                                   else (pure (0b0 : (BitVec 1)))))
                               (← do
-                                if (← (extensionEnabled Ext_S))
+                                bif (← (extensionEnabled Ext_S))
                                 then (pure (_get_Mstatus_MXR v))
                                 else (pure (0b0 : (BitVec 1)))))
                             (← do
-                              if (← (extensionEnabled Ext_S))
+                              bif (← (extensionEnabled Ext_S))
                               then (pure (_get_Mstatus_SUM v))
                               else (pure (0b0 : (BitVec 1)))))
                           (← do
-                            if (← (extensionEnabled Ext_U))
+                            bif (← (extensionEnabled Ext_U))
                             then (pure (_get_Mstatus_MPRV v))
                             else (pure (0b0 : (BitVec 1))))) (extStatus_to_bits Off))
-                      (if (sys_enable_zfinx ())
+                      (bif (sys_enable_zfinx ())
                       then (extStatus_to_bits Off)
                       else (_get_Mstatus_FS v)))
                     (← do
-                      if (← (have_privLevel (_get_Mstatus_MPP v)))
+                      bif (← (have_privLevel (_get_Mstatus_MPP v)))
                       then (pure (_get_Mstatus_MPP v))
                       else (pure (privLevel_to_bits (← (lowest_supported_privLevel ()))))))
                   (← do
-                    if (← (extensionEnabled Ext_S))
+                    bif (← (extensionEnabled Ext_S))
                     then (pure (_get_Mstatus_SPP v))
                     else (pure (0b0 : (BitVec 1))))) (_get_Mstatus_VS v)) (_get_Mstatus_MPIE v))
             (← do
-              if (← (extensionEnabled Ext_S))
+              bif (← (extensionEnabled Ext_S))
               then (pure (_get_Mstatus_SPIE v))
               else (pure (0b0 : (BitVec 1))))) (_get_Mstatus_MIE v))
         (← do
-          if (← (extensionEnabled Ext_S))
+          bif (← (extensionEnabled Ext_S))
           then (pure (_get_Mstatus_SIE v))
           else (pure (0b0 : (BitVec 1))))))
   let dirty :=
@@ -1461,26 +1456,26 @@ def legalize_menvcfg (o : (BitVec 64)) (v : (BitVec 64)) : SailM (BitVec 64) := 
         (_update_MEnvcfg_CBCFE
           (_update_MEnvcfg_CBZE
             (_update_MEnvcfg_FIOM o
-              (if (sys_enable_writable_fiom ())
+              (bif (sys_enable_writable_fiom ())
               then (_get_MEnvcfg_FIOM v)
               else (0b0 : (BitVec 1))))
             (← do
-              if (← (extensionEnabled Ext_Zicboz))
+              bif (← (extensionEnabled Ext_Zicboz))
               then (pure (_get_MEnvcfg_CBZE v))
               else (pure (0b0 : (BitVec 1)))))
           (← do
-            if (← (extensionEnabled Ext_Zicbom))
+            bif (← (extensionEnabled Ext_Zicbom))
             then (pure (_get_MEnvcfg_CBCFE v))
             else (pure (0b0 : (BitVec 1)))))
         (← do
-          if (← (extensionEnabled Ext_Zicbom))
+          bif (← (extensionEnabled Ext_Zicbom))
           then
-            if (bne (_get_MEnvcfg_CBIE v) (0b10 : (BitVec 2)))
+            (bif (bne (_get_MEnvcfg_CBIE v) (0b10 : (BitVec 2)))
             then (pure (_get_MEnvcfg_CBIE v))
-            else (pure (0b00 : (BitVec 2)))
+            else (pure (0b00 : (BitVec 2))))
           else (pure (0b00 : (BitVec 2)))))
       (← do
-        if (← (extensionEnabled Ext_Sstc))
+        bif (← (extensionEnabled Ext_Sstc))
         then (pure (_get_MEnvcfg_STCE v))
         else (pure (0b0 : (BitVec 1))))))
 
@@ -1490,31 +1485,30 @@ def legalize_senvcfg (o : (BitVec (2 ^ 3 * 8))) (v : (BitVec (2 ^ 3 * 8))) : Sai
       (_update_SEnvcfg_CBCFE
         (_update_SEnvcfg_CBZE
           (_update_SEnvcfg_FIOM o
-            (if (sys_enable_writable_fiom ())
+            (bif (sys_enable_writable_fiom ())
             then (_get_SEnvcfg_FIOM v)
             else (0b0 : (BitVec 1))))
           (← do
-            if (← (extensionEnabled Ext_Zicboz))
+            bif (← (extensionEnabled Ext_Zicboz))
             then (pure (_get_SEnvcfg_CBZE v))
             else (pure (0b0 : (BitVec 1)))))
         (← do
-          if (← (extensionEnabled Ext_Zicbom))
+          bif (← (extensionEnabled Ext_Zicbom))
           then (pure (_get_SEnvcfg_CBCFE v))
           else (pure (0b0 : (BitVec 1)))))
       (← do
-        if (← (extensionEnabled Ext_Zicbom))
+        bif (← (extensionEnabled Ext_Zicbom))
         then
-          if (bne (_get_SEnvcfg_CBIE v) (0b10 : (BitVec 2)))
+          (bif (bne (_get_SEnvcfg_CBIE v) (0b10 : (BitVec 2)))
           then (pure (_get_SEnvcfg_CBIE v))
-          else (pure (0b00 : (BitVec 2)))
+          else (pure (0b00 : (BitVec 2))))
         else (pure (0b00 : (BitVec 2))))))
 
 def is_fiom_active (_ : Unit) : SailM Bool := do
   match (← readReg cur_privilege) with
   | Machine => (pure false)
   | Supervisor => (pure (BEq.beq (_get_MEnvcfg_FIOM (← readReg menvcfg)) (0b1 : (BitVec 1))))
-  | User =>
-    (pure (BEq.beq
+  | User => (pure (BEq.beq
         ((_get_MEnvcfg_FIOM (← readReg menvcfg)) ||| (_get_SEnvcfg_FIOM (← readReg senvcfg)))
         (0b1 : (BitVec 1))))
 
@@ -1620,20 +1614,21 @@ def legalize_mip (o : (BitVec (2 ^ 3 * 8))) (v : (BitVec (2 ^ 3 * 8))) : SailM (
       (_update_Minterrupts_SSI
         (_update_Minterrupts_SEI o
           (← do
-            if (← (extensionEnabled Ext_S))
+            bif (← (extensionEnabled Ext_S))
             then (pure (_get_Minterrupts_SEI v))
             else (pure (0b0 : (BitVec 1)))))
         (← do
-          if (← (extensionEnabled Ext_S))
+          bif (← (extensionEnabled Ext_S))
           then (pure (_get_Minterrupts_SSI v))
           else (pure (0b0 : (BitVec 1)))))
       (← do
-        if (← (extensionEnabled Ext_S))
+        bif (← (extensionEnabled Ext_S))
         then
-          if (Bool.and (← (extensionEnabled Ext_Sstc))
-               (BEq.beq (_get_MEnvcfg_STCE (← readReg menvcfg)) (0b1 : (BitVec 1))))
-          then (pure (_get_Minterrupts_STI o))
-          else (pure (_get_Minterrupts_STI v))
+          (do
+            bif (Bool.and (← (extensionEnabled Ext_Sstc))
+                 (BEq.beq (_get_MEnvcfg_STCE (← readReg menvcfg)) (0b1 : (BitVec 1))))
+            then (pure (_get_Minterrupts_STI o))
+            else (pure (_get_Minterrupts_STI v)))
         else (pure (0b0 : (BitVec 1))))))
 
 def legalize_mie (o : (BitVec (2 ^ 3 * 8))) (v : (BitVec (2 ^ 3 * 8))) : SailM (BitVec (2 ^ 3 * 8)) := do
@@ -1645,15 +1640,15 @@ def legalize_mie (o : (BitVec (2 ^ 3 * 8))) (v : (BitVec (2 ^ 3 * 8))) : SailM (
             (_update_Minterrupts_MTI (_update_Minterrupts_MEI o (_get_Minterrupts_MEI v))
               (_get_Minterrupts_MTI v)) (_get_Minterrupts_MSI v))
           (← do
-            if (← (extensionEnabled Ext_S))
+            bif (← (extensionEnabled Ext_S))
             then (pure (_get_Minterrupts_SEI v))
             else (pure (0b0 : (BitVec 1)))))
         (← do
-          if (← (extensionEnabled Ext_S))
+          bif (← (extensionEnabled Ext_S))
           then (pure (_get_Minterrupts_STI v))
           else (pure (0b0 : (BitVec 1)))))
       (← do
-        if (← (extensionEnabled Ext_S))
+        bif (← (extensionEnabled Ext_S))
         then (pure (_get_Minterrupts_SSI v))
         else (pure (0b0 : (BitVec 1))))))
 
@@ -1894,19 +1889,18 @@ def tvec_addr (m : (BitVec (2 ^ 3 * 8))) (c : (BitVec (2 ^ 3 * 8))) : (Option (B
   let base : xlenbits := ((_get_Mtvec_Base m) ++ (0b00 : (BitVec 2)))
   match (trapVectorMode_of_bits (_get_Mtvec_Mode m)) with
   | TV_Direct => (some base)
-  | TV_Vector =>
-    if (BEq.beq (_get_Mcause_IsInterrupt c) (0b1 : (BitVec 1)))
+  | TV_Vector => (bif (BEq.beq (_get_Mcause_IsInterrupt c) (0b1 : (BitVec 1)))
     then (some (base + (shiftl (zero_extend (m := ((2 ^i 3) *i 8)) (_get_Mcause_Cause c)) 2)))
-    else (some base)
+    else (some base))
   | TV_Reserved => none
 
 def legalize_xepc (v : (BitVec (2 ^ 3 * 8))) : (BitVec (2 ^ 3 * 8)) :=
-  if (sys_enable_rvc ())
+  bif (sys_enable_rvc ())
   then (BitVec.update v 0 0#1)
   else (Sail.BitVec.updateSubrange v 1 0 (zeros_implicit (n := (1 -i (0 -i 1)))))
 
 def align_pc (addr : (BitVec (2 ^ 3 * 8))) : SailM (BitVec (2 ^ 3 * 8)) := do
-  if (BEq.beq (_get_Misa_C (← readReg misa)) (0b1 : (BitVec 1)))
+  bif (BEq.beq (_get_Misa_C (← readReg misa)) (0b1 : (BitVec 1)))
   then (pure (BitVec.update addr 0 0#1))
   else (pure (Sail.BitVec.updateSubrange addr 1 0 (zeros_implicit (n := (1 -i (0 -i 1))))))
 
@@ -2008,7 +2002,7 @@ def legalize_mcountinhibit (c : (BitVec 32)) (v : (BitVec (2 ^ 3 * 8))) : (BitVe
   (Mk_Counterin ((Sail.BitVec.extractLsb v 31 0) &&& supported_counters))
 
 def update_minstret (_ : Unit) : SailM Unit := do
-  if (← readReg minstret_increment)
+  bif (← readReg minstret_increment)
   then writeReg minstret (BitVec.addInt (← readReg minstret) 1)
   else (pure ())
   match (← readReg minstret_write) with
@@ -2084,7 +2078,7 @@ def lower_mie (m : (BitVec (2 ^ 3 * 8))) (d : (BitVec (2 ^ 3 * 8))) : (BitVec (2
 
 def lift_sip (o : (BitVec (2 ^ 3 * 8))) (d : (BitVec (2 ^ 3 * 8))) (s : (BitVec (2 ^ 3 * 8))) : (BitVec (2 ^ 3 * 8)) :=
   let m : Minterrupts := o
-  if (BEq.beq (_get_Minterrupts_SSI d) (0b1 : (BitVec 1)))
+  bif (BEq.beq (_get_Minterrupts_SSI d) (0b1 : (BitVec 1)))
   then (_update_Minterrupts_SSI m (_get_Sinterrupts_SSI s))
   else m
 
@@ -2096,13 +2090,13 @@ def lift_sie (o : (BitVec (2 ^ 3 * 8))) (d : (BitVec (2 ^ 3 * 8))) (s : (BitVec 
   (_update_Minterrupts_SSI
     (_update_Minterrupts_STI
       (_update_Minterrupts_SEI m
-        (if (BEq.beq (_get_Minterrupts_SEI d) (0b1 : (BitVec 1)))
+        (bif (BEq.beq (_get_Minterrupts_SEI d) (0b1 : (BitVec 1)))
         then (_get_Sinterrupts_SEI s)
         else (_get_Minterrupts_SEI m)))
-      (if (BEq.beq (_get_Minterrupts_STI d) (0b1 : (BitVec 1)))
+      (bif (BEq.beq (_get_Minterrupts_STI d) (0b1 : (BitVec 1)))
       then (_get_Sinterrupts_STI s)
       else (_get_Minterrupts_STI m)))
-    (if (BEq.beq (_get_Minterrupts_SSI d) (0b1 : (BitVec 1)))
+    (bif (BEq.beq (_get_Minterrupts_SSI d) (0b1 : (BitVec 1)))
     then (_get_Sinterrupts_SSI s)
     else (_get_Minterrupts_SSI m)))
 
@@ -2248,20 +2242,24 @@ def _set_Vtype_vta (r_ref : (RegisterRef (BitVec (2 ^ 3 * 8)))) (v : (BitVec 1))
 
 def get_sew_pow (_ : Unit) : SailM Int := do
   let b__0 ← do (pure (_get_Vtype_vsew (← readReg vtype)))
-  if (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
   then (pure 3)
   else
-    if (BEq.beq b__0 (0b001 : (BitVec 3)))
-    then (pure 4)
-    else
-      if (BEq.beq b__0 (0b010 : (BitVec 3)))
-      then (pure 5)
+    (do
+      bif (BEq.beq b__0 (0b001 : (BitVec 3)))
+      then (pure 4)
       else
-        if (BEq.beq b__0 (0b011 : (BitVec 3)))
-        then (pure 6)
-        else
-          assert false "invalid vsew field in vtype"
-          throw Error.Exit
+        (do
+          bif (BEq.beq b__0 (0b010 : (BitVec 3)))
+          then (pure 5)
+          else
+            (do
+              bif (BEq.beq b__0 (0b011 : (BitVec 3)))
+              then (pure 6)
+              else
+                (do
+                  assert false "invalid vsew field in vtype"
+                  throw Error.Exit))))
 
 def get_sew (_ : Unit) : SailM Int := do
   match (← (get_sew_pow ())) with
@@ -2269,9 +2267,9 @@ def get_sew (_ : Unit) : SailM Int := do
   | 4 => (pure 16)
   | 5 => (pure 32)
   | 6 => (pure 64)
-  | _ =>
-    (internal_error "riscv_sys_regs.sail" 981 "invalid SEW")
-    (pure 8)
+  | _ => (do
+      (internal_error "riscv_sys_regs.sail" 981 "invalid SEW")
+      (pure 8))
 
 def get_sew_bytes (_ : Unit) : SailM Int := do
   match (← (get_sew_pow ())) with
@@ -2279,35 +2277,42 @@ def get_sew_bytes (_ : Unit) : SailM Int := do
   | 4 => (pure 2)
   | 5 => (pure 4)
   | 6 => (pure 8)
-  | _ =>
-    (internal_error "riscv_sys_regs.sail" 992 "invalid SEW")
-    (pure 1)
+  | _ => (do
+      (internal_error "riscv_sys_regs.sail" 992 "invalid SEW")
+      (pure 1))
 
 def get_lmul_pow (_ : Unit) : SailM Int := do
   let b__0 ← do (pure (_get_Vtype_vlmul (← readReg vtype)))
-  if (BEq.beq b__0 (0b101 : (BitVec 3)))
+  bif (BEq.beq b__0 (0b101 : (BitVec 3)))
   then (pure (-3))
   else
-    if (BEq.beq b__0 (0b110 : (BitVec 3)))
-    then (pure (-2))
-    else
-      if (BEq.beq b__0 (0b111 : (BitVec 3)))
-      then (pure (-1))
+    (do
+      bif (BEq.beq b__0 (0b110 : (BitVec 3)))
+      then (pure (-2))
       else
-        if (BEq.beq b__0 (0b000 : (BitVec 3)))
-        then (pure 0)
-        else
-          if (BEq.beq b__0 (0b001 : (BitVec 3)))
-          then (pure 1)
+        (do
+          bif (BEq.beq b__0 (0b111 : (BitVec 3)))
+          then (pure (-1))
           else
-            if (BEq.beq b__0 (0b010 : (BitVec 3)))
-            then (pure 2)
-            else
-              if (BEq.beq b__0 (0b011 : (BitVec 3)))
-              then (pure 3)
+            (do
+              bif (BEq.beq b__0 (0b000 : (BitVec 3)))
+              then (pure 0)
               else
-                assert false "invalid vlmul field in vtype"
-                throw Error.Exit
+                (do
+                  bif (BEq.beq b__0 (0b001 : (BitVec 3)))
+                  then (pure 1)
+                  else
+                    (do
+                      bif (BEq.beq b__0 (0b010 : (BitVec 3)))
+                      then (pure 2)
+                      else
+                        (do
+                          bif (BEq.beq b__0 (0b011 : (BitVec 3)))
+                          then (pure 3)
+                          else
+                            (do
+                              assert false "invalid vlmul field in vtype"
+                              throw Error.Exit)))))))
 
 def undefined_agtype (_ : Unit) : SailM agtype := do
   (internal_pick [UNDISTURBED, AGNOSTIC])
@@ -2325,7 +2330,7 @@ def num_of_agtype (arg_ : agtype) : Int :=
 
 def decode_agtype (ag : (BitVec 1)) : agtype :=
   let b__0 := ag
-  if (BEq.beq b__0 (0b0 : (BitVec 1)))
+  bif (BEq.beq b__0 (0b0 : (BitVec 1)))
   then UNDISTURBED
   else AGNOSTIC
 
