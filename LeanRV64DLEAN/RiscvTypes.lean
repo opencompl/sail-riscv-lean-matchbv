@@ -3091,7 +3091,7 @@ def ma_flag_backwards (arg_ : (BitVec 1)) : String :=
   then (String.append (sep_forwards ()) (String.append "ma" ""))
   else (String.append (sep_forwards ()) (String.append "mu" ""))
 
-/-- Type quantifiers: k_ex310925# : Bool -/
+/-- Type quantifiers: k_ex314673# : Bool -/
 def maybe_aq_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".aq"
@@ -3130,19 +3130,19 @@ def maybe_lmul_flag_backwards (arg_ : (BitVec 3)) : SailM String := do
                               assert false "Pattern match failure at unknown location"
                               throw Error.Exit)))))))
 
-/-- Type quantifiers: k_ex310933# : Bool -/
+/-- Type quantifiers: k_ex314681# : Bool -/
 def maybe_not_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | false => "u"
   | true => ""
 
-/-- Type quantifiers: k_ex310934# : Bool -/
+/-- Type quantifiers: k_ex314682# : Bool -/
 def maybe_rl_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".rl"
   | false => ""
 
-/-- Type quantifiers: k_ex310935# : Bool -/
+/-- Type quantifiers: k_ex314683# : Bool -/
 def maybe_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => "u"
@@ -6096,6 +6096,38 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (← (hex_bits_5_forwards uimm))
                     (String.append (sep_forwards ()) (String.append (maybe_vmask_backwards vm) ""))))))))))
+  | .VCLMUL_VV (vm, vs2, vs1, vd) => (pure (String.append "vclmul.vv"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .VCLMUL_VX (vm, vs2, rs1, vd) => (pure (String.append "vclmul.vx"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (reg_name_forwards rs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .VCLMULH_VV (vm, vs2, vs1, vd) => (pure (String.append "vclmulh.vv"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (vreg_name_forwards vs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .VCLMULH_VX (vm, vs2, rs1, vd) => (pure (String.append "vclmulh.vx"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ())
+                  (String.append (reg_name_forwards rs1)
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
   | .ZIMOP_MOP_R (mop, rs1, rd) => (pure (String.append "mop.r."
         (String.append (← (dec_bits_5_forwards mop))
           (String.append (spc_forwards ())

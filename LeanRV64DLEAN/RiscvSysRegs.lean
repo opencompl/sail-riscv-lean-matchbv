@@ -808,6 +808,9 @@ def _set_Misa_Z (r_ref : (RegisterRef (BitVec (2 ^ 3 * 8)))) (v : (BitVec 1)) : 
   let r ← do (reg_deref r_ref)
   writeRegRef r_ref (_update_Misa_Z r v)
 
+def sys_enable_zvbc (_ : Unit) : Bool :=
+  true
+
 def ext_veto_disable_C (_ : Unit) : Bool :=
   false
 
@@ -908,6 +911,7 @@ def extensionEnabled (merge_var : extension) : SailM Bool := do
   | Ext_Zicboz => (pure (sys_enable_zicboz ()))
   | Ext_Zvbb => (pure true)
   | Ext_Zvkb => (pure (Bool.or (sys_enable_zvkb ()) (← (extensionEnabled Ext_Zvbb))))
+  | Ext_Zvbc => (pure (Bool.and (sys_enable_zvbc ()) (← (extensionEnabled Ext_V))))
   | Ext_Zimop => (pure true)
   | Ext_Zcmop => (pure (Bool.and true (← (extensionEnabled Ext_Zca))))
 
@@ -2270,7 +2274,7 @@ def get_sew (_ : Unit) : SailM Int := do
   | 5 => (pure 32)
   | 6 => (pure 64)
   | _ => (do
-      (internal_error "riscv_sys_regs.sail" 981 "invalid SEW")
+      (internal_error "riscv_sys_regs.sail" 983 "invalid SEW")
       (pure 8))
 
 def get_sew_bytes (_ : Unit) : SailM Int := do
@@ -2280,7 +2284,7 @@ def get_sew_bytes (_ : Unit) : SailM Int := do
   | 5 => (pure 4)
   | 6 => (pure 8)
   | _ => (do
-      (internal_error "riscv_sys_regs.sail" 992 "invalid SEW")
+      (internal_error "riscv_sys_regs.sail" 994 "invalid SEW")
       (pure 1))
 
 def get_lmul_pow (_ : Unit) : SailM Int := do

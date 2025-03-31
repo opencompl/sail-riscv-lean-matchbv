@@ -546,6 +546,42 @@ def riscv_f16ToI16 (rm : (BitVec 3)) (v : (BitVec 16)) : SailM ((BitVec 5) × (B
   let (_, sig32) ← do (riscv_f16ToI32 rm v)
   bif ((BitVec.toInt sig32) >b (BitVec.toInt ((0b0 : (BitVec 1)) ++ (ones (n := 15)))))
   then
+    (let t__3670 := (nvFlag ())
+    let t__3671 := ((0b0 : (BitVec 1)) ++ (ones (n := 15)))
+    (pure (t__3670, t__3671)))
+  else
+    (bif ((BitVec.toInt sig32) <b (BitVec.toInt ((0b1 : (BitVec 1)) ++ (zeros_implicit (n := 15)))))
+    then
+      (let t__3668 := (nvFlag ())
+      let t__3669 := ((0b1 : (BitVec 1)) ++ (zeros_implicit (n := 15)))
+      (pure (t__3668, t__3669)))
+    else
+      (let t__3666 := (zeros_implicit (n := 5))
+      let t__3667 := (Sail.BitVec.extractLsb sig32 15 0)
+      (pure (t__3666, t__3667))))
+
+def riscv_f16ToI8 (rm : (BitVec 3)) (v : (BitVec 16)) : SailM ((BitVec 5) × (BitVec 8)) := do
+  let (_, sig32) ← do (riscv_f16ToI32 rm v)
+  bif ((BitVec.toInt sig32) >b (BitVec.toInt ((0b0 : (BitVec 1)) ++ (ones (n := 7)))))
+  then
+    (let t__3662 := (nvFlag ())
+    let t__3663 := ((0b0 : (BitVec 1)) ++ (ones (n := 7)))
+    (pure (t__3662, t__3663)))
+  else
+    (bif ((BitVec.toInt sig32) <b (BitVec.toInt ((0b1 : (BitVec 1)) ++ (zeros_implicit (n := 7)))))
+    then
+      (let t__3660 := (nvFlag ())
+      let t__3661 := ((0b1 : (BitVec 1)) ++ (zeros_implicit (n := 7)))
+      (pure (t__3660, t__3661)))
+    else
+      (let t__3658 := (zeros_implicit (n := 5))
+      let t__3659 := (Sail.BitVec.extractLsb sig32 7 0)
+      (pure (t__3658, t__3659))))
+
+def riscv_f32ToI16 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 16)) := do
+  let (_, sig32) ← do (riscv_f32ToI32 rm v)
+  bif ((BitVec.toInt sig32) >b (BitVec.toInt ((0b0 : (BitVec 1)) ++ (ones (n := 15)))))
+  then
     (let t__3654 := (nvFlag ())
     let t__3655 := ((0b0 : (BitVec 1)) ++ (ones (n := 15)))
     (pure (t__3654, t__3655)))
@@ -560,94 +596,58 @@ def riscv_f16ToI16 (rm : (BitVec 3)) (v : (BitVec 16)) : SailM ((BitVec 5) × (B
       let t__3651 := (Sail.BitVec.extractLsb sig32 15 0)
       (pure (t__3650, t__3651))))
 
-def riscv_f16ToI8 (rm : (BitVec 3)) (v : (BitVec 16)) : SailM ((BitVec 5) × (BitVec 8)) := do
-  let (_, sig32) ← do (riscv_f16ToI32 rm v)
-  bif ((BitVec.toInt sig32) >b (BitVec.toInt ((0b0 : (BitVec 1)) ++ (ones (n := 7)))))
-  then
-    (let t__3646 := (nvFlag ())
-    let t__3647 := ((0b0 : (BitVec 1)) ++ (ones (n := 7)))
-    (pure (t__3646, t__3647)))
-  else
-    (bif ((BitVec.toInt sig32) <b (BitVec.toInt ((0b1 : (BitVec 1)) ++ (zeros_implicit (n := 7)))))
-    then
-      (let t__3644 := (nvFlag ())
-      let t__3645 := ((0b1 : (BitVec 1)) ++ (zeros_implicit (n := 7)))
-      (pure (t__3644, t__3645)))
-    else
-      (let t__3642 := (zeros_implicit (n := 5))
-      let t__3643 := (Sail.BitVec.extractLsb sig32 7 0)
-      (pure (t__3642, t__3643))))
-
-def riscv_f32ToI16 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 16)) := do
-  let (_, sig32) ← do (riscv_f32ToI32 rm v)
-  bif ((BitVec.toInt sig32) >b (BitVec.toInt ((0b0 : (BitVec 1)) ++ (ones (n := 15)))))
-  then
-    (let t__3638 := (nvFlag ())
-    let t__3639 := ((0b0 : (BitVec 1)) ++ (ones (n := 15)))
-    (pure (t__3638, t__3639)))
-  else
-    (bif ((BitVec.toInt sig32) <b (BitVec.toInt ((0b1 : (BitVec 1)) ++ (zeros_implicit (n := 15)))))
-    then
-      (let t__3636 := (nvFlag ())
-      let t__3637 := ((0b1 : (BitVec 1)) ++ (zeros_implicit (n := 15)))
-      (pure (t__3636, t__3637)))
-    else
-      (let t__3634 := (zeros_implicit (n := 5))
-      let t__3635 := (Sail.BitVec.extractLsb sig32 15 0)
-      (pure (t__3634, t__3635))))
-
 def riscv_f16ToUi16 (rm : (BitVec 3)) (v : (BitVec 16)) : SailM ((BitVec 5) × (BitVec 16)) := do
   let (_, sig32) ← do (riscv_f16ToUi32 rm v)
   bif ((BitVec.toNat sig32) >b (BitVec.toNat (ones (n := 16))))
   then
-    (let t__3630 := (nvFlag ())
-    let t__3631 := (ones (n := 16))
-    (pure (t__3630, t__3631)))
+    (let t__3646 := (nvFlag ())
+    let t__3647 := (ones (n := 16))
+    (pure (t__3646, t__3647)))
   else
-    (let t__3628 := (zeros_implicit (n := 5))
-    let t__3629 := (Sail.BitVec.extractLsb sig32 15 0)
-    (pure (t__3628, t__3629)))
+    (let t__3644 := (zeros_implicit (n := 5))
+    let t__3645 := (Sail.BitVec.extractLsb sig32 15 0)
+    (pure (t__3644, t__3645)))
 
 def riscv_f16ToUi8 (rm : (BitVec 3)) (v : (BitVec 16)) : SailM ((BitVec 5) × (BitVec 8)) := do
   let (_, sig32) ← do (riscv_f16ToUi32 rm v)
   bif ((BitVec.toNat sig32) >b (BitVec.toNat (ones (n := 8))))
   then
-    (let t__3625 := (nvFlag ())
-    let t__3626 := (ones (n := 8))
-    (pure (t__3625, t__3626)))
+    (let t__3641 := (nvFlag ())
+    let t__3642 := (ones (n := 8))
+    (pure (t__3641, t__3642)))
   else
-    (let t__3623 := (zeros_implicit (n := 5))
-    let t__3624 := (Sail.BitVec.extractLsb sig32 7 0)
-    (pure (t__3623, t__3624)))
+    (let t__3639 := (zeros_implicit (n := 5))
+    let t__3640 := (Sail.BitVec.extractLsb sig32 7 0)
+    (pure (t__3639, t__3640)))
 
 def riscv_f32ToUi16 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 16)) := do
   let (_, sig32) ← do (riscv_f32ToUi32 rm v)
   bif ((BitVec.toNat sig32) >b (BitVec.toNat (ones (n := 16))))
   then
-    (let t__3620 := (nvFlag ())
-    let t__3621 := (ones (n := 16))
-    (pure (t__3620, t__3621)))
+    (let t__3636 := (nvFlag ())
+    let t__3637 := (ones (n := 16))
+    (pure (t__3636, t__3637)))
   else
-    (let t__3618 := (zeros_implicit (n := 5))
-    let t__3619 := (Sail.BitVec.extractLsb sig32 15 0)
-    (pure (t__3618, t__3619)))
+    (let t__3634 := (zeros_implicit (n := 5))
+    let t__3635 := (Sail.BitVec.extractLsb sig32 15 0)
+    (pure (t__3634, t__3635)))
 
-/-- Type quantifiers: k_ex319893# : Bool, k_m : Nat, k_m ∈ {16, 32, 64} -/
+/-- Type quantifiers: k_ex323656# : Bool, k_m : Nat, k_m ∈ {16, 32, 64} -/
 def rsqrt7 (v : (BitVec k_m)) (sub : Bool) : SailM (BitVec 64) := do
   let (sig, exp, sign, e, s) : ((BitVec 64) × (BitVec 64) × (BitVec 1) × Nat × Nat) :=
     match (Sail.BitVec.length v) with
-    | 16 => (let t__3602 := (zero_extend (m := 64) (Sail.BitVec.extractLsb v 9 0))
-      let t__3603 := (zero_extend (m := 64) (Sail.BitVec.extractLsb v 14 10))
-      let t__3604 := (BitVec.join1 [(BitVec.access v 15)])
-      (t__3602, t__3603, t__3604, 5, 10))
-    | 32 => (let t__3607 := (zero_extend (m := 64) (Sail.BitVec.extractLsb v 22 0))
-      let t__3608 := (zero_extend (m := 64) (Sail.BitVec.extractLsb v 30 23))
-      let t__3609 := (BitVec.join1 [(BitVec.access v 31)])
-      (t__3607, t__3608, t__3609, 8, 23))
-    | _ => (let t__3612 := (zero_extend (m := 64) (Sail.BitVec.extractLsb v 51 0))
-      let t__3613 := (zero_extend (m := 64) (Sail.BitVec.extractLsb v 62 52))
-      let t__3614 := (BitVec.join1 [(BitVec.access v 63)])
-      (t__3612, t__3613, t__3614, 11, 52))
+    | 16 => (let t__3618 := (zero_extend (m := 64) (Sail.BitVec.extractLsb v 9 0))
+      let t__3619 := (zero_extend (m := 64) (Sail.BitVec.extractLsb v 14 10))
+      let t__3620 := (BitVec.join1 [(BitVec.access v 15)])
+      (t__3618, t__3619, t__3620, 5, 10))
+    | 32 => (let t__3623 := (zero_extend (m := 64) (Sail.BitVec.extractLsb v 22 0))
+      let t__3624 := (zero_extend (m := 64) (Sail.BitVec.extractLsb v 30 23))
+      let t__3625 := (BitVec.join1 [(BitVec.access v 31)])
+      (t__3623, t__3624, t__3625, 8, 23))
+    | _ => (let t__3628 := (zero_extend (m := 64) (Sail.BitVec.extractLsb v 51 0))
+      let t__3629 := (zero_extend (m := 64) (Sail.BitVec.extractLsb v 62 52))
+      let t__3630 := (BitVec.join1 [(BitVec.access v 63)])
+      (t__3628, t__3629, t__3630, 11, 52))
   assert (Bool.or (Bool.and (BEq.beq s 10) (BEq.beq e 5))
     (Bool.or (Bool.and (BEq.beq s 23) (BEq.beq e 8)) (Bool.and (BEq.beq s 52) (BEq.beq e 11)))) "riscv_insts_vext_fp_utils.sail:458.64-458.65"
   let table : (Vector Int 128) :=
@@ -658,11 +658,11 @@ def rsqrt7 (v : (BitVec k_m)) (sub : Bool) : SailM (BitVec 64) := do
       (do
         let nr_leadingzeros ← do (count_leadingzeros sig s)
         assert (nr_leadingzeros ≥b 0) "riscv_insts_vext_fp_utils.sail:480.35-480.36"
-        let t__3600 := (to_bits 64 (0 -i nr_leadingzeros))
-        let t__3601 :=
+        let t__3616 := (to_bits 64 (0 -i nr_leadingzeros))
+        let t__3617 :=
           (zero_extend (m := 64)
             (shiftl (Sail.BitVec.extractLsb sig (s -i 1) 0) (1 +i nr_leadingzeros)))
-        (pure (t__3600, t__3601)))
+        (pure (t__3616, t__3617)))
     else (pure (exp, sig))
   let idx : Nat :=
     match (Sail.BitVec.length v) with
@@ -685,234 +685,234 @@ def riscv_f16Rsqrte7 (rm : (BitVec 3)) (v : (BitVec 16)) : SailM ((BitVec 5) × 
   let b__0 := (fp_class v)
   bif (BEq.beq b__0 (0x0001 : (BitVec 16)))
   then
-    (let t__3598 := (nvFlag ())
-    let t__3599 := (0x7E00 : (BitVec 16))
-    (pure (t__3598, t__3599)))
+    (let t__3614 := (nvFlag ())
+    let t__3615 := (0x7E00 : (BitVec 16))
+    (pure (t__3614, t__3615)))
   else
     (do
       bif (BEq.beq b__0 (0x0002 : (BitVec 16)))
       then
-        (let t__3596 := (nvFlag ())
-        let t__3597 := (0x7E00 : (BitVec 16))
-        (pure (t__3596, t__3597)))
+        (let t__3612 := (nvFlag ())
+        let t__3613 := (0x7E00 : (BitVec 16))
+        (pure (t__3612, t__3613)))
       else
         (do
           bif (BEq.beq b__0 (0x0004 : (BitVec 16)))
           then
-            (let t__3594 := (nvFlag ())
-            let t__3595 := (0x7E00 : (BitVec 16))
-            (pure (t__3594, t__3595)))
+            (let t__3610 := (nvFlag ())
+            let t__3611 := (0x7E00 : (BitVec 16))
+            (pure (t__3610, t__3611)))
           else
             (do
               bif (BEq.beq b__0 (0x0100 : (BitVec 16)))
               then
-                (let t__3592 := (nvFlag ())
-                let t__3593 := (0x7E00 : (BitVec 16))
-                (pure (t__3592, t__3593)))
+                (let t__3608 := (nvFlag ())
+                let t__3609 := (0x7E00 : (BitVec 16))
+                (pure (t__3608, t__3609)))
               else
                 (do
                   bif (BEq.beq b__0 (0x0200 : (BitVec 16)))
                   then
-                    (let t__3590 := (zeros_implicit (n := 5))
-                    let t__3591 := (0x7E00 : (BitVec 16))
-                    (pure (t__3590, t__3591)))
+                    (let t__3606 := (zeros_implicit (n := 5))
+                    let t__3607 := (0x7E00 : (BitVec 16))
+                    (pure (t__3606, t__3607)))
                   else
                     (do
                       bif (BEq.beq b__0 (0x0008 : (BitVec 16)))
                       then
-                        (let t__3588 := (dzFlag ())
-                        let t__3589 := (0xFC00 : (BitVec 16))
-                        (pure (t__3588, t__3589)))
+                        (let t__3604 := (dzFlag ())
+                        let t__3605 := (0xFC00 : (BitVec 16))
+                        (pure (t__3604, t__3605)))
                       else
                         (do
                           bif (BEq.beq b__0 (0x0010 : (BitVec 16)))
                           then
-                            (let t__3586 := (dzFlag ())
-                            let t__3587 := (0x7C00 : (BitVec 16))
-                            (pure (t__3586, t__3587)))
+                            (let t__3602 := (dzFlag ())
+                            let t__3603 := (0x7C00 : (BitVec 16))
+                            (pure (t__3602, t__3603)))
                           else
                             (do
                               bif (BEq.beq b__0 (0x0080 : (BitVec 16)))
                               then
-                                (let t__3584 := (zeros_implicit (n := 5))
-                                let t__3585 := (0x0000 : (BitVec 16))
-                                (pure (t__3584, t__3585)))
+                                (let t__3600 := (zeros_implicit (n := 5))
+                                let t__3601 := (0x0000 : (BitVec 16))
+                                (pure (t__3600, t__3601)))
                               else
                                 (do
                                   bif (BEq.beq b__0 (0x0020 : (BitVec 16)))
                                   then
                                     (do
-                                      let t__3582 := (zeros_implicit (n := 5))
-                                      let t__3583 ← do
+                                      let t__3598 := (zeros_implicit (n := 5))
+                                      let t__3599 ← do
                                         (pure (Sail.BitVec.extractLsb (← (rsqrt7 v true)) 15 0))
-                                      (pure (t__3582, t__3583)))
+                                      (pure (t__3598, t__3599)))
                                   else
                                     (do
-                                      let t__3580 := (zeros_implicit (n := 5))
-                                      let t__3581 ← do
+                                      let t__3596 := (zeros_implicit (n := 5))
+                                      let t__3597 ← do
                                         (pure (Sail.BitVec.extractLsb (← (rsqrt7 v false)) 15 0))
-                                      (pure (t__3580, t__3581)))))))))))
+                                      (pure (t__3596, t__3597)))))))))))
 
 def riscv_f32Rsqrte7 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 32)) := do
   let b__0 := (Sail.BitVec.extractLsb (fp_class v) 15 0)
   bif (BEq.beq b__0 (0x0001 : (BitVec 16)))
   then
-    (let t__3569 := (nvFlag ())
-    let t__3570 := (0x7FC00000 : (BitVec 32))
-    (pure (t__3569, t__3570)))
+    (let t__3585 := (nvFlag ())
+    let t__3586 := (0x7FC00000 : (BitVec 32))
+    (pure (t__3585, t__3586)))
   else
     (do
       bif (BEq.beq b__0 (0x0002 : (BitVec 16)))
       then
-        (let t__3567 := (nvFlag ())
-        let t__3568 := (0x7FC00000 : (BitVec 32))
-        (pure (t__3567, t__3568)))
+        (let t__3583 := (nvFlag ())
+        let t__3584 := (0x7FC00000 : (BitVec 32))
+        (pure (t__3583, t__3584)))
       else
         (do
           bif (BEq.beq b__0 (0x0004 : (BitVec 16)))
           then
-            (let t__3565 := (nvFlag ())
-            let t__3566 := (0x7FC00000 : (BitVec 32))
-            (pure (t__3565, t__3566)))
+            (let t__3581 := (nvFlag ())
+            let t__3582 := (0x7FC00000 : (BitVec 32))
+            (pure (t__3581, t__3582)))
           else
             (do
               bif (BEq.beq b__0 (0x0100 : (BitVec 16)))
               then
-                (let t__3563 := (nvFlag ())
-                let t__3564 := (0x7FC00000 : (BitVec 32))
-                (pure (t__3563, t__3564)))
+                (let t__3579 := (nvFlag ())
+                let t__3580 := (0x7FC00000 : (BitVec 32))
+                (pure (t__3579, t__3580)))
               else
                 (do
                   bif (BEq.beq b__0 (0x0200 : (BitVec 16)))
                   then
-                    (let t__3561 := (zeros_implicit (n := 5))
-                    let t__3562 := (0x7FC00000 : (BitVec 32))
-                    (pure (t__3561, t__3562)))
+                    (let t__3577 := (zeros_implicit (n := 5))
+                    let t__3578 := (0x7FC00000 : (BitVec 32))
+                    (pure (t__3577, t__3578)))
                   else
                     (do
                       bif (BEq.beq b__0 (0x0008 : (BitVec 16)))
                       then
-                        (let t__3559 := (dzFlag ())
-                        let t__3560 := (0xFF800000 : (BitVec 32))
-                        (pure (t__3559, t__3560)))
+                        (let t__3575 := (dzFlag ())
+                        let t__3576 := (0xFF800000 : (BitVec 32))
+                        (pure (t__3575, t__3576)))
                       else
                         (do
                           bif (BEq.beq b__0 (0x0010 : (BitVec 16)))
                           then
-                            (let t__3557 := (dzFlag ())
-                            let t__3558 := (0x7F800000 : (BitVec 32))
-                            (pure (t__3557, t__3558)))
+                            (let t__3573 := (dzFlag ())
+                            let t__3574 := (0x7F800000 : (BitVec 32))
+                            (pure (t__3573, t__3574)))
                           else
                             (do
                               bif (BEq.beq b__0 (0x0080 : (BitVec 16)))
                               then
-                                (let t__3555 := (zeros_implicit (n := 5))
-                                let t__3556 := (0x00000000 : (BitVec 32))
-                                (pure (t__3555, t__3556)))
+                                (let t__3571 := (zeros_implicit (n := 5))
+                                let t__3572 := (0x00000000 : (BitVec 32))
+                                (pure (t__3571, t__3572)))
                               else
                                 (do
                                   bif (BEq.beq b__0 (0x0020 : (BitVec 16)))
                                   then
                                     (do
-                                      let t__3553 := (zeros_implicit (n := 5))
-                                      let t__3554 ← do
+                                      let t__3569 := (zeros_implicit (n := 5))
+                                      let t__3570 ← do
                                         (pure (Sail.BitVec.extractLsb (← (rsqrt7 v true)) 31 0))
-                                      (pure (t__3553, t__3554)))
+                                      (pure (t__3569, t__3570)))
                                   else
                                     (do
-                                      let t__3551 := (zeros_implicit (n := 5))
-                                      let t__3552 ← do
+                                      let t__3567 := (zeros_implicit (n := 5))
+                                      let t__3568 ← do
                                         (pure (Sail.BitVec.extractLsb (← (rsqrt7 v false)) 31 0))
-                                      (pure (t__3551, t__3552)))))))))))
+                                      (pure (t__3567, t__3568)))))))))))
 
 def riscv_f64Rsqrte7 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 64)) := do
   let b__0 := (Sail.BitVec.extractLsb (fp_class v) 15 0)
   bif (BEq.beq b__0 (0x0001 : (BitVec 16)))
   then
-    (let t__3540 := (nvFlag ())
-    let t__3541 := (0x7FF8000000000000 : (BitVec 64))
-    (pure (t__3540, t__3541)))
+    (let t__3556 := (nvFlag ())
+    let t__3557 := (0x7FF8000000000000 : (BitVec 64))
+    (pure (t__3556, t__3557)))
   else
     (do
       bif (BEq.beq b__0 (0x0002 : (BitVec 16)))
       then
-        (let t__3538 := (nvFlag ())
-        let t__3539 := (0x7FF8000000000000 : (BitVec 64))
-        (pure (t__3538, t__3539)))
+        (let t__3554 := (nvFlag ())
+        let t__3555 := (0x7FF8000000000000 : (BitVec 64))
+        (pure (t__3554, t__3555)))
       else
         (do
           bif (BEq.beq b__0 (0x0004 : (BitVec 16)))
           then
-            (let t__3536 := (nvFlag ())
-            let t__3537 := (0x7FF8000000000000 : (BitVec 64))
-            (pure (t__3536, t__3537)))
+            (let t__3552 := (nvFlag ())
+            let t__3553 := (0x7FF8000000000000 : (BitVec 64))
+            (pure (t__3552, t__3553)))
           else
             (do
               bif (BEq.beq b__0 (0x0100 : (BitVec 16)))
               then
-                (let t__3534 := (nvFlag ())
-                let t__3535 := (0x7FF8000000000000 : (BitVec 64))
-                (pure (t__3534, t__3535)))
+                (let t__3550 := (nvFlag ())
+                let t__3551 := (0x7FF8000000000000 : (BitVec 64))
+                (pure (t__3550, t__3551)))
               else
                 (do
                   bif (BEq.beq b__0 (0x0200 : (BitVec 16)))
                   then
-                    (let t__3532 := (zeros_implicit (n := 5))
-                    let t__3533 := (0x7FF8000000000000 : (BitVec 64))
-                    (pure (t__3532, t__3533)))
+                    (let t__3548 := (zeros_implicit (n := 5))
+                    let t__3549 := (0x7FF8000000000000 : (BitVec 64))
+                    (pure (t__3548, t__3549)))
                   else
                     (do
                       bif (BEq.beq b__0 (0x0008 : (BitVec 16)))
                       then
-                        (let t__3530 := (dzFlag ())
-                        let t__3531 := (0xFFF0000000000000 : (BitVec 64))
-                        (pure (t__3530, t__3531)))
+                        (let t__3546 := (dzFlag ())
+                        let t__3547 := (0xFFF0000000000000 : (BitVec 64))
+                        (pure (t__3546, t__3547)))
                       else
                         (do
                           bif (BEq.beq b__0 (0x0010 : (BitVec 16)))
                           then
-                            (let t__3528 := (dzFlag ())
-                            let t__3529 := (0x7FF0000000000000 : (BitVec 64))
-                            (pure (t__3528, t__3529)))
+                            (let t__3544 := (dzFlag ())
+                            let t__3545 := (0x7FF0000000000000 : (BitVec 64))
+                            (pure (t__3544, t__3545)))
                           else
                             (do
                               bif (BEq.beq b__0 (0x0080 : (BitVec 16)))
                               then
-                                (let t__3526 := (zeros_implicit (n := 5))
-                                let t__3527 := (zeros_implicit (n := 64))
-                                (pure (t__3526, t__3527)))
+                                (let t__3542 := (zeros_implicit (n := 5))
+                                let t__3543 := (zeros_implicit (n := 64))
+                                (pure (t__3542, t__3543)))
                               else
                                 (do
                                   bif (BEq.beq b__0 (0x0020 : (BitVec 16)))
                                   then
                                     (do
-                                      let t__3524 := (zeros_implicit (n := 5))
-                                      let t__3525 ← do
+                                      let t__3540 := (zeros_implicit (n := 5))
+                                      let t__3541 ← do
                                         (pure (Sail.BitVec.extractLsb (← (rsqrt7 v true)) 63 0))
-                                      (pure (t__3524, t__3525)))
+                                      (pure (t__3540, t__3541)))
                                   else
                                     (do
-                                      let t__3522 := (zeros_implicit (n := 5))
-                                      let t__3523 ← do
+                                      let t__3538 := (zeros_implicit (n := 5))
+                                      let t__3539 ← do
                                         (pure (Sail.BitVec.extractLsb (← (rsqrt7 v false)) 63 0))
-                                      (pure (t__3522, t__3523)))))))))))
+                                      (pure (t__3538, t__3539)))))))))))
 
-/-- Type quantifiers: k_ex320132# : Bool, k_m : Nat, k_m ∈ {16, 32, 64} -/
+/-- Type quantifiers: k_ex323895# : Bool, k_m : Nat, k_m ∈ {16, 32, 64} -/
 def recip7 (v : (BitVec k_m)) (rm_3b : (BitVec 3)) (sub : Bool) : SailM (Bool × (BitVec 64)) := do
   let (sig, exp, sign, e, s) : ((BitVec 64) × (BitVec 64) × (BitVec 1) × Nat × Nat) :=
     match (Sail.BitVec.length v) with
-    | 16 => (let t__3498 := (zero_extend (m := 64) (Sail.BitVec.extractLsb v 9 0))
-      let t__3499 := (zero_extend (m := 64) (Sail.BitVec.extractLsb v 14 10))
-      let t__3500 := (BitVec.join1 [(BitVec.access v 15)])
-      (t__3498, t__3499, t__3500, 5, 10))
-    | 32 => (let t__3503 := (zero_extend (m := 64) (Sail.BitVec.extractLsb v 22 0))
-      let t__3504 := (zero_extend (m := 64) (Sail.BitVec.extractLsb v 30 23))
-      let t__3505 := (BitVec.join1 [(BitVec.access v 31)])
-      (t__3503, t__3504, t__3505, 8, 23))
-    | _ => (let t__3508 := (zero_extend (m := 64) (Sail.BitVec.extractLsb v 51 0))
-      let t__3509 := (zero_extend (m := 64) (Sail.BitVec.extractLsb v 62 52))
-      let t__3510 := (BitVec.join1 [(BitVec.access v 63)])
-      (t__3508, t__3509, t__3510, 11, 52))
+    | 16 => (let t__3514 := (zero_extend (m := 64) (Sail.BitVec.extractLsb v 9 0))
+      let t__3515 := (zero_extend (m := 64) (Sail.BitVec.extractLsb v 14 10))
+      let t__3516 := (BitVec.join1 [(BitVec.access v 15)])
+      (t__3514, t__3515, t__3516, 5, 10))
+    | 32 => (let t__3519 := (zero_extend (m := 64) (Sail.BitVec.extractLsb v 22 0))
+      let t__3520 := (zero_extend (m := 64) (Sail.BitVec.extractLsb v 30 23))
+      let t__3521 := (BitVec.join1 [(BitVec.access v 31)])
+      (t__3519, t__3520, t__3521, 8, 23))
+    | _ => (let t__3524 := (zero_extend (m := 64) (Sail.BitVec.extractLsb v 51 0))
+      let t__3525 := (zero_extend (m := 64) (Sail.BitVec.extractLsb v 62 52))
+      let t__3526 := (BitVec.join1 [(BitVec.access v 63)])
+      (t__3524, t__3525, t__3526, 11, 52))
   assert (Bool.or (Bool.and (BEq.beq s 10) (BEq.beq e 5))
     (Bool.or (Bool.and (BEq.beq s 23) (BEq.beq e 8)) (Bool.and (BEq.beq s 52) (BEq.beq e 11)))) "riscv_insts_vext_fp_utils.sail:552.64-552.65"
   let table : (Vector Int 128) :=
@@ -922,11 +922,11 @@ def recip7 (v : (BitVec k_m)) (rm_3b : (BitVec 3)) (sub : Bool) : SailM (Bool ×
   let (normalized_exp, normalized_sig) :=
     bif sub
     then
-      (let t__3496 := (to_bits 64 (0 -i nr_leadingzeros))
-      let t__3497 :=
+      (let t__3512 := (to_bits 64 (0 -i nr_leadingzeros))
+      let t__3513 :=
         (zero_extend (m := 64)
           (shiftl (Sail.BitVec.extractLsb sig (s -i 1) 0) (1 +i nr_leadingzeros)))
-      (t__3496, t__3497))
+      (t__3512, t__3513))
     else (exp, sig)
   let idx : Nat :=
     match (Sail.BitVec.length v) with
@@ -939,16 +939,16 @@ def recip7 (v : (BitVec k_m)) (rm_3b : (BitVec 3)) (sub : Bool) : SailM (Bool ×
   let (out_exp, out_sig) :=
     bif (BEq.beq mid_exp (zeros_implicit (n := e)))
     then
-      (let t__3495 :=
+      (let t__3511 :=
         ((shiftr mid_sig 1) ||| ((0b1 : (BitVec 1)) ++ (zeros_implicit (n := (s -i 1)))))
-      (mid_exp, t__3495))
+      (mid_exp, t__3511))
     else
       (bif (BEq.beq mid_exp (ones (n := e)))
       then
-        (let t__3492 := (zeros_implicit (n := e))
-        let t__3493 :=
+        (let t__3508 := (zeros_implicit (n := e))
+        let t__3509 :=
           ((shiftr mid_sig 2) ||| ((0b01 : (BitVec 2)) ++ (zeros_implicit (n := (s -i 2)))))
-        (t__3492, t__3493))
+        (t__3508, t__3509))
       else (mid_exp, mid_sig))
   bif (Bool.and sub (nr_leadingzeros >b 1))
   then
@@ -956,17 +956,17 @@ def recip7 (v : (BitVec k_m)) (rm_3b : (BitVec 3)) (sub : Bool) : SailM (Bool ×
          (Bool.or (Bool.and (BEq.beq rm_3b (0b010 : (BitVec 3))) (BEq.beq sign (0b0 : (BitVec 1))))
            (Bool.and (BEq.beq rm_3b (0b011 : (BitVec 3))) (BEq.beq sign (0b1 : (BitVec 1))))))
     then
-      (let t__3490 :=
+      (let t__3506 :=
         (zero_extend (m := 64)
           (sign ++ ((ones (n := (e -i 1))) ++ ((0b0 : (BitVec 1)) ++ (ones (n := s))))))
-      (pure (true, t__3490)))
+      (pure (true, t__3506)))
     else
-      (let t__3488 :=
+      (let t__3504 :=
         (zero_extend (m := 64) (sign ++ ((ones (n := e)) ++ (zeros_implicit (n := s)))))
-      (pure (true, t__3488))))
+      (pure (true, t__3504))))
   else
-    (let t__3485 := (zero_extend (m := 64) (sign ++ (out_exp ++ out_sig)))
-    (pure (false, t__3485)))
+    (let t__3501 := (zero_extend (m := 64) (sign ++ (out_exp ++ out_sig)))
+    (pure (false, t__3501)))
 
 def riscv_f16Recip7 (rm : (BitVec 3)) (v : (BitVec 16)) : SailM ((BitVec 5) × (BitVec 16)) := do
   let (round_abnormal_true, res_true) ← do (recip7 v rm true)
@@ -974,73 +974,73 @@ def riscv_f16Recip7 (rm : (BitVec 3)) (v : (BitVec 16)) : SailM ((BitVec 5) × (
   let b__0 := (fp_class v)
   bif (BEq.beq b__0 (0x0001 : (BitVec 16)))
   then
-    (let t__3481 := (zeros_implicit (n := 5))
-    let t__3482 := (0x8000 : (BitVec 16))
-    (pure (t__3481, t__3482)))
+    (let t__3497 := (zeros_implicit (n := 5))
+    let t__3498 := (0x8000 : (BitVec 16))
+    (pure (t__3497, t__3498)))
   else
     (bif (BEq.beq b__0 (0x0080 : (BitVec 16)))
     then
-      (let t__3479 := (zeros_implicit (n := 5))
-      let t__3480 := (0x0000 : (BitVec 16))
-      (pure (t__3479, t__3480)))
+      (let t__3495 := (zeros_implicit (n := 5))
+      let t__3496 := (0x0000 : (BitVec 16))
+      (pure (t__3495, t__3496)))
     else
       (bif (BEq.beq b__0 (0x0008 : (BitVec 16)))
       then
-        (let t__3477 := (dzFlag ())
-        let t__3478 := (0xFC00 : (BitVec 16))
-        (pure (t__3477, t__3478)))
+        (let t__3493 := (dzFlag ())
+        let t__3494 := (0xFC00 : (BitVec 16))
+        (pure (t__3493, t__3494)))
       else
         (bif (BEq.beq b__0 (0x0010 : (BitVec 16)))
         then
-          (let t__3475 := (dzFlag ())
-          let t__3476 := (0x7C00 : (BitVec 16))
-          (pure (t__3475, t__3476)))
+          (let t__3491 := (dzFlag ())
+          let t__3492 := (0x7C00 : (BitVec 16))
+          (pure (t__3491, t__3492)))
         else
           (bif (BEq.beq b__0 (0x0100 : (BitVec 16)))
           then
-            (let t__3473 := (nvFlag ())
-            let t__3474 := (0x7E00 : (BitVec 16))
-            (pure (t__3473, t__3474)))
+            (let t__3489 := (nvFlag ())
+            let t__3490 := (0x7E00 : (BitVec 16))
+            (pure (t__3489, t__3490)))
           else
             (bif (BEq.beq b__0 (0x0200 : (BitVec 16)))
             then
-              (let t__3471 := (zeros_implicit (n := 5))
-              let t__3472 := (0x7E00 : (BitVec 16))
-              (pure (t__3471, t__3472)))
+              (let t__3487 := (zeros_implicit (n := 5))
+              let t__3488 := (0x7E00 : (BitVec 16))
+              (pure (t__3487, t__3488)))
             else
               (bif (BEq.beq b__0 (0x0004 : (BitVec 16)))
               then
                 (bif round_abnormal_true
                 then
-                  (let t__3469 := ((nxFlag ()) ||| (ofFlag ()))
-                  let t__3470 := (Sail.BitVec.extractLsb res_true 15 0)
-                  (pure (t__3469, t__3470)))
+                  (let t__3485 := ((nxFlag ()) ||| (ofFlag ()))
+                  let t__3486 := (Sail.BitVec.extractLsb res_true 15 0)
+                  (pure (t__3485, t__3486)))
                 else
-                  (let t__3467 := (zeros_implicit (n := 5))
-                  let t__3468 := (Sail.BitVec.extractLsb res_true 15 0)
-                  (pure (t__3467, t__3468))))
+                  (let t__3483 := (zeros_implicit (n := 5))
+                  let t__3484 := (Sail.BitVec.extractLsb res_true 15 0)
+                  (pure (t__3483, t__3484))))
               else
                 (bif (BEq.beq b__0 (0x0020 : (BitVec 16)))
                 then
                   (bif round_abnormal_true
                   then
-                    (let t__3464 := ((nxFlag ()) ||| (ofFlag ()))
-                    let t__3465 := (Sail.BitVec.extractLsb res_true 15 0)
-                    (pure (t__3464, t__3465)))
+                    (let t__3480 := ((nxFlag ()) ||| (ofFlag ()))
+                    let t__3481 := (Sail.BitVec.extractLsb res_true 15 0)
+                    (pure (t__3480, t__3481)))
                   else
-                    (let t__3462 := (zeros_implicit (n := 5))
-                    let t__3463 := (Sail.BitVec.extractLsb res_true 15 0)
-                    (pure (t__3462, t__3463))))
+                    (let t__3478 := (zeros_implicit (n := 5))
+                    let t__3479 := (Sail.BitVec.extractLsb res_true 15 0)
+                    (pure (t__3478, t__3479))))
                 else
                   (bif round_abnormal_false
                   then
-                    (let t__3459 := ((nxFlag ()) ||| (ofFlag ()))
-                    let t__3460 := (Sail.BitVec.extractLsb res_false 15 0)
-                    (pure (t__3459, t__3460)))
+                    (let t__3475 := ((nxFlag ()) ||| (ofFlag ()))
+                    let t__3476 := (Sail.BitVec.extractLsb res_false 15 0)
+                    (pure (t__3475, t__3476)))
                   else
-                    (let t__3457 := (zeros_implicit (n := 5))
-                    let t__3458 := (Sail.BitVec.extractLsb res_false 15 0)
-                    (pure (t__3457, t__3458)))))))))))
+                    (let t__3473 := (zeros_implicit (n := 5))
+                    let t__3474 := (Sail.BitVec.extractLsb res_false 15 0)
+                    (pure (t__3473, t__3474)))))))))))
 
 def riscv_f32Recip7 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (BitVec 32)) := do
   let (round_abnormal_true, res_true) ← do (recip7 v rm true)
@@ -1048,73 +1048,73 @@ def riscv_f32Recip7 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (
   let b__0 := (Sail.BitVec.extractLsb (fp_class v) 15 0)
   bif (BEq.beq b__0 (0x0001 : (BitVec 16)))
   then
-    (let t__3446 := (zeros_implicit (n := 5))
-    let t__3447 := (0x80000000 : (BitVec 32))
-    (pure (t__3446, t__3447)))
+    (let t__3462 := (zeros_implicit (n := 5))
+    let t__3463 := (0x80000000 : (BitVec 32))
+    (pure (t__3462, t__3463)))
   else
     (bif (BEq.beq b__0 (0x0080 : (BitVec 16)))
     then
-      (let t__3444 := (zeros_implicit (n := 5))
-      let t__3445 := (0x00000000 : (BitVec 32))
-      (pure (t__3444, t__3445)))
+      (let t__3460 := (zeros_implicit (n := 5))
+      let t__3461 := (0x00000000 : (BitVec 32))
+      (pure (t__3460, t__3461)))
     else
       (bif (BEq.beq b__0 (0x0008 : (BitVec 16)))
       then
-        (let t__3442 := (dzFlag ())
-        let t__3443 := (0xFF800000 : (BitVec 32))
-        (pure (t__3442, t__3443)))
+        (let t__3458 := (dzFlag ())
+        let t__3459 := (0xFF800000 : (BitVec 32))
+        (pure (t__3458, t__3459)))
       else
         (bif (BEq.beq b__0 (0x0010 : (BitVec 16)))
         then
-          (let t__3440 := (dzFlag ())
-          let t__3441 := (0x7F800000 : (BitVec 32))
-          (pure (t__3440, t__3441)))
+          (let t__3456 := (dzFlag ())
+          let t__3457 := (0x7F800000 : (BitVec 32))
+          (pure (t__3456, t__3457)))
         else
           (bif (BEq.beq b__0 (0x0100 : (BitVec 16)))
           then
-            (let t__3438 := (nvFlag ())
-            let t__3439 := (0x7FC00000 : (BitVec 32))
-            (pure (t__3438, t__3439)))
+            (let t__3454 := (nvFlag ())
+            let t__3455 := (0x7FC00000 : (BitVec 32))
+            (pure (t__3454, t__3455)))
           else
             (bif (BEq.beq b__0 (0x0200 : (BitVec 16)))
             then
-              (let t__3436 := (zeros_implicit (n := 5))
-              let t__3437 := (0x7FC00000 : (BitVec 32))
-              (pure (t__3436, t__3437)))
+              (let t__3452 := (zeros_implicit (n := 5))
+              let t__3453 := (0x7FC00000 : (BitVec 32))
+              (pure (t__3452, t__3453)))
             else
               (bif (BEq.beq b__0 (0x0004 : (BitVec 16)))
               then
                 (bif round_abnormal_true
                 then
-                  (let t__3434 := ((nxFlag ()) ||| (ofFlag ()))
-                  let t__3435 := (Sail.BitVec.extractLsb res_true 31 0)
-                  (pure (t__3434, t__3435)))
+                  (let t__3450 := ((nxFlag ()) ||| (ofFlag ()))
+                  let t__3451 := (Sail.BitVec.extractLsb res_true 31 0)
+                  (pure (t__3450, t__3451)))
                 else
-                  (let t__3432 := (zeros_implicit (n := 5))
-                  let t__3433 := (Sail.BitVec.extractLsb res_true 31 0)
-                  (pure (t__3432, t__3433))))
+                  (let t__3448 := (zeros_implicit (n := 5))
+                  let t__3449 := (Sail.BitVec.extractLsb res_true 31 0)
+                  (pure (t__3448, t__3449))))
               else
                 (bif (BEq.beq b__0 (0x0020 : (BitVec 16)))
                 then
                   (bif round_abnormal_true
                   then
-                    (let t__3429 := ((nxFlag ()) ||| (ofFlag ()))
-                    let t__3430 := (Sail.BitVec.extractLsb res_true 31 0)
-                    (pure (t__3429, t__3430)))
+                    (let t__3445 := ((nxFlag ()) ||| (ofFlag ()))
+                    let t__3446 := (Sail.BitVec.extractLsb res_true 31 0)
+                    (pure (t__3445, t__3446)))
                   else
-                    (let t__3427 := (zeros_implicit (n := 5))
-                    let t__3428 := (Sail.BitVec.extractLsb res_true 31 0)
-                    (pure (t__3427, t__3428))))
+                    (let t__3443 := (zeros_implicit (n := 5))
+                    let t__3444 := (Sail.BitVec.extractLsb res_true 31 0)
+                    (pure (t__3443, t__3444))))
                 else
                   (bif round_abnormal_false
                   then
-                    (let t__3424 := ((nxFlag ()) ||| (ofFlag ()))
-                    let t__3425 := (Sail.BitVec.extractLsb res_false 31 0)
-                    (pure (t__3424, t__3425)))
+                    (let t__3440 := ((nxFlag ()) ||| (ofFlag ()))
+                    let t__3441 := (Sail.BitVec.extractLsb res_false 31 0)
+                    (pure (t__3440, t__3441)))
                   else
-                    (let t__3422 := (zeros_implicit (n := 5))
-                    let t__3423 := (Sail.BitVec.extractLsb res_false 31 0)
-                    (pure (t__3422, t__3423)))))))))))
+                    (let t__3438 := (zeros_implicit (n := 5))
+                    let t__3439 := (Sail.BitVec.extractLsb res_false 31 0)
+                    (pure (t__3438, t__3439)))))))))))
 
 def riscv_f64Recip7 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (BitVec 64)) := do
   let (round_abnormal_true, res_true) ← do (recip7 v rm true)
@@ -1122,71 +1122,71 @@ def riscv_f64Recip7 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × (
   let b__0 := (Sail.BitVec.extractLsb (fp_class v) 15 0)
   bif (BEq.beq b__0 (0x0001 : (BitVec 16)))
   then
-    (let t__3411 := (zeros_implicit (n := 5))
-    let t__3412 := (0x8000000000000000 : (BitVec 64))
-    (pure (t__3411, t__3412)))
+    (let t__3427 := (zeros_implicit (n := 5))
+    let t__3428 := (0x8000000000000000 : (BitVec 64))
+    (pure (t__3427, t__3428)))
   else
     (bif (BEq.beq b__0 (0x0080 : (BitVec 16)))
     then
-      (let t__3409 := (zeros_implicit (n := 5))
-      let t__3410 := (0x0000000000000000 : (BitVec 64))
-      (pure (t__3409, t__3410)))
+      (let t__3425 := (zeros_implicit (n := 5))
+      let t__3426 := (0x0000000000000000 : (BitVec 64))
+      (pure (t__3425, t__3426)))
     else
       (bif (BEq.beq b__0 (0x0008 : (BitVec 16)))
       then
-        (let t__3407 := (dzFlag ())
-        let t__3408 := (0xFFF0000000000000 : (BitVec 64))
-        (pure (t__3407, t__3408)))
+        (let t__3423 := (dzFlag ())
+        let t__3424 := (0xFFF0000000000000 : (BitVec 64))
+        (pure (t__3423, t__3424)))
       else
         (bif (BEq.beq b__0 (0x0010 : (BitVec 16)))
         then
-          (let t__3405 := (dzFlag ())
-          let t__3406 := (0x7FF0000000000000 : (BitVec 64))
-          (pure (t__3405, t__3406)))
+          (let t__3421 := (dzFlag ())
+          let t__3422 := (0x7FF0000000000000 : (BitVec 64))
+          (pure (t__3421, t__3422)))
         else
           (bif (BEq.beq b__0 (0x0100 : (BitVec 16)))
           then
-            (let t__3403 := (nvFlag ())
-            let t__3404 := (0x7FF8000000000000 : (BitVec 64))
-            (pure (t__3403, t__3404)))
+            (let t__3419 := (nvFlag ())
+            let t__3420 := (0x7FF8000000000000 : (BitVec 64))
+            (pure (t__3419, t__3420)))
           else
             (bif (BEq.beq b__0 (0x0200 : (BitVec 16)))
             then
-              (let t__3401 := (zeros_implicit (n := 5))
-              let t__3402 := (0x7FF8000000000000 : (BitVec 64))
-              (pure (t__3401, t__3402)))
+              (let t__3417 := (zeros_implicit (n := 5))
+              let t__3418 := (0x7FF8000000000000 : (BitVec 64))
+              (pure (t__3417, t__3418)))
             else
               (bif (BEq.beq b__0 (0x0004 : (BitVec 16)))
               then
                 (bif round_abnormal_true
                 then
-                  (let t__3399 := ((nxFlag ()) ||| (ofFlag ()))
-                  let t__3400 := (Sail.BitVec.extractLsb res_true 63 0)
-                  (pure (t__3399, t__3400)))
+                  (let t__3415 := ((nxFlag ()) ||| (ofFlag ()))
+                  let t__3416 := (Sail.BitVec.extractLsb res_true 63 0)
+                  (pure (t__3415, t__3416)))
                 else
-                  (let t__3397 := (zeros_implicit (n := 5))
-                  let t__3398 := (Sail.BitVec.extractLsb res_true 63 0)
-                  (pure (t__3397, t__3398))))
+                  (let t__3413 := (zeros_implicit (n := 5))
+                  let t__3414 := (Sail.BitVec.extractLsb res_true 63 0)
+                  (pure (t__3413, t__3414))))
               else
                 (bif (BEq.beq b__0 (0x0020 : (BitVec 16)))
                 then
                   (bif round_abnormal_true
                   then
-                    (let t__3394 := ((nxFlag ()) ||| (ofFlag ()))
-                    let t__3395 := (Sail.BitVec.extractLsb res_true 63 0)
-                    (pure (t__3394, t__3395)))
+                    (let t__3410 := ((nxFlag ()) ||| (ofFlag ()))
+                    let t__3411 := (Sail.BitVec.extractLsb res_true 63 0)
+                    (pure (t__3410, t__3411)))
                   else
-                    (let t__3392 := (zeros_implicit (n := 5))
-                    let t__3393 := (Sail.BitVec.extractLsb res_true 63 0)
-                    (pure (t__3392, t__3393))))
+                    (let t__3408 := (zeros_implicit (n := 5))
+                    let t__3409 := (Sail.BitVec.extractLsb res_true 63 0)
+                    (pure (t__3408, t__3409))))
                 else
                   (bif round_abnormal_false
                   then
-                    (let t__3389 := ((nxFlag ()) ||| (ofFlag ()))
-                    let t__3390 := (Sail.BitVec.extractLsb res_false 63 0)
-                    (pure (t__3389, t__3390)))
+                    (let t__3405 := ((nxFlag ()) ||| (ofFlag ()))
+                    let t__3406 := (Sail.BitVec.extractLsb res_false 63 0)
+                    (pure (t__3405, t__3406)))
                   else
-                    (let t__3387 := (zeros_implicit (n := 5))
-                    let t__3388 := (Sail.BitVec.extractLsb res_false 63 0)
-                    (pure (t__3387, t__3388)))))))))))
+                    (let t__3403 := (zeros_implicit (n := 5))
+                    let t__3404 := (Sail.BitVec.extractLsb res_false 63 0)
+                    (pure (t__3403, t__3404)))))))))))
 

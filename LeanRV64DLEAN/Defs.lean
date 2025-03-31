@@ -76,7 +76,7 @@ structure RISCV_strong_access where
   variety : Access_variety
   deriving Inhabited, BEq
 
-inductive extension where | Ext_M | Ext_F | Ext_D | Ext_C | Ext_B | Ext_V | Ext_S | Ext_U | Ext_Zicbom | Ext_Zicboz | Ext_Zicntr | Ext_Zicond | Ext_Zifencei | Ext_Zihpm | Ext_Zimop | Ext_Zmmul | Ext_Zaamo | Ext_Zabha | Ext_Zalrsc | Ext_Zfa | Ext_Zfh | Ext_Zfhmin | Ext_Zfinx | Ext_Zdinx | Ext_Zca | Ext_Zcb | Ext_Zcd | Ext_Zcf | Ext_Zcmop | Ext_Zba | Ext_Zbb | Ext_Zbc | Ext_Zbkb | Ext_Zbkc | Ext_Zbkx | Ext_Zbs | Ext_Zknd | Ext_Zkne | Ext_Zknh | Ext_Zkr | Ext_Zksed | Ext_Zksh | Ext_Zhinx | Ext_Zvbb | Ext_Zvkb | Ext_Sscofpmf | Ext_Sstc | Ext_Svinval | Ext_Svnapot | Ext_Svpbmt | Ext_Smcntrpmf
+inductive extension where | Ext_M | Ext_F | Ext_D | Ext_C | Ext_B | Ext_V | Ext_S | Ext_U | Ext_Zicbom | Ext_Zicboz | Ext_Zicntr | Ext_Zicond | Ext_Zifencei | Ext_Zihpm | Ext_Zimop | Ext_Zmmul | Ext_Zaamo | Ext_Zabha | Ext_Zalrsc | Ext_Zfa | Ext_Zfh | Ext_Zfhmin | Ext_Zfinx | Ext_Zdinx | Ext_Zca | Ext_Zcb | Ext_Zcd | Ext_Zcf | Ext_Zcmop | Ext_Zba | Ext_Zbb | Ext_Zbc | Ext_Zbkb | Ext_Zbkc | Ext_Zbkx | Ext_Zbs | Ext_Zknd | Ext_Zkne | Ext_Zknh | Ext_Zkr | Ext_Zksed | Ext_Zksh | Ext_Zhinx | Ext_Zvbb | Ext_Zvkb | Ext_Zvbc | Ext_Sscofpmf | Ext_Sstc | Ext_Svinval | Ext_Svnapot | Ext_Svpbmt | Ext_Smcntrpmf
   deriving Inhabited, BEq
 
 abbrev exc_code := (BitVec 8)
@@ -811,6 +811,10 @@ inductive ast where
   | VWSLL_VV (_ : ((BitVec 1) × vregidx × vregidx × vregidx))
   | VWSLL_VX (_ : ((BitVec 1) × vregidx × regidx × vregidx))
   | VWSLL_VI (_ : ((BitVec 1) × vregidx × (BitVec 5) × vregidx))
+  | VCLMUL_VV (_ : ((BitVec 1) × vregidx × vregidx × vregidx))
+  | VCLMUL_VX (_ : ((BitVec 1) × vregidx × regidx × vregidx))
+  | VCLMULH_VV (_ : ((BitVec 1) × vregidx × vregidx × vregidx))
+  | VCLMULH_VX (_ : ((BitVec 1) × vregidx × regidx × vregidx))
   | ZIMOP_MOP_R (_ : ((BitVec 5) × regidx × regidx))
   | ZIMOP_MOP_RR (_ : ((BitVec 3) × regidx × regidx × regidx))
   | ZCMOP (_ : (BitVec 3))
