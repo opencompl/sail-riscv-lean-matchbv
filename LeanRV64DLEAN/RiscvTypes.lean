@@ -3085,7 +3085,13 @@ def itype_mnemonic_forwards (arg_ : iop) : String :=
   | RISCV_ORI => "ori"
   | RISCV_ANDI => "andi"
 
-/-- Type quantifiers: k_ex307667# : Bool -/
+def ma_flag_backwards (arg_ : (BitVec 1)) : String :=
+  let b__0 := arg_
+  bif (BEq.beq b__0 (0b1 : (BitVec 1)))
+  then (String.append (sep_forwards ()) (String.append "ma" ""))
+  else (String.append (sep_forwards ()) (String.append "mu" ""))
+
+/-- Type quantifiers: k_ex310925# : Bool -/
 def maybe_aq_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".aq"
@@ -3093,72 +3099,50 @@ def maybe_aq_forwards (arg_ : Bool) : String :=
 
 def maybe_lmul_flag_backwards (arg_ : (BitVec 3)) : SailM String := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
-  then (pure "")
+  bif (BEq.beq b__0 (0b101 : (BitVec 3)))
+  then (pure (String.append (sep_forwards ()) (String.append "mf8" "")))
   else
     (do
-      bif (BEq.beq b__0 (0b101 : (BitVec 3)))
-      then (pure (String.append (sep_forwards ()) (String.append "mf8" "")))
+      bif (BEq.beq b__0 (0b110 : (BitVec 3)))
+      then (pure (String.append (sep_forwards ()) (String.append "mf4" "")))
       else
         (do
-          bif (BEq.beq b__0 (0b110 : (BitVec 3)))
-          then (pure (String.append (sep_forwards ()) (String.append "mf4" "")))
+          bif (BEq.beq b__0 (0b111 : (BitVec 3)))
+          then (pure (String.append (sep_forwards ()) (String.append "mf2" "")))
           else
             (do
-              bif (BEq.beq b__0 (0b111 : (BitVec 3)))
-              then (pure (String.append (sep_forwards ()) (String.append "mf2" "")))
+              bif (BEq.beq b__0 (0b000 : (BitVec 3)))
+              then (pure (String.append (sep_forwards ()) (String.append "m1" "")))
               else
                 (do
-                  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
-                  then (pure (String.append (sep_forwards ()) (String.append "m1" "")))
+                  bif (BEq.beq b__0 (0b001 : (BitVec 3)))
+                  then (pure (String.append (sep_forwards ()) (String.append "m2" "")))
                   else
                     (do
-                      bif (BEq.beq b__0 (0b001 : (BitVec 3)))
-                      then (pure (String.append (sep_forwards ()) (String.append "m2" "")))
+                      bif (BEq.beq b__0 (0b010 : (BitVec 3)))
+                      then (pure (String.append (sep_forwards ()) (String.append "m4" "")))
                       else
                         (do
-                          bif (BEq.beq b__0 (0b010 : (BitVec 3)))
-                          then (pure (String.append (sep_forwards ()) (String.append "m4" "")))
+                          bif (BEq.beq b__0 (0b011 : (BitVec 3)))
+                          then (pure (String.append (sep_forwards ()) (String.append "m8" "")))
                           else
                             (do
-                              bif (BEq.beq b__0 (0b011 : (BitVec 3)))
-                              then (pure (String.append (sep_forwards ()) (String.append "m8" "")))
-                              else
-                                (do
-                                  assert false "Pattern match failure at unknown location"
-                                  throw Error.Exit))))))))
+                              assert false "Pattern match failure at unknown location"
+                              throw Error.Exit)))))))
 
-def maybe_ma_flag_backwards (arg_ : (BitVec 1)) : String :=
-  let b__0 := arg_
-  bif (BEq.beq b__0 (0b0 : (BitVec 1)))
-  then ""
-  else
-    (bif (BEq.beq b__0 (0b1 : (BitVec 1)))
-    then (String.append (sep_forwards ()) (String.append "ma" ""))
-    else (String.append (sep_forwards ()) (String.append "mu" "")))
-
-/-- Type quantifiers: k_ex307678# : Bool -/
+/-- Type quantifiers: k_ex310933# : Bool -/
 def maybe_not_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | false => "u"
   | true => ""
 
-/-- Type quantifiers: k_ex307679# : Bool -/
+/-- Type quantifiers: k_ex310934# : Bool -/
 def maybe_rl_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".rl"
   | false => ""
 
-def maybe_ta_flag_backwards (arg_ : (BitVec 1)) : String :=
-  let b__0 := arg_
-  bif (BEq.beq b__0 (0b0 : (BitVec 1)))
-  then ""
-  else
-    (bif (BEq.beq b__0 (0b1 : (BitVec 1)))
-    then (String.append (sep_forwards ()) (String.append "ta" ""))
-    else (String.append (sep_forwards ()) (String.append "tu" "")))
-
-/-- Type quantifiers: k_ex307682# : Bool -/
+/-- Type quantifiers: k_ex310935# : Bool -/
 def maybe_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => "u"
@@ -3397,6 +3381,12 @@ def size_mnemonic_forwards (arg_ : word_width) : String :=
   | HALF => "h"
   | WORD => "w"
   | DOUBLE => "d"
+
+def ta_flag_backwards (arg_ : (BitVec 1)) : String :=
+  let b__0 := arg_
+  bif (BEq.beq b__0 (0b1 : (BitVec 1)))
+  then (String.append (sep_forwards ()) (String.append "ta" ""))
+  else (String.append (sep_forwards ()) (String.append "tu" ""))
 
 def utype_mnemonic_forwards (arg_ : uop) : String :=
   match arg_ with
@@ -5285,8 +5275,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (← (sew_flag_backwards sew))
                     (String.append (← (maybe_lmul_flag_backwards lmul))
-                      (String.append (maybe_ta_flag_backwards ta)
-                        (String.append (maybe_ma_flag_backwards ma) "")))))))))))
+                      (String.append (ta_flag_backwards ta)
+                        (String.append (ma_flag_backwards ma) "")))))))))))
   | .VSETVL (rs2, rs1, rd) => (pure (String.append "vsetvl"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
@@ -5301,8 +5291,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (← (sew_flag_backwards sew))
                     (String.append (← (maybe_lmul_flag_backwards lmul))
-                      (String.append (maybe_ta_flag_backwards ta)
-                        (String.append (maybe_ma_flag_backwards ma) "")))))))))))
+                      (String.append (ta_flag_backwards ta)
+                        (String.append (ma_flag_backwards ma) "")))))))))))
   | .VVTYPE (funct6, vm, vs2, vs1, vd) => (pure (String.append (vvtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
@@ -6106,6 +6096,20 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (← (hex_bits_5_forwards uimm))
                     (String.append (sep_forwards ()) (String.append (maybe_vmask_backwards vm) ""))))))))))
+  | .ZIMOP_MOP_R (mop, rs1, rd) => (pure (String.append "mop.r."
+        (String.append (← (dec_bits_5_forwards mop))
+          (String.append (spc_forwards ())
+            (String.append (reg_name_forwards rd)
+              (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) "")))))))
+  | .ZIMOP_MOP_RR (mop, rs2, rs1, rd) => (pure (String.append "mop.rr."
+        (String.append (← (dec_bits_3_forwards mop))
+          (String.append (spc_forwards ())
+            (String.append (reg_name_forwards rd)
+              (String.append (sep_forwards ())
+                (String.append (reg_name_forwards rs1)
+                  (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) "")))))))))
+  | .ZCMOP mop => (pure (String.append "c.mop."
+        (String.append (← (dec_bits_4_forwards ((mop : (BitVec 3)) ++ (0b1 : (BitVec 1))))) "")))
   | .ILLEGAL s => (pure (String.append "illegal"
         (String.append (spc_forwards ()) (String.append (← (hex_bits_32_forwards s)) ""))))
   | .C_ILLEGAL s => (pure (String.append "c.illegal"

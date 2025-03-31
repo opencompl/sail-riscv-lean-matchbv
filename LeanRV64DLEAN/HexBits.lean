@@ -164,9 +164,9 @@ open AccessType
 
 /-- Type quantifiers: k_n : Nat, k_n > 0 -/
 def hex_bits_forwards (bv : (BitVec k_n)) : (Nat × String) :=
-  let t__6287 := (Sail.BitVec.length bv)
-  let t__6288 := (Int.toHex (BitVec.toNat bv))
-  (t__6287, t__6288)
+  let t__6347 := (Sail.BitVec.length bv)
+  let t__6348 := (Int.toHex (BitVec.toNat bv))
+  (t__6347, t__6348)
 
 /-- Type quantifiers: k_n : Nat, k_n > 0 -/
 def hex_bits_forwards_matches (bv : (BitVec k_n)) : Bool :=

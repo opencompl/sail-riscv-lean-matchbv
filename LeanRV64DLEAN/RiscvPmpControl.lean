@@ -162,19 +162,6 @@ open ExceptionType
 open Architecture
 open AccessType
 
-def pmpAddrRange (cfg : (BitVec 8)) (pmpaddr : (BitVec (2 ^ 3 * 8))) (prev_pmpaddr : (BitVec (2 ^ 3 * 8))) : SailM (Option ((BitVec (2 ^ 3 * 8)) × (BitVec (2 ^ 3 * 8)))) := do
-  match (pmpAddrMatchType_of_bits (_get_Pmpcfg_ent_A cfg)) with
-  | OFF => (pure none)
-  | TOR => (pure (some (prev_pmpaddr, pmpaddr)))
-  | NA4 => (do
-      assert ((sys_pmp_grain ()) <b 1) "NA4 cannot be selected when PMP grain G >= 1."
-      let lo := pmpaddr
-      (pure (some (lo, (BitVec.addInt lo 1)))))
-  | NAPOT => (let mask := (pmpaddr ^^^ (BitVec.addInt pmpaddr 1))
-    let lo := (pmpaddr &&& (Complement.complement mask))
-    let len := (BitVec.addInt mask 1)
-    (pure (some (lo, (lo + len)))))
-
 def pmpCheckRWX (ent : (BitVec 8)) (acc : (AccessType Unit)) : Bool :=
   match acc with
   | .Read _ => (BEq.beq (_get_Pmpcfg_ent_R ent) (0b1 : (BitVec 1)))
@@ -199,23 +186,33 @@ def num_of_pmpAddrMatch (arg_ : pmpAddrMatch) : Int :=
   | PMP_PartialMatch => 1
   | PMP_Match => 2
 
-def pmpMatchAddr (typ_0 : physaddr) (width : (BitVec (2 ^ 3 * 8))) (rng : (Option ((BitVec (2 ^ 3 * 8)) × (BitVec (2 ^ 3 * 8))))) : pmpAddrMatch :=
+/-- Type quantifiers: width : Nat, addr : Nat, end_ : Nat, begin : Nat, 0 ≤ begin, 0 ≤ end_, 0
+  ≤ addr, 0 ≤ width -/
+def pmpRangeMatch (begin : Nat) (end_ : Nat) (addr : Nat) (width : Nat) : pmpAddrMatch :=
+  bif (Bool.or ((addr +i width) ≤b begin) (end_ ≤b addr))
+  then PMP_NoMatch
+  else
+    (bif (Bool.and (begin ≤b addr) ((addr +i width) ≤b end_))
+    then PMP_Match
+    else PMP_PartialMatch)
+
+def pmpMatchAddr (typ_0 : physaddr) (width : (BitVec (2 ^ 3 * 8))) (ent : (BitVec 8)) (pmpaddr : (BitVec (2 ^ 3 * 8))) (prev_pmpaddr : (BitVec (2 ^ 3 * 8))) : SailM pmpAddrMatch := do
   let .physaddr addr : physaddr := typ_0
-  match rng with
-  | none => PMP_NoMatch
-  | .some (lo, hi) => (let addr := (BitVec.toNat addr)
-    let width := (BitVec.toNat width)
-    let lo := ((BitVec.toNat lo) *i 4)
-    let hi := ((BitVec.toNat hi) *i 4)
-    bif (hi ≤b lo)
-    then PMP_NoMatch
-    else
-      (bif (Bool.or ((addr +i width) ≤b lo) (hi ≤b addr))
-      then PMP_NoMatch
-      else
-        (bif (Bool.and (lo ≤b addr) ((addr +i width) ≤b hi))
-        then PMP_Match
-        else PMP_PartialMatch)))
+  let addr := (BitVec.toNat addr)
+  let width := (BitVec.toNat width)
+  match (pmpAddrMatchType_of_bits (_get_Pmpcfg_ent_A ent)) with
+  | OFF => (pure PMP_NoMatch)
+  | TOR => (bif (zopz0zKzJ_u prev_pmpaddr pmpaddr)
+    then (pure PMP_NoMatch)
+    else (pure (pmpRangeMatch (BitVec.toNat prev_pmpaddr) (BitVec.toNat pmpaddr) addr width)))
+  | NA4 => (do
+      assert ((sys_pmp_grain ()) <b 1) "NA4 cannot be selected when PMP grain G >= 1."
+      let begin := (BitVec.toNat (pmpaddr ++ (0b00 : (BitVec 2))))
+      (pure (pmpRangeMatch begin (begin +i 4) addr width)))
+  | NAPOT => (let mask := (pmpaddr ^^^ (BitVec.addInt pmpaddr 1))
+    let begin := (BitVec.toNat (pmpaddr &&& (Complement.complement mask)))
+    let end_ := ((begin +i (BitVec.toNat mask)) +i 1)
+    (pure (pmpRangeMatch begin end_ addr width)))
 
 def undefined_pmpMatch (_ : Unit) : SailM pmpMatch := do
   (internal_pick [PMP_Success, PMP_Continue, PMP_Fail])
@@ -234,8 +231,7 @@ def num_of_pmpMatch (arg_ : pmpMatch) : Int :=
   | PMP_Fail => 2
 
 def pmpMatchEntry (addr : physaddr) (width : (BitVec (2 ^ 3 * 8))) (acc : (AccessType Unit)) (priv : Privilege) (ent : (BitVec 8)) (pmpaddr : (BitVec (2 ^ 3 * 8))) (prev_pmpaddr : (BitVec (2 ^ 3 * 8))) : SailM pmpMatch := do
-  let rng ← do (pmpAddrRange ent pmpaddr prev_pmpaddr)
-  match (pmpMatchAddr addr width rng) with
+  match (← (pmpMatchAddr addr width ent pmpaddr prev_pmpaddr)) with
   | PMP_NoMatch => (pure PMP_Continue)
   | PMP_PartialMatch => (pure PMP_Fail)
   | PMP_Match => (bif (Bool.or (pmpCheckRWX ent acc)

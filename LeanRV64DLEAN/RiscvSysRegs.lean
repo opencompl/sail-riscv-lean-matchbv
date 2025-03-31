@@ -908,6 +908,8 @@ def extensionEnabled (merge_var : extension) : SailM Bool := do
   | Ext_Zicboz => (pure (sys_enable_zicboz ()))
   | Ext_Zvbb => (pure true)
   | Ext_Zvkb => (pure (Bool.or (sys_enable_zvkb ()) (← (extensionEnabled Ext_Zvbb))))
+  | Ext_Zimop => (pure true)
+  | Ext_Zcmop => (pure (Bool.and true (← (extensionEnabled Ext_Zca))))
 
 def lowest_supported_privLevel (_ : Unit) : SailM Privilege := do
   bif (← (extensionEnabled Ext_U))
