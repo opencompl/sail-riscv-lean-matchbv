@@ -15,9 +15,11 @@ Abbreviations: 127
 
 # Warnings and Errors
 
-Errors found: 1  
+Errors found: 3  
 Warnings found: 0  
 
 ## Error Classes
 
-- 1x None } })
+- 1x unknown identifier 'valid_dec_bits'
+- 1x unknown identifier 'parse_dec_bits'
+- 1x Lean exited with code 1
