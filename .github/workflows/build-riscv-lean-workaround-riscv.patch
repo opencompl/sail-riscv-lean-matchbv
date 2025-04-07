@@ -1,5 +1,17 @@
+diff --git a/model/CMakeLists.txt b/model/CMakeLists.txt
+index 817c222f..5056dd05 100644
+--- a/model/CMakeLists.txt
++++ b/model/CMakeLists.txt
+@@ -481,6 +481,7 @@ foreach (xlen IN ITEMS 32 64)
+                         --lean-noncomputable-function encdec_compressed_forwards_matches
+                         --lean-noncomputable-function encdec_compressed_backwards_matches
+                         --lean-import-file ../handwritten_support/RiscvExtras.lean
++                        --config ${CMAKE_SOURCE_DIR}/config/default.json
+                         -o "Lean_${arch_uppercase}"
+                         ${sail_srcs}
+                 )
 diff --git a/model/riscv_step.sail b/model/riscv_step.sail
-index 7a6d9450..dd38bdc3 100644
+index a9eb9543..dd086b55 100644
 --- a/model/riscv_step.sail
 +++ b/model/riscv_step.sail
 @@ -118,6 +118,7 @@ function loop () : unit -> unit = {
