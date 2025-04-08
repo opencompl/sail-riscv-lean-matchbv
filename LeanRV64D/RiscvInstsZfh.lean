@@ -232,7 +232,7 @@ def f_is_NaN_H (xf16 : (BitVec 16)) : Bool :=
   let (sign, exp, mant) := (fsplit_H xf16)
   (Bool.and (BEq.beq exp (ones (n := 5))) (bne mant (zeros (n := 10))))
 
-/-- Type quantifiers: k_ex322286# : Bool -/
+/-- Type quantifiers: k_ex322498# : Bool -/
 def fle_H (v1 : (BitVec 16)) (v2 : (BitVec 16)) (is_quiet : Bool) : (Bool × (BitVec 5)) :=
   let (s1, e1, m1) := (fsplit_H v1)
   let (s2, e2, m2) := (fsplit_H v2)
@@ -267,10 +267,10 @@ def fle_H (v1 : (BitVec 16)) (v2 : (BitVec 16)) (is_quiet : Bool) : (Bool × (Bi
   (result, fflags)
 
 def haveHalfFPU (_ : Unit) : SailM Bool := do
-  (pure (Bool.or (← (extensionEnabled Ext_Zfh)) (← (extensionEnabled Ext_Zhinx))))
+  (pure (Bool.or (← (currentlyEnabled Ext_Zfh)) (← (currentlyEnabled Ext_Zhinx))))
 
 def haveHalfMin (_ : Unit) : SailM Bool := do
-  (pure (Bool.or (← (haveHalfFPU ())) (← (extensionEnabled Ext_Zfhmin))))
+  (pure (Bool.or (← (haveHalfFPU ())) (← (currentlyEnabled Ext_Zfhmin))))
 
 def f_bin_rm_type_mnemonic_H_backwards (arg_ : String) : SailM f_bin_rm_op_H := do
   match arg_ with

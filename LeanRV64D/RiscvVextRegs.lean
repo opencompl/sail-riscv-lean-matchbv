@@ -402,7 +402,7 @@ def vreg_name_backwards_matches (arg_ : String) : SailM Bool := do
     | _ => (pure false))
 
 def dirty_v_context (_ : Unit) : SailM Unit := do
-  assert (sys_enable_vext ()) "riscv_vext_regs.sail:91.26-91.27"
+  assert (← (hartSupports Ext_V)) "riscv_vext_regs.sail:91.28-91.29"
   writeReg mstatus (Sail.BitVec.updateSubrange (← readReg mstatus) 10 9 (extStatus_to_bits Dirty))
   writeReg mstatus (Sail.BitVec.updateSubrange (← readReg mstatus) (((2 ^i 3) *i 8) -i 1)
     (((2 ^i 3) *i 8) -i 1) (0b1 : (BitVec 1)))

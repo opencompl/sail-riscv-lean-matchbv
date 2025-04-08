@@ -1,4 +1,4 @@
-import LeanRV64D.Arithmetic
+import LeanRV64D.RiscvExtensions
 
 set_option maxHeartbeats 1_000_000_000
 set_option maxRecDepth 10_000

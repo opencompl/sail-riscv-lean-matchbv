@@ -372,7 +372,7 @@ def feq_quiet_S (v1 : (BitVec 32)) (v2 : (BitVec 32)) : (Bool × (BitVec 5)) :=
     else (zeros (n := 5))
   (result, fflags)
 
-/-- Type quantifiers: k_ex321789# : Bool -/
+/-- Type quantifiers: k_ex322001# : Bool -/
 def flt_S (v1 : (BitVec 32)) (v2 : (BitVec 32)) (is_quiet : Bool) : (Bool × (BitVec 5)) :=
   let (s1, e1, m1) := (fsplit_S v1)
   let (s2, e2, m2) := (fsplit_S v2)
@@ -404,7 +404,7 @@ def flt_S (v1 : (BitVec 32)) (v2 : (BitVec 32)) (is_quiet : Bool) : (Bool × (Bi
       else (zeros (n := 5)))
   (result, fflags)
 
-/-- Type quantifiers: k_ex321857# : Bool -/
+/-- Type quantifiers: k_ex322069# : Bool -/
 def fle_S (v1 : (BitVec 32)) (v2 : (BitVec 32)) (is_quiet : Bool) : (Bool × (BitVec 5)) :=
   let (s1, e1, m1) := (fsplit_S v1)
   let (s2, e2, m2) := (fsplit_S v2)
@@ -439,7 +439,7 @@ def fle_S (v1 : (BitVec 32)) (v2 : (BitVec 32)) (is_quiet : Bool) : (Bool × (Bi
   (result, fflags)
 
 def haveSingleFPU (_ : Unit) : SailM Bool := do
-  (pure (Bool.or (← (extensionEnabled Ext_F)) (← (extensionEnabled Ext_Zfinx))))
+  (pure (Bool.or (← (currentlyEnabled Ext_F)) (← (currentlyEnabled Ext_Zfinx))))
 
 def f_madd_type_mnemonic_S_backwards (arg_ : String) : SailM f_madd_op_S := do
   match arg_ with

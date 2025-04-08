@@ -211,13 +211,13 @@ def pte_is_invalid (pte_flags : (BitVec 8)) (pte_ext : (BitVec 10)) : SailM Bool
           (BEq.beq (_get_PTE_Flags_R pte_flags) (0b0 : (BitVec 1))))
         (Bool.or
           (Bool.and (bne (_get_PTE_Ext_N pte_ext) (0b0 : (BitVec 1)))
-            (not (← (extensionEnabled Ext_Svnapot))))
+            (not (← (currentlyEnabled Ext_Svnapot))))
           (Bool.or
             (Bool.and (bne (_get_PTE_Ext_PBMT pte_ext) (zeros (n := 2)))
-              (not (← (extensionEnabled Ext_Svpbmt))))
+              (not (← (currentlyEnabled Ext_Svpbmt))))
             (bne (_get_PTE_Ext_reserved pte_ext) (zeros (n := 7))))))))
 
-/-- Type quantifiers: k_ex319301# : Bool, k_ex319300# : Bool -/
+/-- Type quantifiers: k_ex319513# : Bool, k_ex319512# : Bool -/
 def check_PTE_permission (ac : (AccessType Unit)) (priv : Privilege) (mxr : Bool) (do_sum : Bool) (pte_flags : (BitVec 8)) (ext : (BitVec 10)) (ext_ptw : Unit) : SailM PTE_Check := do
   let pte_U := (_get_PTE_Flags_U pte_flags)
   let pte_R := (_get_PTE_Flags_R pte_flags)

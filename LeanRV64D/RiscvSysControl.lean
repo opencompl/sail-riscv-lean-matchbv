@@ -171,7 +171,7 @@ def csrPriv (csr : (BitVec 12)) : (BitVec 2) :=
 def check_CSR_priv (csr : (BitVec 12)) (p : Privilege) : Bool :=
   (zopz0zKzJ_u (privLevel_to_bits p) (csrPriv csr))
 
-/-- Type quantifiers: k_ex317583# : Bool -/
+/-- Type quantifiers: k_ex317795# : Bool -/
 def check_CSR_access (csr : (BitVec 12)) (isWrite : Bool) : Bool :=
   (not (Bool.and isWrite (BEq.beq (csrAccess csr) (0b11 : (BitVec 2)))))
 
@@ -186,7 +186,7 @@ def feature_enabled_for_priv (p : Privilege) (machine_enable_bit : (BitVec 1)) (
   | Machine => (pure true)
   | Supervisor => (pure (BEq.beq machine_enable_bit 1#1))
   | User => (pure (Bool.and (BEq.beq machine_enable_bit 1#1)
-        (Bool.or (not (← (extensionEnabled Ext_S))) (BEq.beq supervisor_enable_bit 1#1))))
+        (Bool.or (not (← (currentlyEnabled Ext_S))) (BEq.beq supervisor_enable_bit 1#1))))
 
 def check_Counteren (csr : (BitVec 12)) (p : Privilege) : SailM Bool := do
   bif (Bool.or (zopz0zI_u csr (0xC00 : (BitVec 12))) (zopz0zI_u (0xC1F : (BitVec 12)) csr))
@@ -206,7 +206,7 @@ def check_Stimecmp (csr : (BitVec 12)) (p : Privilege) : SailM Bool := do
           (Bool.and (BEq.beq (_get_Counteren_TM (← readReg mcounteren)) (0b1 : (BitVec 1)))
             (BEq.beq (_get_MEnvcfg_STCE (← readReg menvcfg)) (0b1 : (BitVec 1)))))))
 
-/-- Type quantifiers: k_ex317670# : Bool -/
+/-- Type quantifiers: k_ex317882# : Bool -/
 def check_seed_CSR (csr : (BitVec 12)) (p : Privilege) (isWrite : Bool) : Bool :=
   bif (not (BEq.beq csr (0x015 : (BitVec 12))))
   then true
@@ -233,15 +233,15 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
           else
             (do
               bif (BEq.beq b__0 (0x30A : (BitVec 12)))
-              then (extensionEnabled Ext_U)
+              then (currentlyEnabled Ext_U)
               else
                 (do
                   bif (BEq.beq b__0 (0x31A : (BitVec 12)))
-                  then (pure (Bool.and (← (extensionEnabled Ext_U)) (BEq.beq xlen 32)))
+                  then (pure (Bool.and (← (currentlyEnabled Ext_U)) (BEq.beq xlen 32)))
                   else
                     (do
                       bif (BEq.beq b__0 (0x10A : (BitVec 12)))
-                      then (extensionEnabled Ext_S)
+                      then (currentlyEnabled Ext_S)
                       else
                         (do
                           bif (BEq.beq b__0 (0x304 : (BitVec 12)))
@@ -253,17 +253,17 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                               else
                                 (do
                                   bif (BEq.beq b__0 (0x302 : (BitVec 12)))
-                                  then (extensionEnabled Ext_S)
+                                  then (currentlyEnabled Ext_S)
                                   else
                                     (do
                                       bif (BEq.beq b__0 (0x312 : (BitVec 12)))
                                       then
-                                        (pure (Bool.and (← (extensionEnabled Ext_S))
+                                        (pure (Bool.and (← (currentlyEnabled Ext_S))
                                             (BEq.beq xlen 32)))
                                       else
                                         (do
                                           bif (BEq.beq b__0 (0x303 : (BitVec 12)))
-                                          then (extensionEnabled Ext_S)
+                                          then (currentlyEnabled Ext_S)
                                           else
                                             (do
                                               bif (BEq.beq b__0 (0x342 : (BitVec 12)))
@@ -279,12 +279,12 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                       else
                                                         (do
                                                           bif (BEq.beq b__0 (0x106 : (BitVec 12)))
-                                                          then (extensionEnabled Ext_S)
+                                                          then (currentlyEnabled Ext_S)
                                                           else
                                                             (do
                                                               bif (BEq.beq b__0
                                                                    (0x306 : (BitVec 12)))
-                                                              then (extensionEnabled Ext_U)
+                                                              then (currentlyEnabled Ext_U)
                                                               else
                                                                 (do
                                                                   bif (BEq.beq b__0
@@ -323,7 +323,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                b__0
                                                                                                (0x100 : (BitVec 12)))
                                                                                           then
-                                                                                            (extensionEnabled
+                                                                                            (currentlyEnabled
                                                                                               Ext_S)
                                                                                           else
                                                                                             (do
@@ -331,7 +331,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                    b__0
                                                                                                    (0x144 : (BitVec 12)))
                                                                                               then
-                                                                                                (extensionEnabled
+                                                                                                (currentlyEnabled
                                                                                                   Ext_S)
                                                                                               else
                                                                                                 (do
@@ -339,7 +339,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                        b__0
                                                                                                        (0x104 : (BitVec 12)))
                                                                                                   then
-                                                                                                    (extensionEnabled
+                                                                                                    (currentlyEnabled
                                                                                                       Ext_S)
                                                                                                   else
                                                                                                     (do
@@ -347,7 +347,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                            b__0
                                                                                                            (0x140 : (BitVec 12)))
                                                                                                       then
-                                                                                                        (extensionEnabled
+                                                                                                        (currentlyEnabled
                                                                                                           Ext_S)
                                                                                                       else
                                                                                                         (do
@@ -355,7 +355,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                b__0
                                                                                                                (0x142 : (BitVec 12)))
                                                                                                           then
-                                                                                                            (extensionEnabled
+                                                                                                            (currentlyEnabled
                                                                                                               Ext_S)
                                                                                                           else
                                                                                                             (do
@@ -363,7 +363,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                    b__0
                                                                                                                    (0x143 : (BitVec 12)))
                                                                                                               then
-                                                                                                                (extensionEnabled
+                                                                                                                (currentlyEnabled
                                                                                                                   Ext_S)
                                                                                                               else
                                                                                                                 (do
@@ -473,7 +473,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                b__0
                                                                                                                                                (0x008 : (BitVec 12)))
                                                                                                                                           then
-                                                                                                                                            (extensionEnabled
+                                                                                                                                            (currentlyEnabled
                                                                                                                                               Ext_V)
                                                                                                                                           else
                                                                                                                                             (do
@@ -481,7 +481,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                    b__0
                                                                                                                                                    (0x009 : (BitVec 12)))
                                                                                                                                               then
-                                                                                                                                                (extensionEnabled
+                                                                                                                                                (currentlyEnabled
                                                                                                                                                   Ext_V)
                                                                                                                                               else
                                                                                                                                                 (do
@@ -489,7 +489,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                        b__0
                                                                                                                                                        (0x00A : (BitVec 12)))
                                                                                                                                                   then
-                                                                                                                                                    (extensionEnabled
+                                                                                                                                                    (currentlyEnabled
                                                                                                                                                       Ext_V)
                                                                                                                                                   else
                                                                                                                                                     (do
@@ -497,7 +497,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                            b__0
                                                                                                                                                            (0x00F : (BitVec 12)))
                                                                                                                                                       then
-                                                                                                                                                        (extensionEnabled
+                                                                                                                                                        (currentlyEnabled
                                                                                                                                                           Ext_V)
                                                                                                                                                       else
                                                                                                                                                         (do
@@ -505,7 +505,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                b__0
                                                                                                                                                                (0xC20 : (BitVec 12)))
                                                                                                                                                           then
-                                                                                                                                                            (extensionEnabled
+                                                                                                                                                            (currentlyEnabled
                                                                                                                                                               Ext_V)
                                                                                                                                                           else
                                                                                                                                                             (do
@@ -513,7 +513,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                    b__0
                                                                                                                                                                    (0xC21 : (BitVec 12)))
                                                                                                                                                               then
-                                                                                                                                                                (extensionEnabled
+                                                                                                                                                                (currentlyEnabled
                                                                                                                                                                   Ext_V)
                                                                                                                                                               else
                                                                                                                                                                 (do
@@ -521,7 +521,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                        b__0
                                                                                                                                                                        (0xC22 : (BitVec 12)))
                                                                                                                                                                   then
-                                                                                                                                                                    (extensionEnabled
+                                                                                                                                                                    (currentlyEnabled
                                                                                                                                                                       Ext_V)
                                                                                                                                                                   else
                                                                                                                                                                     (do
@@ -529,7 +529,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                            b__0
                                                                                                                                                                            (0x105 : (BitVec 12)))
                                                                                                                                                                       then
-                                                                                                                                                                        (extensionEnabled
+                                                                                                                                                                        (currentlyEnabled
                                                                                                                                                                           Ext_S)
                                                                                                                                                                       else
                                                                                                                                                                         (do
@@ -537,7 +537,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                b__0
                                                                                                                                                                                (0x141 : (BitVec 12)))
                                                                                                                                                                           then
-                                                                                                                                                                            (extensionEnabled
+                                                                                                                                                                            (currentlyEnabled
                                                                                                                                                                               Ext_S)
                                                                                                                                                                           else
                                                                                                                                                                             (do
@@ -570,7 +570,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                            ((BitVec.toNat
                                                                                                                                                                                                index) ≥b 3) : Bool))
                                                                                                                                                                                       then
-                                                                                                                                                                                        (extensionEnabled
+                                                                                                                                                                                        (currentlyEnabled
                                                                                                                                                                                           Ext_Zihpm)
                                                                                                                                                                                       else
                                                                                                                                                                                         (do
@@ -589,7 +589,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                ((BitVec.toNat
                                                                                                                                                                                                    index) ≥b 3) : Bool))
                                                                                                                                                                                           then
-                                                                                                                                                                                            (extensionEnabled
+                                                                                                                                                                                            (currentlyEnabled
                                                                                                                                                                                               Ext_Zihpm)
                                                                                                                                                                                           else
                                                                                                                                                                                             (do
@@ -609,7 +609,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                        index) ≥b 3) : Bool))
                                                                                                                                                                                               then
                                                                                                                                                                                                 (pure (Bool.and
-                                                                                                                                                                                                    (← (extensionEnabled
+                                                                                                                                                                                                    (← (currentlyEnabled
                                                                                                                                                                                                         Ext_Zihpm))
                                                                                                                                                                                                     (BEq.beq
                                                                                                                                                                                                       xlen
@@ -632,9 +632,9 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                            index) ≥b 3) : Bool))
                                                                                                                                                                                                   then
                                                                                                                                                                                                     (pure (Bool.and
-                                                                                                                                                                                                        (← (extensionEnabled
+                                                                                                                                                                                                        (← (currentlyEnabled
                                                                                                                                                                                                             Ext_Zihpm))
-                                                                                                                                                                                                        (← (extensionEnabled
+                                                                                                                                                                                                        (← (currentlyEnabled
                                                                                                                                                                                                             Ext_U))))
                                                                                                                                                                                                   else
                                                                                                                                                                                                     (do
@@ -654,10 +654,10 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                index) ≥b 3) : Bool))
                                                                                                                                                                                                       then
                                                                                                                                                                                                         (pure (Bool.and
-                                                                                                                                                                                                            (← (extensionEnabled
+                                                                                                                                                                                                            (← (currentlyEnabled
                                                                                                                                                                                                                 Ext_Zihpm))
                                                                                                                                                                                                             (Bool.and
-                                                                                                                                                                                                              (← (extensionEnabled
+                                                                                                                                                                                                              (← (currentlyEnabled
                                                                                                                                                                                                                   Ext_U))
                                                                                                                                                                                                               (BEq.beq
                                                                                                                                                                                                                 xlen
@@ -680,7 +680,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                    index) ≥b 3) : Bool))
                                                                                                                                                                                                           then
                                                                                                                                                                                                             (pure (Bool.and
-                                                                                                                                                                                                                (← (extensionEnabled
+                                                                                                                                                                                                                (← (currentlyEnabled
                                                                                                                                                                                                                     Ext_Sscofpmf))
                                                                                                                                                                                                                 (BEq.beq
                                                                                                                                                                                                                   xlen
@@ -692,9 +692,9 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                    (0xDA0 : (BitVec 12)))
                                                                                                                                                                                                               then
                                                                                                                                                                                                                 (pure (Bool.and
-                                                                                                                                                                                                                    (← (extensionEnabled
+                                                                                                                                                                                                                    (← (currentlyEnabled
                                                                                                                                                                                                                         Ext_Sscofpmf))
-                                                                                                                                                                                                                    (← (extensionEnabled
+                                                                                                                                                                                                                    (← (currentlyEnabled
                                                                                                                                                                                                                         Ext_S))))
                                                                                                                                                                                                               else
                                                                                                                                                                                                                 (do
@@ -702,7 +702,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                        b__0
                                                                                                                                                                                                                        (0x015 : (BitVec 12)))
                                                                                                                                                                                                                   then
-                                                                                                                                                                                                                    (extensionEnabled
+                                                                                                                                                                                                                    (currentlyEnabled
                                                                                                                                                                                                                       Ext_Zkr)
                                                                                                                                                                                                                   else
                                                                                                                                                                                                                     (do
@@ -710,7 +710,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                            b__0
                                                                                                                                                                                                                            (0xC00 : (BitVec 12)))
                                                                                                                                                                                                                       then
-                                                                                                                                                                                                                        (extensionEnabled
+                                                                                                                                                                                                                        (currentlyEnabled
                                                                                                                                                                                                                           Ext_Zicntr)
                                                                                                                                                                                                                       else
                                                                                                                                                                                                                         (do
@@ -718,7 +718,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                                b__0
                                                                                                                                                                                                                                (0xC01 : (BitVec 12)))
                                                                                                                                                                                                                           then
-                                                                                                                                                                                                                            (extensionEnabled
+                                                                                                                                                                                                                            (currentlyEnabled
                                                                                                                                                                                                                               Ext_Zicntr)
                                                                                                                                                                                                                           else
                                                                                                                                                                                                                             (do
@@ -726,7 +726,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                                    b__0
                                                                                                                                                                                                                                    (0xC02 : (BitVec 12)))
                                                                                                                                                                                                                               then
-                                                                                                                                                                                                                                (extensionEnabled
+                                                                                                                                                                                                                                (currentlyEnabled
                                                                                                                                                                                                                                   Ext_Zicntr)
                                                                                                                                                                                                                               else
                                                                                                                                                                                                                                 (do
@@ -735,7 +735,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                                        (0xC80 : (BitVec 12)))
                                                                                                                                                                                                                                   then
                                                                                                                                                                                                                                     (pure (Bool.and
-                                                                                                                                                                                                                                        (← (extensionEnabled
+                                                                                                                                                                                                                                        (← (currentlyEnabled
                                                                                                                                                                                                                                             Ext_Zicntr))
                                                                                                                                                                                                                                         (BEq.beq
                                                                                                                                                                                                                                           xlen
@@ -747,7 +747,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                                            (0xC81 : (BitVec 12)))
                                                                                                                                                                                                                                       then
                                                                                                                                                                                                                                         (pure (Bool.and
-                                                                                                                                                                                                                                            (← (extensionEnabled
+                                                                                                                                                                                                                                            (← (currentlyEnabled
                                                                                                                                                                                                                                                 Ext_Zicntr))
                                                                                                                                                                                                                                             (BEq.beq
                                                                                                                                                                                                                                               xlen
@@ -759,7 +759,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                                                (0xC82 : (BitVec 12)))
                                                                                                                                                                                                                                           then
                                                                                                                                                                                                                                             (pure (Bool.and
-                                                                                                                                                                                                                                                (← (extensionEnabled
+                                                                                                                                                                                                                                                (← (currentlyEnabled
                                                                                                                                                                                                                                                     Ext_Zicntr))
                                                                                                                                                                                                                                                 (BEq.beq
                                                                                                                                                                                                                                                   xlen
@@ -770,7 +770,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                                                    b__0
                                                                                                                                                                                                                                                    (0xB00 : (BitVec 12)))
                                                                                                                                                                                                                                               then
-                                                                                                                                                                                                                                                (extensionEnabled
+                                                                                                                                                                                                                                                (currentlyEnabled
                                                                                                                                                                                                                                                   Ext_Zicntr)
                                                                                                                                                                                                                                               else
                                                                                                                                                                                                                                                 (do
@@ -778,7 +778,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                                                        b__0
                                                                                                                                                                                                                                                        (0xB02 : (BitVec 12)))
                                                                                                                                                                                                                                                   then
-                                                                                                                                                                                                                                                    (extensionEnabled
+                                                                                                                                                                                                                                                    (currentlyEnabled
                                                                                                                                                                                                                                                       Ext_Zicntr)
                                                                                                                                                                                                                                                   else
                                                                                                                                                                                                                                                     (do
@@ -787,7 +787,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                                                            (0xB80 : (BitVec 12)))
                                                                                                                                                                                                                                                       then
                                                                                                                                                                                                                                                         (pure (Bool.and
-                                                                                                                                                                                                                                                            (← (extensionEnabled
+                                                                                                                                                                                                                                                            (← (currentlyEnabled
                                                                                                                                                                                                                                                                 Ext_Zicntr))
                                                                                                                                                                                                                                                             (BEq.beq
                                                                                                                                                                                                                                                               xlen
@@ -799,7 +799,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                                                                (0xB82 : (BitVec 12)))
                                                                                                                                                                                                                                                           then
                                                                                                                                                                                                                                                             (pure (Bool.and
-                                                                                                                                                                                                                                                                (← (extensionEnabled
+                                                                                                                                                                                                                                                                (← (currentlyEnabled
                                                                                                                                                                                                                                                                     Ext_Zicntr))
                                                                                                                                                                                                                                                                 (BEq.beq
                                                                                                                                                                                                                                                                   xlen
@@ -811,9 +811,9 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                                                                    (0x001 : (BitVec 12)))
                                                                                                                                                                                                                                                               then
                                                                                                                                                                                                                                                                 (pure (Bool.or
-                                                                                                                                                                                                                                                                    (← (extensionEnabled
+                                                                                                                                                                                                                                                                    (← (currentlyEnabled
                                                                                                                                                                                                                                                                         Ext_F))
-                                                                                                                                                                                                                                                                    (← (extensionEnabled
+                                                                                                                                                                                                                                                                    (← (currentlyEnabled
                                                                                                                                                                                                                                                                         Ext_Zfinx))))
                                                                                                                                                                                                                                                               else
                                                                                                                                                                                                                                                                 (do
@@ -822,9 +822,9 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                                                                        (0x002 : (BitVec 12)))
                                                                                                                                                                                                                                                                   then
                                                                                                                                                                                                                                                                     (pure (Bool.or
-                                                                                                                                                                                                                                                                        (← (extensionEnabled
+                                                                                                                                                                                                                                                                        (← (currentlyEnabled
                                                                                                                                                                                                                                                                             Ext_F))
-                                                                                                                                                                                                                                                                        (← (extensionEnabled
+                                                                                                                                                                                                                                                                        (← (currentlyEnabled
                                                                                                                                                                                                                                                                             Ext_Zfinx))))
                                                                                                                                                                                                                                                                   else
                                                                                                                                                                                                                                                                     (do
@@ -833,9 +833,9 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                                                                            (0x003 : (BitVec 12)))
                                                                                                                                                                                                                                                                       then
                                                                                                                                                                                                                                                                         (pure (Bool.or
-                                                                                                                                                                                                                                                                            (← (extensionEnabled
+                                                                                                                                                                                                                                                                            (← (currentlyEnabled
                                                                                                                                                                                                                                                                                 Ext_F))
-                                                                                                                                                                                                                                                                            (← (extensionEnabled
+                                                                                                                                                                                                                                                                            (← (currentlyEnabled
                                                                                                                                                                                                                                                                                 Ext_Zfinx))))
                                                                                                                                                                                                                                                                       else
                                                                                                                                                                                                                                                                         (do
@@ -843,7 +843,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                                                                                b__0
                                                                                                                                                                                                                                                                                (0x321 : (BitVec 12)))
                                                                                                                                                                                                                                                                           then
-                                                                                                                                                                                                                                                                            (extensionEnabled
+                                                                                                                                                                                                                                                                            (currentlyEnabled
                                                                                                                                                                                                                                                                               Ext_Smcntrpmf)
                                                                                                                                                                                                                                                                           else
                                                                                                                                                                                                                                                                             (do
@@ -852,7 +852,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                                                                                    (0x721 : (BitVec 12)))
                                                                                                                                                                                                                                                                               then
                                                                                                                                                                                                                                                                                 (pure (Bool.and
-                                                                                                                                                                                                                                                                                    (← (extensionEnabled
+                                                                                                                                                                                                                                                                                    (← (currentlyEnabled
                                                                                                                                                                                                                                                                                         Ext_Smcntrpmf))
                                                                                                                                                                                                                                                                                     (BEq.beq
                                                                                                                                                                                                                                                                                       xlen
@@ -863,7 +863,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                                                                                        b__0
                                                                                                                                                                                                                                                                                        (0x322 : (BitVec 12)))
                                                                                                                                                                                                                                                                                   then
-                                                                                                                                                                                                                                                                                    (extensionEnabled
+                                                                                                                                                                                                                                                                                    (currentlyEnabled
                                                                                                                                                                                                                                                                                       Ext_Smcntrpmf)
                                                                                                                                                                                                                                                                                   else
                                                                                                                                                                                                                                                                                     (do
@@ -872,7 +872,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                                                                                            (0x722 : (BitVec 12)))
                                                                                                                                                                                                                                                                                       then
                                                                                                                                                                                                                                                                                         (pure (Bool.and
-                                                                                                                                                                                                                                                                                            (← (extensionEnabled
+                                                                                                                                                                                                                                                                                            (← (currentlyEnabled
                                                                                                                                                                                                                                                                                                 Ext_Smcntrpmf))
                                                                                                                                                                                                                                                                                             (BEq.beq
                                                                                                                                                                                                                                                                                               xlen
@@ -883,12 +883,12 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                                                                                                b__0
                                                                                                                                                                                                                                                                                                (0x180 : (BitVec 12)))
                                                                                                                                                                                                                                                                                           then
-                                                                                                                                                                                                                                                                                            (extensionEnabled
+                                                                                                                                                                                                                                                                                            (currentlyEnabled
                                                                                                                                                                                                                                                                                               Ext_S)
                                                                                                                                                                                                                                                                                           else
                                                                                                                                                                                                                                                                                             (pure false)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
 
-/-- Type quantifiers: k_ex318146# : Bool -/
+/-- Type quantifiers: k_ex318358# : Bool -/
 def check_CSR (csr : (BitVec 12)) (p : Privilege) (isWrite : Bool) : SailM Bool := do
   (pure (Bool.and (← (is_CSR_defined csr))
       (Bool.and (check_CSR_priv csr p)
@@ -901,7 +901,7 @@ def exception_delegatee (e : ExceptionType) (p : Privilege) : SailM Privilege :=
   let idx := (num_of_ExceptionType e)
   let super ← do (bit_to_bool (BitVec.access (← readReg medeleg) idx))
   let deleg ← do
-    bif (Bool.and (← (extensionEnabled Ext_S)) super)
+    bif (Bool.and (← (currentlyEnabled Ext_S)) super)
     then (pure Supervisor)
     else (pure Machine)
   bif (zopz0zI_u (privLevel_to_bits deleg) (privLevel_to_bits p))
@@ -930,7 +930,7 @@ def findPendingInterrupt (ip : (BitVec (2 ^ 3 * 8))) : (Option InterruptType) :=
             else none)))))
 
 def getPendingSet (priv : Privilege) : SailM (Option ((BitVec (2 ^ 3 * 8)) × Privilege)) := do
-  assert (Bool.or (← (extensionEnabled Ext_S))
+  assert (Bool.or (← (currentlyEnabled Ext_S))
     (BEq.beq (← readReg mideleg) (zeros (n := ((2 ^i 3) *i 8))))) "riscv_sys_control.sail:135.58-135.59"
   let pending_m ← do
     (pure ((← readReg mip) &&& ((← readReg mie) &&& (Complement.complement (← readReg mideleg)))))
@@ -966,7 +966,7 @@ def tval (excinfo : (Option (BitVec (2 ^ 3 * 8)))) : (BitVec (2 ^ 3 * 8)) :=
 def rvfi_trap (_ : Unit) : Unit :=
   ()
 
-/-- Type quantifiers: k_ex318392# : Bool -/
+/-- Type quantifiers: k_ex318604# : Bool -/
 def trap_handler (del_priv : Privilege) (intr : Bool) (c : (BitVec 8)) (pc : (BitVec (2 ^ 3 * 8))) (info : (Option (BitVec (2 ^ 3 * 8)))) (ext : (Option Unit)) : SailM (BitVec (2 ^ 3 * 8)) := do
   let _ : Unit := (rvfi_trap ())
   let _ : Unit :=
@@ -1005,7 +1005,7 @@ def trap_handler (del_priv : Privilege) (intr : Bool) (c : (BitVec 8)) (pc : (Bi
       else (pure ())
       (prepare_trap_vector del_priv (← readReg mcause)))
   | Supervisor => (do
-      assert (← (extensionEnabled Ext_S)) "no supervisor mode present for delegation"
+      assert (← (currentlyEnabled Ext_S)) "no supervisor mode present for delegation"
       writeReg scause (Sail.BitVec.updateSubrange (← readReg scause) (((2 ^i 3) *i 8) -i 1)
         (((2 ^i 3) *i 8) -i 1) (bool_to_bits intr))
       writeReg scause (Sail.BitVec.updateSubrange (← readReg scause) (((2 ^i 3) *i 8) -i 2) 0
@@ -1056,7 +1056,7 @@ def exception_handler (cur_priv : Privilege) (ctl : ctl_result) (pc : (BitVec (2
       writeReg mstatus (Sail.BitVec.updateSubrange (← readReg mstatus) 12 11
         (privLevel_to_bits
           (← do
-            bif (← (extensionEnabled Ext_U))
+            bif (← (currentlyEnabled Ext_U))
             then (pure User)
             else (pure Machine))))
       bif (bne (← readReg cur_privilege) Machine)
@@ -1126,9 +1126,9 @@ def handle_interrupt (i : InterruptType) (del_priv : Privilege) : SailM Unit := 
 def reset_misa (_ : Unit) : SailM Unit := do
   writeReg misa (Sail.BitVec.updateSubrange (← readReg misa) 0 0 (0b1 : (BitVec 1)))
   writeReg misa (Sail.BitVec.updateSubrange (← readReg misa) 2 2
-    (bool_to_bits (sys_enable_rvc ())))
+    (bool_to_bits (← (hartSupports Ext_C))))
   writeReg misa (Sail.BitVec.updateSubrange (← readReg misa) 1 1
-    (bool_to_bits (sys_enable_bext ())))
+    (bool_to_bits (← (hartSupports Ext_B))))
   writeReg misa (Sail.BitVec.updateSubrange (← readReg misa) 8 8 (0b1 : (BitVec 1)))
   writeReg misa (Sail.BitVec.updateSubrange (← readReg misa) 12 12 (0b1 : (BitVec 1)))
   writeReg misa (Sail.BitVec.updateSubrange (← readReg misa) 20 20
@@ -1136,14 +1136,14 @@ def reset_misa (_ : Unit) : SailM Unit := do
   writeReg misa (Sail.BitVec.updateSubrange (← readReg misa) 18 18
     (bool_to_bits (sys_enable_supervisor ())))
   writeReg misa (Sail.BitVec.updateSubrange (← readReg misa) 21 21
-    (bool_to_bits (sys_enable_vext ())))
-  bif (Bool.and (sys_enable_fdext ()) (sys_enable_zfinx ()))
+    (bool_to_bits (← (hartSupports Ext_V))))
+  bif (Bool.and (← (hartSupports Ext_F)) (← (hartSupports Ext_Zfinx)))
   then (internal_error "riscv_sys_control.sail" 322 "F and Zfinx cannot both be enabled!")
   else (pure ())
   writeReg misa (Sail.BitVec.updateSubrange (← readReg misa) 5 5
-    (bool_to_bits (sys_enable_fdext ())))
+    (bool_to_bits (← (hartSupports Ext_F))))
   writeReg misa (Sail.BitVec.updateSubrange (← readReg misa) 3 3
-    (bool_to_bits (sys_enable_fdext ())))
+    (bool_to_bits (← (hartSupports Ext_D))))
 
 def reset_sys (_ : Unit) : SailM Unit := do
   writeReg cur_privilege Machine

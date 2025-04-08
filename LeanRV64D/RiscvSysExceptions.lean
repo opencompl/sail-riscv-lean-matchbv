@@ -189,7 +189,7 @@ def get_xepc (p : Privilege) : SailM (BitVec (2 ^ 3 * 8)) := do
   | User => (internal_error "riscv_sys_exceptions.sail" 45 "Invalid privilege level")
 
 def set_xepc (p : Privilege) (value : (BitVec (2 ^ 3 * 8))) : SailM (BitVec (2 ^ 3 * 8)) := do
-  let target := (legalize_xepc value)
+  let target ← do (legalize_xepc value)
   match p with
   | Machine => writeReg mepc target
   | Supervisor => writeReg sepc target

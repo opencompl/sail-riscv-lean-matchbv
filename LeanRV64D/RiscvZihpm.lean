@@ -302,19 +302,19 @@ def legalize_hpmevent (v : (BitVec 64)) : SailM (BitVec 64) := do
               (_update_HpmEvent_MINH
                 (_update_HpmEvent_OF (Mk_HpmEvent (zeros (n := 64)))
                   (← do
-                    bif (← (extensionEnabled Ext_Sscofpmf))
+                    bif (← (currentlyEnabled Ext_Sscofpmf))
                     then (pure (_get_HpmEvent_OF v))
                     else (pure (0b0 : (BitVec 1)))))
                 (← do
-                  bif (← (extensionEnabled Ext_Sscofpmf))
+                  bif (← (currentlyEnabled Ext_Sscofpmf))
                   then (pure (_get_HpmEvent_MINH v))
                   else (pure (0b0 : (BitVec 1)))))
               (← do
-                bif (Bool.and (← (extensionEnabled Ext_Sscofpmf)) (← (extensionEnabled Ext_S)))
+                bif (Bool.and (← (currentlyEnabled Ext_Sscofpmf)) (← (currentlyEnabled Ext_S)))
                 then (pure (_get_HpmEvent_SINH v))
                 else (pure (0b0 : (BitVec 1)))))
             (← do
-              bif (Bool.and (← (extensionEnabled Ext_Sscofpmf)) (← (extensionEnabled Ext_U)))
+              bif (Bool.and (← (currentlyEnabled Ext_Sscofpmf)) (← (currentlyEnabled Ext_U)))
               then (pure (_get_HpmEvent_UINH v))
               else (pure (0b0 : (BitVec 1))))) (0b0 : (BitVec 1))) (0b0 : (BitVec 1)))
       (_get_HpmEvent_event v)))

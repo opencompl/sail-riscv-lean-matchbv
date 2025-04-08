@@ -171,7 +171,7 @@ def fetch (_ : Unit) : SailM FetchResult := do
   | .Ext_FetchAddr_OK use_pc => (do
       let use_pc_bits := (virtaddr_bits use_pc)
       bif (Bool.or (bne (BitVec.access use_pc_bits 0) 0#1)
-           (Bool.and (bne (BitVec.access use_pc_bits 1) 0#1) (not (← (extensionEnabled Ext_Zca)))))
+           (Bool.and (bne (BitVec.access use_pc_bits 1) 0#1) (not (← (currentlyEnabled Ext_Zca)))))
       then (pure (F_Error ((E_Fetch_Addr_Align ()), (← readReg PC))))
       else
         (do

@@ -308,7 +308,7 @@ def cbop_priv_check (p : Privilege) : SailM checked_cbop := do
   let mCBIE ← (( do (encdec_cbie_backwards (_get_MEnvcfg_CBIE (← readReg menvcfg))) ) : SailM
     cbie )
   let sCBIE ← (( do
-    bif (← (extensionEnabled Ext_S))
+    bif (← (currentlyEnabled Ext_S))
     then (encdec_cbie_backwards (_get_SEnvcfg_CBIE (← readReg senvcfg)))
     else (encdec_cbie_backwards (_get_MEnvcfg_CBIE (← readReg menvcfg))) ) : SailM cbie )
   match (p, mCBIE, sCBIE) with

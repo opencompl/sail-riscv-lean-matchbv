@@ -201,7 +201,7 @@ def step (step_no : Int) : SailM Bool := do
                                 (HAppend.hAppend (BitVec.toFormatted h)
                                   (HAppend.hAppend ") " (← (print_insn ast)))))))))))))
             else (pure ())
-            bif (← (extensionEnabled Ext_Zca))
+            bif (← (currentlyEnabled Ext_Zca))
             then
               (do
                 writeReg nextPC (BitVec.addInt (← readReg PC) 2)

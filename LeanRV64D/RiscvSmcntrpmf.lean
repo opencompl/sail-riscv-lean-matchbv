@@ -173,11 +173,11 @@ def legalize_smcntrpmf (c : (BitVec 64)) (value : (BitVec 64)) : SailM (BitVec 6
   (pure (_update_CountSmcntrpmf_UINH
       (_update_CountSmcntrpmf_SINH (_update_CountSmcntrpmf_MINH c (_get_CountSmcntrpmf_MINH v))
         (← do
-          bif (← (extensionEnabled Ext_S))
+          bif (← (currentlyEnabled Ext_S))
           then (pure (_get_CountSmcntrpmf_SINH v))
           else (pure (0b0 : (BitVec 1)))))
       (← do
-        bif (← (extensionEnabled Ext_U))
+        bif (← (currentlyEnabled Ext_U))
         then (pure (_get_CountSmcntrpmf_UINH v))
         else (pure (0b0 : (BitVec 1))))))
 

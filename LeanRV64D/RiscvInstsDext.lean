@@ -244,7 +244,7 @@ def feq_quiet_D (v1 : (BitVec 64)) (v2 : (BitVec 64)) : (Bool × (BitVec 5)) :=
     else (zeros (n := 5))
   (result, fflags)
 
-/-- Type quantifiers: k_ex322041# : Bool -/
+/-- Type quantifiers: k_ex322253# : Bool -/
 def flt_D (v1 : (BitVec 64)) (v2 : (BitVec 64)) (is_quiet : Bool) : (Bool × (BitVec 5)) :=
   let (s1, e1, m1) := (fsplit_D v1)
   let (s2, e2, m2) := (fsplit_D v2)
@@ -276,7 +276,7 @@ def flt_D (v1 : (BitVec 64)) (v2 : (BitVec 64)) (is_quiet : Bool) : (Bool × (Bi
       else (zeros (n := 5)))
   (result, fflags)
 
-/-- Type quantifiers: k_ex322109# : Bool -/
+/-- Type quantifiers: k_ex322321# : Bool -/
 def fle_D (v1 : (BitVec 64)) (v2 : (BitVec 64)) (is_quiet : Bool) : (Bool × (BitVec 5)) :=
   let (s1, e1, m1) := (fsplit_D v1)
   let (s2, e2, m2) := (fsplit_D v2)
@@ -311,11 +311,11 @@ def fle_D (v1 : (BitVec 64)) (v2 : (BitVec 64)) (is_quiet : Bool) : (Bool × (Bi
   (result, fflags)
 
 def haveDoubleFPU (_ : Unit) : SailM Bool := do
-  (pure (Bool.or (← (extensionEnabled Ext_D)) (← (extensionEnabled Ext_Zdinx))))
+  (pure (Bool.or (← (currentlyEnabled Ext_D)) (← (currentlyEnabled Ext_Zdinx))))
 
 /-- Type quantifiers: n : Nat, n > 0 -/
 def validDoubleRegs {n : _} (regs : (Vector fregidx n)) : SailM Bool := SailME.run do
-  bif (Bool.and (← (extensionEnabled Ext_Zdinx)) (BEq.beq xlen 32))
+  bif (Bool.and (← (currentlyEnabled Ext_Zdinx)) (BEq.beq xlen 32))
   then
     (do
       let loop_i_lower := 0

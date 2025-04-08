@@ -378,7 +378,7 @@ def clint_load (t : (AccessType Unit)) (app_1 : physaddr) (width : Nat) : SailM 
 def clint_dispatch (_ : Unit) : SailM Unit := do
   writeReg mip (Sail.BitVec.updateSubrange (← readReg mip) 7 7
     (bool_to_bits (zopz0zIzJ_u (← readReg mtimecmp) (← readReg mtime))))
-  bif (← (extensionEnabled Ext_Sstc))
+  bif (← (currentlyEnabled Ext_Sstc))
   then
     writeReg mip (Sail.BitVec.updateSubrange (← readReg mip) 5 5
       (bool_to_bits (zopz0zIzJ_u (← readReg stimecmp) (← readReg mtime))))
@@ -392,7 +392,7 @@ def clint_dispatch (_ : Unit) : SailM Unit := do
               (HAppend.hAppend (BitVec.toFormatted (_get_Minterrupts_MTI (← readReg mip)))
                 (HAppend.hAppend
                   (← do
-                    bif (← (extensionEnabled Ext_Sstc))
+                    bif (← (currentlyEnabled Ext_Sstc))
                     then
                       (pure (HAppend.hAppend ", mip.STI <- "
                           (BitVec.toFormatted (_get_Minterrupts_STI (← readReg mip)))))
