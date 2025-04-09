@@ -10,15 +10,3 @@ index 817c222f..5056dd05 100644
                          -o "Lean_${arch_uppercase}"
                          ${sail_srcs}
                  )
-diff --git a/model/riscv_step.sail b/model/riscv_step.sail
-index a9eb9543..dd086b55 100644
---- a/model/riscv_step.sail
-+++ b/model/riscv_step.sail
-@@ -118,6 +118,7 @@ function loop () : unit -> unit = {
-         /* for now, we drive the platform i/o at every clock tick. */
-         tick_platform();
-         i = 0;
-+	()
-       }
-     }
-   }
