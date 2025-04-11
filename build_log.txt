@@ -1,6 +1,8 @@
 ✔ [2/94] Built LeanRV64D.Sail.IntRange
 ✔ [3/94] Built LeanRV64D.Sail.BitVec
-✔ [4/94] Built LeanRV64D.Sail.Sail
+⚠ [4/94] Built LeanRV64D.Sail.Sail
+warning: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/Sail/Sail.lean:195:49: `Vector.mkVector` has been deprecated: use `Vector.replicate` instead
+warning: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/Sail/Sail.lean:409:10: `Vector.mkVector` has been deprecated: use `Vector.replicate` instead
 ✔ [5/94] Built LeanRV64D.Defs
 ✔ [6/94] Built LeanRV64D.Specialization
 ✔ [7/94] Built LeanRV64D.RiscvExtras

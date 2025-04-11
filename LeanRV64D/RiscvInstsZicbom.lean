@@ -333,10 +333,10 @@ def process_clean_inval (rs1 : regidx) (cbop : cbop_zicbom) : SailM Retired := d
       let res ← (( do
         match (← (translateAddr vaddr (Read Data))) with
         | .TR_Address (paddr, _) => (do
-            let exc_read ← do
-              (phys_access_check (Read Data) (← readReg cur_privilege) paddr cache_block_size)
-            let exc_write ← do
-              (phys_access_check (Write Data) (← readReg cur_privilege) paddr cache_block_size)
+            let ep ← do
+              (effectivePrivilege (Read Data) (← readReg mstatus) (← readReg cur_privilege))
+            let exc_read ← do (phys_access_check (Read Data) ep paddr cache_block_size)
+            let exc_write ← do (phys_access_check (Write Data) ep paddr cache_block_size)
             match (exc_read, exc_write) with
             | (.some exc_read, .some exc_write) => (pure (some exc_write))
             | _ => (pure none))
@@ -350,7 +350,7 @@ def process_clean_inval (rs1 : regidx) (cbop : cbop_zicbom) : SailM Retired := d
             | .E_SAMO_Access_Fault () => (pure (E_SAMO_Access_Fault ()))
             | .E_Load_Page_Fault () => (pure (E_SAMO_Page_Fault ()))
             | .E_SAMO_Page_Fault () => (pure (E_SAMO_Page_Fault ()))
-            | _ => (internal_error "riscv_insts_zicbom.sail" 119
+            | _ => (internal_error "riscv_insts_zicbom.sail" 125
                 "unexpected exception for cmo.clean/inval") ) : SailM ExceptionType )
           (handle_mem_exception (sub_virtaddr_xlenbits vaddr negative_offset) e)
           (pure RETIRE_FAIL)))
