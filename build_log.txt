@@ -4,8 +4,8 @@
 warning: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/Sail/Sail.lean:195:49: `Vector.mkVector` has been deprecated: use `Vector.replicate` instead
 warning: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/Sail/Sail.lean:409:10: `Vector.mkVector` has been deprecated: use `Vector.replicate` instead
 ✔ [5/94] Built LeanRV64D.Defs
-✔ [6/94] Built LeanRV64D.RiscvExtras
-✔ [7/94] Built LeanRV64D.Specialization
+✔ [6/94] Built LeanRV64D.Specialization
+✔ [7/94] Built LeanRV64D.RiscvExtras
 ✔ [8/94] Built LeanRV64D.Option
 ✔ [9/94] Built LeanRV64D.Flow
 ✔ [10/94] Built LeanRV64D.Arith
