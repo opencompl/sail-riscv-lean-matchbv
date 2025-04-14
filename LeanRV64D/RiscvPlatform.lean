@@ -175,7 +175,7 @@ def plat_enable_dirty_update (_ : Unit) : Bool :=
   false
 
 def plat_enable_misaligned_access (_ : Unit) : Bool :=
-  false
+  true
 
 def plat_mtval_has_illegal_inst_bits (_ : Unit) : Bool :=
   false
