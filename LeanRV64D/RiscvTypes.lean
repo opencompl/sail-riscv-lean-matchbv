@@ -2959,11 +2959,11 @@ def reg_name_forwards (arg_ : regidx) : String :=
   match arg_ with
   | .Regidx i => (reg_name_raw_forwards i)
 
-def freg_or_reg_name_forwards (arg_ : fregidx) : SailM String := do
+def freg_or_reg_name_forwards (arg_ : fregidx) : String :=
   let f := arg_
-  bif (← (hartSupports Ext_Zfinx))
-  then (pure (reg_name_forwards (fregidx_to_regidx f)))
-  else (pure (freg_name_forwards f))
+  bif (hartSupports Ext_Zfinx)
+  then (reg_name_forwards (fregidx_to_regidx f))
+  else (freg_name_forwards f)
 
 def frm_mnemonic_forwards (arg_ : rounding_mode) : String :=
   match arg_ with
@@ -3091,7 +3091,7 @@ def ma_flag_backwards (arg_ : (BitVec 1)) : String :=
   then (String.append (sep_forwards ()) (String.append "ma" ""))
   else (String.append (sep_forwards ()) (String.append "mu" ""))
 
-/-- Type quantifiers: k_ex315229# : Bool -/
+/-- Type quantifiers: k_ex318180# : Bool -/
 def maybe_aq_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".aq"
@@ -3130,19 +3130,19 @@ def maybe_lmul_flag_backwards (arg_ : (BitVec 3)) : SailM String := do
                               assert false "Pattern match failure at unknown location"
                               throw Error.Exit)))))))
 
-/-- Type quantifiers: k_ex315237# : Bool -/
+/-- Type quantifiers: k_ex318188# : Bool -/
 def maybe_not_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | false => "u"
   | true => ""
 
-/-- Type quantifiers: k_ex315238# : Bool -/
+/-- Type quantifiers: k_ex318189# : Bool -/
 def maybe_rl_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".rl"
   | false => ""
 
-/-- Type quantifiers: k_ex315239# : Bool -/
+/-- Type quantifiers: k_ex318190# : Bool -/
 def maybe_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => "u"
@@ -4426,7 +4426,7 @@ def assembly_forwards (arg_ : ast) : SailM String := do
   | .LOAD_FP (imm, rs1, rd, width) => (pure (String.append "fl"
         (String.append (size_mnemonic_forwards width)
           (String.append (spc_forwards ())
-            (String.append (← (freg_or_reg_name_forwards rd))
+            (String.append (freg_or_reg_name_forwards rd)
               (String.append (sep_forwards ())
                 (String.append (← (hex_bits_signed_12_forwards imm))
                   (String.append (opt_spc_forwards ())
@@ -4448,58 +4448,56 @@ def assembly_forwards (arg_ : ast) : SailM String := do
   | .F_MADD_TYPE_S (rs3, rs2, rs1, rm, rd, op) => (pure (String.append
         (f_madd_type_mnemonic_S_forwards op)
         (String.append (spc_forwards ())
-          (String.append (← (freg_or_reg_name_forwards rd))
+          (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
-              (String.append (← (freg_or_reg_name_forwards rs1))
+              (String.append (freg_or_reg_name_forwards rs1)
                 (String.append (sep_forwards ())
-                  (String.append (← (freg_or_reg_name_forwards rs2))
+                  (String.append (freg_or_reg_name_forwards rs2)
                     (String.append (sep_forwards ())
-                      (String.append (← (freg_or_reg_name_forwards rs3))
+                      (String.append (freg_or_reg_name_forwards rs3)
                         (String.append (sep_forwards ())
                           (String.append (frm_mnemonic_forwards rm) ""))))))))))))
   | .F_BIN_RM_TYPE_S (rs2, rs1, rm, rd, op) => (pure (String.append
         (f_bin_rm_type_mnemonic_S_forwards op)
         (String.append (spc_forwards ())
-          (String.append (← (freg_or_reg_name_forwards rd))
+          (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
-              (String.append (← (freg_or_reg_name_forwards rs1))
+              (String.append (freg_or_reg_name_forwards rs1)
                 (String.append (sep_forwards ())
-                  (String.append (← (freg_or_reg_name_forwards rs2))
+                  (String.append (freg_or_reg_name_forwards rs2)
                     (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))))
   | .F_UN_RM_FF_TYPE_S (rs1, rm, rd, FSQRT_S) => (pure (String.append "fsqrt.s"
         (String.append (spc_forwards ())
-          (String.append (← (freg_or_reg_name_forwards rd))
+          (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
-              (String.append (← (freg_or_reg_name_forwards rs1))
+              (String.append (freg_or_reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
   | .F_UN_RM_FX_TYPE_S (rs1, rm, rd, op) => (pure (String.append
         (f_un_rm_fx_type_mnemonic_S_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
-              (String.append (← (freg_or_reg_name_forwards rs1))
+              (String.append (freg_or_reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
   | .F_UN_RM_XF_TYPE_S (rs1, rm, rd, op) => (pure (String.append
         (f_un_rm_xf_type_mnemonic_S_forwards op)
         (String.append (spc_forwards ())
-          (String.append (← (freg_or_reg_name_forwards rd))
+          (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
   | .F_BIN_TYPE_F_S (rs2, rs1, rd, op) => (pure (String.append (f_bin_type_mnemonic_f_S_forwards op)
         (String.append (spc_forwards ())
-          (String.append (← (freg_or_reg_name_forwards rd))
+          (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
-              (String.append (← (freg_or_reg_name_forwards rs1))
-                (String.append (sep_forwards ())
-                  (String.append (← (freg_or_reg_name_forwards rs2)) ""))))))))
+              (String.append (freg_or_reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (freg_or_reg_name_forwards rs2) ""))))))))
   | .F_BIN_TYPE_X_S (rs2, rs1, rd, op) => (pure (String.append (f_bin_type_mnemonic_x_S_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
-              (String.append (← (freg_or_reg_name_forwards rs1))
-                (String.append (sep_forwards ())
-                  (String.append (← (freg_or_reg_name_forwards rs2)) ""))))))))
+              (String.append (freg_or_reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (freg_or_reg_name_forwards rs2) ""))))))))
   | .F_UN_TYPE_X_S (rs1, rd, op) => (pure (String.append (f_un_type_mnemonic_x_S_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
@@ -4563,59 +4561,57 @@ def assembly_forwards (arg_ : ast) : SailM String := do
   | .F_MADD_TYPE_D (rs3, rs2, rs1, rm, rd, op) => (pure (String.append
         (f_madd_type_mnemonic_D_forwards op)
         (String.append (spc_forwards ())
-          (String.append (← (freg_or_reg_name_forwards rd))
+          (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
-              (String.append (← (freg_or_reg_name_forwards rs1))
+              (String.append (freg_or_reg_name_forwards rs1)
                 (String.append (sep_forwards ())
-                  (String.append (← (freg_or_reg_name_forwards rs2))
+                  (String.append (freg_or_reg_name_forwards rs2)
                     (String.append (sep_forwards ())
-                      (String.append (← (freg_or_reg_name_forwards rs3))
+                      (String.append (freg_or_reg_name_forwards rs3)
                         (String.append (sep_forwards ())
                           (String.append (frm_mnemonic_forwards rm) ""))))))))))))
   | .F_BIN_RM_TYPE_D (rs2, rs1, rm, rd, op) => (pure (String.append
         (f_bin_rm_type_mnemonic_D_forwards op)
         (String.append (spc_forwards ())
-          (String.append (← (freg_or_reg_name_forwards rd))
+          (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
-              (String.append (← (freg_or_reg_name_forwards rs1))
+              (String.append (freg_or_reg_name_forwards rs1)
                 (String.append (sep_forwards ())
-                  (String.append (← (freg_or_reg_name_forwards rs2))
+                  (String.append (freg_or_reg_name_forwards rs2)
                     (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))))
   | .F_UN_RM_FF_TYPE_D (rs1, rm, rd, op) => (pure (String.append
         (f_un_rm_ff_type_mnemonic_D_forwards op)
         (String.append (spc_forwards ())
-          (String.append (← (freg_or_reg_name_forwards rd))
+          (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
-              (String.append (← (freg_or_reg_name_forwards rs1))
+              (String.append (freg_or_reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
   | .F_UN_RM_FX_TYPE_D (rs1, rm, rd, op) => (pure (String.append
         (f_un_rm_fx_type_mnemonic_D_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
-              (String.append (← (freg_or_reg_name_forwards rs1))
+              (String.append (freg_or_reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
   | .F_UN_RM_XF_TYPE_D (rs1, rm, rd, op) => (pure (String.append
         (f_un_rm_xf_type_mnemonic_D_forwards op)
         (String.append (spc_forwards ())
-          (String.append (← (freg_or_reg_name_forwards rd))
+          (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
   | .F_BIN_F_TYPE_D (rs2, rs1, rd, op) => (pure (String.append (f_bin_f_type_mnemonic_D_forwards op)
         (String.append (spc_forwards ())
-          (String.append (← (freg_or_reg_name_forwards rd))
+          (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
-              (String.append (← (freg_or_reg_name_forwards rs1))
-                (String.append (sep_forwards ())
-                  (String.append (← (freg_or_reg_name_forwards rs2)) ""))))))))
+              (String.append (freg_or_reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (freg_or_reg_name_forwards rs2) ""))))))))
   | .F_BIN_X_TYPE_D (rs2, rs1, rd, op) => (pure (String.append (f_bin_x_type_mnemonic_D_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
-              (String.append (← (freg_or_reg_name_forwards rs1))
-                (String.append (sep_forwards ())
-                  (String.append (← (freg_or_reg_name_forwards rs2)) ""))))))))
+              (String.append (freg_or_reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (freg_or_reg_name_forwards rs2) ""))))))))
   | .F_UN_X_TYPE_D (rs1, rd, op) => (pure (String.append (f_un_x_type_mnemonic_D_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
@@ -4863,56 +4859,54 @@ def assembly_forwards (arg_ : ast) : SailM String := do
   | .F_BIN_RM_TYPE_H (rs2, rs1, rm, rd, op) => (pure (String.append
         (f_bin_rm_type_mnemonic_H_forwards op)
         (String.append (spc_forwards ())
-          (String.append (← (freg_or_reg_name_forwards rd))
+          (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
-              (String.append (← (freg_or_reg_name_forwards rs1))
+              (String.append (freg_or_reg_name_forwards rs1)
                 (String.append (sep_forwards ())
-                  (String.append (← (freg_or_reg_name_forwards rs2))
+                  (String.append (freg_or_reg_name_forwards rs2)
                     (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))))
   | .F_MADD_TYPE_H (rs3, rs2, rs1, rm, rd, op) => (pure (String.append
         (f_madd_type_mnemonic_H_forwards op)
         (String.append (spc_forwards ())
-          (String.append (← (freg_or_reg_name_forwards rd))
+          (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
-              (String.append (← (freg_or_reg_name_forwards rs1))
+              (String.append (freg_or_reg_name_forwards rs1)
                 (String.append (sep_forwards ())
-                  (String.append (← (freg_or_reg_name_forwards rs2))
+                  (String.append (freg_or_reg_name_forwards rs2)
                     (String.append (sep_forwards ())
-                      (String.append (← (freg_or_reg_name_forwards rs3))
+                      (String.append (freg_or_reg_name_forwards rs3)
                         (String.append (sep_forwards ())
                           (String.append (frm_mnemonic_forwards rm) ""))))))))))))
   | .F_BIN_F_TYPE_H (rs2, rs1, rd, op) => (pure (String.append (f_bin_f_type_mnemonic_H_forwards op)
         (String.append (spc_forwards ())
-          (String.append (← (freg_or_reg_name_forwards rd))
+          (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
-              (String.append (← (freg_or_reg_name_forwards rs1))
-                (String.append (sep_forwards ())
-                  (String.append (← (freg_or_reg_name_forwards rs2)) ""))))))))
+              (String.append (freg_or_reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (freg_or_reg_name_forwards rs2) ""))))))))
   | .F_BIN_X_TYPE_H (rs2, rs1, rd, op) => (pure (String.append (f_bin_x_type_mnemonic_H_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
-              (String.append (← (freg_or_reg_name_forwards rs1))
-                (String.append (sep_forwards ())
-                  (String.append (← (freg_or_reg_name_forwards rs2)) ""))))))))
+              (String.append (freg_or_reg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append (freg_or_reg_name_forwards rs2) ""))))))))
   | .F_UN_RM_FF_TYPE_H (rs1, rm, rd, op) => (pure (String.append
         (f_un_rm_ff_type_mnemonic_H_forwards op)
         (String.append (spc_forwards ())
-          (String.append (← (freg_or_reg_name_forwards rd))
+          (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
-              (String.append (← (freg_or_reg_name_forwards rs1))
+              (String.append (freg_or_reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
   | .F_UN_RM_FX_TYPE_H (rs1, rm, rd, op) => (pure (String.append
         (f_un_rm_fx_type_mnemonic_H_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
-              (String.append (← (freg_or_reg_name_forwards rs1))
+              (String.append (freg_or_reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
   | .F_UN_RM_XF_TYPE_H (rs1, rm, rd, op) => (pure (String.append
         (f_un_rm_xf_type_mnemonic_H_forwards op)
         (String.append (spc_forwards ())
-          (String.append (← (freg_or_reg_name_forwards rd))
+          (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))

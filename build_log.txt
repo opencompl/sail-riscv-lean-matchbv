@@ -35,61 +35,21 @@ warning: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/mode
 ✔ [34/94] Built LeanRV64D.RiscvFregType
 ✔ [35/94] Built LeanRV64D.RiscvRegs
 ✔ [36/94] Built LeanRV64D.RiscvPcAccess
-✔ [37/94] Built LeanRV64D.RiscvSysRegs
-✔ [38/94] Built LeanRV64D.RiscvPmpRegs
-✔ [39/94] Built LeanRV64D.RiscvPmpControl
-✔ [40/94] Built LeanRV64D.RiscvExtRegs
-✔ [41/94] Built LeanRV64D.RiscvAddrChecks
-✔ [42/94] Built LeanRV64D.RiscvVregType
-✔ [43/94] Built LeanRV64D.RiscvVextRegs
-✔ [44/94] Built LeanRV64D.RiscvVextControl
-✔ [45/94] Built LeanRV64D.RiscvSysExceptions
-✔ [46/94] Built LeanRV64D.RiscvZihpm
-✔ [47/94] Built LeanRV64D.RiscvSscofpmf
-✔ [48/94] Built LeanRV64D.RiscvZkrControl
-✔ [49/94] Built LeanRV64D.RiscvSoftfloatInterface
-✔ [50/94] Built LeanRV64D.RiscvFdextRegs
-✔ [51/94] Built LeanRV64D.RiscvSmcntrpmf
-✔ [52/94] Built LeanRV64D.RiscvSysControl
-✔ [53/94] Built LeanRV64D.RiscvPlatform
-✔ [54/94] Built LeanRV64D.RiscvMem
-✔ [55/94] Built LeanRV64D.RiscvVmemPte
-✔ [56/94] Built LeanRV64D.RiscvVmemPtw
-✔ [57/94] Built LeanRV64D.RiscvVmemTlb
-✔ [58/94] Built LeanRV64D.RiscvVmem
-✔ [59/94] Built LeanRV64D.RiscvTypesKext
-✔ [60/94] Built LeanRV64D.RiscvInstsBase
-✔ [61/94] Built LeanRV64D.RiscvInstsAext
-✔ [62/94] Built LeanRV64D.RiscvInstsMext
-✔ [63/94] Built LeanRV64D.RiscvInstsZicsr
-✔ [64/94] Built LeanRV64D.RiscvInstsFext
-✔ [65/94] Built LeanRV64D.RiscvInstsDext
-✔ [66/94] Built LeanRV64D.RiscvInstsZba
-✔ [67/94] Built LeanRV64D.RiscvInstsZbb
-✔ [68/94] Built LeanRV64D.RiscvInstsZbs
-✔ [69/94] Built LeanRV64D.RiscvInstsZfh
-✔ [70/94] Built LeanRV64D.RiscvInstsZfa
-✔ [71/94] Built LeanRV64D.RiscvInstsZbkb
-✔ [72/94] Built LeanRV64D.RiscvInstsZicond
-✔ [73/94] Built LeanRV64D.RiscvInstsVextUtils
-✔ [74/94] Built LeanRV64D.RiscvInstsVextFpUtils
-✔ [75/94] Built LeanRV64D.RiscvInstsVextVset
-✔ [76/94] Built LeanRV64D.RiscvInstsVextArith
-✔ [77/94] Built LeanRV64D.RiscvInstsVextFp
-✔ [78/94] Built LeanRV64D.RiscvInstsVextMem
-✔ [79/94] Built LeanRV64D.RiscvInstsVextMask
-✔ [80/94] Built LeanRV64D.RiscvInstsVextVm
-✔ [81/94] Built LeanRV64D.RiscvInstsVextFpVm
-✔ [82/94] Built LeanRV64D.RiscvInstsVextRed
-✔ [83/94] Built LeanRV64D.RiscvInstsVextFpRed
-✔ [84/94] Built LeanRV64D.RiscvInstsZicbom
-✔ [85/94] Built LeanRV64D.RiscvInstsZicboz
-✔ [86/94] Built LeanRV64D.RiscvInstsEnd
-✔ [87/94] Built LeanRV64D.RiscvCsrEnd
-✔ [88/94] Built LeanRV64D.RiscvStepExt
-✔ [89/94] Built LeanRV64D.RiscvDecodeExt
-✔ [90/94] Built LeanRV64D.RiscvFetch
-✔ [91/94] Built LeanRV64D.RiscvStep
-✔ [92/94] Built LeanRV64D.Main
-✔ [93/94] Built LeanRV64D
-Build completed successfully.
+✖ [37/94] Building LeanRV64D.RiscvSysRegs
+trace: .> LEAN_PATH=/home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/lib/lean /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-04-07/bin/lean --tstack=400000 /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvSysRegs.lean -R /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D -o /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/lib/lean/LeanRV64D/RiscvSysRegs.olean -i /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/lib/lean/LeanRV64D/RiscvSysRegs.ilean -c /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/ir/LeanRV64D/RiscvSysRegs.c --json
+error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvSysRegs.lean:891:4: fail to show termination for
+  LeanRV64D.Functions.currentlyEnabled
+with errors
+failed to infer structural recursion:
+Cannot use parameter merge_var:
+  the type extension does not have a `.brecOn` recursor
+
+
+failed to prove termination, possible solutions:
+  - Use `have`-expressions to prove the remaining goals
+  - Use `termination_by` to specify a different well-founded relation
+  - Use `decreasing_by` to specify your own tactic for discharging this kind of goal
+⊢ sizeOf Ext_C < sizeOf Ext_Zca
+error: Lean exited with code 1
+Some required builds logged failures:
+- LeanRV64D.RiscvSysRegs

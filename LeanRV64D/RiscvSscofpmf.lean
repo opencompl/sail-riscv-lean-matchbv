@@ -215,5 +215,5 @@ def get_scountovf (priv : Privilege) : SailM (BitVec 32) := do
   match priv with
   | Machine => (pure overflow)
   | Supervisor => (pure (overflow &&& (← readReg mcounteren)))
-  | User => (internal_error "riscv_sscofpmf.sail" 77 "scountovf not readable from User mode")
+  | User => (internal_error "riscv_sscofpmf.sail" 74 "scountovf not readable from User mode")
 

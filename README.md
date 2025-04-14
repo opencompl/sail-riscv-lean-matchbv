@@ -8,15 +8,17 @@ is still work-in-progress. As a result, our semantics are still full of warnings
 and errors. Similarly, our output is not yet polished for readability.
 # RISC-V Lean Statistics
 
-Lines: 132539  
-Definitions: 3554  
+Lines: 132593  
+Definitions: 3551  
 Inductive definitions: 157  
 Abbreviations: 127  
 
 # Warnings and Errors
 
-Errors found: 0  
+Errors found: 2  
 Warnings found: 2  
 
 ## Error Classes
 
+- 1x fail to show termination for
+- 1x Lean exited with code 1

@@ -169,8 +169,8 @@ def hex_bits_signed_forwards (bv : (BitVec k_n)) : (Nat × String) :=
     bif (BEq.beq (BitVec.access bv (len -i 1)) 1#1)
     then (HAppend.hAppend "-" (Int.toHex ((BitVec.toNat (Complement.complement bv)) +i 1)))
     else (Int.toHex (BitVec.toNat bv))
-  let t__6042 := (Sail.BitVec.length bv)
-  (t__6042, s)
+  let t__6041 := (Sail.BitVec.length bv)
+  (t__6041, s)
 
 /-- Type quantifiers: k_n : Nat, k_n > 0 -/
 def hex_bits_signed_forwards_matches (bv : (BitVec k_n)) : Bool :=

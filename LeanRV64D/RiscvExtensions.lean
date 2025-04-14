@@ -162,22 +162,61 @@ open ExceptionType
 open Architecture
 open AccessType
 
-def hartSupports (merge_var : extension) : SailM Bool := do
+def hartSupports (merge_var : extension) : Bool :=
   match merge_var with
-  | Ext_F => (pure true)
-  | Ext_D => (pure true)
-  | Ext_C => (pure true)
-  | Ext_B => (pure false)
-  | Ext_V => (pure true)
-  | Ext_Zicbom => (pure false)
-  | Ext_Zicboz => (pure false)
-  | Ext_Zfinx => (pure false)
-  | Ext_Zcb => (pure false)
-  | Ext_Zvkb => (pure false)
-  | Ext_Zvbc => (pure true)
-  | Ext_Sstc => (pure false)
-  | Ext_Svinval => (pure false)
-  | _ => (do
-      assert false "Pattern match failure at riscv_extensions.sail:148.0-148.79"
-      throw Error.Exit)
+  | Ext_M => true
+  | Ext_A => true
+  | Ext_F => true
+  | Ext_D => true
+  | Ext_B => true
+  | Ext_V => true
+  | Ext_S => true
+  | Ext_U => true
+  | Ext_Zicbom => true
+  | Ext_Zicboz => true
+  | Ext_Zicntr => true
+  | Ext_Zicond => true
+  | Ext_Zifencei => true
+  | Ext_Zihpm => true
+  | Ext_Zimop => true
+  | Ext_Zmmul => false
+  | Ext_Zaamo => false
+  | Ext_Zabha => true
+  | Ext_Zalrsc => false
+  | Ext_Zfa => true
+  | Ext_Zfh => true
+  | Ext_Zfhmin => false
+  | Ext_Zfinx => false
+  | Ext_Zdinx => false
+  | Ext_Zca => true
+  | Ext_Zcb => true
+  | Ext_Zcd => true
+  | Ext_Zcf => (Bool.and (true : Bool) (BEq.beq xlen 32))
+  | Ext_Zcmop => true
+  | Ext_C => (Bool.and (hartSupports Ext_Zca)
+      (Bool.and (Bool.or (hartSupports Ext_Zcf) (Bool.or (not (hartSupports Ext_F)) (bne xlen 32)))
+        (Bool.or (hartSupports Ext_Zcd) (not (hartSupports Ext_D)))))
+  | Ext_Zba => false
+  | Ext_Zbb => false
+  | Ext_Zbc => true
+  | Ext_Zbkb => true
+  | Ext_Zbkc => true
+  | Ext_Zbkx => true
+  | Ext_Zbs => false
+  | Ext_Zknd => true
+  | Ext_Zkne => true
+  | Ext_Zknh => true
+  | Ext_Zkr => true
+  | Ext_Zksed => true
+  | Ext_Zksh => true
+  | Ext_Zhinx => false
+  | Ext_Zvbb => true
+  | Ext_Zvkb => false
+  | Ext_Zvbc => true
+  | Ext_Sscofpmf => true
+  | Ext_Sstc => true
+  | Ext_Svinval => true
+  | Ext_Svnapot => false
+  | Ext_Svpbmt => false
+  | Ext_Smcntrpmf => true
 

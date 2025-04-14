@@ -1611,8 +1611,12 @@ def write_CSR (b__0 : (BitVec 12)) (value : (BitVec (2 ^ 3 * 8))) : SailM (BitVe
                                                                                                                                                                                                (0xB02 : (BitVec 12)))
                                                                                                                                                                                           then
                                                                                                                                                                                             (do
-                                                                                                                                                                                              writeReg minstret_write (some
+                                                                                                                                                                                              writeReg minstret (Sail.BitVec.updateSubrange
+                                                                                                                                                                                                (← readReg minstret)
+                                                                                                                                                                                                (xlen -i 1)
+                                                                                                                                                                                                0
                                                                                                                                                                                                 value)
+                                                                                                                                                                                              writeReg minstret_increment false
                                                                                                                                                                                               (pure value))
                                                                                                                                                                                           else
                                                                                                                                                                                             (do
@@ -1642,8 +1646,12 @@ def write_CSR (b__0 : (BitVec 12)) (value : (BitVec (2 ^ 3 * 8))) : SailM (BitVe
                                                                                                                                                                                                          32))
                                                                                                                                                                                                   then
                                                                                                                                                                                                     (do
-                                                                                                                                                                                                      writeReg minstreth_write (some
+                                                                                                                                                                                                      writeReg minstret (Sail.BitVec.updateSubrange
+                                                                                                                                                                                                        (← readReg minstret)
+                                                                                                                                                                                                        63
+                                                                                                                                                                                                        32
                                                                                                                                                                                                         value)
+                                                                                                                                                                                                      writeReg minstret_increment false
                                                                                                                                                                                                       (pure value))
                                                                                                                                                                                                   else
                                                                                                                                                                                                     (do
@@ -1839,7 +1847,7 @@ def write_CSR (b__0 : (BitVec 12)) (value : (BitVec (2 ^ 3 * 8))) : SailM (BitVe
                                                                                                                                                                                                                                                 (BitVec.toFormatted
                                                                                                                                                                                                                                                   b__0)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
 
-/-- Type quantifiers: k_ex321865# : Bool -/
+/-- Type quantifiers: k_ex325197# : Bool -/
 def doCSR (csr : (BitVec 12)) (rs1_val : (BitVec (2 ^ 3 * 8))) (rd : regidx) (op : csrop) (is_CSR_Write : Bool) : SailM Retired := do
   bif (not (← (check_CSR csr (← readReg cur_privilege) is_CSR_Write)))
   then

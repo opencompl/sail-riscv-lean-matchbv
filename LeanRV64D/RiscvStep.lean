@@ -166,8 +166,6 @@ open AccessType
 def step (step_no : Int) : SailM Bool := do
   let _ : Unit := (ext_pre_step_hook ())
   writeReg minstret_increment (← (should_inc_minstret (← readReg cur_privilege)))
-  writeReg minstret_write none
-  writeReg minstreth_write none
   let (retired, stepped) ← (( do
     match (← (dispatchInterrupt (← readReg cur_privilege))) with
     | .some (intr, priv) => (do
