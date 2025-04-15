@@ -204,15 +204,17 @@ def pmpMatchAddr (typ_0 : physaddr) (width : (BitVec (2 ^ 3 * 8))) (ent : (BitVe
   | OFF => (pure PMP_NoMatch)
   | TOR => (bif (zopz0zKzJ_u prev_pmpaddr pmpaddr)
     then (pure PMP_NoMatch)
-    else (pure (pmpRangeMatch (BitVec.toNat prev_pmpaddr) (BitVec.toNat pmpaddr) addr width)))
+    else
+      (pure (pmpRangeMatch ((BitVec.toNat prev_pmpaddr) *i 4) ((BitVec.toNat pmpaddr) *i 4) addr
+          width)))
   | NA4 => (do
       assert ((sys_pmp_grain ()) <b 1) "NA4 cannot be selected when PMP grain G >= 1."
-      let begin := (BitVec.toNat (pmpaddr ++ (0b00 : (BitVec 2))))
+      let begin := ((BitVec.toNat pmpaddr) *i 4)
       (pure (pmpRangeMatch begin (begin +i 4) addr width)))
   | NAPOT => (let mask := (pmpaddr ^^^ (BitVec.addInt pmpaddr 1))
-    let begin := (BitVec.toNat (pmpaddr &&& (Complement.complement mask)))
-    let end_ := ((begin +i (BitVec.toNat mask)) +i 1)
-    (pure (pmpRangeMatch begin end_ addr width)))
+    let begin_words := (BitVec.toNat (pmpaddr &&& (Complement.complement mask)))
+    let end_words := ((begin_words +i (BitVec.toNat mask)) +i 1)
+    (pure (pmpRangeMatch (begin_words *i 4) (end_words *i 4) addr width)))
 
 def undefined_pmpMatch (_ : Unit) : SailM pmpMatch := do
   (internal_pick [PMP_Success, PMP_Continue, PMP_Fail])
