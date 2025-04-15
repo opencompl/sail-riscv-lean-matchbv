@@ -203,8 +203,7 @@ def step (step_no : Int) : SailM Bool := do
             then
               (do
                 writeReg nextPC (BitVec.addInt (← readReg PC) 2)
-                let t__4 ← do (execute ast)
-                (pure (t__4, true)))
+                (pure ((← (execute ast)), true)))
             else
               (do
                 (handle_illegal ())
@@ -227,8 +226,7 @@ def step (step_no : Int) : SailM Bool := do
                                   (HAppend.hAppend ") " (← (print_insn ast)))))))))))))
             else (pure ())
             writeReg nextPC (BitVec.addInt (← readReg PC) 4)
-            let t__6 ← do (execute ast)
-            (pure (t__6, true)))) ) : SailM (Retired × Bool) )
+            (pure ((← (execute ast)), true)))) ) : SailM (Retired × Bool) )
   (tick_pc ())
   bif (bne retired RETIRE_SUCCESS)
   then writeReg minstret_increment false

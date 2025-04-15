@@ -172,34 +172,19 @@ def fcvtmod_helper (x64 : (BitVec 64)) : ((BitVec 5) × (BitVec 32)) :=
   let is_too_large := (true_exp ≥b 84)
   let is_too_small := (true_exp <b 0)
   bif is_zero
-  then
-    (let t__3740 := (zeros (n := 5))
-    let t__3741 := (zeros (n := 32))
-    (t__3740, t__3741))
+  then ((zeros (n := 5)), (zeros (n := 32)))
   else
     (bif is_subnorm
-    then
-      (let t__3738 := (nxFlag ())
-      let t__3739 := (zeros (n := 32))
-      (t__3738, t__3739))
+    then ((nxFlag ()), (zeros (n := 32)))
     else
       (bif is_nan_or_inf
-      then
-        (let t__3736 := (nvFlag ())
-        let t__3737 := (zeros (n := 32))
-        (t__3736, t__3737))
+      then ((nvFlag ()), (zeros (n := 32)))
       else
         (bif is_too_large
-        then
-          (let t__3734 := (nvFlag ())
-          let t__3735 := (zeros (n := 32))
-          (t__3734, t__3735))
+        then ((nvFlag ()), (zeros (n := 32)))
         else
           (bif is_too_small
-          then
-            (let t__3732 := (nxFlag ())
-            let t__3733 := (zeros (n := 32))
-            (t__3732, t__3733))
+          then ((nxFlag ()), (zeros (n := 32)))
           else
             (let fixedpoint : (BitVec 84) := (shiftl (zero_extend (m := 84) true_mant) true_exp)
             let integer := (Sail.BitVec.extractLsb fixedpoint 83 52)

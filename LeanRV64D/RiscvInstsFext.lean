@@ -291,10 +291,8 @@ def nvFlag (_ : Unit) : (BitVec 5) :=
   (0b10000 : (BitVec 5))
 
 def fsplit_S (x32 : (BitVec 32)) : ((BitVec 1) × (BitVec 8) × (BitVec 23)) :=
-  let t__3877 := (Sail.BitVec.extractLsb x32 31 31)
-  let t__3878 := (Sail.BitVec.extractLsb x32 30 23)
-  let t__3879 := (Sail.BitVec.extractLsb x32 22 0)
-  (t__3877, t__3878, t__3879)
+  ((Sail.BitVec.extractLsb x32 31 31), (Sail.BitVec.extractLsb x32 30 23), (Sail.BitVec.extractLsb
+    x32 22 0))
 
 def fmake_S (sign : (BitVec 1)) (exp : (BitVec 8)) (mant : (BitVec 23)) : (BitVec 32) :=
   (sign ++ (exp ++ mant))
@@ -372,7 +370,7 @@ def feq_quiet_S (v1 : (BitVec 32)) (v2 : (BitVec 32)) : (Bool × (BitVec 5)) :=
     else (zeros (n := 5))
   (result, fflags)
 
-/-- Type quantifiers: k_ex325354# : Bool -/
+/-- Type quantifiers: k_ex325339# : Bool -/
 def flt_S (v1 : (BitVec 32)) (v2 : (BitVec 32)) (is_quiet : Bool) : (Bool × (BitVec 5)) :=
   let (s1, e1, m1) := (fsplit_S v1)
   let (s2, e2, m2) := (fsplit_S v2)
@@ -404,7 +402,7 @@ def flt_S (v1 : (BitVec 32)) (v2 : (BitVec 32)) (is_quiet : Bool) : (Bool × (Bi
       else (zeros (n := 5)))
   (result, fflags)
 
-/-- Type quantifiers: k_ex325422# : Bool -/
+/-- Type quantifiers: k_ex325407# : Bool -/
 def fle_S (v1 : (BitVec 32)) (v2 : (BitVec 32)) (is_quiet : Bool) : (Bool × (BitVec 5)) :=
   let (s1, e1, m1) := (fsplit_S v1)
   let (s2, e2, m2) := (fsplit_S v2)
