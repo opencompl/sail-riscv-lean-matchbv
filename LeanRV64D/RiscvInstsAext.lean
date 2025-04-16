@@ -144,8 +144,9 @@ open amoop
 open agtype
 open TrapVectorMode
 open TR_Result
+open Step
 open SATPMode
-open Retired
+open Retire_Failure
 open Register
 open Privilege
 open PmpAddrMatchType
@@ -153,17 +154,19 @@ open PTW_Result
 open PTW_Error
 open PTE_Check
 open InterruptType
+open HartState
 open FetchResult
 open Ext_PhysAddr_Check
 open Ext_FetchAddr_Check
 open Ext_DataAddr_Check
 open Ext_ControlAddr_Check
 open ExtStatus
+open ExecutionResult
 open ExceptionType
 open Architecture
 open AccessType
 
-/-- Type quantifiers: k_ex333393# : Bool, k_ex333392# : Bool -/
+/-- Type quantifiers: k_ex346226# : Bool, k_ex346225# : Bool -/
 def aqrl_str (aq : Bool) (rl : Bool) : String :=
   match (aq, rl) with
   | (false, false) => ""

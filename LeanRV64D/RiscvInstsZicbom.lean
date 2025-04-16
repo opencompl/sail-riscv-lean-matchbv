@@ -144,8 +144,9 @@ open amoop
 open agtype
 open TrapVectorMode
 open TR_Result
+open Step
 open SATPMode
-open Retired
+open Retire_Failure
 open Register
 open Privilege
 open PmpAddrMatchType
@@ -153,12 +154,14 @@ open PTW_Result
 open PTW_Error
 open PTE_Check
 open InterruptType
+open HartState
 open FetchResult
 open Ext_PhysAddr_Check
 open Ext_FetchAddr_Check
 open Ext_DataAddr_Check
 open Ext_ControlAddr_Check
 open ExtStatus
+open ExecutionResult
 open ExceptionType
 open Architecture
 open AccessType
@@ -320,7 +323,7 @@ def cbop_priv_check (p : Privilege) : SailM checked_cbop := do
   | (User, _, CBIE_EXEC_FLUSH) => (pure CBOP_INVAL_FLUSH)
   | _ => (pure CBOP_INVAL_INVAL)
 
-def process_clean_inval (rs1 : regidx) (cbop : cbop_zicbom) : SailM Retired := do
+def process_clean_inval (rs1 : regidx) (cbop : cbop_zicbom) : SailM (ExecutionResult Retire_Failure) := do
   let rs1_val ← do (rX_bits rs1)
   let cache_block_size_exp := (plat_cache_block_size_exp ())
   let cache_block_size := (2 ^i cache_block_size_exp)
@@ -328,8 +331,7 @@ def process_clean_inval (rs1 : regidx) (cbop : cbop_zicbom) : SailM Retired := d
     ((rs1_val &&& (Complement.complement
           (zero_extend (m := ((2 ^i 3) *i 8)) (ones (n := cache_block_size_exp))))) - rs1_val)
   match (← (ext_data_get_addr rs1 negative_offset (Read Data) cache_block_size)) with
-  | .Ext_DataAddr_Error e => (let _ : Unit := (ext_handle_data_check_error e)
-    (pure RETIRE_FAIL))
+  | .Ext_DataAddr_Error e => (pure (RETIRE_FAIL (Ext_DataAddr_Check_Failure e)))
   | .Ext_DataAddr_OK vaddr => (do
       let res ← (( do
         match (← (translateAddr vaddr (Read Data))) with
@@ -353,6 +355,5 @@ def process_clean_inval (rs1 : regidx) (cbop : cbop_zicbom) : SailM Retired := d
             | .E_SAMO_Page_Fault () => (pure (E_SAMO_Page_Fault ()))
             | _ => (internal_error "riscv_insts_zicbom.sail" 125
                 "unexpected exception for cmo.clean/inval") ) : SailM ExceptionType )
-          (handle_mem_exception (sub_virtaddr_xlenbits vaddr negative_offset) e)
-          (pure RETIRE_FAIL)))
+          (pure (RETIRE_FAIL (Memory_Exception ((sub_virtaddr_xlenbits vaddr negative_offset), e))))))
 

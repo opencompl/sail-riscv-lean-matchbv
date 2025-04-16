@@ -835,7 +835,10 @@ inductive PTW_Error where
   | PTW_Ext_Error (_ : ext_ptw_error)
   deriving Inhabited, BEq
 
-inductive Retired where | RETIRE_SUCCESS | RETIRE_FAIL
+/-- Type quantifiers: k_a : Type -/
+inductive ExecutionResult (k_a : Type) where
+  | RETIRE_OK (_ : Unit)
+  | RETIRE_FAIL (_ : k_a)
   deriving Inhabited, BEq
 
 inductive InterruptType where | I_U_Software | I_S_Software | I_M_Software | I_U_Timer | I_S_Timer | I_M_Timer | I_U_External | I_S_External | I_M_External
@@ -1063,10 +1066,28 @@ inductive TR_Result (k_paddr : Type) (k_failure : Type) where
   | TR_Failure (_ : (k_failure × ext_ptw))
   deriving Inhabited, BEq
 
+inductive Retire_Failure where
+  | Illegal_Instruction (_ : Unit)
+  | Wait_For_Interrupt (_ : Unit)
+  | Trap (_ : (Privilege × ctl_result × xlenbits))
+  | Memory_Exception (_ : (virtaddr × ExceptionType))
+  | Ext_CSR_Check_Failure (_ : Unit)
+  | Ext_ControlAddr_Check_Failure (_ : ext_control_addr_error)
+  | Ext_DataAddr_Check_Failure (_ : ext_data_addr_error)
+  | Ext_XRET_Priv_Failure (_ : Unit)
+  deriving Inhabited, BEq
+
 inductive cbie where | CBIE_ILLEGAL | CBIE_EXEC_FLUSH | CBIE_EXEC_INVAL
   deriving Inhabited, BEq
 
 inductive checked_cbop where | CBOP_ILLEGAL | CBOP_ILLEGAL_VIRTUAL | CBOP_INVAL_FLUSH | CBOP_INVAL_INVAL
+  deriving Inhabited, BEq
+
+abbrev instbits := xlenbits
+
+inductive HartState where
+  | HART_ACTIVE (_ : Unit)
+  | HART_WAITING (_ : instbits)
   deriving Inhabited, BEq
 
 inductive FetchResult where
@@ -1076,7 +1097,16 @@ inductive FetchResult where
   | F_Error (_ : (ExceptionType × xlenbits))
   deriving Inhabited, BEq
 
+inductive Step where
+  | Step_Pending_Interrupt (_ : (InterruptType × Privilege))
+  | Step_Ext_Fetch_Failure (_ : ext_fetch_addr_error)
+  | Step_Fetch_Failure (_ : (virtaddr × ExceptionType))
+  | Step_Execute (_ : ((ExecutionResult Retire_Failure) × instbits))
+  | Step_Waiting (_ : Unit)
+  deriving Inhabited, BEq
+
 inductive Register : Type where
+  | hart_state
   | satp
   | tlb
   | htif_payload_writes
@@ -1227,13 +1257,13 @@ inductive Register : Type where
   | x3
   | x2
   | x1
-  | instbits
   | nextPC
   | PC
   deriving DecidableEq, Hashable
 open Register
 
 abbrev RegisterType : Register → Type
+  | .hart_state => HartState
   | .satp => (BitVec (2 ^ 3 * 8))
   | .tlb => (Vector (Option TLB_Entry) 64)
   | .htif_payload_writes => (BitVec 4)
@@ -1384,10 +1414,11 @@ abbrev RegisterType : Register → Type
   | .x3 => (BitVec (2 ^ 3 * 8))
   | .x2 => (BitVec (2 ^ 3 * 8))
   | .x1 => (BitVec (2 ^ 3 * 8))
-  | .instbits => (BitVec (2 ^ 3 * 8))
   | .nextPC => (BitVec (2 ^ 3 * 8))
   | .PC => (BitVec (2 ^ 3 * 8))
 
+instance : Inhabited (RegisterRef RegisterType HartState) where
+  default := .Reg hart_state
 instance : Inhabited (RegisterRef RegisterType Privilege) where
   default := .Reg cur_privilege
 instance : Inhabited (RegisterRef RegisterType (BitVec 1)) where

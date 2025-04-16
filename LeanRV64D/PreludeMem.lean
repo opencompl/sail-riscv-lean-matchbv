@@ -144,8 +144,9 @@ open amoop
 open agtype
 open TrapVectorMode
 open TR_Result
+open Step
 open SATPMode
-open Retired
+open Retire_Failure
 open Register
 open Privilege
 open PmpAddrMatchType
@@ -153,12 +154,14 @@ open PTW_Result
 open PTW_Error
 open PTE_Check
 open InterruptType
+open HartState
 open FetchResult
 open Ext_PhysAddr_Check
 open Ext_FetchAddr_Check
 open Ext_DataAddr_Check
 open Ext_ControlAddr_Check
 open ExtStatus
+open ExecutionResult
 open ExceptionType
 open Architecture
 open AccessType
@@ -285,7 +288,7 @@ def write_ram_ea (wk : write_kind) (app_1 : physaddr) (width : Nat) : Unit :=
   let .Physaddr addr := app_1
   ()
 
-/-- Type quantifiers: k_ex326707# : Bool, width : Nat, 0 < width ∧ width ≤ max_mem_access -/
+/-- Type quantifiers: k_ex339550# : Bool, width : Nat, 0 < width ∧ width ≤ max_mem_access -/
 def read_ram (rk : read_kind) (app_1 : physaddr) (width : Nat) (read_meta : Bool) : SailM ((BitVec (8 * width)) × Unit) := do
   let .Physaddr addr := app_1
   let meta :=

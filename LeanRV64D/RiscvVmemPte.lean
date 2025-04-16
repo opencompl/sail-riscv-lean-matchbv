@@ -144,8 +144,9 @@ open amoop
 open agtype
 open TrapVectorMode
 open TR_Result
+open Step
 open SATPMode
-open Retired
+open Retire_Failure
 open Register
 open Privilege
 open PmpAddrMatchType
@@ -153,12 +154,14 @@ open PTW_Result
 open PTW_Error
 open PTE_Check
 open InterruptType
+open HartState
 open FetchResult
 open Ext_PhysAddr_Check
 open Ext_FetchAddr_Check
 open Ext_DataAddr_Check
 open Ext_ControlAddr_Check
 open ExtStatus
+open ExecutionResult
 open ExceptionType
 open Architecture
 open AccessType
@@ -218,7 +221,7 @@ def pte_is_invalid (pte_flags : (BitVec 8)) (pte_ext : (BitVec 10)) : SailM Bool
               (not (← (currentlyEnabled Ext_Svpbmt))))
             (bne (_get_PTE_Ext_reserved pte_ext) (zeros (n := 7))))))))
 
-/-- Type quantifiers: k_ex332012# : Bool, k_ex332011# : Bool -/
+/-- Type quantifiers: k_ex344853# : Bool, k_ex344852# : Bool -/
 def check_PTE_permission (ac : (AccessType Unit)) (priv : Privilege) (mxr : Bool) (do_sum : Bool) (pte_flags : (BitVec 8)) (ext : (BitVec 10)) (ext_ptw : Unit) : SailM PTE_Check := do
   let pte_U := (_get_PTE_Flags_U pte_flags)
   let pte_R := (_get_PTE_Flags_R pte_flags)
@@ -249,7 +252,7 @@ def check_PTE_permission (ac : (AccessType Unit)) (priv : Privilege) (mxr : Bool
               (Bool.and (BEq.beq pte_X (0b1 : (BitVec 1))) mxr)))))
     | (.Execute (), Supervisor) => (pure (Bool.and (BEq.beq pte_U (0b0 : (BitVec 1)))
           (BEq.beq pte_X (0b1 : (BitVec 1)))))
-    | (_, Machine) => (internal_error "riscv_vmem_pte.sail" 130 "m-mode mem perm check") ) : SailM
+    | (_, Machine) => (internal_error "riscv_vmem_pte.sail" 132 "m-mode mem perm check") ) : SailM
     Bool )
   bif success
   then (pure (PTE_Check_Success ()))

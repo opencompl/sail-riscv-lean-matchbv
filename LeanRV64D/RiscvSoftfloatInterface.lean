@@ -144,8 +144,9 @@ open amoop
 open agtype
 open TrapVectorMode
 open TR_Result
+open Step
 open SATPMode
-open Retired
+open Retire_Failure
 open Register
 open Privilege
 open PmpAddrMatchType
@@ -153,12 +154,14 @@ open PTW_Result
 open PTW_Error
 open PTE_Check
 open InterruptType
+open HartState
 open FetchResult
 open Ext_PhysAddr_Check
 open Ext_FetchAddr_Check
 open Ext_DataAddr_Check
 open Ext_ControlAddr_Check
 open ExtStatus
+open ExecutionResult
 open ExceptionType
 open Architecture
 open AccessType
@@ -460,19 +463,19 @@ def riscv_f64Eq (v1 : (BitVec 64)) (v2 : (BitVec 64)) : SailM ((BitVec 5) × Boo
   (pure ((Sail.BitVec.extractLsb (← readReg float_fflags) 4 0), (← (bit_to_bool
         (BitVec.access (← readReg float_result) 0)))))
 
-/-- Type quantifiers: k_ex330106# : Bool -/
+/-- Type quantifiers: k_ex342947# : Bool -/
 def riscv_f16roundToInt (rm : (BitVec 3)) (v : (BitVec 16)) (exact : Bool) : SailM ((BitVec 5) × (BitVec 16)) := do
   let _ : Unit := (extern_f16roundToInt rm v exact)
   (pure ((Sail.BitVec.extractLsb (← readReg float_fflags) 4 0), (Sail.BitVec.extractLsb
       (← readReg float_result) 15 0)))
 
-/-- Type quantifiers: k_ex330110# : Bool -/
+/-- Type quantifiers: k_ex342951# : Bool -/
 def riscv_f32roundToInt (rm : (BitVec 3)) (v : (BitVec 32)) (exact : Bool) : SailM ((BitVec 5) × (BitVec 32)) := do
   let _ : Unit := (extern_f32roundToInt rm v exact)
   (pure ((Sail.BitVec.extractLsb (← readReg float_fflags) 4 0), (Sail.BitVec.extractLsb
       (← readReg float_result) 31 0)))
 
-/-- Type quantifiers: k_ex330114# : Bool -/
+/-- Type quantifiers: k_ex342955# : Bool -/
 def riscv_f64roundToInt (rm : (BitVec 3)) (v : (BitVec 64)) (exact : Bool) : SailM ((BitVec 5) × (BitVec 64)) := do
   let _ : Unit := (extern_f64roundToInt rm v exact)
   (pure ((Sail.BitVec.extractLsb (← readReg float_fflags) 4 0), (← readReg float_result)))

@@ -144,8 +144,9 @@ open amoop
 open agtype
 open TrapVectorMode
 open TR_Result
+open Step
 open SATPMode
-open Retired
+open Retire_Failure
 open Register
 open Privilege
 open PmpAddrMatchType
@@ -153,12 +154,14 @@ open PTW_Result
 open PTW_Error
 open PTE_Check
 open InterruptType
+open HartState
 open FetchResult
 open Ext_PhysAddr_Check
 open Ext_FetchAddr_Check
 open Ext_DataAddr_Check
 open Ext_ControlAddr_Check
 open ExtStatus
+open ExecutionResult
 open ExceptionType
 open Architecture
 open AccessType
@@ -755,11 +758,11 @@ def init_platform (_ : Unit) : SailM Unit := do
 def tick_platform (_ : Unit) : SailM Unit := do
   (htif_tick ())
 
-def handle_illegal (_ : Unit) : SailM Unit := do
-  let info ← do
+def handle_illegal (instbits : (BitVec (2 ^ 3 * 8))) : SailM Unit := do
+  let info :=
     bif (plat_mtval_has_illegal_inst_bits ())
-    then (pure (some (← readReg instbits)))
-    else (pure none)
+    then (some instbits)
+    else none
   let t : sync_exception :=
     { trap := (E_Illegal_Instr ())
       excinfo := info

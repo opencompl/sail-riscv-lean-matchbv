@@ -144,8 +144,9 @@ open amoop
 open agtype
 open TrapVectorMode
 open TR_Result
+open Step
 open SATPMode
-open Retired
+open Retire_Failure
 open Register
 open Privilege
 open PmpAddrMatchType
@@ -153,12 +154,14 @@ open PTW_Result
 open PTW_Error
 open PTE_Check
 open InterruptType
+open HartState
 open FetchResult
 open Ext_PhysAddr_Check
 open Ext_FetchAddr_Check
 open Ext_DataAddr_Check
 open Ext_ControlAddr_Check
 open ExtStatus
+open ExecutionResult
 open ExceptionType
 open Architecture
 open AccessType
@@ -1848,19 +1851,14 @@ def write_CSR (b__0 : (BitVec 12)) (value : (BitVec (2 ^ 3 * 8))) : SailM (BitVe
                                                                                                                                                                                                                                                 (BitVec.toFormatted
                                                                                                                                                                                                                                                   b__0)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
 
-/-- Type quantifiers: k_ex334444# : Bool -/
-def doCSR (csr : (BitVec 12)) (rs1_val : (BitVec (2 ^ 3 * 8))) (rd : regidx) (op : csrop) (is_CSR_Write : Bool) : SailM Retired := do
+/-- Type quantifiers: k_ex347277# : Bool -/
+def doCSR (csr : (BitVec 12)) (rs1_val : (BitVec (2 ^ 3 * 8))) (rd : regidx) (op : csrop) (is_CSR_Write : Bool) : SailM (ExecutionResult Retire_Failure) := do
   bif (not (← (check_CSR csr (← readReg cur_privilege) is_CSR_Write)))
-  then
-    (do
-      (handle_illegal ())
-      (pure RETIRE_FAIL))
+  then (pure (RETIRE_FAIL (Illegal_Instruction ())))
   else
     (do
       bif (not (ext_check_CSR csr (← readReg cur_privilege) is_CSR_Write))
-      then
-        (let _ : Unit := (ext_check_CSR_fail ())
-        (pure RETIRE_FAIL))
+      then (pure (RETIRE_FAIL (Ext_CSR_Check_Failure ())))
       else
         (do
           let is_CSR_Read := (not (Bool.and (BEq.beq op CSRRW) (BEq.beq rd zreg)))

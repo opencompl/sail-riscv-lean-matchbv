@@ -144,8 +144,9 @@ open amoop
 open agtype
 open TrapVectorMode
 open TR_Result
+open Step
 open SATPMode
-open Retired
+open Retire_Failure
 open Register
 open Privilege
 open PmpAddrMatchType
@@ -153,12 +154,14 @@ open PTW_Result
 open PTW_Error
 open PTE_Check
 open InterruptType
+open HartState
 open FetchResult
 open Ext_PhysAddr_Check
 open Ext_FetchAddr_Check
 open Ext_DataAddr_Check
 open Ext_ControlAddr_Check
 open ExtStatus
+open ExecutionResult
 open ExceptionType
 open Architecture
 open AccessType
@@ -172,7 +175,7 @@ def csrPriv (csr : (BitVec 12)) : (BitVec 2) :=
 def check_CSR_priv (csr : (BitVec 12)) (p : Privilege) : Bool :=
   (zopz0zKzJ_u (privLevel_to_bits p) (csrPriv csr))
 
-/-- Type quantifiers: k_ex330292# : Bool -/
+/-- Type quantifiers: k_ex343133# : Bool -/
 def check_CSR_access (csr : (BitVec 12)) (isWrite : Bool) : Bool :=
   (not (Bool.and isWrite (BEq.beq (csrAccess csr) (0b11 : (BitVec 2)))))
 
@@ -207,7 +210,7 @@ def check_Stimecmp (csr : (BitVec 12)) (p : Privilege) : SailM Bool := do
           (Bool.and (BEq.beq (_get_Counteren_TM (← readReg mcounteren)) (0b1 : (BitVec 1)))
             (BEq.beq (_get_MEnvcfg_STCE (← readReg menvcfg)) (0b1 : (BitVec 1)))))))
 
-/-- Type quantifiers: k_ex330379# : Bool -/
+/-- Type quantifiers: k_ex343220# : Bool -/
 def check_seed_CSR (csr : (BitVec 12)) (p : Privilege) (isWrite : Bool) : Bool :=
   bif (not (BEq.beq csr (0x015 : (BitVec 12))))
   then true
@@ -889,7 +892,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                                                                                           else
                                                                                                                                                                                                                                                                                             (pure false)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
 
-/-- Type quantifiers: k_ex330855# : Bool -/
+/-- Type quantifiers: k_ex343696# : Bool -/
 def check_CSR (csr : (BitVec 12)) (p : Privilege) (isWrite : Bool) : SailM Bool := do
   (pure (Bool.and (← (is_CSR_defined csr))
       (Bool.and (check_CSR_priv csr p)
@@ -932,7 +935,7 @@ def findPendingInterrupt (ip : (BitVec (2 ^ 3 * 8))) : (Option InterruptType) :=
 
 def getPendingSet (priv : Privilege) : SailM (Option ((BitVec (2 ^ 3 * 8)) × Privilege)) := do
   assert (Bool.or (← (currentlyEnabled Ext_S))
-    (BEq.beq (← readReg mideleg) (zeros (n := ((2 ^i 3) *i 8))))) "riscv_sys_control.sail:135.58-135.59"
+    (BEq.beq (← readReg mideleg) (zeros (n := ((2 ^i 3) *i 8))))) "riscv_sys_control.sail:137.58-137.59"
   let pending_m ← do
     (pure ((← readReg mip) &&& ((← readReg mie) &&& (Complement.complement (← readReg mideleg)))))
   let pending_s ← do (pure ((← readReg mip) &&& ((← readReg mie) &&& (← readReg mideleg))))
@@ -952,6 +955,9 @@ def getPendingSet (priv : Privilege) : SailM (Option ((BitVec (2 ^ 3 * 8)) × Pr
     then (pure (some (pending_s, Supervisor)))
     else (pure none))
 
+def shouldWakeForInterrupt (_ : Unit) : SailM Bool := do
+  (pure (bne ((← readReg mip) &&& (← readReg mie)) (zeros (n := ((2 ^i 3) *i 8)))))
+
 def dispatchInterrupt (priv : Privilege) : SailM (Option (InterruptType × Privilege)) := do
   match (← (getPendingSet priv)) with
   | none => (pure none)
@@ -967,7 +973,7 @@ def tval (excinfo : (Option (BitVec (2 ^ 3 * 8)))) : (BitVec (2 ^ 3 * 8)) :=
 def rvfi_trap (_ : Unit) : Unit :=
   ()
 
-/-- Type quantifiers: k_ex331101# : Bool -/
+/-- Type quantifiers: k_ex343942# : Bool -/
 def trap_handler (del_priv : Privilege) (intr : Bool) (c : (BitVec 8)) (pc : (BitVec (2 ^ 3 * 8))) (info : (Option (BitVec (2 ^ 3 * 8)))) (ext : (Option Unit)) : SailM (BitVec (2 ^ 3 * 8)) := do
   let _ : Unit := (rvfi_trap ())
   let _ : Unit :=
@@ -1019,7 +1025,7 @@ def trap_handler (del_priv : Privilege) (intr : Bool) (c : (BitVec 8)) (pc : (Bi
           match (← readReg cur_privilege) with
           | User => (pure (0b0 : (BitVec 1)))
           | Supervisor => (pure (0b1 : (BitVec 1)))
-          | Machine => (internal_error "riscv_sys_control.sail" 229
+          | Machine => (internal_error "riscv_sys_control.sail" 255
               "invalid privilege for s-mode trap")))
       writeReg stval (tval info)
       writeReg sepc pc
@@ -1031,7 +1037,7 @@ def trap_handler (del_priv : Privilege) (intr : Bool) (c : (BitVec 8)) (pc : (Bi
             (HAppend.hAppend "CSR mstatus <- " (BitVec.toFormatted (← readReg mstatus)))))
       else (pure ())
       (prepare_trap_vector del_priv (← readReg scause)))
-  | User => (internal_error "riscv_sys_control.sail" 243 "Invalid privilege level")
+  | User => (internal_error "riscv_sys_control.sail" 269 "Invalid privilege level")
 
 def exception_handler (cur_priv : Privilege) (ctl : ctl_result) (pc : (BitVec (2 ^ 3 * 8))) : SailM (BitVec (2 ^ 3 * 8)) := do
   match (cur_priv, ctl) with
@@ -1141,7 +1147,7 @@ def reset_misa (_ : Unit) : SailM Unit := do
   writeReg misa (Sail.BitVec.updateSubrange (← readReg misa) 21 21
     (bool_to_bits (hartSupports Ext_V)))
   bif (Bool.and (hartSupports Ext_F) (hartSupports Ext_Zfinx))
-  then (internal_error "riscv_sys_control.sail" 322 "F and Zfinx cannot both be enabled!")
+  then (internal_error "riscv_sys_control.sail" 348 "F and Zfinx cannot both be enabled!")
   else (pure ())
   writeReg misa (Sail.BitVec.updateSubrange (← readReg misa) 5 5
     (bool_to_bits (hartSupports Ext_F)))

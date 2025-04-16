@@ -144,8 +144,9 @@ open amoop
 open agtype
 open TrapVectorMode
 open TR_Result
+open Step
 open SATPMode
-open Retired
+open Retire_Failure
 open Register
 open Privilege
 open PmpAddrMatchType
@@ -153,12 +154,14 @@ open PTW_Result
 open PTW_Error
 open PTE_Check
 open InterruptType
+open HartState
 open FetchResult
 open Ext_PhysAddr_Check
 open Ext_FetchAddr_Check
 open Ext_DataAddr_Check
 open Ext_ControlAddr_Check
 open ExtStatus
+open ExecutionResult
 open ExceptionType
 open Architecture
 open AccessType
@@ -166,7 +169,6 @@ open AccessType
 def initialize_registers (_ : Unit) : SailM Unit := do
   writeReg PC (← (undefined_bitvector ((2 ^i 3) *i 8)))
   writeReg nextPC (← (undefined_bitvector ((2 ^i 3) *i 8)))
-  writeReg instbits (← (undefined_bitvector ((2 ^i 3) *i 8)))
   writeReg x1 (← (undefined_bitvector ((2 ^i 3) *i 8)))
   writeReg x2 (← (undefined_bitvector ((2 ^i 3) *i 8)))
   writeReg x3 (← (undefined_bitvector ((2 ^i 3) *i 8)))
@@ -328,6 +330,7 @@ def sail_model_init (x_0 : Unit) : SailM Unit := do
   writeReg mhartid (zeros (n := ((2 ^i 3) *i 8)))
   writeReg mconfigptr (zeros (n := ((2 ^i 3) *i 8)))
   writeReg tlb (vectorInit none)
+  writeReg hart_state (HART_ACTIVE ())
   (initialize_registers ())
 
 end LeanRV64D.Functions

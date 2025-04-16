@@ -144,8 +144,9 @@ open amoop
 open agtype
 open TrapVectorMode
 open TR_Result
+open Step
 open SATPMode
-open Retired
+open Retire_Failure
 open Register
 open Privilege
 open PmpAddrMatchType
@@ -153,12 +154,14 @@ open PTW_Result
 open PTW_Error
 open PTE_Check
 open InterruptType
+open HartState
 open FetchResult
 open Ext_PhysAddr_Check
 open Ext_FetchAddr_Check
 open Ext_DataAddr_Check
 open Ext_ControlAddr_Check
 open ExtStatus
+open ExecutionResult
 open ExceptionType
 open Architecture
 open AccessType
@@ -3092,7 +3095,7 @@ def ma_flag_backwards (arg_ : (BitVec 1)) : String :=
   then (String.append (sep_forwards ()) (String.append "ma" ""))
   else (String.append (sep_forwards ()) (String.append "mu" ""))
 
-/-- Type quantifiers: k_ex327355# : Bool -/
+/-- Type quantifiers: k_ex340198# : Bool -/
 def maybe_aq_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".aq"
@@ -3131,19 +3134,19 @@ def maybe_lmul_flag_backwards (arg_ : (BitVec 3)) : SailM String := do
                               assert false "Pattern match failure at unknown location"
                               throw Error.Exit)))))))
 
-/-- Type quantifiers: k_ex327363# : Bool -/
+/-- Type quantifiers: k_ex340206# : Bool -/
 def maybe_not_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | false => "u"
   | true => ""
 
-/-- Type quantifiers: k_ex327364# : Bool -/
+/-- Type quantifiers: k_ex340207# : Bool -/
 def maybe_rl_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".rl"
   | false => ""
 
-/-- Type quantifiers: k_ex327365# : Bool -/
+/-- Type quantifiers: k_ex340208# : Bool -/
 def maybe_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => "u"
@@ -6176,20 +6179,6 @@ def ptw_error_to_str (e : PTW_Error) : String :=
   | .PTW_Misaligned () => "misaligned-superpage"
   | .PTW_PTE_Update () => "pte-update-needed"
   | .PTW_Ext_Error e => "extension-error"
-
-def undefined_Retired (_ : Unit) : SailM Retired := do
-  (internal_pick [RETIRE_SUCCESS, RETIRE_FAIL])
-
-/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 1 -/
-def Retired_of_num (arg_ : Nat) : Retired :=
-  match arg_ with
-  | 0 => RETIRE_SUCCESS
-  | _ => RETIRE_FAIL
-
-def num_of_Retired (arg_ : Retired) : Int :=
-  match arg_ with
-  | RETIRE_SUCCESS => 0
-  | RETIRE_FAIL => 1
 
 def undefined_word_width (_ : Unit) : SailM word_width := do
   (internal_pick [BYTE, HALF, WORD, DOUBLE])

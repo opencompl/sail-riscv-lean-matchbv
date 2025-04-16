@@ -1,4 +1,4 @@
-import LeanRV64D.PreludeMem
+import LeanRV64D.RiscvZvkUtils
 
 set_option maxHeartbeats 1_000_000_000
 set_option maxRecDepth 10_000
@@ -166,39 +166,5 @@ open ExceptionType
 open Architecture
 open AccessType
 
-/-- Type quantifiers: k_n : Nat, k_n > 0 -/
-def carryless_mul (a : (BitVec k_n)) (b : (BitVec k_n)) : (BitVec (2 * k_n)) := Id.run do
-  let result : (BitVec (2 * k_n)) := (zeros (n := (2 *i (Sail.BitVec.length b))))
-  let loop_i_lower := 0
-  let loop_i_upper := ((Sail.BitVec.length b) -i 1)
-  let mut loop_vars := result
-  for i in [loop_i_lower:loop_i_upper:1]i do
-    let result := loop_vars
-    loop_vars :=
-      bif (BEq.beq (BitVec.access a i) 1#1)
-      then (result ^^^ (shiftl (zero_extend (m := (2 *i (Sail.BitVec.length b))) b) i))
-      else result
-  (pure loop_vars)
-
-/-- Type quantifiers: k_n : Nat, k_n > 0 -/
-def carryless_mulr (a : (BitVec k_n)) (b : (BitVec k_n)) : (BitVec k_n) := Id.run do
-  let result : (BitVec k_n) := (zeros (n := (Sail.BitVec.length b)))
-  let loop_i_lower := 0
-  let loop_i_upper := ((Sail.BitVec.length result) -i 1)
-  let mut loop_vars := result
-  for i in [loop_i_lower:loop_i_upper:1]i do
-    let result := loop_vars
-    loop_vars :=
-      bif (BEq.beq (BitVec.access a i) 1#1)
-      then (result ^^^ (shiftr b (((Sail.BitVec.length result) -i i) -i 1)))
-      else result
-  (pure loop_vars)
-
-/-- Type quantifiers: k_n : Nat, k_n > 0 -/
-def carryless_mul_reversed (a : (BitVec k_n)) (b : (BitVec k_n)) : (BitVec k_n) :=
-  let prod := (carryless_mul (reverse_bits a) (reverse_bits b))
-  (reverse_bits (Sail.BitVec.extractLsb prod ((Sail.BitVec.length b) -i 1) 0))
-
-def cmulr_equivalence (a : (BitVec 16)) (b : (BitVec 16)) : Bool :=
-  (BEq.beq (carryless_mul_reversed a b) (carryless_mulr a b))
+def RETIRE_SUCCESS : (ExecutionResult Retire_Failure) := (RETIRE_OK ())
 
