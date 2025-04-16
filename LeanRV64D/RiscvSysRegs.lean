@@ -11,6 +11,7 @@ noncomputable section
 
 namespace LeanRV64D.Functions
 
+open zvkfunct6
 open zicondop
 open wxfunct6
 open wvxfunct6
@@ -963,6 +964,8 @@ def currentlyEnabled (merge_var : extension) : SailM Bool := do
   | Ext_Zvkb => (pure (Bool.and (Bool.or (hartSupports Ext_Zvkb) (← (currentlyEnabled Ext_Zvbb)))
         (← (currentlyEnabled Ext_V))))
   | Ext_Zvbc => (pure (Bool.and (hartSupports Ext_Zvbc) (← (currentlyEnabled Ext_V))))
+  | Ext_Zvknha => (pure (Bool.and (hartSupports Ext_Zvknha) (← (currentlyEnabled Ext_V))))
+  | Ext_Zvknhb => (pure (Bool.and (hartSupports Ext_Zvknhb) (← (currentlyEnabled Ext_V))))
   | Ext_Zimop => (pure (hartSupports Ext_Zimop))
   | Ext_Zcmop => (pure (Bool.and (hartSupports Ext_Zcmop) (← (currentlyEnabled Ext_Zca))))
 

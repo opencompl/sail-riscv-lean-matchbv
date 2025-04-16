@@ -11,6 +11,7 @@ noncomputable section
 
 namespace LeanRV64D.Functions
 
+open zvkfunct6
 open zicondop
 open wxfunct6
 open wvxfunct6
@@ -3091,7 +3092,7 @@ def ma_flag_backwards (arg_ : (BitVec 1)) : String :=
   then (String.append (sep_forwards ()) (String.append "ma" ""))
   else (String.append (sep_forwards ()) (String.append "mu" ""))
 
-/-- Type quantifiers: k_ex318198# : Bool -/
+/-- Type quantifiers: k_ex327355# : Bool -/
 def maybe_aq_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".aq"
@@ -3130,19 +3131,19 @@ def maybe_lmul_flag_backwards (arg_ : (BitVec 3)) : SailM String := do
                               assert false "Pattern match failure at unknown location"
                               throw Error.Exit)))))))
 
-/-- Type quantifiers: k_ex318206# : Bool -/
+/-- Type quantifiers: k_ex327363# : Bool -/
 def maybe_not_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | false => "u"
   | true => ""
 
-/-- Type quantifiers: k_ex318207# : Bool -/
+/-- Type quantifiers: k_ex327364# : Bool -/
 def maybe_rl_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".rl"
   | false => ""
 
-/-- Type quantifiers: k_ex318208# : Bool -/
+/-- Type quantifiers: k_ex327365# : Bool -/
 def maybe_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => "u"
@@ -3600,6 +3601,11 @@ def vreg_name_raw_forwards (arg_ : (BitVec 5)) : String :=
 def vreg_name_forwards (arg_ : vregidx) : String :=
   match arg_ with
   | .Vregidx i => (vreg_name_raw_forwards i)
+
+def vsha2c_mnemonic_forwards (arg_ : zvkfunct6) : String :=
+  match arg_ with
+  | ZVK_VSHA2CH => "vsha2ch.vv"
+  | ZVK_VSHA2CL => "vsha2cl.vv"
 
 def vvcmptype_mnemonic_forwards (arg_ : vvcmpfunct6) : String :=
   match arg_ with
@@ -6128,6 +6134,17 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (reg_name_forwards rs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .VSHA2MS_VV (vs2, vs1, vd) => (pure (String.append "vsha2ms.vv"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2) (String.append (vreg_name_forwards vs1) "")))))))
+  | .ZVKSHA2TYPE (funct6, vs2, vs1, vd) => (pure (String.append (vsha2c_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (spc_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (spc_forwards ()) (String.append (vreg_name_forwards vs1) ""))))))))
   | .ZIMOP_MOP_R (mop, rs1, rd) => (pure (String.append "mop.r."
         (String.append (← (dec_bits_5_forwards mop))
           (String.append (spc_forwards ())

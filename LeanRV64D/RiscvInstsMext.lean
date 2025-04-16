@@ -11,6 +11,7 @@ noncomputable section
 
 namespace LeanRV64D.Functions
 
+open zvkfunct6
 open zicondop
 open wxfunct6
 open wvxfunct6
@@ -270,7 +271,7 @@ def maybe_not_u_backwards (arg_ : String) : SailM Bool := do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
-/-- Type quantifiers: k_ex324217# : Bool -/
+/-- Type quantifiers: k_ex333458# : Bool -/
 def maybe_not_u_forwards_matches (arg_ : Bool) : Bool :=
   match arg_ with
   | false => true

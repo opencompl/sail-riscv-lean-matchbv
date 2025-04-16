@@ -11,6 +11,7 @@ noncomputable section
 
 namespace LeanRV64D.Functions
 
+open zvkfunct6
 open zicondop
 open wxfunct6
 open wvxfunct6
@@ -213,6 +214,8 @@ def hartSupports (merge_var : extension) : Bool :=
   | Ext_Zvbb => true
   | Ext_Zvkb => false
   | Ext_Zvbc => true
+  | Ext_Zvknha => true
+  | Ext_Zvknhb => true
   | Ext_Sscofpmf => true
   | Ext_Sstc => true
   | Ext_Svinval => true

@@ -11,6 +11,7 @@ noncomputable section
 
 namespace LeanRV64D.Functions
 
+open zvkfunct6
 open zicondop
 open wxfunct6
 open wvxfunct6
@@ -162,7 +163,7 @@ open ExceptionType
 open Architecture
 open AccessType
 
-/-- Type quantifiers: k_ex324152# : Bool, k_ex324151# : Bool -/
+/-- Type quantifiers: k_ex333393# : Bool, k_ex333392# : Bool -/
 def aqrl_str (aq : Bool) (rl : Bool) : String :=
   match (aq, rl) with
   | (false, false) => ""

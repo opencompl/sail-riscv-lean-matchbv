@@ -11,6 +11,7 @@ noncomputable section
 
 namespace LeanRV64D.Functions
 
+open zvkfunct6
 open zicondop
 open wxfunct6
 open wvxfunct6
@@ -277,6 +278,24 @@ def get_scalar (rs1 : regidx) (SEW : Nat) : SailM (BitVec SEW) := do
   then (pure (Sail.BitVec.extractLsb (← (rX_bits rs1)) (SEW -i 1) 0))
   else (pure (sign_extend (m := SEW) (← (rX_bits rs1))))
 
+/-- Type quantifiers: k_n : Nat, k_m : Nat, i : Nat, k_n > 0 ∧
+  k_m > 0 ∧ i ≥ 0 ∧ (4 * i + 3) < k_n -/
+def get_velem_quad (v : (Vector (BitVec k_m) k_n)) (i : Nat) : (BitVec (4 * k_m)) :=
+  ((GetElem?.getElem! v ((4 *i i) +i 3)) ++ ((GetElem?.getElem! v ((4 *i i) +i 2)) ++ ((GetElem?.getElem!
+          v ((4 *i i) +i 1)) ++ (GetElem?.getElem! v (4 *i i)))))
+
+/-- Type quantifiers: i : Nat, SEW : Nat, k_m : Nat, 8 ≤ SEW ∧ SEW ≤ 64 ∧
+  k_m > 0 ∧ i ≥ 0 -/
+def write_velem_quad (vd : vregidx) (SEW : Nat) (input : (BitVec k_m)) (i : Nat) : SailM Unit := do
+  let loop_j_lower := 0
+  let loop_j_upper := 3
+  let mut loop_vars := ()
+  for j in [loop_j_lower:loop_j_upper:1]i do
+    let () := loop_vars
+    loop_vars ← do
+      (write_single_element SEW ((4 *i i) +i j) vd (BitVec.slice input (j *i SEW) SEW))
+  (pure loop_vars)
+
 def get_start_element (_ : Unit) : SailM Nat := do
   let start_element ← do (pure (BitVec.toNat (← readReg vstart)))
   let VLEN_pow := (get_vlen_pow ())
@@ -303,7 +322,7 @@ def init_masked_result (num_elem : Nat) (SEW : Nat) (LMUL_pow : Int) (vd_val : (
     bif (LMUL_pow ≥b 0)
     then num_elem
     else (Int.tdiv num_elem (2 ^i (0 -i LMUL_pow)))
-  assert (num_elem ≥b real_num_elem) "riscv_insts_vext_utils.sail:213.34-213.35"
+  assert (num_elem ≥b real_num_elem) "riscv_insts_vext_utils.sail:224.34-224.35"
   let (mask, result) ← (( do
     let loop_i_lower := 0
     let loop_i_upper := (num_elem -i 1)
@@ -370,7 +389,7 @@ def init_masked_source (num_elem : Nat) (LMUL_pow : Int) (vm_val : (BitVec num_e
     bif (LMUL_pow ≥b 0)
     then num_elem
     else (Int.tdiv num_elem (2 ^i (0 -i LMUL_pow)))
-  assert (num_elem ≥b real_num_elem) "riscv_insts_vext_utils.sail:263.34-263.35"
+  assert (num_elem ≥b real_num_elem) "riscv_insts_vext_utils.sail:274.34-274.35"
   let loop_i_lower := 0
   let loop_i_upper := (num_elem -i 1)
   let mut loop_vars := mask
@@ -402,7 +421,7 @@ def init_masked_result_carry (num_elem : Nat) (SEW : Int) (LMUL_pow : Int) (vd_v
     bif (LMUL_pow ≥b 0)
     then num_elem
     else (Int.tdiv num_elem (2 ^i (0 -i LMUL_pow)))
-  assert (num_elem ≥b real_num_elem) "riscv_insts_vext_utils.sail:298.34-298.35"
+  assert (num_elem ≥b real_num_elem) "riscv_insts_vext_utils.sail:309.34-309.35"
   let (mask, result) ← (( do
     let loop_i_lower := 0
     let loop_i_upper := (num_elem -i 1)
@@ -452,7 +471,7 @@ def init_masked_result_cmp (num_elem : Nat) (SEW : Int) (LMUL_pow : Int) (vd_val
     bif (LMUL_pow ≥b 0)
     then num_elem
     else (Int.tdiv num_elem (2 ^i (0 -i LMUL_pow)))
-  assert (num_elem ≥b real_num_elem) "riscv_insts_vext_utils.sail:335.34-335.35"
+  assert (num_elem ≥b real_num_elem) "riscv_insts_vext_utils.sail:346.34-346.35"
   let (mask, result) ← (( do
     let loop_i_lower := 0
     let loop_i_upper := (num_elem -i 1)
@@ -547,7 +566,7 @@ def read_vreg_seg (num_elem : Nat) (SEW : Nat) (LMUL_pow : Int) (nf : Nat) (vrid
 /-- Type quantifiers: k_n : Nat, SEW : Nat, 0 ≤ k_n ∧ SEW ∈ {8, 16, 32, 64} -/
 def get_shift_amount (bit_val : (BitVec k_n)) (SEW : Nat) : SailM Nat := do
   let lowlog2bits := (log2 SEW)
-  assert (Bool.and (0 <b lowlog2bits) (lowlog2bits <b (Sail.BitVec.length bit_val))) "riscv_insts_vext_utils.sail:393.43-393.44"
+  assert (Bool.and (0 <b lowlog2bits) (lowlog2bits <b (Sail.BitVec.length bit_val))) "riscv_insts_vext_utils.sail:404.43-404.44"
   (pure (BitVec.toNat (Sail.BitVec.extractLsb bit_val (lowlog2bits -i 1) 0)))
 
 /-- Type quantifiers: k_m : Nat, shift_amount : Nat, k_m > 0 ∧ shift_amount ≥ 0 -/
@@ -605,7 +624,7 @@ def signed_saturation (len : Nat) (elem : (BitVec k_n)) : SailM (BitVec len) := 
 /-- Type quantifiers: len : Int -/
 def count_leadingzeros (sig : (BitVec 64)) (len : Int) : SailM Int := do
   let idx : Int := (-1)
-  assert (Bool.or (BEq.beq len 10) (Bool.or (BEq.beq len 23) (BEq.beq len 52))) "riscv_insts_vext_utils.sail:442.42-442.43"
+  assert (Bool.or (BEq.beq len 10) (Bool.or (BEq.beq len 23) (BEq.beq len 52))) "riscv_insts_vext_utils.sail:453.42-453.43"
   let idx ← (( do
     let loop_i_lower := 0
     let loop_i_upper := (len -i 1)
