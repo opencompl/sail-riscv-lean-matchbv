@@ -178,7 +178,7 @@ def retires_or_traps (r : (ExecutionResult Retire_Failure)) : Bool :=
   | .RETIRE_FAIL (.Ext_CSR_Check_Failure ()) => true
   | .RETIRE_FAIL (.Ext_XRET_Priv_Failure _) => true
 
-/-- Type quantifiers: k_ex399856# : Bool, step_no : Int -/
+/-- Type quantifiers: k_ex400437# : Bool, step_no : Int -/
 def run_hart_waiting (step_no : Int) (exit_wait : Bool) (instbits : (BitVec (2 ^ 3 * 8))) : SailM (Step × Bool) := do
   bif (← (shouldWakeForInterrupt ()))
   then
@@ -217,7 +217,7 @@ def run_hart_waiting (step_no : Int) (exit_wait : Bool) (instbits : (BitVec (2 ^
           else (pure ())
           (pure ((Step_Waiting ()), false))))
 
-/-- Type quantifiers: k_ex399871# : Bool, step_no : Int -/
+/-- Type quantifiers: k_ex400452# : Bool, step_no : Int -/
 def run_hart_active (step_no : Int) (exit_wait : Bool) : SailM (Step × Bool) := do
   match (← (dispatchInterrupt (← readReg cur_privilege))) with
   | .some (intr, priv) => (pure ((Step_Pending_Interrupt (intr, priv)), false))
@@ -273,7 +273,7 @@ def run_hart_active (step_no : Int) (exit_wait : Bool) : SailM (Step × Bool) :=
 def wfi_is_nop (_ : Unit) : Bool :=
   true
 
-/-- Type quantifiers: k_ex399878# : Bool, step_no : Int -/
+/-- Type quantifiers: k_ex400459# : Bool, step_no : Int -/
 def try_step (step_no : Int) (exit_wait : Bool) : SailM Bool := do
   let _ : Unit := (ext_pre_step_hook ())
   writeReg minstret_increment (← (should_inc_minstret (← readReg cur_privilege)))

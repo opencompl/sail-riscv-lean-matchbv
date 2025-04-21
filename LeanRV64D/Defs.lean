@@ -1077,6 +1077,12 @@ inductive Retire_Failure where
   | Ext_XRET_Priv_Failure (_ : Unit)
   deriving Inhabited, BEq
 
+
+
+
+
+abbrev nfields := Int
+
 inductive cbie where | CBIE_ILLEGAL | CBIE_EXEC_FLUSH | CBIE_EXEC_INVAL
   deriving Inhabited, BEq
 
