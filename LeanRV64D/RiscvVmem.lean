@@ -396,14 +396,15 @@ def translateAddr (vAddr : virtaddr) (ac : (AccessType Unit)) : SailM (TR_Result
   let effPriv ← do (effectivePrivilege ac (← readReg mstatus) (← readReg cur_privilege))
   let mode ← do (translationMode effPriv)
   bif (BEq.beq mode Bare)
-  then (pure (TR_Address ((Physaddr (zero_extend (m := 64) (virtaddr_bits vAddr))), init_ext_ptw)))
+  then
+    (pure (TR_Address ((Physaddr (zero_extend (m := 64) (bits_of_virtaddr vAddr))), init_ext_ptw)))
   else
     (do
       let sv_width ← do (satp_mode_width_forwards mode)
       let satp_sxlen ← do (get_satp sv_width)
       assert (Bool.or (BEq.beq sv_width 32) (BEq.beq xlen 64)) "riscv_vmem.sail:382.36-382.37"
-      let svAddr := (Sail.BitVec.extractLsb (virtaddr_bits vAddr) (sv_width -i 1) 0)
-      bif (bne (virtaddr_bits vAddr) (sign_extend (m := ((2 ^i 3) *i 8)) svAddr))
+      let svAddr := (Sail.BitVec.extractLsb (bits_of_virtaddr vAddr) (sv_width -i 1) 0)
+      bif (bne (bits_of_virtaddr vAddr) (sign_extend (m := ((2 ^i 3) *i 8)) svAddr))
       then (pure (TR_Failure ((translationException ac (PTW_Invalid_Addr ())), init_ext_ptw)))
       else
         (do
@@ -419,7 +420,7 @@ def translateAddr (vAddr : virtaddr) (ac : (AccessType Unit)) : SailM (TR_Result
               init_ext_ptw)
           match res with
           | .TR_Address (ppn, ext_ptw) => (let paddr :=
-              (ppn ++ (Sail.BitVec.extractLsb (virtaddr_bits vAddr) (pagesize_bits -i 1) 0))
+              (ppn ++ (Sail.BitVec.extractLsb (bits_of_virtaddr vAddr) (pagesize_bits -i 1) 0))
             (pure (TR_Address ((Physaddr (zero_extend (m := 64) paddr)), ext_ptw))))
           | .TR_Failure (f, ext_ptw) => (pure (TR_Failure ((translationException ac f), ext_ptw)))))
 

@@ -213,7 +213,7 @@ def phys_mem_read (t : (AccessType Unit)) (paddr : physaddr) (width : Nat) (aq :
           (HAppend.hAppend "mem["
             (HAppend.hAppend (accessType_to_str t)
               (HAppend.hAppend ","
-                (HAppend.hAppend (BitVec.toFormatted (physaddr_bits paddr))
+                (HAppend.hAppend (BitVec.toFormatted (bits_of_physaddr paddr))
                   (HAppend.hAppend "] -> " (BitVec.toFormatted v)))))))
       else ()
     (pure (Ok (v, m))))
@@ -306,7 +306,7 @@ def phys_mem_write (wk : write_kind) (paddr : physaddr) (width : Nat) (data : (B
     then
       (print_endline
         (HAppend.hAppend "mem["
-          (HAppend.hAppend (BitVec.toFormatted (physaddr_bits paddr))
+          (HAppend.hAppend (BitVec.toFormatted (bits_of_physaddr paddr))
             (HAppend.hAppend "] <- " (BitVec.toFormatted data)))))
     else ()
   (pure (Ok result))

@@ -535,7 +535,8 @@ def is_aligned (vaddr : (BitVec (2 ^ 3 * 8))) (width : word_width) : Bool :=
   | DOUBLE => (BEq.beq (Sail.BitVec.extractLsb vaddr 2 0) (zeros (n := ((2 -i 0) +i 1))))
 
 def check_misaligned (vaddr : virtaddr) (width : word_width) : Bool :=
-  (Bool.and (not (plat_enable_misaligned_access ())) (not (is_aligned (virtaddr_bits vaddr) width)))
+  (Bool.and (not (plat_enable_misaligned_access ()))
+    (not (is_aligned (bits_of_virtaddr vaddr) width)))
 
 def maybe_aq_backwards (arg_ : String) : SailM Bool := do
   match arg_ with

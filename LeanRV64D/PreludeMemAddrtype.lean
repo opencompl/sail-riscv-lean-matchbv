@@ -168,11 +168,11 @@ open AccessType
 
 def physaddrbits_len := 64
 
-def physaddr_bits (app_0 : physaddr) : (BitVec 64) :=
+def bits_of_physaddr (app_0 : physaddr) : (BitVec 64) :=
   let .Physaddr paddr := app_0
   paddr
 
-def virtaddr_bits (app_0 : virtaddr) : (BitVec (2 ^ 3 * 8)) :=
+def bits_of_virtaddr (app_0 : virtaddr) : (BitVec (2 ^ 3 * 8)) :=
   let .Virtaddr vaddr := app_0
   vaddr
 
