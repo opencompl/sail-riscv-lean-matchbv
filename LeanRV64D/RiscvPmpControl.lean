@@ -172,7 +172,7 @@ def pmpCheckRWX (ent : (BitVec 8)) (acc : (AccessType Unit)) : Bool :=
   | .Write _ => (BEq.beq (_get_Pmpcfg_ent_W ent) (0b1 : (BitVec 1)))
   | .ReadWrite _ => (Bool.and (BEq.beq (_get_Pmpcfg_ent_R ent) (0b1 : (BitVec 1)))
       (BEq.beq (_get_Pmpcfg_ent_W ent) (0b1 : (BitVec 1))))
-  | .Execute () => (BEq.beq (_get_Pmpcfg_ent_X ent) (0b1 : (BitVec 1)))
+  | .InstructionFetch () => (BEq.beq (_get_Pmpcfg_ent_X ent) (0b1 : (BitVec 1)))
 
 def undefined_pmpAddrMatch (_ : Unit) : SailM pmpAddrMatch := do
   (internal_pick [PMP_NoMatch, PMP_PartialMatch, PMP_Match])
@@ -250,7 +250,7 @@ def accessToFault (acc : (AccessType Unit)) : ExceptionType :=
   | .Read _ => (E_Load_Access_Fault ())
   | .Write _ => (E_SAMO_Access_Fault ())
   | .ReadWrite _ => (E_SAMO_Access_Fault ())
-  | .Execute () => (E_Fetch_Access_Fault ())
+  | .InstructionFetch () => (E_Fetch_Access_Fault ())
 
 /-- Type quantifiers: width : Nat, width > 0 -/
 def pmpCheck (addr : physaddr) (width : Nat) (acc : (AccessType Unit)) (priv : Privilege) : SailM (Option ExceptionType) := SailME.run do

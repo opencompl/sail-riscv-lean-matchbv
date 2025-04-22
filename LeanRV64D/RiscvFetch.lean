@@ -179,10 +179,10 @@ def fetch (_ : Unit) : SailM FetchResult := do
       then (pure (F_Error ((E_Fetch_Addr_Align ()), (← readReg PC))))
       else
         (do
-          match (← (translateAddr use_pc (Execute ()))) with
+          match (← (translateAddr use_pc (InstructionFetch ()))) with
           | .TR_Failure (e, _) => (pure (F_Error (e, (← readReg PC))))
           | .TR_Address (ppclo, _) => (do
-              match (← (mem_read (Execute ()) ppclo 2 false false false)) with
+              match (← (mem_read (InstructionFetch ()) ppclo 2 false false false)) with
               | .Err e => (pure (F_Error (e, (← readReg PC))))
               | .Ok ilo => (do
                   bif (isRVC ilo)
@@ -193,10 +193,10 @@ def fetch (_ : Unit) : SailM FetchResult := do
                       match (ext_fetch_check_pc (← readReg PC) PC_hi) with
                       | .Ext_FetchAddr_Error e => (pure (F_Ext_Error e))
                       | .Ext_FetchAddr_OK use_pc_hi => (do
-                          match (← (translateAddr use_pc_hi (Execute ()))) with
+                          match (← (translateAddr use_pc_hi (InstructionFetch ()))) with
                           | .TR_Failure (e, _) => (pure (F_Error (e, PC_hi)))
                           | .TR_Address (ppchi, _) => (do
-                              match (← (mem_read (Execute ()) ppchi 2 false false false)) with
+                              match (← (mem_read (InstructionFetch ()) ppchi 2 false false false)) with
                               | .Err e => (pure (F_Error (e, PC_hi)))
                               | .Ok ihi => (pure (F_Base (ihi ++ ilo))))))))))
 

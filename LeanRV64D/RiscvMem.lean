@@ -203,7 +203,7 @@ def phys_mem_read (t : (AccessType Unit)) (paddr : physaddr) (width : Nat) (aq :
     | .some rk => (pure (some (← (read_ram rk paddr width meta))))
     | none => (pure none)
   match (t, result) with
-  | (.Execute (), none) => (pure (Err (E_Fetch_Access_Fault ())))
+  | (.InstructionFetch (), none) => (pure (Err (E_Fetch_Access_Fault ())))
   | (.Read Data, none) => (pure (Err (E_Load_Access_Fault ())))
   | (_, none) => (pure (Err (E_SAMO_Access_Fault ())))
   | (_, .some (v, m)) => (let _ : Unit :=
@@ -242,7 +242,7 @@ def checked_mem_read (t : (AccessType Unit)) (priv : Privilege) (paddr : physadd
               | .Ext_PhysAddr_Error e => (pure (Err e)))
           else
             (match t with
-            | .Execute () => (pure (Err (E_Fetch_Access_Fault ())))
+            | .InstructionFetch () => (pure (Err (E_Fetch_Access_Fault ())))
             | .Read Data => (pure (Err (E_Load_Access_Fault ())))
             | _ => (pure (Err (E_SAMO_Access_Fault ()))))))
 

@@ -375,7 +375,7 @@ def clint_load (t : (AccessType Unit)) (app_1 : physaddr) (width : Nat) : SailM 
                                     (HAppend.hAppend (BitVec.toFormatted addr) "] -> <not-mapped>")))
                               else ()
                             match t with
-                            | .Execute () => (pure (Err (E_Fetch_Access_Fault ())))
+                            | .InstructionFetch () => (pure (Err (E_Fetch_Access_Fault ())))
                             | .Read Data => (pure (Err (E_Load_Access_Fault ())))
                             | _ => (pure (Err (E_SAMO_Access_Fault ()))))))))))
 
@@ -614,7 +614,7 @@ def htif_load (t : (AccessType Unit)) (app_1 : physaddr) (width : Nat) : SailM (
                 (zero_extend (m := 32) (Sail.BitVec.extractLsb (← readReg htif_tohost) 63 32))))
           else
             (match t with
-            | .Execute () => (pure (Err (E_Fetch_Access_Fault ())))
+            | .InstructionFetch () => (pure (Err (E_Fetch_Access_Fault ())))
             | .Read Data => (pure (Err (E_Load_Access_Fault ())))
             | _ => (pure (Err (E_SAMO_Access_Fault ()))))))
 
@@ -734,7 +734,7 @@ def mmio_read (t : (AccessType Unit)) (paddr : physaddr) (width : Nat) : SailM (
       then (htif_load t paddr width)
       else
         (match t with
-        | .Execute () => (pure (Err (E_Fetch_Access_Fault ())))
+        | .InstructionFetch () => (pure (Err (E_Fetch_Access_Fault ())))
         | .Read Data => (pure (Err (E_Load_Access_Fault ())))
         | _ => (pure (Err (E_SAMO_Access_Fault ())))))
 

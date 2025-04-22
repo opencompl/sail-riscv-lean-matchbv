@@ -238,7 +238,7 @@ def check_PTE_permission (ac : (AccessType Unit)) (priv : Privilege) (mxr : Bool
           (Bool.and (BEq.beq pte_W (0b1 : (BitVec 1)))
             (Bool.or (BEq.beq pte_R (0b1 : (BitVec 1)))
               (Bool.and (BEq.beq pte_X (0b1 : (BitVec 1))) mxr)))))
-    | (.Execute (), User) => (pure (Bool.and (BEq.beq pte_U (0b1 : (BitVec 1)))
+    | (.InstructionFetch (), User) => (pure (Bool.and (BEq.beq pte_U (0b1 : (BitVec 1)))
           (BEq.beq pte_X (0b1 : (BitVec 1)))))
     | (.Read _, Supervisor) => (pure (Bool.and (Bool.or (BEq.beq pte_U (0b0 : (BitVec 1))) do_sum)
           (Bool.or (BEq.beq pte_R (0b1 : (BitVec 1)))
@@ -250,7 +250,7 @@ def check_PTE_permission (ac : (AccessType Unit)) (priv : Privilege) (mxr : Bool
           (Bool.and (BEq.beq pte_W (0b1 : (BitVec 1)))
             (Bool.or (BEq.beq pte_R (0b1 : (BitVec 1)))
               (Bool.and (BEq.beq pte_X (0b1 : (BitVec 1))) mxr)))))
-    | (.Execute (), Supervisor) => (pure (Bool.and (BEq.beq pte_U (0b0 : (BitVec 1)))
+    | (.InstructionFetch (), Supervisor) => (pure (Bool.and (BEq.beq pte_U (0b0 : (BitVec 1)))
           (BEq.beq pte_X (0b1 : (BitVec 1)))))
     | (_, Machine) => (internal_error "riscv_vmem_pte.sail" 132 "m-mode mem perm check") ) : SailM
     Bool )
@@ -264,7 +264,7 @@ def update_PTE_Bits (pte : (BitVec k_pte_size)) (a : (AccessType Unit)) : (Optio
   let update_d : Bool :=
     (Bool.and (BEq.beq (_get_PTE_Flags_D pte_flags) (0b0 : (BitVec 1)))
       (match a with
-      | .Execute () => false
+      | .InstructionFetch () => false
       | .Read _ => false
       | .Write _ => true
       | .ReadWrite (_, _) => true : Bool))

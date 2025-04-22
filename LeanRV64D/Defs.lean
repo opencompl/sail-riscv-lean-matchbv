@@ -132,7 +132,7 @@ inductive AccessType (k_a : Type) where
   | Read (_ : k_a)
   | Write (_ : k_a)
   | ReadWrite (_ : (k_a × k_a))
-  | Execute (_ : Unit)
+  | InstructionFetch (_ : Unit)
   deriving Inhabited, BEq
 
 inductive ExceptionType where

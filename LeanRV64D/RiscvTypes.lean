@@ -304,7 +304,7 @@ def accessType_to_str (a : (AccessType Unit)) : String :=
   | .Read _ => "R"
   | .Write _ => "W"
   | .ReadWrite (_, _) => "RW"
-  | .Execute () => "X"
+  | .InstructionFetch () => "X"
 
 def csr_name_map_forwards (arg_ : (BitVec 12)) : SailM String := do
   let b__0 := arg_

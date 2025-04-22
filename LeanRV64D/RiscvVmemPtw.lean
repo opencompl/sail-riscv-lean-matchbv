@@ -178,6 +178,6 @@ def translationException (a : (AccessType Unit)) (f : PTW_Error) : ExceptionType
   | (.Read _, _) => (E_Load_Page_Fault ())
   | (.Write _, .PTW_Access ()) => (E_SAMO_Access_Fault ())
   | (.Write _, _) => (E_SAMO_Page_Fault ())
-  | (.Execute (), .PTW_Access ()) => (E_Fetch_Access_Fault ())
-  | (.Execute (), _) => (E_Fetch_Page_Fault ())
+  | (.InstructionFetch (), .PTW_Access ()) => (E_Fetch_Access_Fault ())
+  | (.InstructionFetch (), _) => (E_Fetch_Page_Fault ())
 
