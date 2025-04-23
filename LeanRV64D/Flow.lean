@@ -150,7 +150,6 @@ open Retire_Failure
 open Register
 open Privilege
 open PmpAddrMatchType
-open PTW_Result
 open PTW_Error
 open PTE_Check
 open InterruptType
@@ -166,7 +165,7 @@ open ExceptionType
 open Architecture
 open AccessType
 
-/-- Type quantifiers: k_ex339340# : Bool, k_ex339339# : Bool -/
+/-- Type quantifiers: k_ex339278# : Bool, k_ex339277# : Bool -/
 def neq_bool (x : Bool) (y : Bool) : Bool :=
   (Bool.not (BEq.beq x y))
 

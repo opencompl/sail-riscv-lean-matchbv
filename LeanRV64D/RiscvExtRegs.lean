@@ -150,7 +150,6 @@ open Retire_Failure
 open Register
 open Privilege
 open PmpAddrMatchType
-open PTW_Result
 open PTW_Error
 open PTE_Check
 open InterruptType
@@ -166,7 +165,7 @@ open ExceptionType
 open Architecture
 open AccessType
 
-/-- Type quantifiers: k_ex342681# : Bool -/
+/-- Type quantifiers: k_ex342619# : Bool -/
 def ext_check_CSR (csrno : (BitVec 12)) (p : Privilege) (isWrite : Bool) : Bool :=
   true
 

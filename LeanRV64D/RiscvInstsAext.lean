@@ -150,7 +150,6 @@ open Retire_Failure
 open Register
 open Privilege
 open PmpAddrMatchType
-open PTW_Result
 open PTW_Error
 open PTE_Check
 open InterruptType
@@ -166,7 +165,7 @@ open ExceptionType
 open Architecture
 open AccessType
 
-/-- Type quantifiers: k_ex346724# : Bool, k_ex346723# : Bool -/
+/-- Type quantifiers: k_ex346651# : Bool, k_ex346650# : Bool -/
 def aqrl_str (aq : Bool) (rl : Bool) : String :=
   match (aq, rl) with
   | (false, false) => ""

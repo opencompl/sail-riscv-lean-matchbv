@@ -150,7 +150,6 @@ open Retire_Failure
 open Register
 open Privilege
 open PmpAddrMatchType
-open PTW_Result
 open PTW_Error
 open PTE_Check
 open InterruptType
@@ -274,7 +273,7 @@ def maybe_not_u_backwards (arg_ : String) : SailM Bool := do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
-/-- Type quantifiers: k_ex346789# : Bool -/
+/-- Type quantifiers: k_ex346716# : Bool -/
 def maybe_not_u_forwards_matches (arg_ : Bool) : Bool :=
   match arg_ with
   | false => true

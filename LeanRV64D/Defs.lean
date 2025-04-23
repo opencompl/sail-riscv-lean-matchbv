@@ -1054,11 +1054,7 @@ structure PTW_Output (k_v : Nat) where
   global : Bool
   deriving Inhabited, BEq
 
-/-- Type quantifiers: k_v : Int, is_sv_mode(k_v) -/
-inductive PTW_Result (k_v : Nat) where
-  | PTW_Success (_ : ((PTW_Output k_v) × ext_ptw))
-  | PTW_Failure (_ : (PTW_Error × ext_ptw))
-  deriving Inhabited, BEq
+abbrev PTW_Result k_v := (Result ((PTW_Output k_v) × ext_ptw) (PTW_Error × ext_ptw))
 
 /-- Type quantifiers: k_paddr : Type, k_failure : Type -/
 inductive TR_Result (k_paddr : Type) (k_failure : Type) where
