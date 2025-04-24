@@ -891,6 +891,32 @@ def _get_Mstatus_FS (v : (BitVec 64)) : (BitVec 2) :=
 def _get_Mstatus_VS (v : (BitVec 64)) : (BitVec 2) :=
   (Sail.BitVec.extractLsb v 10 9)
 
+def currentlyEnabled_measure (ext : extension) : Int :=
+  match ext with
+  | Ext_Zca => 1
+  | Ext_Zba => 1
+  | Ext_Zbb => 1
+  | Ext_Zbs => 1
+  | Ext_Zcb => 2
+  | Ext_Zcd => 2
+  | Ext_Zcf => 2
+  | Ext_Zabha => 2
+  | Ext_Zalrsc => 1
+  | Ext_Zaamo => 1
+  | Ext_Zfh => 1
+  | Ext_Zfhmin => 2
+  | Ext_Zmmul => 1
+  | Ext_Zcmop => 2
+  | Ext_Zfa => 1
+  | Ext_Zhinx => 1
+  | Ext_Zvbb => 1
+  | Ext_Zvkb => 2
+  | Ext_Zvbc => 1
+  | Ext_Smcntrpmf => 1
+  | Ext_Sscofpmf => 2
+  | Ext_Zihpm => 1
+  | _ => 0
+
 def currentlyEnabled (merge_var : extension) : SailM Bool := do
   match merge_var with
   | Ext_Sstc => (pure (hartSupports Ext_Sstc))
@@ -970,6 +996,7 @@ def currentlyEnabled (merge_var : extension) : SailM Bool := do
   | Ext_Zvknhb => (pure (Bool.and (hartSupports Ext_Zvknhb) (← (currentlyEnabled Ext_V))))
   | Ext_Zimop => (pure (hartSupports Ext_Zimop))
   | Ext_Zcmop => (pure (Bool.and (hartSupports Ext_Zcmop) (← (currentlyEnabled Ext_Zca))))
+termination_by let ext := merge_var; ((currentlyEnabled_measure ext)).toNat
 
 def lowest_supported_privLevel (_ : Unit) : SailM Privilege := do
   bif (← (currentlyEnabled Ext_U))

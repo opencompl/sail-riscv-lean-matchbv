@@ -1,53 +1,45 @@
-✔ [2/98] Built LeanRV64D.Sail.IntRange
-✔ [3/98] Built LeanRV64D.Sail.BitVec
-✔ [4/98] Built LeanRV64D.Sail.Sail
-✔ [5/98] Built LeanRV64D.Defs
-✔ [6/98] Built LeanRV64D.Specialization
-✔ [7/98] Built LeanRV64D.RiscvExtras
-✔ [8/98] Built LeanRV64D.Option
-✔ [9/98] Built LeanRV64D.Flow
-✔ [10/98] Built LeanRV64D.Arith
-✔ [11/98] Built LeanRV64D.String
-✔ [12/98] Built LeanRV64D.Mapping
-✔ [13/98] Built LeanRV64D.Vector
-✔ [14/98] Built LeanRV64D.HexBits
-✔ [15/98] Built LeanRV64D.HexBitsSigned
-✔ [16/98] Built LeanRV64D.DecBits
-✔ [17/98] Built LeanRV64D.Prelude
-✔ [18/98] Built LeanRV64D.RiscvErrors
-✔ [19/98] Built LeanRV64D.RiscvXlen
-✔ [20/98] Built LeanRV64D.RiscvFlen
-✔ [21/98] Built LeanRV64D.RiscvVlen
-✔ [22/98] Built LeanRV64D.PreludeMemAddrtype
-✔ [23/98] Built LeanRV64D.PreludeMemMetadata
-✔ [24/98] Built LeanRV64D.Result
-✔ [25/98] Built LeanRV64D.Common
-✔ [26/98] Built LeanRV64D.ReadWrite
-✔ [27/98] Built LeanRV64D.PreludeMem
-✔ [28/98] Built LeanRV64D.Arithmetic
-✔ [29/98] Built LeanRV64D.RiscvExtensions
-✔ [30/98] Built LeanRV64D.RiscvTypesExt
-✔ [31/98] Built LeanRV64D.RiscvTypes
-✔ [32/98] Built LeanRV64D.RiscvVmemTypes
-✔ [33/98] Built LeanRV64D.RiscvRegType
-✔ [34/98] Built LeanRV64D.RiscvFregType
-✔ [35/98] Built LeanRV64D.RiscvRegs
-✔ [36/98] Built LeanRV64D.RiscvPcAccess
-✖ [37/98] Building LeanRV64D.RiscvSysRegs
+✔ [2/99] Built LeanRV64D.Sail.IntRange
+✔ [3/99] Built LeanRV64D.Sail.BitVec
+✔ [4/99] Built LeanRV64D.Sail.Sail
+✔ [5/99] Built LeanRV64D.Defs
+✔ [6/99] Built LeanRV64D.Specialization
+✔ [7/99] Built LeanRV64D.RiscvExtras
+✔ [8/99] Built LeanRV64D.Option
+✔ [9/99] Built LeanRV64D.Flow
+✔ [10/99] Built LeanRV64D.Arith
+✔ [11/99] Built LeanRV64D.String
+✔ [12/99] Built LeanRV64D.Mapping
+✔ [13/99] Built LeanRV64D.Vector
+✔ [14/99] Built LeanRV64D.HexBits
+✔ [15/99] Built LeanRV64D.HexBitsSigned
+✔ [16/99] Built LeanRV64D.DecBits
+✔ [17/99] Built LeanRV64D.Prelude
+✔ [18/99] Built LeanRV64D.RiscvErrors
+✔ [19/99] Built LeanRV64D.RiscvXlen
+✔ [20/99] Built LeanRV64D.RiscvFlen
+✔ [21/99] Built LeanRV64D.RiscvVlen
+✔ [22/99] Built LeanRV64D.PreludeMemAddrtype
+✔ [23/99] Built LeanRV64D.PreludeMemMetadata
+✔ [24/99] Built LeanRV64D.Result
+✔ [25/99] Built LeanRV64D.Common
+✔ [26/99] Built LeanRV64D.ReadWrite
+✔ [27/99] Built LeanRV64D.PreludeMem
+✔ [28/99] Built LeanRV64D.Arithmetic
+✔ [29/99] Built LeanRV64D.RiscvExtensions
+✔ [30/99] Built LeanRV64D.RiscvTypesExt
+✔ [31/99] Built LeanRV64D.RiscvTypes
+✔ [32/99] Built LeanRV64D.RiscvVmemTypes
+✔ [33/99] Built LeanRV64D.RiscvRegType
+✔ [34/99] Built LeanRV64D.RiscvFregType
+✔ [35/99] Built LeanRV64D.RiscvRegs
+✔ [36/99] Built LeanRV64D.RiscvPcAccess
+✖ [37/99] Building LeanRV64D.RiscvSysRegs
 trace: .> LEAN_PATH=/home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/lib/lean /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-04-07/bin/lean --tstack=400000 /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvSysRegs.lean -R /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D -o /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/lib/lean/LeanRV64D/RiscvSysRegs.olean -i /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/lib/lean/LeanRV64D/RiscvSysRegs.ilean -c /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/ir/LeanRV64D/RiscvSysRegs.c --json
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvSysRegs.lean:894:4: fail to show termination for
-  LeanRV64D.Functions.currentlyEnabled
-with errors
-failed to infer structural recursion:
-Cannot use parameter merge_var:
-  the type extension does not have a `.brecOn` recursor
-
-
-failed to prove termination, possible solutions:
+error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvSysRegs.lean:991:60: failed to prove termination, possible solutions:
   - Use `have`-expressions to prove the remaining goals
   - Use `termination_by` to specify a different well-founded relation
   - Use `decreasing_by` to specify your own tactic for discharging this kind of goal
-⊢ sizeOf Ext_C < sizeOf Ext_Zca
+⊢ (currentlyEnabled_measure Ext_V).toNat < (currentlyEnabled_measure Ext_Zvknha).toNat
 error: Lean exited with code 1
 Some required builds logged failures:
 - LeanRV64D.RiscvSysRegs

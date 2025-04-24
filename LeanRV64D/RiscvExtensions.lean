@@ -165,6 +165,11 @@ open ExceptionType
 open Architecture
 open AccessType
 
+def hartSupports_measure (ext : extension) : Int :=
+  match ext with
+  | Ext_C => 1
+  | _ => 0
+
 def hartSupports (merge_var : extension) : Bool :=
   match merge_var with
   | Ext_M => true
@@ -224,4 +229,5 @@ def hartSupports (merge_var : extension) : Bool :=
   | Ext_Svnapot => false
   | Ext_Svpbmt => false
   | Ext_Smcntrpmf => true
+termination_by let ext := merge_var; ((hartSupports_measure ext)).toNat
 

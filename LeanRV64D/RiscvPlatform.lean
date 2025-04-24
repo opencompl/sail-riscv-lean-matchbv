@@ -250,7 +250,7 @@ def within_htif_readable (typ_0 : physaddr) (width : Nat) : Bool :=
     (Bool.and (BEq.beq (BitVec.addInt (plat_htif_tohost ()) 4) addr) (BEq.beq width 4)))
 
 def plat_insns_per_tick (_ : Unit) : Int :=
-  100
+  2
 
 def MSIP_BASE : physaddrbits := (zero_extend (m := 64) (0x00000 : (BitVec 20)))
 
