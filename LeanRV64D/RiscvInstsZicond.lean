@@ -167,16 +167,16 @@ open AccessType
 
 def zicond_mnemonic_backwards (arg_ : String) : SailM zicondop := do
   match arg_ with
-  | "czero.eqz" => (pure RISCV_CZERO_EQZ)
-  | "czero.nez" => (pure RISCV_CZERO_NEZ)
+  | "czero.eqz" => (pure CZERO_EQZ)
+  | "czero.nez" => (pure CZERO_NEZ)
   | _ => (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
 def zicond_mnemonic_forwards_matches (arg_ : zicondop) : Bool :=
   match arg_ with
-  | RISCV_CZERO_EQZ => true
-  | RISCV_CZERO_NEZ => true
+  | CZERO_EQZ => true
+  | CZERO_NEZ => true
 
 def zicond_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with

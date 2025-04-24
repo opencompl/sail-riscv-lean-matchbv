@@ -167,20 +167,20 @@ open AccessType
 
 def zbs_iop_mnemonic_backwards (arg_ : String) : SailM biop_zbs := do
   match arg_ with
-  | "bclri" => (pure RISCV_BCLRI)
-  | "bexti" => (pure RISCV_BEXTI)
-  | "binvi" => (pure RISCV_BINVI)
-  | "bseti" => (pure RISCV_BSETI)
+  | "bclri" => (pure BCLRI)
+  | "bexti" => (pure BEXTI)
+  | "binvi" => (pure BINVI)
+  | "bseti" => (pure BSETI)
   | _ => (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
 def zbs_iop_mnemonic_forwards_matches (arg_ : biop_zbs) : Bool :=
   match arg_ with
-  | RISCV_BCLRI => true
-  | RISCV_BEXTI => true
-  | RISCV_BINVI => true
-  | RISCV_BSETI => true
+  | BCLRI => true
+  | BEXTI => true
+  | BINVI => true
+  | BSETI => true
 
 def zbs_iop_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -192,20 +192,20 @@ def zbs_iop_mnemonic_backwards_matches (arg_ : String) : Bool :=
 
 def zbs_rtype_mnemonic_backwards (arg_ : String) : SailM brop_zbs := do
   match arg_ with
-  | "bclr" => (pure RISCV_BCLR)
-  | "bext" => (pure RISCV_BEXT)
-  | "binv" => (pure RISCV_BINV)
-  | "bset" => (pure RISCV_BSET)
+  | "bclr" => (pure BCLR)
+  | "bext" => (pure BEXT)
+  | "binv" => (pure BINV)
+  | "bset" => (pure BSET)
   | _ => (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
 def zbs_rtype_mnemonic_forwards_matches (arg_ : brop_zbs) : Bool :=
   match arg_ with
-  | RISCV_BCLR => true
-  | RISCV_BEXT => true
-  | RISCV_BINV => true
-  | RISCV_BSET => true
+  | BCLR => true
+  | BEXT => true
+  | BINV => true
+  | BSET => true
 
 def zbs_rtype_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with

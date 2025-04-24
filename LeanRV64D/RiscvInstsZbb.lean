@@ -167,16 +167,16 @@ open AccessType
 
 def zbb_rtypew_mnemonic_backwards (arg_ : String) : SailM bropw_zbb := do
   match arg_ with
-  | "rolw" => (pure RISCV_ROLW)
-  | "rorw" => (pure RISCV_RORW)
+  | "rolw" => (pure ROLW)
+  | "rorw" => (pure RORW)
   | _ => (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
 def zbb_rtypew_mnemonic_forwards_matches (arg_ : bropw_zbb) : Bool :=
   match arg_ with
-  | RISCV_ROLW => true
-  | RISCV_RORW => true
+  | ROLW => true
+  | RORW => true
 
 def zbb_rtypew_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -186,30 +186,30 @@ def zbb_rtypew_mnemonic_backwards_matches (arg_ : String) : Bool :=
 
 def zbb_rtype_mnemonic_backwards (arg_ : String) : SailM brop_zbb := do
   match arg_ with
-  | "andn" => (pure RISCV_ANDN)
-  | "orn" => (pure RISCV_ORN)
-  | "xnor" => (pure RISCV_XNOR)
-  | "max" => (pure RISCV_MAX)
-  | "maxu" => (pure RISCV_MAXU)
-  | "min" => (pure RISCV_MIN)
-  | "minu" => (pure RISCV_MINU)
-  | "rol" => (pure RISCV_ROL)
-  | "ror" => (pure RISCV_ROR)
+  | "andn" => (pure ANDN)
+  | "orn" => (pure ORN)
+  | "xnor" => (pure XNOR)
+  | "max" => (pure MAX)
+  | "maxu" => (pure MAXU)
+  | "min" => (pure MIN)
+  | "minu" => (pure MINU)
+  | "rol" => (pure ROL)
+  | "ror" => (pure ROR)
   | _ => (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
 def zbb_rtype_mnemonic_forwards_matches (arg_ : brop_zbb) : Bool :=
   match arg_ with
-  | RISCV_ANDN => true
-  | RISCV_ORN => true
-  | RISCV_XNOR => true
-  | RISCV_MAX => true
-  | RISCV_MAXU => true
-  | RISCV_MIN => true
-  | RISCV_MINU => true
-  | RISCV_ROL => true
-  | RISCV_ROR => true
+  | ANDN => true
+  | ORN => true
+  | XNOR => true
+  | MAX => true
+  | MAXU => true
+  | MIN => true
+  | MINU => true
+  | ROL => true
+  | ROR => true
 
 def zbb_rtype_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -226,18 +226,18 @@ def zbb_rtype_mnemonic_backwards_matches (arg_ : String) : Bool :=
 
 def zbb_extop_mnemonic_backwards (arg_ : String) : SailM extop_zbb := do
   match arg_ with
-  | "sext.b" => (pure RISCV_SEXTB)
-  | "sext.h" => (pure RISCV_SEXTH)
-  | "zext.h" => (pure RISCV_ZEXTH)
+  | "sext.b" => (pure SEXTB)
+  | "sext.h" => (pure SEXTH)
+  | "zext.h" => (pure ZEXTH)
   | _ => (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
 def zbb_extop_mnemonic_forwards_matches (arg_ : extop_zbb) : Bool :=
   match arg_ with
-  | RISCV_SEXTB => true
-  | RISCV_SEXTH => true
-  | RISCV_ZEXTH => true
+  | SEXTB => true
+  | SEXTH => true
+  | ZEXTH => true
 
 def zbb_extop_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with

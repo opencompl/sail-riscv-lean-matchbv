@@ -167,20 +167,20 @@ open AccessType
 
 def zba_rtypeuw_mnemonic_backwards (arg_ : String) : SailM bropw_zba := do
   match arg_ with
-  | "add.uw" => (pure RISCV_ADDUW)
-  | "sh1add.uw" => (pure RISCV_SH1ADDUW)
-  | "sh2add.uw" => (pure RISCV_SH2ADDUW)
-  | "sh3add.uw" => (pure RISCV_SH3ADDUW)
+  | "add.uw" => (pure ADDUW)
+  | "sh1add.uw" => (pure SH1ADDUW)
+  | "sh2add.uw" => (pure SH2ADDUW)
+  | "sh3add.uw" => (pure SH3ADDUW)
   | _ => (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
 def zba_rtypeuw_mnemonic_forwards_matches (arg_ : bropw_zba) : Bool :=
   match arg_ with
-  | RISCV_ADDUW => true
-  | RISCV_SH1ADDUW => true
-  | RISCV_SH2ADDUW => true
-  | RISCV_SH3ADDUW => true
+  | ADDUW => true
+  | SH1ADDUW => true
+  | SH2ADDUW => true
+  | SH3ADDUW => true
 
 def zba_rtypeuw_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -192,18 +192,18 @@ def zba_rtypeuw_mnemonic_backwards_matches (arg_ : String) : Bool :=
 
 def zba_rtype_mnemonic_backwards (arg_ : String) : SailM brop_zba := do
   match arg_ with
-  | "sh1add" => (pure RISCV_SH1ADD)
-  | "sh2add" => (pure RISCV_SH2ADD)
-  | "sh3add" => (pure RISCV_SH3ADD)
+  | "sh1add" => (pure SH1ADD)
+  | "sh2add" => (pure SH2ADD)
+  | "sh3add" => (pure SH3ADD)
   | _ => (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
 def zba_rtype_mnemonic_forwards_matches (arg_ : brop_zba) : Bool :=
   match arg_ with
-  | RISCV_SH1ADD => true
-  | RISCV_SH2ADD => true
-  | RISCV_SH3ADD => true
+  | SH1ADD => true
+  | SH2ADD => true
+  | SH3ADD => true
 
 def zba_rtype_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with

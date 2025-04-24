@@ -595,7 +595,7 @@ def htif_load (t : (AccessType Unit)) (app_1 : physaddr) (width : Nat) : SailM (
   then
     (pure (print_endline
         (HAppend.hAppend "htif["
-          (HAppend.hAppend (BitVec.toFormatted paddr)
+          (HAppend.hAppend (hex_bits_str paddr)
             (HAppend.hAppend "] -> " (BitVec.toFormatted (← readReg htif_tohost)))))))
   else (pure ())
   bif (Bool.and (BEq.beq width 8) (BEq.beq paddr (plat_htif_tohost ())))
@@ -625,8 +625,7 @@ def htif_store (app_0 : physaddr) (width : Nat) (data : (BitVec (8 * width))) : 
     then
       (print_endline
         (HAppend.hAppend "htif["
-          (HAppend.hAppend (BitVec.toFormatted paddr)
-            (HAppend.hAppend "] <- " (BitVec.toFormatted data)))))
+          (HAppend.hAppend (hex_bits_str paddr) (HAppend.hAppend "] <- " (BitVec.toFormatted data)))))
     else ()
   bif (BEq.beq width 8)
   then

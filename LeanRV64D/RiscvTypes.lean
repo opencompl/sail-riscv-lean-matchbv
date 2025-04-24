@@ -2502,12 +2502,12 @@ def amo_mnemonic_forwards (arg_ : amoop) : String :=
 
 def btype_mnemonic_forwards (arg_ : bop) : String :=
   match arg_ with
-  | RISCV_BEQ => "beq"
-  | RISCV_BNE => "bne"
-  | RISCV_BLT => "blt"
-  | RISCV_BGE => "bge"
-  | RISCV_BLTU => "bltu"
-  | RISCV_BGEU => "bgeu"
+  | BEQ => "beq"
+  | BNE => "bne"
+  | BLT => "blt"
+  | BGE => "bge"
+  | BLTU => "bltu"
+  | BGEU => "bgeu"
 
 def cbop_mnemonic_forwards (arg_ : cbop_zicbom) : String :=
   match arg_ with
@@ -3081,12 +3081,12 @@ def fwvvtype_mnemonic_forwards (arg_ : fwvvfunct6) : String :=
 
 def itype_mnemonic_forwards (arg_ : iop) : String :=
   match arg_ with
-  | RISCV_ADDI => "addi"
-  | RISCV_SLTI => "slti"
-  | RISCV_SLTIU => "sltiu"
-  | RISCV_XORI => "xori"
-  | RISCV_ORI => "ori"
-  | RISCV_ANDI => "andi"
+  | ADDI => "addi"
+  | SLTI => "slti"
+  | SLTIU => "sltiu"
+  | XORI => "xori"
+  | ORI => "ori"
+  | ANDI => "andi"
 
 def ma_flag_backwards (arg_ : (BitVec 1)) : String :=
   let b__0 := arg_
@@ -3094,7 +3094,7 @@ def ma_flag_backwards (arg_ : (BitVec 1)) : String :=
   then (String.append (sep_forwards ()) (String.append "ma" ""))
   else (String.append (sep_forwards ()) (String.append "mu" ""))
 
-/-- Type quantifiers: k_ex341256# : Bool -/
+/-- Type quantifiers: k_ex341306# : Bool -/
 def maybe_aq_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".aq"
@@ -3133,19 +3133,19 @@ def maybe_lmul_flag_backwards (arg_ : (BitVec 3)) : SailM String := do
                               assert false "Pattern match failure at unknown location"
                               throw Error.Exit)))))))
 
-/-- Type quantifiers: k_ex341264# : Bool -/
+/-- Type quantifiers: k_ex341314# : Bool -/
 def maybe_not_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | false => "u"
   | true => ""
 
-/-- Type quantifiers: k_ex341265# : Bool -/
+/-- Type quantifiers: k_ex341315# : Bool -/
 def maybe_rl_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".rl"
   | false => ""
 
-/-- Type quantifiers: k_ex341266# : Bool -/
+/-- Type quantifiers: k_ex341316# : Bool -/
 def maybe_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => "u"
@@ -3305,24 +3305,24 @@ def rmvvtype_mnemonic_forwards (arg_ : rmvvfunct6) : String :=
 
 def rtype_mnemonic_forwards (arg_ : rop) : String :=
   match arg_ with
-  | RISCV_ADD => "add"
-  | RISCV_SLT => "slt"
-  | RISCV_SLTU => "sltu"
-  | RISCV_AND => "and"
-  | RISCV_OR => "or"
-  | RISCV_XOR => "xor"
-  | RISCV_SLL => "sll"
-  | RISCV_SRL => "srl"
-  | RISCV_SUB => "sub"
-  | RISCV_SRA => "sra"
+  | ADD => "add"
+  | SLT => "slt"
+  | SLTU => "sltu"
+  | AND => "and"
+  | OR => "or"
+  | XOR => "xor"
+  | SLL => "sll"
+  | SRL => "srl"
+  | SUB => "sub"
+  | SRA => "sra"
 
 def rtypew_mnemonic_forwards (arg_ : ropw) : String :=
   match arg_ with
-  | RISCV_ADDW => "addw"
-  | RISCV_SUBW => "subw"
-  | RISCV_SLLW => "sllw"
-  | RISCV_SRLW => "srlw"
-  | RISCV_SRAW => "sraw"
+  | ADDW => "addw"
+  | SUBW => "subw"
+  | SLLW => "sllw"
+  | SRLW => "srlw"
+  | SRAW => "sraw"
 
 def sew_flag_backwards (arg_ : (BitVec 3)) : SailM String := do
   let b__0 := arg_
@@ -3347,15 +3347,15 @@ def sew_flag_backwards (arg_ : (BitVec 3)) : SailM String := do
 
 def shiftiop_mnemonic_forwards (arg_ : sop) : String :=
   match arg_ with
-  | RISCV_SLLI => "slli"
-  | RISCV_SRLI => "srli"
-  | RISCV_SRAI => "srai"
+  | SLLI => "slli"
+  | SRLI => "srli"
+  | SRAI => "srai"
 
 def shiftiwop_mnemonic_forwards (arg_ : sopw) : String :=
   match arg_ with
-  | RISCV_SLLIW => "slliw"
-  | RISCV_SRLIW => "srliw"
-  | RISCV_SRAIW => "sraiw"
+  | SLLIW => "slliw"
+  | SRLIW => "srliw"
+  | SRAIW => "sraiw"
 
 def simm_string_forwards (arg_ : (BitVec 5)) : SailM String := do
   let b__0 := arg_
@@ -3393,8 +3393,8 @@ def ta_flag_backwards (arg_ : (BitVec 1)) : String :=
 
 def utype_mnemonic_forwards (arg_ : uop) : String :=
   match arg_ with
-  | RISCV_LUI => "lui"
-  | RISCV_AUIPC => "auipc"
+  | LUI => "lui"
+  | AUIPC => "auipc"
 
 def vext2type_mnemonic_forwards (arg_ : vext2funct6) : String :=
   match arg_ with
@@ -3761,63 +3761,63 @@ def wxtype_mnemonic_forwards (arg_ : wxfunct6) : String :=
 
 def zba_rtype_mnemonic_forwards (arg_ : brop_zba) : String :=
   match arg_ with
-  | RISCV_SH1ADD => "sh1add"
-  | RISCV_SH2ADD => "sh2add"
-  | RISCV_SH3ADD => "sh3add"
+  | SH1ADD => "sh1add"
+  | SH2ADD => "sh2add"
+  | SH3ADD => "sh3add"
 
 def zba_rtypeuw_mnemonic_forwards (arg_ : bropw_zba) : String :=
   match arg_ with
-  | RISCV_ADDUW => "add.uw"
-  | RISCV_SH1ADDUW => "sh1add.uw"
-  | RISCV_SH2ADDUW => "sh2add.uw"
-  | RISCV_SH3ADDUW => "sh3add.uw"
+  | ADDUW => "add.uw"
+  | SH1ADDUW => "sh1add.uw"
+  | SH2ADDUW => "sh2add.uw"
+  | SH3ADDUW => "sh3add.uw"
 
 def zbb_extop_mnemonic_forwards (arg_ : extop_zbb) : String :=
   match arg_ with
-  | RISCV_SEXTB => "sext.b"
-  | RISCV_SEXTH => "sext.h"
-  | RISCV_ZEXTH => "zext.h"
+  | SEXTB => "sext.b"
+  | SEXTH => "sext.h"
+  | ZEXTH => "zext.h"
 
 def zbb_rtype_mnemonic_forwards (arg_ : brop_zbb) : String :=
   match arg_ with
-  | RISCV_ANDN => "andn"
-  | RISCV_ORN => "orn"
-  | RISCV_XNOR => "xnor"
-  | RISCV_MAX => "max"
-  | RISCV_MAXU => "maxu"
-  | RISCV_MIN => "min"
-  | RISCV_MINU => "minu"
-  | RISCV_ROL => "rol"
-  | RISCV_ROR => "ror"
+  | ANDN => "andn"
+  | ORN => "orn"
+  | XNOR => "xnor"
+  | MAX => "max"
+  | MAXU => "maxu"
+  | MIN => "min"
+  | MINU => "minu"
+  | ROL => "rol"
+  | ROR => "ror"
 
 def zbb_rtypew_mnemonic_forwards (arg_ : bropw_zbb) : String :=
   match arg_ with
-  | RISCV_ROLW => "rolw"
-  | RISCV_RORW => "rorw"
+  | ROLW => "rolw"
+  | RORW => "rorw"
 
 def zbkb_rtype_mnemonic_forwards (arg_ : brop_zbkb) : String :=
   match arg_ with
-  | RISCV_PACK => "pack"
-  | RISCV_PACKH => "packh"
+  | PACK => "pack"
+  | PACKH => "packh"
 
 def zbs_iop_mnemonic_forwards (arg_ : biop_zbs) : String :=
   match arg_ with
-  | RISCV_BCLRI => "bclri"
-  | RISCV_BEXTI => "bexti"
-  | RISCV_BINVI => "binvi"
-  | RISCV_BSETI => "bseti"
+  | BCLRI => "bclri"
+  | BEXTI => "bexti"
+  | BINVI => "binvi"
+  | BSETI => "bseti"
 
 def zbs_rtype_mnemonic_forwards (arg_ : brop_zbs) : String :=
   match arg_ with
-  | RISCV_BCLR => "bclr"
-  | RISCV_BEXT => "bext"
-  | RISCV_BINV => "binv"
-  | RISCV_BSET => "bset"
+  | BCLR => "bclr"
+  | BEXT => "bext"
+  | BINV => "binv"
+  | BSET => "bset"
 
 def zicond_mnemonic_forwards (arg_ : zicondop) : String :=
   match arg_ with
-  | RISCV_CZERO_EQZ => "czero.eqz"
-  | RISCV_CZERO_NEZ => "czero.nez"
+  | CZERO_EQZ => "czero.eqz"
+  | CZERO_NEZ => "czero.nez"
 
 def assembly_forwards (arg_ : ast) : SailM String := do
   match arg_ with
@@ -3826,12 +3826,12 @@ def assembly_forwards (arg_ : ast) : SailM String := do
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (← (hex_bits_signed_20_forwards imm)) ""))))))
-  | .RISCV_JAL (imm, rd) => (pure (String.append "jal"
+  | .JAL (imm, rd) => (pure (String.append "jal"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (← (hex_bits_signed_21_forwards imm)) ""))))))
-  | .RISCV_JALR (imm, rs1, rd) => (pure (String.append "jalr"
+  | .JALR (imm, rs1, rd) => (pure (String.append "jalr"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
@@ -4686,7 +4686,7 @@ def assembly_forwards (arg_ : ast) : SailM String := do
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))
   | .SFENCE_W_INVAL () => (pure "sfence.w.inval")
   | .SFENCE_INVAL_IR () => (pure "sfence.inval.ir")
-  | .RISCV_SLLIUW (shamt, rs1, rd) => (pure (String.append "slli.uw"
+  | .SLLIUW (shamt, rs1, rd) => (pure (String.append "slli.uw"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
@@ -4705,14 +4705,14 @@ def assembly_forwards (arg_ : ast) : SailM String := do
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .RISCV_RORIW (shamt, rs1, rd) => (pure (String.append "roriw"
+  | .RORIW (shamt, rs1, rd) => (pure (String.append "roriw"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ())
                   (String.append (← (hex_bits_5_forwards shamt)) ""))))))))
-  | .RISCV_RORI (shamt, rs1, rd) => (pure (String.append "rori"
+  | .RORI (shamt, rs1, rd) => (pure (String.append "rori"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
@@ -4735,51 +4735,51 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .RISCV_REV8 (rs1, rd) => (pure (String.append "rev8"
+  | .REV8 (rs1, rd) => (pure (String.append "rev8"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .RISCV_ORCB (rs1, rd) => (pure (String.append "orc.b"
+  | .ORCB (rs1, rd) => (pure (String.append "orc.b"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .RISCV_CPOP (rs1, rd) => (pure (String.append "cpop"
+  | .CPOP (rs1, rd) => (pure (String.append "cpop"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .RISCV_CPOPW (rs1, rd) => (pure (String.append "cpopw"
+  | .CPOPW (rs1, rd) => (pure (String.append "cpopw"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .RISCV_CLZ (rs1, rd) => (pure (String.append "clz"
+  | .CLZ (rs1, rd) => (pure (String.append "clz"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .RISCV_CLZW (rs1, rd) => (pure (String.append "clzw"
+  | .CLZW (rs1, rd) => (pure (String.append "clzw"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .RISCV_CTZ (rs1, rd) => (pure (String.append "ctz"
+  | .CTZ (rs1, rd) => (pure (String.append "ctz"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .RISCV_CTZW (rs1, rd) => (pure (String.append "ctzw"
+  | .CTZW (rs1, rd) => (pure (String.append "ctzw"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .RISCV_CLMUL (rs2, rs1, rd) => (pure (String.append "clmul"
+  | .CLMUL (rs2, rs1, rd) => (pure (String.append "clmul"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .RISCV_CLMULH (rs2, rs1, rd) => (pure (String.append "clmulh"
+  | .CLMULH (rs2, rs1, rd) => (pure (String.append "clmulh"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .RISCV_CLMULR (rs2, rs1, rd) => (pure (String.append "clmulr"
+  | .CLMULR (rs2, rs1, rd) => (pure (String.append "clmulr"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
@@ -4926,140 +4926,140 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (freg_name_forwards rs1) ""))))))
-  | .RISCV_FLI_H (constantidx, rd) => (pure (String.append "fli.h"
+  | .FLI_H (constantidx, rd) => (pure (String.append "fli.h"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (← (hex_bits_5_forwards constantidx)) ""))))))
-  | .RISCV_FLI_S (constantidx, rd) => (pure (String.append "fli.s"
+  | .FLI_S (constantidx, rd) => (pure (String.append "fli.s"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (← (hex_bits_5_forwards constantidx)) ""))))))
-  | .RISCV_FLI_D (constantidx, rd) => (pure (String.append "fli.d"
+  | .FLI_D (constantidx, rd) => (pure (String.append "fli.d"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (← (hex_bits_5_forwards constantidx)) ""))))))
-  | .RISCV_FMINM_H (rs2, rs1, rd) => (pure (String.append "fminm.h"
+  | .FMINM_H (rs2, rs1, rd) => (pure (String.append "fminm.h"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
-  | .RISCV_FMAXM_H (rs2, rs1, rd) => (pure (String.append "fmaxm.h"
+  | .FMAXM_H (rs2, rs1, rd) => (pure (String.append "fmaxm.h"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
-  | .RISCV_FMINM_S (rs2, rs1, rd) => (pure (String.append "fminm.s"
+  | .FMINM_S (rs2, rs1, rd) => (pure (String.append "fminm.s"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
-  | .RISCV_FMAXM_S (rs2, rs1, rd) => (pure (String.append "fmaxm.s"
+  | .FMAXM_S (rs2, rs1, rd) => (pure (String.append "fmaxm.s"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
-  | .RISCV_FMINM_D (rs2, rs1, rd) => (pure (String.append "fminm.d"
+  | .FMINM_D (rs2, rs1, rd) => (pure (String.append "fminm.d"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
-  | .RISCV_FMAXM_D (rs2, rs1, rd) => (pure (String.append "fmaxm.d"
+  | .FMAXM_D (rs2, rs1, rd) => (pure (String.append "fmaxm.d"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
-  | .RISCV_FROUND_H (rs1, rm, rd) => (pure (String.append "fround.h"
+  | .FROUND_H (rs1, rm, rd) => (pure (String.append "fround.h"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
-  | .RISCV_FROUNDNX_H (rs1, rm, rd) => (pure (String.append "froundnx.h"
+  | .FROUNDNX_H (rs1, rm, rd) => (pure (String.append "froundnx.h"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
-  | .RISCV_FROUND_S (rs1, rm, rd) => (pure (String.append "fround.s"
+  | .FROUND_S (rs1, rm, rd) => (pure (String.append "fround.s"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
-  | .RISCV_FROUNDNX_S (rs1, rm, rd) => (pure (String.append "froundnx.s"
+  | .FROUNDNX_S (rs1, rm, rd) => (pure (String.append "froundnx.s"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
-  | .RISCV_FROUND_D (rs1, rm, rd) => (pure (String.append "fround.d"
+  | .FROUND_D (rs1, rm, rd) => (pure (String.append "fround.d"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
-  | .RISCV_FROUNDNX_D (rs1, rm, rd) => (pure (String.append "froundnx.d"
+  | .FROUNDNX_D (rs1, rm, rd) => (pure (String.append "froundnx.d"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
-  | .RISCV_FMVH_X_D (rs1, rd) => (pure (String.append "fmvh.x.d"
+  | .FMVH_X_D (rs1, rd) => (pure (String.append "fmvh.x.d"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (freg_name_forwards rs1) ""))))))
-  | .RISCV_FMVP_D_X (rs2, rs1, rd) => (pure (String.append "fmvp.d.x"
+  | .FMVP_D_X (rs2, rs1, rd) => (pure (String.append "fmvp.d.x"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .RISCV_FLEQ_H (rs2, rs1, rd) => (pure (String.append "fleq.h"
+  | .FLEQ_H (rs2, rs1, rd) => (pure (String.append "fleq.h"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
-  | .RISCV_FLTQ_H (rs2, rs1, rd) => (pure (String.append "fltq.h"
+  | .FLTQ_H (rs2, rs1, rd) => (pure (String.append "fltq.h"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
-  | .RISCV_FLEQ_S (rs2, rs1, rd) => (pure (String.append "fleq.s"
+  | .FLEQ_S (rs2, rs1, rd) => (pure (String.append "fleq.s"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
-  | .RISCV_FLTQ_S (rs2, rs1, rd) => (pure (String.append "fltq.s"
+  | .FLTQ_S (rs2, rs1, rd) => (pure (String.append "fltq.s"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
-  | .RISCV_FLEQ_D (rs2, rs1, rd) => (pure (String.append "fleq.d"
+  | .FLEQ_D (rs2, rs1, rd) => (pure (String.append "fleq.d"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
-  | .RISCV_FLTQ_D (rs2, rs1, rd) => (pure (String.append "fltq.d"
+  | .FLTQ_D (rs2, rs1, rd) => (pure (String.append "fltq.d"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
-  | .RISCV_FCVTMOD_W_D (rs1, rd) => (pure (String.append "fcvtmod.w.d"
+  | .FCVTMOD_W_D (rs1, rd) => (pure (String.append "fcvtmod.w.d"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (freg_name_forwards rs1) ""))))))
@@ -5245,25 +5245,25 @@ def assembly_forwards (arg_ : ast) : SailM String := do
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .RISCV_ZIP (rs1, rd) => (pure (String.append "zip"
+  | .ZIP (rs1, rd) => (pure (String.append "zip"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .RISCV_UNZIP (rs1, rd) => (pure (String.append "unzip"
+  | .UNZIP (rs1, rd) => (pure (String.append "unzip"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .RISCV_BREV8 (rs1, rd) => (pure (String.append "brev8"
+  | .BREV8 (rs1, rd) => (pure (String.append "brev8"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .RISCV_XPERM8 (rs2, rs1, rd) => (pure (String.append "xperm8"
+  | .XPERM8 (rs2, rs1, rd) => (pure (String.append "xperm8"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .RISCV_XPERM4 (rs2, rs1, rd) => (pure (String.append "xperm4"
+  | .XPERM4 (rs2, rs1, rd) => (pure (String.append "xperm4"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
@@ -5979,13 +5979,13 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .RISCV_ZICBOM (cbop, rs1) => (pure (String.append (cbop_mnemonic_forwards cbop)
+  | .ZICBOM (cbop, rs1) => (pure (String.append (cbop_mnemonic_forwards cbop)
         (String.append (spc_forwards ())
           (String.append "("
             (String.append (opt_spc_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (opt_spc_forwards ()) (String.append ")" ""))))))))
-  | .RISCV_ZICBOZ rs1 => (pure (String.append "cbo.zero"
+  | .ZICBOZ rs1 => (pure (String.append "cbo.zero"
         (String.append (spc_forwards ())
           (String.append "("
             (String.append (opt_spc_forwards ())
@@ -6385,145 +6385,144 @@ def satpMode_of_bits (a : Architecture) (m : (BitVec 4)) : (Option SATPMode) :=
       | (_, _) => none))
 
 def undefined_uop (_ : Unit) : SailM uop := do
-  (internal_pick [RISCV_LUI, RISCV_AUIPC])
+  (internal_pick [LUI, AUIPC])
 
 /-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 1 -/
 def uop_of_num (arg_ : Nat) : uop :=
   match arg_ with
-  | 0 => RISCV_LUI
-  | _ => RISCV_AUIPC
+  | 0 => LUI
+  | _ => AUIPC
 
 def num_of_uop (arg_ : uop) : Int :=
   match arg_ with
-  | RISCV_LUI => 0
-  | RISCV_AUIPC => 1
+  | LUI => 0
+  | AUIPC => 1
 
 def undefined_bop (_ : Unit) : SailM bop := do
-  (internal_pick [RISCV_BEQ, RISCV_BNE, RISCV_BLT, RISCV_BGE, RISCV_BLTU, RISCV_BGEU])
+  (internal_pick [BEQ, BNE, BLT, BGE, BLTU, BGEU])
 
 /-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 5 -/
 def bop_of_num (arg_ : Nat) : bop :=
   match arg_ with
-  | 0 => RISCV_BEQ
-  | 1 => RISCV_BNE
-  | 2 => RISCV_BLT
-  | 3 => RISCV_BGE
-  | 4 => RISCV_BLTU
-  | _ => RISCV_BGEU
+  | 0 => BEQ
+  | 1 => BNE
+  | 2 => BLT
+  | 3 => BGE
+  | 4 => BLTU
+  | _ => BGEU
 
 def num_of_bop (arg_ : bop) : Int :=
   match arg_ with
-  | RISCV_BEQ => 0
-  | RISCV_BNE => 1
-  | RISCV_BLT => 2
-  | RISCV_BGE => 3
-  | RISCV_BLTU => 4
-  | RISCV_BGEU => 5
+  | BEQ => 0
+  | BNE => 1
+  | BLT => 2
+  | BGE => 3
+  | BLTU => 4
+  | BGEU => 5
 
 def undefined_iop (_ : Unit) : SailM iop := do
-  (internal_pick [RISCV_ADDI, RISCV_SLTI, RISCV_SLTIU, RISCV_XORI, RISCV_ORI, RISCV_ANDI])
+  (internal_pick [ADDI, SLTI, SLTIU, XORI, ORI, ANDI])
 
 /-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 5 -/
 def iop_of_num (arg_ : Nat) : iop :=
   match arg_ with
-  | 0 => RISCV_ADDI
-  | 1 => RISCV_SLTI
-  | 2 => RISCV_SLTIU
-  | 3 => RISCV_XORI
-  | 4 => RISCV_ORI
-  | _ => RISCV_ANDI
+  | 0 => ADDI
+  | 1 => SLTI
+  | 2 => SLTIU
+  | 3 => XORI
+  | 4 => ORI
+  | _ => ANDI
 
 def num_of_iop (arg_ : iop) : Int :=
   match arg_ with
-  | RISCV_ADDI => 0
-  | RISCV_SLTI => 1
-  | RISCV_SLTIU => 2
-  | RISCV_XORI => 3
-  | RISCV_ORI => 4
-  | RISCV_ANDI => 5
+  | ADDI => 0
+  | SLTI => 1
+  | SLTIU => 2
+  | XORI => 3
+  | ORI => 4
+  | ANDI => 5
 
 def undefined_sop (_ : Unit) : SailM sop := do
-  (internal_pick [RISCV_SLLI, RISCV_SRLI, RISCV_SRAI])
+  (internal_pick [SLLI, SRLI, SRAI])
 
 /-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 2 -/
 def sop_of_num (arg_ : Nat) : sop :=
   match arg_ with
-  | 0 => RISCV_SLLI
-  | 1 => RISCV_SRLI
-  | _ => RISCV_SRAI
+  | 0 => SLLI
+  | 1 => SRLI
+  | _ => SRAI
 
 def num_of_sop (arg_ : sop) : Int :=
   match arg_ with
-  | RISCV_SLLI => 0
-  | RISCV_SRLI => 1
-  | RISCV_SRAI => 2
+  | SLLI => 0
+  | SRLI => 1
+  | SRAI => 2
 
 def undefined_rop (_ : Unit) : SailM rop := do
-  (internal_pick
-    [RISCV_ADD, RISCV_SUB, RISCV_SLL, RISCV_SLT, RISCV_SLTU, RISCV_XOR, RISCV_SRL, RISCV_SRA, RISCV_OR, RISCV_AND])
+  (internal_pick [ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND])
 
 /-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 9 -/
 def rop_of_num (arg_ : Nat) : rop :=
   match arg_ with
-  | 0 => RISCV_ADD
-  | 1 => RISCV_SUB
-  | 2 => RISCV_SLL
-  | 3 => RISCV_SLT
-  | 4 => RISCV_SLTU
-  | 5 => RISCV_XOR
-  | 6 => RISCV_SRL
-  | 7 => RISCV_SRA
-  | 8 => RISCV_OR
-  | _ => RISCV_AND
+  | 0 => ADD
+  | 1 => SUB
+  | 2 => SLL
+  | 3 => SLT
+  | 4 => SLTU
+  | 5 => XOR
+  | 6 => SRL
+  | 7 => SRA
+  | 8 => OR
+  | _ => AND
 
 def num_of_rop (arg_ : rop) : Int :=
   match arg_ with
-  | RISCV_ADD => 0
-  | RISCV_SUB => 1
-  | RISCV_SLL => 2
-  | RISCV_SLT => 3
-  | RISCV_SLTU => 4
-  | RISCV_XOR => 5
-  | RISCV_SRL => 6
-  | RISCV_SRA => 7
-  | RISCV_OR => 8
-  | RISCV_AND => 9
+  | ADD => 0
+  | SUB => 1
+  | SLL => 2
+  | SLT => 3
+  | SLTU => 4
+  | XOR => 5
+  | SRL => 6
+  | SRA => 7
+  | OR => 8
+  | AND => 9
 
 def undefined_ropw (_ : Unit) : SailM ropw := do
-  (internal_pick [RISCV_ADDW, RISCV_SUBW, RISCV_SLLW, RISCV_SRLW, RISCV_SRAW])
+  (internal_pick [ADDW, SUBW, SLLW, SRLW, SRAW])
 
 /-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 4 -/
 def ropw_of_num (arg_ : Nat) : ropw :=
   match arg_ with
-  | 0 => RISCV_ADDW
-  | 1 => RISCV_SUBW
-  | 2 => RISCV_SLLW
-  | 3 => RISCV_SRLW
-  | _ => RISCV_SRAW
+  | 0 => ADDW
+  | 1 => SUBW
+  | 2 => SLLW
+  | 3 => SRLW
+  | _ => SRAW
 
 def num_of_ropw (arg_ : ropw) : Int :=
   match arg_ with
-  | RISCV_ADDW => 0
-  | RISCV_SUBW => 1
-  | RISCV_SLLW => 2
-  | RISCV_SRLW => 3
-  | RISCV_SRAW => 4
+  | ADDW => 0
+  | SUBW => 1
+  | SLLW => 2
+  | SRLW => 3
+  | SRAW => 4
 
 def undefined_sopw (_ : Unit) : SailM sopw := do
-  (internal_pick [RISCV_SLLIW, RISCV_SRLIW, RISCV_SRAIW])
+  (internal_pick [SLLIW, SRLIW, SRAIW])
 
 /-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 2 -/
 def sopw_of_num (arg_ : Nat) : sopw :=
   match arg_ with
-  | 0 => RISCV_SLLIW
-  | 1 => RISCV_SRLIW
-  | _ => RISCV_SRAIW
+  | 0 => SLLIW
+  | 1 => SRLIW
+  | _ => SRAIW
 
 def num_of_sopw (arg_ : sopw) : Int :=
   match arg_ with
-  | RISCV_SLLIW => 0
-  | RISCV_SRLIW => 1
-  | RISCV_SRAIW => 2
+  | SLLIW => 0
+  | SRLIW => 1
+  | SRAIW => 2
 
 def undefined_amoop (_ : Unit) : SailM amoop := do
   (internal_pick [AMOSWAP, AMOADD, AMOXOR, AMOAND, AMOOR, AMOMIN, AMOMAX, AMOMINU, AMOMAXU])
@@ -6586,161 +6585,160 @@ def num_of_cbop_zicbom (arg_ : cbop_zicbom) : Int :=
   | CBO_INVAL => 2
 
 def undefined_brop_zba (_ : Unit) : SailM brop_zba := do
-  (internal_pick [RISCV_SH1ADD, RISCV_SH2ADD, RISCV_SH3ADD])
+  (internal_pick [SH1ADD, SH2ADD, SH3ADD])
 
 /-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 2 -/
 def brop_zba_of_num (arg_ : Nat) : brop_zba :=
   match arg_ with
-  | 0 => RISCV_SH1ADD
-  | 1 => RISCV_SH2ADD
-  | _ => RISCV_SH3ADD
+  | 0 => SH1ADD
+  | 1 => SH2ADD
+  | _ => SH3ADD
 
 def num_of_brop_zba (arg_ : brop_zba) : Int :=
   match arg_ with
-  | RISCV_SH1ADD => 0
-  | RISCV_SH2ADD => 1
-  | RISCV_SH3ADD => 2
+  | SH1ADD => 0
+  | SH2ADD => 1
+  | SH3ADD => 2
 
 def undefined_brop_zbb (_ : Unit) : SailM brop_zbb := do
-  (internal_pick
-    [RISCV_ANDN, RISCV_ORN, RISCV_XNOR, RISCV_MAX, RISCV_MAXU, RISCV_MIN, RISCV_MINU, RISCV_ROL, RISCV_ROR])
+  (internal_pick [ANDN, ORN, XNOR, MAX, MAXU, MIN, MINU, ROL, ROR])
 
 /-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 8 -/
 def brop_zbb_of_num (arg_ : Nat) : brop_zbb :=
   match arg_ with
-  | 0 => RISCV_ANDN
-  | 1 => RISCV_ORN
-  | 2 => RISCV_XNOR
-  | 3 => RISCV_MAX
-  | 4 => RISCV_MAXU
-  | 5 => RISCV_MIN
-  | 6 => RISCV_MINU
-  | 7 => RISCV_ROL
-  | _ => RISCV_ROR
+  | 0 => ANDN
+  | 1 => ORN
+  | 2 => XNOR
+  | 3 => MAX
+  | 4 => MAXU
+  | 5 => MIN
+  | 6 => MINU
+  | 7 => ROL
+  | _ => ROR
 
 def num_of_brop_zbb (arg_ : brop_zbb) : Int :=
   match arg_ with
-  | RISCV_ANDN => 0
-  | RISCV_ORN => 1
-  | RISCV_XNOR => 2
-  | RISCV_MAX => 3
-  | RISCV_MAXU => 4
-  | RISCV_MIN => 5
-  | RISCV_MINU => 6
-  | RISCV_ROL => 7
-  | RISCV_ROR => 8
+  | ANDN => 0
+  | ORN => 1
+  | XNOR => 2
+  | MAX => 3
+  | MAXU => 4
+  | MIN => 5
+  | MINU => 6
+  | ROL => 7
+  | ROR => 8
 
 def undefined_brop_zbkb (_ : Unit) : SailM brop_zbkb := do
-  (internal_pick [RISCV_PACK, RISCV_PACKH])
+  (internal_pick [PACK, PACKH])
 
 /-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 1 -/
 def brop_zbkb_of_num (arg_ : Nat) : brop_zbkb :=
   match arg_ with
-  | 0 => RISCV_PACK
-  | _ => RISCV_PACKH
+  | 0 => PACK
+  | _ => PACKH
 
 def num_of_brop_zbkb (arg_ : brop_zbkb) : Int :=
   match arg_ with
-  | RISCV_PACK => 0
-  | RISCV_PACKH => 1
+  | PACK => 0
+  | PACKH => 1
 
 def undefined_brop_zbs (_ : Unit) : SailM brop_zbs := do
-  (internal_pick [RISCV_BCLR, RISCV_BEXT, RISCV_BINV, RISCV_BSET])
+  (internal_pick [BCLR, BEXT, BINV, BSET])
 
 /-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 3 -/
 def brop_zbs_of_num (arg_ : Nat) : brop_zbs :=
   match arg_ with
-  | 0 => RISCV_BCLR
-  | 1 => RISCV_BEXT
-  | 2 => RISCV_BINV
-  | _ => RISCV_BSET
+  | 0 => BCLR
+  | 1 => BEXT
+  | 2 => BINV
+  | _ => BSET
 
 def num_of_brop_zbs (arg_ : brop_zbs) : Int :=
   match arg_ with
-  | RISCV_BCLR => 0
-  | RISCV_BEXT => 1
-  | RISCV_BINV => 2
-  | RISCV_BSET => 3
+  | BCLR => 0
+  | BEXT => 1
+  | BINV => 2
+  | BSET => 3
 
 def undefined_bropw_zba (_ : Unit) : SailM bropw_zba := do
-  (internal_pick [RISCV_ADDUW, RISCV_SH1ADDUW, RISCV_SH2ADDUW, RISCV_SH3ADDUW])
+  (internal_pick [ADDUW, SH1ADDUW, SH2ADDUW, SH3ADDUW])
 
 /-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 3 -/
 def bropw_zba_of_num (arg_ : Nat) : bropw_zba :=
   match arg_ with
-  | 0 => RISCV_ADDUW
-  | 1 => RISCV_SH1ADDUW
-  | 2 => RISCV_SH2ADDUW
-  | _ => RISCV_SH3ADDUW
+  | 0 => ADDUW
+  | 1 => SH1ADDUW
+  | 2 => SH2ADDUW
+  | _ => SH3ADDUW
 
 def num_of_bropw_zba (arg_ : bropw_zba) : Int :=
   match arg_ with
-  | RISCV_ADDUW => 0
-  | RISCV_SH1ADDUW => 1
-  | RISCV_SH2ADDUW => 2
-  | RISCV_SH3ADDUW => 3
+  | ADDUW => 0
+  | SH1ADDUW => 1
+  | SH2ADDUW => 2
+  | SH3ADDUW => 3
 
 def undefined_bropw_zbb (_ : Unit) : SailM bropw_zbb := do
-  (internal_pick [RISCV_ROLW, RISCV_RORW])
+  (internal_pick [ROLW, RORW])
 
 /-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 1 -/
 def bropw_zbb_of_num (arg_ : Nat) : bropw_zbb :=
   match arg_ with
-  | 0 => RISCV_ROLW
-  | _ => RISCV_RORW
+  | 0 => ROLW
+  | _ => RORW
 
 def num_of_bropw_zbb (arg_ : bropw_zbb) : Int :=
   match arg_ with
-  | RISCV_ROLW => 0
-  | RISCV_RORW => 1
+  | ROLW => 0
+  | RORW => 1
 
 def undefined_biop_zbs (_ : Unit) : SailM biop_zbs := do
-  (internal_pick [RISCV_BCLRI, RISCV_BEXTI, RISCV_BINVI, RISCV_BSETI])
+  (internal_pick [BCLRI, BEXTI, BINVI, BSETI])
 
 /-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 3 -/
 def biop_zbs_of_num (arg_ : Nat) : biop_zbs :=
   match arg_ with
-  | 0 => RISCV_BCLRI
-  | 1 => RISCV_BEXTI
-  | 2 => RISCV_BINVI
-  | _ => RISCV_BSETI
+  | 0 => BCLRI
+  | 1 => BEXTI
+  | 2 => BINVI
+  | _ => BSETI
 
 def num_of_biop_zbs (arg_ : biop_zbs) : Int :=
   match arg_ with
-  | RISCV_BCLRI => 0
-  | RISCV_BEXTI => 1
-  | RISCV_BINVI => 2
-  | RISCV_BSETI => 3
+  | BCLRI => 0
+  | BEXTI => 1
+  | BINVI => 2
+  | BSETI => 3
 
 def undefined_extop_zbb (_ : Unit) : SailM extop_zbb := do
-  (internal_pick [RISCV_SEXTB, RISCV_SEXTH, RISCV_ZEXTH])
+  (internal_pick [SEXTB, SEXTH, ZEXTH])
 
 /-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 2 -/
 def extop_zbb_of_num (arg_ : Nat) : extop_zbb :=
   match arg_ with
-  | 0 => RISCV_SEXTB
-  | 1 => RISCV_SEXTH
-  | _ => RISCV_ZEXTH
+  | 0 => SEXTB
+  | 1 => SEXTH
+  | _ => ZEXTH
 
 def num_of_extop_zbb (arg_ : extop_zbb) : Int :=
   match arg_ with
-  | RISCV_SEXTB => 0
-  | RISCV_SEXTH => 1
-  | RISCV_ZEXTH => 2
+  | SEXTB => 0
+  | SEXTH => 1
+  | ZEXTH => 2
 
 def undefined_zicondop (_ : Unit) : SailM zicondop := do
-  (internal_pick [RISCV_CZERO_EQZ, RISCV_CZERO_NEZ])
+  (internal_pick [CZERO_EQZ, CZERO_NEZ])
 
 /-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 1 -/
 def zicondop_of_num (arg_ : Nat) : zicondop :=
   match arg_ with
-  | 0 => RISCV_CZERO_EQZ
-  | _ => RISCV_CZERO_NEZ
+  | 0 => CZERO_EQZ
+  | _ => CZERO_NEZ
 
 def num_of_zicondop (arg_ : zicondop) : Int :=
   match arg_ with
-  | RISCV_CZERO_EQZ => 0
-  | RISCV_CZERO_NEZ => 1
+  | CZERO_EQZ => 0
+  | CZERO_NEZ => 1
 
 def size_enc_forwards (arg_ : word_width) : (BitVec 2) :=
   match arg_ with

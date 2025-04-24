@@ -158,7 +158,7 @@ inductive ExceptionType where
 inductive amoop where | AMOSWAP | AMOADD | AMOXOR | AMOAND | AMOOR | AMOMIN | AMOMAX | AMOMINU | AMOMAXU
   deriving Inhabited, BEq
 
-inductive bop where | RISCV_BEQ | RISCV_BNE | RISCV_BLT | RISCV_BGE | RISCV_BLTU | RISCV_BGEU
+inductive bop where | BEQ | BNE | BLT | BGE | BLTU | BGEU
   deriving Inhabited, BEq
 
 inductive cbop_zicbom where | CBO_CLEAN | CBO_FLUSH | CBO_INVAL
@@ -288,7 +288,7 @@ inductive fwvvmafunct6 where | FWVV_VMACC | FWVV_VNMACC | FWVV_VMSAC | FWVV_VNMS
 inductive fwvvfunct6 where | FWVV_VADD | FWVV_VSUB | FWVV_VMUL
   deriving Inhabited, BEq
 
-inductive iop where | RISCV_ADDI | RISCV_SLTI | RISCV_SLTIU | RISCV_XORI | RISCV_ORI | RISCV_ANDI
+inductive iop where | ADDI | SLTI | SLTIU | XORI | ORI | ANDI
   deriving Inhabited, BEq
 
 inductive mmfunct6 where | MM_VMAND | MM_VMNAND | MM_VMANDN | MM_VMXOR | MM_VMOR | MM_VMNOR | MM_VMORN | MM_VMXNOR
@@ -339,22 +339,22 @@ inductive rivvfunct6 where | IVV_VWREDSUMU | IVV_VWREDSUM
 inductive rmvvfunct6 where | MVV_VREDSUM | MVV_VREDAND | MVV_VREDOR | MVV_VREDXOR | MVV_VREDMINU | MVV_VREDMIN | MVV_VREDMAXU | MVV_VREDMAX
   deriving Inhabited, BEq
 
-inductive rop where | RISCV_ADD | RISCV_SUB | RISCV_SLL | RISCV_SLT | RISCV_SLTU | RISCV_XOR | RISCV_SRL | RISCV_SRA | RISCV_OR | RISCV_AND
+inductive rop where | ADD | SUB | SLL | SLT | SLTU | XOR | SRL | SRA | OR | AND
   deriving Inhabited, BEq
 
-inductive ropw where | RISCV_ADDW | RISCV_SUBW | RISCV_SLLW | RISCV_SRLW | RISCV_SRAW
+inductive ropw where | ADDW | SUBW | SLLW | SRLW | SRAW
   deriving Inhabited, BEq
 
-inductive sop where | RISCV_SLLI | RISCV_SRLI | RISCV_SRAI
+inductive sop where | SLLI | SRLI | SRAI
   deriving Inhabited, BEq
 
-inductive sopw where | RISCV_SLLIW | RISCV_SRLIW | RISCV_SRAIW
+inductive sopw where | SLLIW | SRLIW | SRAIW
   deriving Inhabited, BEq
 
 inductive word_width where | BYTE | HALF | WORD | DOUBLE
   deriving Inhabited, BEq
 
-inductive uop where | RISCV_LUI | RISCV_AUIPC
+inductive uop where | LUI | AUIPC
   deriving Inhabited, BEq
 
 inductive vext2funct6 where | VEXT2_ZVF2 | VEXT2_SVF2
@@ -460,31 +460,31 @@ inductive wvxfunct6 where | WVX_VADD | WVX_VSUB | WVX_VADDU | WVX_VSUBU | WVX_VW
 inductive wxfunct6 where | WX_VADD | WX_VSUB | WX_VADDU | WX_VSUBU
   deriving Inhabited, BEq
 
-inductive brop_zba where | RISCV_SH1ADD | RISCV_SH2ADD | RISCV_SH3ADD
+inductive brop_zba where | SH1ADD | SH2ADD | SH3ADD
   deriving Inhabited, BEq
 
-inductive bropw_zba where | RISCV_ADDUW | RISCV_SH1ADDUW | RISCV_SH2ADDUW | RISCV_SH3ADDUW
+inductive bropw_zba where | ADDUW | SH1ADDUW | SH2ADDUW | SH3ADDUW
   deriving Inhabited, BEq
 
-inductive extop_zbb where | RISCV_SEXTB | RISCV_SEXTH | RISCV_ZEXTH
+inductive extop_zbb where | SEXTB | SEXTH | ZEXTH
   deriving Inhabited, BEq
 
-inductive brop_zbb where | RISCV_ANDN | RISCV_ORN | RISCV_XNOR | RISCV_MAX | RISCV_MAXU | RISCV_MIN | RISCV_MINU | RISCV_ROL | RISCV_ROR
+inductive brop_zbb where | ANDN | ORN | XNOR | MAX | MAXU | MIN | MINU | ROL | ROR
   deriving Inhabited, BEq
 
-inductive bropw_zbb where | RISCV_ROLW | RISCV_RORW
+inductive bropw_zbb where | ROLW | RORW
   deriving Inhabited, BEq
 
-inductive brop_zbkb where | RISCV_PACK | RISCV_PACKH
+inductive brop_zbkb where | PACK | PACKH
   deriving Inhabited, BEq
 
-inductive biop_zbs where | RISCV_BCLRI | RISCV_BEXTI | RISCV_BINVI | RISCV_BSETI
+inductive biop_zbs where | BCLRI | BEXTI | BINVI | BSETI
   deriving Inhabited, BEq
 
-inductive brop_zbs where | RISCV_BCLR | RISCV_BEXT | RISCV_BINV | RISCV_BSET
+inductive brop_zbs where | BCLR | BEXT | BINV | BSET
   deriving Inhabited, BEq
 
-inductive zicondop where | RISCV_CZERO_EQZ | RISCV_CZERO_NEZ
+inductive zicondop where | CZERO_EQZ | CZERO_NEZ
   deriving Inhabited, BEq
 
 inductive f_un_rm_ff_op_S where | FSQRT_S
@@ -494,8 +494,8 @@ inductive ast where
   | ILLEGAL (_ : word)
   | C_ILLEGAL (_ : half)
   | UTYPE (_ : ((BitVec 20) × regidx × uop))
-  | RISCV_JAL (_ : ((BitVec 21) × regidx))
-  | RISCV_JALR (_ : ((BitVec 12) × regidx × regidx))
+  | JAL (_ : ((BitVec 21) × regidx))
+  | JALR (_ : ((BitVec 12) × regidx × regidx))
   | BTYPE (_ : ((BitVec 13) × regidx × regidx × bop))
   | ITYPE (_ : ((BitVec 12) × regidx × regidx × iop))
   | SHIFTIOP (_ : ((BitVec 6) × regidx × regidx × sop))
@@ -601,25 +601,25 @@ inductive ast where
   | SINVAL_VMA (_ : (regidx × regidx))
   | SFENCE_W_INVAL (_ : Unit)
   | SFENCE_INVAL_IR (_ : Unit)
-  | RISCV_SLLIUW (_ : ((BitVec 6) × regidx × regidx))
+  | SLLIUW (_ : ((BitVec 6) × regidx × regidx))
   | ZBA_RTYPEUW (_ : (regidx × regidx × regidx × bropw_zba))
   | ZBA_RTYPE (_ : (regidx × regidx × regidx × brop_zba))
-  | RISCV_RORIW (_ : ((BitVec 5) × regidx × regidx))
-  | RISCV_RORI (_ : ((BitVec 6) × regidx × regidx))
+  | RORIW (_ : ((BitVec 5) × regidx × regidx))
+  | RORI (_ : ((BitVec 6) × regidx × regidx))
   | ZBB_RTYPEW (_ : (regidx × regidx × regidx × bropw_zbb))
   | ZBB_RTYPE (_ : (regidx × regidx × regidx × brop_zbb))
   | ZBB_EXTOP (_ : (regidx × regidx × extop_zbb))
-  | RISCV_REV8 (_ : (regidx × regidx))
-  | RISCV_ORCB (_ : (regidx × regidx))
-  | RISCV_CPOP (_ : (regidx × regidx))
-  | RISCV_CPOPW (_ : (regidx × regidx))
-  | RISCV_CLZ (_ : (regidx × regidx))
-  | RISCV_CLZW (_ : (regidx × regidx))
-  | RISCV_CTZ (_ : (regidx × regidx))
-  | RISCV_CTZW (_ : (regidx × regidx))
-  | RISCV_CLMUL (_ : (regidx × regidx × regidx))
-  | RISCV_CLMULH (_ : (regidx × regidx × regidx))
-  | RISCV_CLMULR (_ : (regidx × regidx × regidx))
+  | REV8 (_ : (regidx × regidx))
+  | ORCB (_ : (regidx × regidx))
+  | CPOP (_ : (regidx × regidx))
+  | CPOPW (_ : (regidx × regidx))
+  | CLZ (_ : (regidx × regidx))
+  | CLZW (_ : (regidx × regidx))
+  | CTZ (_ : (regidx × regidx))
+  | CTZW (_ : (regidx × regidx))
+  | CLMUL (_ : (regidx × regidx × regidx))
+  | CLMULH (_ : (regidx × regidx × regidx))
+  | CLMULR (_ : (regidx × regidx × regidx))
   | ZBS_IOP (_ : ((BitVec 6) × regidx × regidx × biop_zbs))
   | ZBS_RTYPE (_ : (regidx × regidx × regidx × brop_zbs))
   | C_LBU (_ : ((BitVec 2) × cregidx × cregidx))
@@ -643,30 +643,30 @@ inductive ast where
   | F_UN_RM_XF_TYPE_H (_ : (regidx × rounding_mode × fregidx × f_un_rm_xf_op_H))
   | F_UN_F_TYPE_H (_ : (regidx × fregidx × f_un_f_op_H))
   | F_UN_X_TYPE_H (_ : (fregidx × regidx × f_un_x_op_H))
-  | RISCV_FLI_H (_ : ((BitVec 5) × fregidx))
-  | RISCV_FLI_S (_ : ((BitVec 5) × fregidx))
-  | RISCV_FLI_D (_ : ((BitVec 5) × fregidx))
-  | RISCV_FMINM_H (_ : (fregidx × fregidx × fregidx))
-  | RISCV_FMAXM_H (_ : (fregidx × fregidx × fregidx))
-  | RISCV_FMINM_S (_ : (fregidx × fregidx × fregidx))
-  | RISCV_FMAXM_S (_ : (fregidx × fregidx × fregidx))
-  | RISCV_FMINM_D (_ : (fregidx × fregidx × fregidx))
-  | RISCV_FMAXM_D (_ : (fregidx × fregidx × fregidx))
-  | RISCV_FROUND_H (_ : (fregidx × rounding_mode × fregidx))
-  | RISCV_FROUNDNX_H (_ : (fregidx × rounding_mode × fregidx))
-  | RISCV_FROUND_S (_ : (fregidx × rounding_mode × fregidx))
-  | RISCV_FROUNDNX_S (_ : (fregidx × rounding_mode × fregidx))
-  | RISCV_FROUND_D (_ : (fregidx × rounding_mode × fregidx))
-  | RISCV_FROUNDNX_D (_ : (fregidx × rounding_mode × fregidx))
-  | RISCV_FMVH_X_D (_ : (fregidx × regidx))
-  | RISCV_FMVP_D_X (_ : (regidx × regidx × fregidx))
-  | RISCV_FLEQ_H (_ : (fregidx × fregidx × regidx))
-  | RISCV_FLTQ_H (_ : (fregidx × fregidx × regidx))
-  | RISCV_FLEQ_S (_ : (fregidx × fregidx × regidx))
-  | RISCV_FLTQ_S (_ : (fregidx × fregidx × regidx))
-  | RISCV_FLEQ_D (_ : (fregidx × fregidx × regidx))
-  | RISCV_FLTQ_D (_ : (fregidx × fregidx × regidx))
-  | RISCV_FCVTMOD_W_D (_ : (fregidx × regidx))
+  | FLI_H (_ : ((BitVec 5) × fregidx))
+  | FLI_S (_ : ((BitVec 5) × fregidx))
+  | FLI_D (_ : ((BitVec 5) × fregidx))
+  | FMINM_H (_ : (fregidx × fregidx × fregidx))
+  | FMAXM_H (_ : (fregidx × fregidx × fregidx))
+  | FMINM_S (_ : (fregidx × fregidx × fregidx))
+  | FMAXM_S (_ : (fregidx × fregidx × fregidx))
+  | FMINM_D (_ : (fregidx × fregidx × fregidx))
+  | FMAXM_D (_ : (fregidx × fregidx × fregidx))
+  | FROUND_H (_ : (fregidx × rounding_mode × fregidx))
+  | FROUNDNX_H (_ : (fregidx × rounding_mode × fregidx))
+  | FROUND_S (_ : (fregidx × rounding_mode × fregidx))
+  | FROUNDNX_S (_ : (fregidx × rounding_mode × fregidx))
+  | FROUND_D (_ : (fregidx × rounding_mode × fregidx))
+  | FROUNDNX_D (_ : (fregidx × rounding_mode × fregidx))
+  | FMVH_X_D (_ : (fregidx × regidx))
+  | FMVP_D_X (_ : (regidx × regidx × fregidx))
+  | FLEQ_H (_ : (fregidx × fregidx × regidx))
+  | FLTQ_H (_ : (fregidx × fregidx × regidx))
+  | FLEQ_S (_ : (fregidx × fregidx × regidx))
+  | FLTQ_S (_ : (fregidx × fregidx × regidx))
+  | FLEQ_D (_ : (fregidx × fregidx × regidx))
+  | FLTQ_D (_ : (fregidx × fregidx × regidx))
+  | FCVTMOD_W_D (_ : (fregidx × regidx))
   | SHA256SIG0 (_ : (regidx × regidx))
   | SHA256SIG1 (_ : (regidx × regidx))
   | SHA256SUM0 (_ : (regidx × regidx))
@@ -698,11 +698,11 @@ inductive ast where
   | SM4KS (_ : ((BitVec 2) × regidx × regidx × regidx))
   | ZBKB_RTYPE (_ : (regidx × regidx × regidx × brop_zbkb))
   | ZBKB_PACKW (_ : (regidx × regidx × regidx))
-  | RISCV_ZIP (_ : (regidx × regidx))
-  | RISCV_UNZIP (_ : (regidx × regidx))
-  | RISCV_BREV8 (_ : (regidx × regidx))
-  | RISCV_XPERM8 (_ : (regidx × regidx × regidx))
-  | RISCV_XPERM4 (_ : (regidx × regidx × regidx))
+  | ZIP (_ : (regidx × regidx))
+  | UNZIP (_ : (regidx × regidx))
+  | BREV8 (_ : (regidx × regidx))
+  | XPERM8 (_ : (regidx × regidx × regidx))
+  | XPERM4 (_ : (regidx × regidx × regidx))
   | ZICOND_RTYPE (_ : (regidx × regidx × regidx × zicondop))
   | VSETVLI (_ : ((BitVec 1) × (BitVec 1) × (BitVec 3) × (BitVec 3) × regidx × regidx))
   | VSETVL (_ : (regidx × regidx × regidx))
@@ -796,8 +796,8 @@ inductive ast where
   | RIVVTYPE (_ : (rivvfunct6 × (BitVec 1) × vregidx × vregidx × vregidx))
   | RMVVTYPE (_ : (rmvvfunct6 × (BitVec 1) × vregidx × vregidx × vregidx))
   | RFVVTYPE (_ : (rfvvfunct6 × (BitVec 1) × vregidx × vregidx × vregidx))
-  | RISCV_ZICBOM (_ : (cbop_zicbom × regidx))
-  | RISCV_ZICBOZ (_ : regidx)
+  | ZICBOM (_ : (cbop_zicbom × regidx))
+  | ZICBOZ (_ : regidx)
   | VANDN_VV (_ : ((BitVec 1) × vregidx × vregidx × vregidx))
   | VANDN_VX (_ : ((BitVec 1) × vregidx × regidx × vregidx))
   | VBREV_V (_ : ((BitVec 1) × vregidx × vregidx))
