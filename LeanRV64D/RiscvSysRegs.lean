@@ -915,6 +915,8 @@ def currentlyEnabled_measure (ext : extension) : Int :=
   | Ext_Smcntrpmf => 1
   | Ext_Sscofpmf => 2
   | Ext_Zihpm => 1
+  | Ext_Zvknha => 1
+  | Ext_Zvknhb => 1
   | _ => 0
 
 def currentlyEnabled (merge_var : extension) : SailM Bool := do

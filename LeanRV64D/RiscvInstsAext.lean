@@ -165,7 +165,7 @@ open ExceptionType
 open Architecture
 open AccessType
 
-/-- Type quantifiers: k_ex347360# : Bool, k_ex347359# : Bool -/
+/-- Type quantifiers: k_ex347374# : Bool, k_ex347373# : Bool -/
 def aqrl_str (aq : Bool) (rl : Bool) : String :=
   match (aq, rl) with
   | (false, false) => ""
