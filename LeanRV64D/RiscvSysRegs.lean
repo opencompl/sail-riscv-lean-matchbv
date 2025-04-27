@@ -2090,11 +2090,6 @@ def legalize_mcountinhibit (c : (BitVec 32)) (v : (BitVec (2 ^ 3 * 8))) : (BitVe
     ((Sail.BitVec.extractLsb (sys_writable_hpm_counters ()) 31 3) ++ (0b101 : (BitVec 3)))
   (Mk_Counterin ((Sail.BitVec.extractLsb v 31 0) &&& supported_counters))
 
-def update_minstret (_ : Unit) : SailM Unit := do
-  bif (← readReg minstret_increment)
-  then writeReg minstret (BitVec.addInt (← readReg minstret) 1)
-  else (pure ())
-
 def undefined_Sstatus (_ : Unit) : SailM (BitVec 64) := do
   (undefined_bitvector 64)
 
@@ -2351,7 +2346,7 @@ def get_sew (_ : Unit) : SailM Int := do
   | 5 => (pure 32)
   | 6 => (pure 64)
   | _ => (do
-      (internal_error "riscv_sys_regs.sail" 935 "invalid SEW")
+      (internal_error "riscv_sys_regs.sail" 931 "invalid SEW")
       (pure 8))
 
 def get_sew_bytes (_ : Unit) : SailM Int := do
@@ -2361,7 +2356,7 @@ def get_sew_bytes (_ : Unit) : SailM Int := do
   | 5 => (pure 4)
   | 6 => (pure 8)
   | _ => (do
-      (internal_error "riscv_sys_regs.sail" 946 "invalid SEW")
+      (internal_error "riscv_sys_regs.sail" 942 "invalid SEW")
       (pure 1))
 
 def get_lmul_pow (_ : Unit) : SailM Int := do

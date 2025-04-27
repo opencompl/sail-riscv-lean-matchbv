@@ -760,10 +760,10 @@ def init_platform (_ : Unit) : SailM Unit := do
 def tick_platform (_ : Unit) : SailM Unit := do
   (htif_tick ())
 
-def handle_illegal (instbits : (BitVec (2 ^ 3 * 8))) : SailM Unit := do
+def handle_illegal (instbits : (BitVec 32)) : SailM Unit := do
   let info :=
     bif (plat_mtval_has_illegal_inst_bits ())
-    then (some instbits)
+    then (some (zero_extend (m := xlen) instbits))
     else none
   let t : sync_exception :=
     { trap := (E_Illegal_Instr ())

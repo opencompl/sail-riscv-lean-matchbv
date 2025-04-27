@@ -93,6 +93,8 @@ abbrev half := (BitVec 16)
 
 abbrev word := (BitVec 32)
 
+abbrev instbits := (BitVec 32)
+
 abbrev pagesize_bits : Int := 12
 
 inductive regidx where
@@ -1084,8 +1086,6 @@ inductive cbie where | CBIE_ILLEGAL | CBIE_EXEC_FLUSH | CBIE_EXEC_INVAL
 
 inductive checked_cbop where | CBOP_ILLEGAL | CBOP_ILLEGAL_VIRTUAL | CBOP_INVAL_FLUSH | CBOP_INVAL_INVAL
   deriving Inhabited, BEq
-
-abbrev instbits := xlenbits
 
 inductive HartState where
   | HART_ACTIVE (_ : Unit)

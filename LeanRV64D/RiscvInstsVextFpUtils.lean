@@ -590,7 +590,7 @@ def riscv_f32ToUi16 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (
   then (pure ((nvFlag ()), (ones (n := 16))))
   else (pure ((zeros (n := 5)), (Sail.BitVec.extractLsb sig32 15 0)))
 
-/-- Type quantifiers: k_ex350817# : Bool, k_m : Nat, k_m ∈ {16, 32, 64} -/
+/-- Type quantifiers: k_ex350828# : Bool, k_m : Nat, k_m ∈ {16, 32, 64} -/
 def rsqrt7 (v : (BitVec k_m)) (sub : Bool) : SailM (BitVec 64) := do
   let (sig, exp, sign, e, s) : ((BitVec 64) × (BitVec 64) × (BitVec 1) × Nat × Nat) :=
     match (Sail.BitVec.length v) with
@@ -756,7 +756,7 @@ def riscv_f64Rsqrte7 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × 
                                     (pure ((zeros (n := 5)), (Sail.BitVec.extractLsb
                                         (← (rsqrt7 v false)) 63 0)))))))))))
 
-/-- Type quantifiers: k_ex351053# : Bool, k_m : Nat, k_m ∈ {16, 32, 64} -/
+/-- Type quantifiers: k_ex351064# : Bool, k_m : Nat, k_m ∈ {16, 32, 64} -/
 def recip7 (v : (BitVec k_m)) (rm_3b : (BitVec 3)) (sub : Bool) : SailM (Bool × (BitVec 64)) := do
   let (sig, exp, sign, e, s) : ((BitVec 64) × (BitVec 64) × (BitVec 1) × Nat × Nat) :=
     match (Sail.BitVec.length v) with
