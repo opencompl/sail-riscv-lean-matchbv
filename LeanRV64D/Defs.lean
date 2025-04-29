@@ -1454,6 +1454,8 @@ instance : Arch where
   pa := (BitVec 64)
   abort := Unit
   translation := Unit
+  trans_start := Unit
+  trans_end := Unit
   fault := Unit
   tlb_op := Unit
   cache_op := Unit
