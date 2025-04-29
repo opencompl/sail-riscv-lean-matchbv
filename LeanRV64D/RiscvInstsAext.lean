@@ -173,13 +173,6 @@ def aqrl_str (aq : Bool) (rl : Bool) : String :=
   | (true, false) => ".aq"
   | (true, true) => ".aqrl"
 
-def lrsc_width_str (width : word_width) : String :=
-  match width with
-  | BYTE => ".b"
-  | HALF => ".h"
-  | WORD => ".w"
-  | DOUBLE => ".d"
-
 def lrsc_width_valid (size : word_width) : Bool :=
   match size with
   | WORD => true
