@@ -146,7 +146,6 @@ open TrapVectorMode
 open TR_Result
 open Step
 open SATPMode
-open Retire_Failure
 open Register
 open Privilege
 open PmpAddrMatchType
@@ -165,7 +164,7 @@ open ExceptionType
 open Architecture
 open AccessType
 
-/-- Type quantifiers: k_ex340490# : Bool, k_ex340489# : Bool -/
+/-- Type quantifiers: k_ex340750# : Bool, k_ex340749# : Bool -/
 def neq_bool (x : Bool) (y : Bool) : Bool :=
   (Bool.not (BEq.beq x y))
 

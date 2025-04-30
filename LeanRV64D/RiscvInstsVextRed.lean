@@ -146,7 +146,6 @@ open TrapVectorMode
 open TR_Result
 open Step
 open SATPMode
-open Retire_Failure
 open Register
 open Privilege
 open PmpAddrMatchType

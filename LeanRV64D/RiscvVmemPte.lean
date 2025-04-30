@@ -146,7 +146,6 @@ open TrapVectorMode
 open TR_Result
 open Step
 open SATPMode
-open Retire_Failure
 open Register
 open Privilege
 open PmpAddrMatchType
@@ -220,7 +219,7 @@ def pte_is_invalid (pte_flags : (BitVec 8)) (pte_ext : (BitVec 10)) : SailM Bool
               (not (← (currentlyEnabled Ext_Svpbmt))))
             (bne (_get_PTE_Ext_reserved pte_ext) (zeros (n := 7))))))))
 
-/-- Type quantifiers: k_ex346627# : Bool, k_ex346626# : Bool -/
+/-- Type quantifiers: k_ex346933# : Bool, k_ex346932# : Bool -/
 def check_PTE_permission (ac : (AccessType Unit)) (priv : Privilege) (mxr : Bool) (do_sum : Bool) (pte_flags : (BitVec 8)) (ext : (BitVec 10)) (ext_ptw : Unit) : SailM PTE_Check := do
   let pte_U := (_get_PTE_Flags_U pte_flags)
   let pte_R := (_get_PTE_Flags_R pte_flags)

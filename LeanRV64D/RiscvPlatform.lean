@@ -1,4 +1,4 @@
-import LeanRV64D.RiscvSysControl
+import LeanRV64D.RiscvInstRetire
 
 set_option maxHeartbeats 1_000_000_000
 set_option maxRecDepth 10_000
@@ -146,7 +146,6 @@ open TrapVectorMode
 open TR_Result
 open Step
 open SATPMode
-open Retire_Failure
 open Register
 open Privilege
 open PmpAddrMatchType
@@ -240,14 +239,16 @@ def within_clint (typ_0 : physaddr) (width : Nat) : Bool :=
 /-- Type quantifiers: width : Nat, 0 < width ∧ width ≤ max_mem_access -/
 def within_htif_writable (typ_0 : physaddr) (width : Nat) : Bool :=
   let .Physaddr addr : physaddr := typ_0
-  (Bool.or (BEq.beq (plat_htif_tohost ()) addr)
-    (Bool.and (BEq.beq (BitVec.addInt (plat_htif_tohost ()) 4) addr) (BEq.beq width 4)))
+  (Bool.and (plat_enable_htif ())
+    (Bool.or (BEq.beq (plat_htif_tohost ()) addr)
+      (Bool.and (BEq.beq (BitVec.addInt (plat_htif_tohost ()) 4) addr) (BEq.beq width 4))))
 
 /-- Type quantifiers: width : Nat, 0 < width ∧ width ≤ max_mem_access -/
 def within_htif_readable (typ_0 : physaddr) (width : Nat) : Bool :=
   let .Physaddr addr : physaddr := typ_0
-  (Bool.or (BEq.beq (plat_htif_tohost ()) addr)
-    (Bool.and (BEq.beq (BitVec.addInt (plat_htif_tohost ()) 4) addr) (BEq.beq width 4)))
+  (Bool.and (plat_enable_htif ())
+    (Bool.or (BEq.beq (plat_htif_tohost ()) addr)
+      (Bool.and (BEq.beq (BitVec.addInt (plat_htif_tohost ()) 4) addr) (BEq.beq width 4))))
 
 def plat_insns_per_tick (_ : Unit) : Int :=
   2

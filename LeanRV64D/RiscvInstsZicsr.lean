@@ -146,7 +146,6 @@ open TrapVectorMode
 open TR_Result
 open Step
 open SATPMode
-open Retire_Failure
 open Register
 open Privilege
 open PmpAddrMatchType
@@ -1850,14 +1849,14 @@ def write_CSR (b__0 : (BitVec 12)) (value : (BitVec (2 ^ 3 * 8))) : SailM (BitVe
                                                                                                                                                                                                                                                 (BitVec.toFormatted
                                                                                                                                                                                                                                                   b__0)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
 
-/-- Type quantifiers: k_ex349027# : Bool -/
-def doCSR (csr : (BitVec 12)) (rs1_val : (BitVec (2 ^ 3 * 8))) (rd : regidx) (op : csrop) (is_CSR_Write : Bool) : SailM (ExecutionResult Retire_Failure) := do
+/-- Type quantifiers: k_ex349333# : Bool -/
+def doCSR (csr : (BitVec 12)) (rs1_val : (BitVec (2 ^ 3 * 8))) (rd : regidx) (op : csrop) (is_CSR_Write : Bool) : SailM ExecutionResult := do
   bif (not (← (check_CSR csr (← readReg cur_privilege) is_CSR_Write)))
-  then (pure (RETIRE_FAIL (Illegal_Instruction ())))
+  then (pure (Illegal_Instruction ()))
   else
     (do
       bif (not (ext_check_CSR csr (← readReg cur_privilege) is_CSR_Write))
-      then (pure (RETIRE_FAIL (Ext_CSR_Check_Failure ())))
+      then (pure (Ext_CSR_Check_Failure ()))
       else
         (do
           let is_CSR_Read := (not (Bool.and (BEq.beq op CSRRW) (BEq.beq rd zreg)))

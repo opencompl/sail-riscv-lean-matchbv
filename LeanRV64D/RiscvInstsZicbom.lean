@@ -146,7 +146,6 @@ open TrapVectorMode
 open TR_Result
 open Step
 open SATPMode
-open Retire_Failure
 open Register
 open Privilege
 open PmpAddrMatchType
@@ -322,7 +321,7 @@ def cbop_priv_check (p : Privilege) : SailM checked_cbop := do
   | (User, _, CBIE_EXEC_FLUSH) => (pure CBOP_INVAL_FLUSH)
   | _ => (pure CBOP_INVAL_INVAL)
 
-def process_clean_inval (rs1 : regidx) (cbop : cbop_zicbom) : SailM (ExecutionResult Retire_Failure) := do
+def process_clean_inval (rs1 : regidx) (cbop : cbop_zicbom) : SailM ExecutionResult := do
   let rs1_val ← do (rX_bits rs1)
   let cache_block_size_exp := (plat_cache_block_size_exp ())
   let cache_block_size := (2 ^i cache_block_size_exp)
@@ -330,7 +329,7 @@ def process_clean_inval (rs1 : regidx) (cbop : cbop_zicbom) : SailM (ExecutionRe
     ((rs1_val &&& (Complement.complement
           (zero_extend (m := ((2 ^i 3) *i 8)) (ones (n := cache_block_size_exp))))) - rs1_val)
   match (← (ext_data_get_addr rs1 negative_offset (Read Data) cache_block_size)) with
-  | .Ext_DataAddr_Error e => (pure (RETIRE_FAIL (Ext_DataAddr_Check_Failure e)))
+  | .Ext_DataAddr_Error e => (pure (Ext_DataAddr_Check_Failure e))
   | .Ext_DataAddr_OK vaddr => (do
       let res ← (( do
         match (← (translateAddr vaddr (Read Data))) with
@@ -354,5 +353,5 @@ def process_clean_inval (rs1 : regidx) (cbop : cbop_zicbom) : SailM (ExecutionRe
             | .E_SAMO_Page_Fault () => (pure (E_SAMO_Page_Fault ()))
             | _ => (internal_error "riscv_insts_zicbom.sail" 125
                 "unexpected exception for cmo.clean/inval") ) : SailM ExceptionType )
-          (pure (RETIRE_FAIL (Memory_Exception ((sub_virtaddr_xlenbits vaddr negative_offset), e))))))
+          (pure (Memory_Exception ((sub_virtaddr_xlenbits vaddr negative_offset), e)))))
 

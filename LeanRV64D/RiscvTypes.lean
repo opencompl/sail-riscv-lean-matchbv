@@ -146,7 +146,6 @@ open TrapVectorMode
 open TR_Result
 open Step
 open SATPMode
-open Retire_Failure
 open Register
 open Privilege
 open PmpAddrMatchType
@@ -164,8 +163,6 @@ open ExecutionResult
 open ExceptionType
 open Architecture
 open AccessType
-
-def xlen_val := xlen
 
 def xlen_max_unsigned := ((2 ^i xlen) -i 1)
 
@@ -231,7 +228,7 @@ def architecture_backwards (arg_ : (BitVec 2)) : SailM Architecture := do
         (do
           bif (BEq.beq b__0 (0b11 : (BitVec 2)))
           then (pure RV128)
-          else (internal_error "riscv_types.sail" 69 "architecture(0b00) is invalid")))
+          else (internal_error "riscv_types.sail" 56 "architecture(0b00) is invalid")))
 
 def architecture_forwards_matches (arg_ : Architecture) : Bool :=
   match arg_ with
@@ -270,14 +267,14 @@ def num_of_Privilege (arg_ : Privilege) : Int :=
   | Supervisor => 1
   | Machine => 2
 
-def privLevel_to_bits (p : Privilege) : (BitVec 2) :=
-  match p with
+def privLevel_bits_forwards (arg_ : Privilege) : (BitVec 2) :=
+  match arg_ with
   | User => (0b00 : (BitVec 2))
   | Supervisor => (0b01 : (BitVec 2))
   | Machine => (0b11 : (BitVec 2))
 
-def privLevel_of_bits (p : (BitVec 2)) : SailM Privilege := do
-  let b__0 := p
+def privLevel_bits_backwards (arg_ : (BitVec 2)) : SailM Privilege := do
+  let b__0 := arg_
   bif (BEq.beq b__0 (0b00 : (BitVec 2)))
   then (pure User)
   else
@@ -289,8 +286,35 @@ def privLevel_of_bits (p : (BitVec 2)) : SailM Privilege := do
           bif (BEq.beq b__0 (0b11 : (BitVec 2)))
           then (pure Machine)
           else
-            (internal_error "riscv_types.sail" 95
-              (HAppend.hAppend "Invalid privilege level: " (BitVec.toFormatted p)))))
+            (internal_error "riscv_types.sail" 68
+              (HAppend.hAppend "Invalid privilege level: " (BitVec.toFormatted (0b10 : (BitVec 2)))))))
+
+def privLevel_bits_forwards_matches (arg_ : Privilege) : Bool :=
+  match arg_ with
+  | User => true
+  | Supervisor => true
+  | Machine => true
+
+def privLevel_bits_backwards_matches (arg_ : (BitVec 2)) : Bool :=
+  let b__0 := arg_
+  bif (BEq.beq b__0 (0b00 : (BitVec 2)))
+  then true
+  else
+    (bif (BEq.beq b__0 (0b01 : (BitVec 2)))
+    then true
+    else
+      (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
+      then true
+      else
+        (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
+        then true
+        else false)))
+
+def privLevel_to_bits (p : Privilege) : (BitVec 2) :=
+  (privLevel_bits_forwards p)
+
+def privLevel_of_bits (b : (BitVec 2)) : SailM Privilege := do
+  (privLevel_bits_backwards b)
 
 def privLevel_to_str (p : Privilege) : String :=
   match p with
@@ -3094,7 +3118,7 @@ def ma_flag_backwards (arg_ : (BitVec 1)) : String :=
   then (String.append (sep_forwards ()) (String.append "ma" ""))
   else (String.append (sep_forwards ()) (String.append "mu" ""))
 
-/-- Type quantifiers: k_ex341877# : Bool -/
+/-- Type quantifiers: k_ex342137# : Bool -/
 def maybe_aq_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".aq"
@@ -3133,19 +3157,19 @@ def maybe_lmul_flag_backwards (arg_ : (BitVec 3)) : SailM String := do
                               assert false "Pattern match failure at unknown location"
                               throw Error.Exit)))))))
 
-/-- Type quantifiers: k_ex341885# : Bool -/
+/-- Type quantifiers: k_ex342145# : Bool -/
 def maybe_not_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | false => "u"
   | true => ""
 
-/-- Type quantifiers: k_ex341886# : Bool -/
+/-- Type quantifiers: k_ex342146# : Bool -/
 def maybe_rl_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".rl"
   | false => ""
 
-/-- Type quantifiers: k_ex341887# : Bool -/
+/-- Type quantifiers: k_ex342147# : Bool -/
 def maybe_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => "u"
@@ -6327,15 +6351,15 @@ def num_of_ExtStatus (arg_ : ExtStatus) : Int :=
   | Clean => 2
   | Dirty => 3
 
-def extStatus_to_bits (e : ExtStatus) : (BitVec 2) :=
-  match e with
+def extStatus_bits_forwards (arg_ : ExtStatus) : (BitVec 2) :=
+  match arg_ with
   | Off => (0b00 : (BitVec 2))
   | Initial => (0b01 : (BitVec 2))
   | Clean => (0b10 : (BitVec 2))
   | Dirty => (0b11 : (BitVec 2))
 
-def extStatus_of_bits (e : (BitVec 2)) : ExtStatus :=
-  let b__0 := e
+def extStatus_bits_backwards (arg_ : (BitVec 2)) : ExtStatus :=
+  let b__0 := arg_
   bif (BEq.beq b__0 (0b00 : (BitVec 2)))
   then Off
   else
@@ -6345,6 +6369,34 @@ def extStatus_of_bits (e : (BitVec 2)) : ExtStatus :=
       (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
       then Clean
       else Dirty))
+
+def extStatus_bits_forwards_matches (arg_ : ExtStatus) : Bool :=
+  match arg_ with
+  | Off => true
+  | Initial => true
+  | Clean => true
+  | Dirty => true
+
+def extStatus_bits_backwards_matches (arg_ : (BitVec 2)) : Bool :=
+  let b__0 := arg_
+  bif (BEq.beq b__0 (0b00 : (BitVec 2)))
+  then true
+  else
+    (bif (BEq.beq b__0 (0b01 : (BitVec 2)))
+    then true
+    else
+      (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
+      then true
+      else
+        (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
+        then true
+        else false)))
+
+def extStatus_to_bits (e : ExtStatus) : (BitVec 2) :=
+  (extStatus_bits_forwards e)
+
+def extStatus_of_bits (b : (BitVec 2)) : ExtStatus :=
+  (extStatus_bits_backwards b)
 
 def undefined_SATPMode (_ : Unit) : SailM SATPMode := do
   (internal_pick [Bare, Sv32, Sv39, Sv48, Sv57])

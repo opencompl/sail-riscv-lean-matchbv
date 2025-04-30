@@ -1,4 +1,4 @@
-import LeanRV64D.RiscvZvkUtils
+import LeanRV64D.RiscvSysControl
 
 set_option maxHeartbeats 1_000_000_000
 set_option maxRecDepth 10_000
@@ -146,7 +146,6 @@ open TrapVectorMode
 open TR_Result
 open Step
 open SATPMode
-open Retire_Failure
 open Register
 open Privilege
 open PmpAddrMatchType
@@ -165,5 +164,5 @@ open ExceptionType
 open Architecture
 open AccessType
 
-def RETIRE_SUCCESS : (ExecutionResult Retire_Failure) := (RETIRE_OK ())
+def RETIRE_SUCCESS : ExecutionResult := (Retire_Success ())
 

@@ -146,7 +146,6 @@ open TrapVectorMode
 open TR_Result
 open Step
 open SATPMode
-open Retire_Failure
 open Register
 open Privilege
 open PmpAddrMatchType
@@ -208,14 +207,14 @@ def zvk_sig0 (x : (BitVec k_n)) (SEW : Nat) : (BitVec k_n) :=
   match SEW with
   | 32 => ((rotater x 7) ^^^ ((rotater x 18) ^^^ (shift_bits_right x
           (to_bits (Sail.BitVec.length x) 3))))
-  | _ => ((rotater x 1) ^^^ ((rotater x 8) ^^^ (shift_bits_right x (to_bits xlen_val 7))))
+  | _ => ((rotater x 1) ^^^ ((rotater x 8) ^^^ (shift_bits_right x (to_bits xlen 7))))
 
 /-- Type quantifiers: k_n : Nat, SEW : Nat, k_n = SEW ∧ SEW = 32 ∨ SEW = 64 -/
 def zvk_sig1 (x : (BitVec k_n)) (SEW : Nat) : (BitVec k_n) :=
   match SEW with
   | 32 => ((rotater x 17) ^^^ ((rotater x 19) ^^^ (shift_bits_right x
           (to_bits (Sail.BitVec.length x) 10))))
-  | _ => ((rotater x 19) ^^^ ((rotater x 61) ^^^ (shift_bits_right x (to_bits xlen_val 6))))
+  | _ => ((rotater x 19) ^^^ ((rotater x 61) ^^^ (shift_bits_right x (to_bits xlen 6))))
 
 /-- Type quantifiers: k_n : Nat, SEW : Nat, k_n = SEW ∧ SEW = 32 ∨ SEW = 64 -/
 def zvk_sum0 (x : (BitVec k_n)) (SEW : Nat) : (BitVec k_n) :=

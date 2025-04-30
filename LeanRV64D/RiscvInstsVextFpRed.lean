@@ -146,7 +146,6 @@ open TrapVectorMode
 open TR_Result
 open Step
 open SATPMode
-open Retire_Failure
 open Register
 open Privilege
 open PmpAddrMatchType
@@ -235,11 +234,11 @@ def encdec_rfvvfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
 
 /-- Type quantifiers: num_elem_vs : Nat, SEW : Nat, LMUL_pow : Int, num_elem_vs > 0 ∧
   SEW ∈ {8, 16, 32, 64} -/
-def process_rfvv_single (funct6 : rfvvfunct6) (vm : (BitVec 1)) (vs2 : vregidx) (vs1 : vregidx) (vd : vregidx) (num_elem_vs : Nat) (SEW : Nat) (LMUL_pow : Int) : SailM (ExecutionResult Retire_Failure) := SailME.run do
+def process_rfvv_single (funct6 : rfvvfunct6) (vm : (BitVec 1)) (vs2 : vregidx) (vs1 : vregidx) (vd : vregidx) (num_elem_vs : Nat) (SEW : Nat) (LMUL_pow : Int) : SailM ExecutionResult := SailME.run do
   let rm_3b ← do (pure (_get_Fcsr_FRM (← readReg fcsr)))
   let num_elem_vd ← do (get_num_elem 0 SEW)
   bif (← (illegal_fp_reduction SEW rm_3b))
-  then (pure (RETIRE_FAIL (Illegal_Instruction ())))
+  then (pure (Illegal_Instruction ()))
   else
     (do
       assert (bne SEW 8) "riscv_insts_vext_fp_red.sail:36.17-36.18"
@@ -257,8 +256,8 @@ def process_rfvv_single (funct6 : rfvvfunct6) (vm : (BitVec 1)) (vs2 : vregidx) 
           let mask ← (( do
             match (← (init_masked_source num_elem_vs LMUL_pow vm_val)) with
             | .Ok v => (pure v)
-            | .Err () => throw ((RETIRE_FAIL (Illegal_Instruction ())) : (ExecutionResult Retire_Failure))
-            ) : SailME _ (BitVec n) )
+            | .Err () => throw ((Illegal_Instruction ()) : ExecutionResult) ) : SailME _ (BitVec n)
+            )
           let sum ← (( do (read_single_element SEW 0 vs1) ) : SailME _ (BitVec m) )
           let sum ← (( do
             let loop_i_lower := 0
@@ -285,13 +284,13 @@ def process_rfvv_single (funct6 : rfvvfunct6) (vm : (BitVec 1)) (vs2 : vregidx) 
 
 /-- Type quantifiers: num_elem_vs : Nat, SEW : Nat, LMUL_pow : Int, num_elem_vs > 0 ∧
   SEW ∈ {8, 16, 32, 64} -/
-def process_rfvv_widen (funct6 : rfvvfunct6) (vm : (BitVec 1)) (vs2 : vregidx) (vs1 : vregidx) (vd : vregidx) (num_elem_vs : Nat) (SEW : Nat) (LMUL_pow : Int) : SailM (ExecutionResult Retire_Failure) := SailME.run do
+def process_rfvv_widen (funct6 : rfvvfunct6) (vm : (BitVec 1)) (vs2 : vregidx) (vs1 : vregidx) (vd : vregidx) (num_elem_vs : Nat) (SEW : Nat) (LMUL_pow : Int) : SailM ExecutionResult := SailME.run do
   let rm_3b ← do (pure (_get_Fcsr_FRM (← readReg fcsr)))
   let SEW_widen := (SEW *i 2)
   let LMUL_pow_widen := (LMUL_pow +i 1)
   let num_elem_vd ← do (get_num_elem 0 SEW_widen)
   bif (← (illegal_fp_reduction_widen SEW rm_3b SEW_widen LMUL_pow_widen))
-  then (pure (RETIRE_FAIL (Illegal_Instruction ())))
+  then (pure (Illegal_Instruction ()))
   else
     (do
       assert (Bool.and (SEW ≥b 16) (SEW_widen ≤b 64)) "riscv_insts_vext_fp_red.sail:81.36-81.37"
@@ -311,8 +310,8 @@ def process_rfvv_widen (funct6 : rfvvfunct6) (vm : (BitVec 1)) (vs2 : vregidx) (
           let mask ← (( do
             match (← (init_masked_source num_elem_vs LMUL_pow vm_val)) with
             | .Ok v => (pure v)
-            | .Err () => throw ((RETIRE_FAIL (Illegal_Instruction ())) : (ExecutionResult Retire_Failure))
-            ) : SailME _ (BitVec n) )
+            | .Err () => throw ((Illegal_Instruction ()) : ExecutionResult) ) : SailME _ (BitVec n)
+            )
           let sum ← (( do (read_single_element SEW_widen 0 vs1) ) : SailME _ (BitVec o) )
           let sum ← (( do
             let loop_i_lower := 0

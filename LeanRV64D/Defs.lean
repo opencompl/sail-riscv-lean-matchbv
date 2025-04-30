@@ -111,14 +111,6 @@ inductive regno where
   | Regno (_ : Nat)
   deriving Inhabited, BEq
 
-abbrev opcode := (BitVec 7)
-
-abbrev imm12 := (BitVec 12)
-
-abbrev imm20 := (BitVec 20)
-
-abbrev amo := (BitVec 1)
-
 inductive Architecture where | RV32 | RV64 | RV128
   deriving Inhabited, BEq
 
@@ -837,12 +829,6 @@ inductive PTW_Error where
   | PTW_Ext_Error (_ : ext_ptw_error)
   deriving Inhabited, BEq
 
-/-- Type quantifiers: k_a : Type -/
-inductive ExecutionResult (k_a : Type) where
-  | RETIRE_OK (_ : Unit)
-  | RETIRE_FAIL (_ : k_a)
-  deriving Inhabited, BEq
-
 inductive InterruptType where | I_U_Software | I_S_Software | I_M_Software | I_U_Timer | I_S_Timer | I_M_Timer | I_U_External | I_S_External | I_M_External
   deriving Inhabited, BEq
 
@@ -1014,6 +1000,18 @@ inductive ctl_result where
 
 abbrev MemoryOpResult k_a := (Result k_a ExceptionType)
 
+inductive ExecutionResult where
+  | Retire_Success (_ : Unit)
+  | Wait_For_Interrupt (_ : Unit)
+  | Illegal_Instruction (_ : Unit)
+  | Trap (_ : (Privilege × ctl_result × xlenbits))
+  | Memory_Exception (_ : (virtaddr × ExceptionType))
+  | Ext_CSR_Check_Failure (_ : Unit)
+  | Ext_ControlAddr_Check_Failure (_ : ext_control_addr_error)
+  | Ext_DataAddr_Check_Failure (_ : ext_data_addr_error)
+  | Ext_XRET_Priv_Failure (_ : Unit)
+  deriving Inhabited, BEq
+
 abbrev htif_cmd := (BitVec 64)
 
 abbrev pte_flags_bits := (BitVec 8)
@@ -1064,17 +1062,6 @@ inductive TR_Result (k_paddr : Type) (k_failure : Type) where
   | TR_Failure (_ : (k_failure × ext_ptw))
   deriving Inhabited, BEq
 
-inductive Retire_Failure where
-  | Illegal_Instruction (_ : Unit)
-  | Wait_For_Interrupt (_ : Unit)
-  | Trap (_ : (Privilege × ctl_result × xlenbits))
-  | Memory_Exception (_ : (virtaddr × ExceptionType))
-  | Ext_CSR_Check_Failure (_ : Unit)
-  | Ext_ControlAddr_Check_Failure (_ : ext_control_addr_error)
-  | Ext_DataAddr_Check_Failure (_ : ext_data_addr_error)
-  | Ext_XRET_Priv_Failure (_ : Unit)
-  deriving Inhabited, BEq
-
 
 
 
@@ -1103,7 +1090,7 @@ inductive Step where
   | Step_Pending_Interrupt (_ : (InterruptType × Privilege))
   | Step_Ext_Fetch_Failure (_ : ext_fetch_addr_error)
   | Step_Fetch_Failure (_ : (virtaddr × ExceptionType))
-  | Step_Execute (_ : ((ExecutionResult Retire_Failure) × instbits))
+  | Step_Execute (_ : (ExecutionResult × instbits))
   | Step_Waiting (_ : Unit)
   deriving Inhabited, BEq
 
