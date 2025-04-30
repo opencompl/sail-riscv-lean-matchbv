@@ -747,10 +747,6 @@ def mmio_write (paddr : physaddr) (width : Nat) (data : (BitVec (8 * width))) : 
       else (pure (Err (E_SAMO_Access_Fault ()))))
 
 def init_platform (_ : Unit) : SailM Unit := do
-  writeReg mvendorid (to_bits 32 (0 : Int))
-  writeReg marchid (to_bits xlen (0 : Int))
-  writeReg mimpid (to_bits xlen (0 : Int))
-  writeReg mhartid (to_bits xlen (0 : Int))
   writeReg htif_tohost (zeros (n := 64))
   writeReg htif_done false
   writeReg htif_exit_code (zeros (n := 64))
