@@ -310,18 +310,15 @@ def initialize_registers (_ : Unit) : SailM Unit := do
 
 def sail_model_init (x_0 : Unit) : SailM Unit := do
   writeReg misa (_update_Misa_MXL (Mk_Misa (zeros (n := 64))) (architecture_forwards RV64))
-  writeReg mstatus (← do
-    let mxl := (architecture_forwards RV64)
-    (pure (_update_Mstatus_UXL
-        (_update_Mstatus_SXL (Mk_Mstatus (zeros (n := 64)))
-          (← do
-            bif (Bool.and (bne xlen 32) (← (hartSupports Ext_S)))
-            then (pure mxl)
-            else (pure (zeros (n := 2)))))
-        (← do
-          bif (Bool.and (bne xlen 32) (← (hartSupports Ext_U)))
-          then (pure mxl)
-          else (pure (zeros (n := 2)))))))
+  writeReg mstatus (let mxl := (architecture_forwards RV64)
+  (_update_Mstatus_UXL
+    (_update_Mstatus_SXL (Mk_Mstatus (zeros (n := 64)))
+      (bif (Bool.and (bne xlen 32) (hartSupports Ext_S))
+      then mxl
+      else (zeros (n := 2))))
+    (bif (Bool.and (bne xlen 32) (hartSupports Ext_U))
+    then mxl
+    else (zeros (n := 2)))))
   writeReg menvcfg (← (legalize_menvcfg (Mk_MEnvcfg (zeros (n := 64))) (zeros (n := 64))))
   writeReg senvcfg (← (legalize_senvcfg (Mk_SEnvcfg (zeros (n := 64)))
       (zeros (n := ((2 ^i 3) *i 8)))))
