@@ -3118,7 +3118,7 @@ def ma_flag_backwards (arg_ : (BitVec 1)) : String :=
   then (String.append (sep_forwards ()) (String.append "ma" ""))
   else (String.append (sep_forwards ()) (String.append "mu" ""))
 
-/-- Type quantifiers: k_ex342138# : Bool -/
+/-- Type quantifiers: k_ex346117# : Bool -/
 def maybe_aq_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".aq"
@@ -3157,19 +3157,19 @@ def maybe_lmul_flag_backwards (arg_ : (BitVec 3)) : SailM String := do
                               assert false "Pattern match failure at unknown location"
                               throw Error.Exit)))))))
 
-/-- Type quantifiers: k_ex342146# : Bool -/
+/-- Type quantifiers: k_ex346125# : Bool -/
 def maybe_not_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | false => "u"
   | true => ""
 
-/-- Type quantifiers: k_ex342147# : Bool -/
+/-- Type quantifiers: k_ex346126# : Bool -/
 def maybe_rl_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".rl"
   | false => ""
 
-/-- Type quantifiers: k_ex342148# : Bool -/
+/-- Type quantifiers: k_ex346127# : Bool -/
 def maybe_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => "u"
@@ -6171,6 +6171,18 @@ def assembly_forwards (arg_ : ast) : SailM String := do
             (String.append (spc_forwards ())
               (String.append (vreg_name_forwards vs2)
                 (String.append (spc_forwards ()) (String.append (vreg_name_forwards vs1) ""))))))))
+  | .VSM3ME_VV (vs2, vs1, vd) => (pure (String.append "vsm3me.vv"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs1) ""))))))))
+  | .VSM3C_VI (vs2, uimm, vd) => (pure (String.append "vsm3c.vi"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ()) (String.append (← (hex_bits_5_forwards uimm)) ""))))))))
   | .ZIMOP_MOP_R (mop, rs1, rd) => (pure (String.append "mop.r."
         (String.append (← (dec_bits_5_forwards mop))
           (String.append (spc_forwards ())

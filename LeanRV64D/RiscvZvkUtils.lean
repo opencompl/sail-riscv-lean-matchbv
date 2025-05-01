@@ -236,3 +236,61 @@ def zvk_ch (x : (BitVec k_n)) (y : (BitVec k_n)) (z : (BitVec k_n)) : (BitVec k_
 def zvk_maj (x : (BitVec k_n)) (y : (BitVec k_n)) (z : (BitVec k_n)) : (BitVec k_n) :=
   ((x &&& y) ^^^ ((x &&& z) ^^^ (y &&& z)))
 
+def zvk_p0 (X : (BitVec 32)) : (BitVec 32) :=
+  (X ^^^ ((rotatel X 9) ^^^ (rotatel X 17)))
+
+def zvk_p1 (X : (BitVec 32)) : (BitVec 32) :=
+  (X ^^^ ((rotatel X 15) ^^^ (rotatel X 23)))
+
+def zvk_sh_w (A : (BitVec 32)) (B : (BitVec 32)) (C : (BitVec 32)) (D : (BitVec 32)) (E : (BitVec 32)) : (BitVec 32) :=
+  ((zvk_p1 (A ^^^ (B ^^^ (rotatel C 15)))) ^^^ ((rotatel D 7) ^^^ E))
+
+def zvk_ff1 (X : (BitVec 32)) (Y : (BitVec 32)) (Z : (BitVec 32)) : (BitVec 32) :=
+  (X ^^^ (Y ^^^ Z))
+
+def zvk_ff2 (X : (BitVec 32)) (Y : (BitVec 32)) (Z : (BitVec 32)) : (BitVec 32) :=
+  ((X &&& Y) ||| ((X &&& Z) ||| (Y &&& Z)))
+
+/-- Type quantifiers: J : Int -/
+def zvk_ff_j (X : (BitVec 32)) (Y : (BitVec 32)) (Z : (BitVec 32)) (J : Int) : (BitVec 32) :=
+  bif (J ≤b 15)
+  then (zvk_ff1 X Y Z)
+  else (zvk_ff2 X Y Z)
+
+def zvk_gg1 (X : (BitVec 32)) (Y : (BitVec 32)) (Z : (BitVec 32)) : (BitVec 32) :=
+  (X ^^^ (Y ^^^ Z))
+
+def zvk_gg2 (X : (BitVec 32)) (Y : (BitVec 32)) (Z : (BitVec 32)) : (BitVec 32) :=
+  ((X &&& Y) ||| ((Complement.complement X) &&& Z))
+
+/-- Type quantifiers: J : Int -/
+def zvk_gg_j (X : (BitVec 32)) (Y : (BitVec 32)) (Z : (BitVec 32)) (J : Int) : (BitVec 32) :=
+  bif (J ≤b 15)
+  then (zvk_gg1 X Y Z)
+  else (zvk_gg2 X Y Z)
+
+/-- Type quantifiers: J : Int -/
+def zvk_t_j (J : Int) : (BitVec 32) :=
+  bif (J ≤b 15)
+  then (0x79CC4519 : (BitVec 32))
+  else (0x7A879D8A : (BitVec 32))
+
+/-- Type quantifiers: j : Int -/
+def zvk_sm3_round (A_H : (Vector (BitVec 32) 8)) (w : (BitVec 32)) (x : (BitVec 32)) (j : Int) : (Vector (BitVec 32) 8) :=
+  let t_j := (rotatel (zvk_t_j j) (Int.emod j 32))
+  let ss1 :=
+    (rotatel (((rotatel (GetElem?.getElem! A_H 0) 12) + (GetElem?.getElem! A_H 4)) + t_j) 7)
+  let ss2 := (ss1 ^^^ (rotatel (GetElem?.getElem! A_H 0) 12))
+  let tt1 :=
+    ((((zvk_ff_j (GetElem?.getElem! A_H 0) (GetElem?.getElem! A_H 1) (GetElem?.getElem! A_H 2) j) + (GetElem?.getElem!
+            A_H 3)) + ss2) + x)
+  let tt2 :=
+    ((((zvk_gg_j (GetElem?.getElem! A_H 4) (GetElem?.getElem! A_H 5) (GetElem?.getElem! A_H 6) j) + (GetElem?.getElem!
+            A_H 7)) + ss1) + w)
+  let A1 := tt1
+  let C1 := (rotatel (GetElem?.getElem! A_H 1) 9)
+  let E1 := (zvk_p0 tt2)
+  let G1 := (rotatel (GetElem?.getElem! A_H 5) 19)
+  #v[A1, (GetElem?.getElem! A_H 0), C1, (GetElem?.getElem! A_H 2), E1, (GetElem?.getElem! A_H 4), G1, (GetElem?.getElem!
+      A_H 6)]
+

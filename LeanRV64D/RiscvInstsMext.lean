@@ -272,7 +272,7 @@ def maybe_not_u_backwards (arg_ : String) : SailM Bool := do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
-/-- Type quantifiers: k_ex348348# : Bool -/
+/-- Type quantifiers: k_ex352366# : Bool -/
 def maybe_not_u_forwards_matches (arg_ : Bool) : Bool :=
   match arg_ with
   | false => true

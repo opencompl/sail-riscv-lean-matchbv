@@ -173,7 +173,7 @@ def csrPriv (csr : (BitVec 12)) : (BitVec 2) :=
 def check_CSR_priv (csr : (BitVec 12)) (p : Privilege) : Bool :=
   (zopz0zKzJ_u (privLevel_to_bits p) (csrPriv csr))
 
-/-- Type quantifiers: k_ex345172# : Bool -/
+/-- Type quantifiers: k_ex349157# : Bool -/
 def check_CSR_access (csr : (BitVec 12)) (isWrite : Bool) : Bool :=
   (not (Bool.and isWrite (BEq.beq (csrAccess csr) (0b11 : (BitVec 2)))))
 
@@ -208,7 +208,7 @@ def check_Stimecmp (csr : (BitVec 12)) (p : Privilege) : SailM Bool := do
           (Bool.and (BEq.beq (_get_Counteren_TM (← readReg mcounteren)) (0b1 : (BitVec 1)))
             (BEq.beq (_get_MEnvcfg_STCE (← readReg menvcfg)) (0b1 : (BitVec 1)))))))
 
-/-- Type quantifiers: k_ex345259# : Bool -/
+/-- Type quantifiers: k_ex349244# : Bool -/
 def check_seed_CSR (csr : (BitVec 12)) (p : Privilege) (isWrite : Bool) : Bool :=
   bif (not (BEq.beq csr (0x015 : (BitVec 12))))
   then true
@@ -890,7 +890,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                                                                                           else
                                                                                                                                                                                                                                                                                             (pure false)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
 
-/-- Type quantifiers: k_ex345735# : Bool -/
+/-- Type quantifiers: k_ex349720# : Bool -/
 def check_CSR (csr : (BitVec 12)) (p : Privilege) (isWrite : Bool) : SailM Bool := do
   (pure (Bool.and (← (is_CSR_defined csr))
       (Bool.and (check_CSR_priv csr p)
@@ -971,7 +971,7 @@ def tval (excinfo : (Option (BitVec (2 ^ 3 * 8)))) : (BitVec (2 ^ 3 * 8)) :=
 def rvfi_trap (_ : Unit) : Unit :=
   ()
 
-/-- Type quantifiers: k_ex345981# : Bool -/
+/-- Type quantifiers: k_ex349966# : Bool -/
 def trap_handler (del_priv : Privilege) (intr : Bool) (c : (BitVec 8)) (pc : (BitVec (2 ^ 3 * 8))) (info : (Option (BitVec (2 ^ 3 * 8)))) (ext : (Option Unit)) : SailM (BitVec (2 ^ 3 * 8)) := do
   let _ : Unit := (rvfi_trap ())
   let _ : Unit :=

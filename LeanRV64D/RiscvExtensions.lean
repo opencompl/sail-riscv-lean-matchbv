@@ -222,6 +222,7 @@ def hartSupports (merge_var : extension) : Bool :=
   | Ext_Zvbc => true
   | Ext_Zvknha => true
   | Ext_Zvknhb => true
+  | Ext_Zvksh => true
   | Ext_Sscofpmf => true
   | Ext_Sstc => true
   | Ext_Svinval => true

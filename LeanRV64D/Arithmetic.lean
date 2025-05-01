@@ -200,3 +200,17 @@ def carryless_mul_reversed (a : (BitVec k_n)) (b : (BitVec k_n)) : (BitVec k_n) 
 def cmulr_equivalence (a : (BitVec 16)) (b : (BitVec 16)) : Bool :=
   (BEq.beq (carryless_mul_reversed a b) (carryless_mulr a b))
 
+/-- Type quantifiers: k_m : Nat, k_m ≥ 0 ∧ (k_m % 8) = 0 -/
+def rev8 (input : (BitVec k_m)) : (BitVec k_m) := Id.run do
+  let output : (BitVec k_m) := (zeros (n := (Sail.BitVec.length input)))
+  let loop_i_lower := 0
+  let loop_i_upper := ((Sail.BitVec.length output) -i 8)
+  let mut loop_vars := output
+  for i in [loop_i_lower:loop_i_upper:8]i do
+    let output := loop_vars
+    loop_vars :=
+      (Sail.BitVec.updateSubrange output (i +i 7) i
+        (Sail.BitVec.extractLsb input (((Sail.BitVec.length output) -i i) -i 1)
+          (((Sail.BitVec.length output) -i i) -i 8)))
+  (pure loop_vars)
+

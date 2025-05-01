@@ -1000,6 +1000,7 @@ def currentlyEnabled (merge_var : extension) : SailM Bool := do
   | Ext_Zvbc => (pure (Bool.and (hartSupports Ext_Zvbc) (← (currentlyEnabled Ext_V))))
   | Ext_Zvknha => (pure (Bool.and (hartSupports Ext_Zvknha) (← (currentlyEnabled Ext_V))))
   | Ext_Zvknhb => (pure (Bool.and (hartSupports Ext_Zvknhb) (← (currentlyEnabled Ext_V))))
+  | Ext_Zvksh => (pure (Bool.and (hartSupports Ext_Zvksh) (← (currentlyEnabled Ext_V))))
   | Ext_Zimop => (pure (hartSupports Ext_Zimop))
   | Ext_Zcmop => (pure (Bool.and (hartSupports Ext_Zcmop) (← (currentlyEnabled Ext_Zca))))
 termination_by let ext := merge_var; ((currentlyEnabled_measure ext)).toNat
