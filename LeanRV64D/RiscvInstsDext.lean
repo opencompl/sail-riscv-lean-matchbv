@@ -1,7 +1,7 @@
 import LeanRV64D.RiscvInstsFext
 
 set_option maxHeartbeats 1_000_000_000
-set_option maxRecDepth 10_000
+set_option maxRecDepth 1_000_000
 set_option linter.unusedVariables false
 set_option match.ignoreUnusedAlts true
 
@@ -325,7 +325,7 @@ def validDoubleRegs {n : _} (regs : (Vector fregidx n)) : SailM Bool := SailME.r
         let () := loop_vars
         loop_vars ← do
           bif (BEq.beq (BitVec.access (fregidx_bits (GetElem?.getElem! regs i)) 0) 1#1)
-          then throw (false : Bool)
+          then SailME.throw (false : Bool)
           else (pure ())
       (pure loop_vars))
   else (pure ())

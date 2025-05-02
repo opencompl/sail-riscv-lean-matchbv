@@ -1,7 +1,7 @@
 import LeanRV64D.RiscvVmemTlb
 
 set_option maxHeartbeats 1_000_000_000
-set_option maxRecDepth 10_000
+set_option maxRecDepth 1_000_000
 set_option linter.unusedVariables false
 set_option match.ignoreUnusedAlts true
 
@@ -224,7 +224,7 @@ def pt_walk (sv_width : Nat) (vpn : (BitVec (sv_width - 12))) (ac : (AccessType 
                                  then 10
                                  else 9) *i level) -i 1) -i 0) +i 1))))
                   then
-                    throw ((Err ((PTW_Misaligned ()), ext_ptw)) : (Result ((PTW_Output sv_width) × Unit) (PTW_Error × Unit)))
+                    SailME.throw ((Err ((PTW_Misaligned ()), ext_ptw)) : (Result ((PTW_Output sv_width) × Unit) (PTW_Error × Unit)))
                   else (pure ()))
               else (pure ())
               match (← (check_PTE_permission ac priv mxr do_sum pte_flags pte_ext ext_ptw)) with

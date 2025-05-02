@@ -1,7 +1,7 @@
 import LeanRV64D.RiscvInstsVextRed
 
 set_option maxHeartbeats 1_000_000_000
-set_option maxRecDepth 10_000
+set_option maxRecDepth 1_000_000
 set_option linter.unusedVariables false
 set_option match.ignoreUnusedAlts true
 
@@ -249,16 +249,18 @@ def process_rfvv_single (funct6 : rfvvfunct6) (vm : (BitVec 1)) (vs2 : vregidx) 
           let n := num_elem_vs
           let d := num_elem_vd
           let m := SEW
-          let vm_val ← (( do (read_vmask num_elem_vs vm zvreg) ) : SailME _ (BitVec n) )
-          let vd_val ← (( do (read_vreg num_elem_vd SEW 0 vd) ) : SailME _ (Vector (BitVec m) d) )
-          let vs2_val ← (( do (read_vreg num_elem_vs SEW LMUL_pow vs2) ) : SailME _
+          let vm_val ← (( do (read_vmask num_elem_vs vm zvreg) ) : SailME ExecutionResult
+            (BitVec n) )
+          let vd_val ← (( do (read_vreg num_elem_vd SEW 0 vd) ) : SailME ExecutionResult
+            (Vector (BitVec m) d) )
+          let vs2_val ← (( do (read_vreg num_elem_vs SEW LMUL_pow vs2) ) : SailME ExecutionResult
             (Vector (BitVec m) n) )
           let mask ← (( do
             match (← (init_masked_source num_elem_vs LMUL_pow vm_val)) with
             | .Ok v => (pure v)
-            | .Err () => throw ((Illegal_Instruction ()) : ExecutionResult) ) : SailME _ (BitVec n)
-            )
-          let sum ← (( do (read_single_element SEW 0 vs1) ) : SailME _ (BitVec m) )
+            | .Err () => SailME.throw ((Illegal_Instruction ()) : ExecutionResult) ) : SailME
+            ExecutionResult (BitVec n) )
+          let sum ← (( do (read_single_element SEW 0 vs1) ) : SailME ExecutionResult (BitVec m) )
           let sum ← (( do
             let loop_i_lower := 0
             let loop_i_upper := (num_elem_vs -i 1)
@@ -277,7 +279,7 @@ def process_rfvv_single (funct6 : rfvvfunct6) (vm : (BitVec 1)) (vs2 : vregidx) 
                     | _ => (internal_error "riscv_insts_vext_fp_red.sail" 61
                         "Widening op unexpected"))
                 else (pure sum)
-            (pure loop_vars) ) : SailME _ (BitVec m) )
+            (pure loop_vars) ) : SailME ExecutionResult (BitVec m) )
           (write_single_element SEW 0 vd sum)
           (set_vstart (zeros (n := 16)))
           (pure RETIRE_SUCCESS)))
@@ -302,17 +304,19 @@ def process_rfvv_widen (funct6 : rfvvfunct6) (vm : (BitVec 1)) (vs2 : vregidx) (
           let d := num_elem_vd
           let m := SEW
           let o := SEW_widen
-          let vm_val ← (( do (read_vmask num_elem_vs vm zvreg) ) : SailME _ (BitVec n) )
-          let vd_val ← (( do (read_vreg num_elem_vd SEW_widen 0 vd) ) : SailME _
+          let vm_val ← (( do (read_vmask num_elem_vs vm zvreg) ) : SailME ExecutionResult
+            (BitVec n) )
+          let vd_val ← (( do (read_vreg num_elem_vd SEW_widen 0 vd) ) : SailME ExecutionResult
             (Vector (BitVec o) d) )
-          let vs2_val ← (( do (read_vreg num_elem_vs SEW LMUL_pow vs2) ) : SailME _
+          let vs2_val ← (( do (read_vreg num_elem_vs SEW LMUL_pow vs2) ) : SailME ExecutionResult
             (Vector (BitVec m) n) )
           let mask ← (( do
             match (← (init_masked_source num_elem_vs LMUL_pow vm_val)) with
             | .Ok v => (pure v)
-            | .Err () => throw ((Illegal_Instruction ()) : ExecutionResult) ) : SailME _ (BitVec n)
-            )
-          let sum ← (( do (read_single_element SEW_widen 0 vs1) ) : SailME _ (BitVec o) )
+            | .Err () => SailME.throw ((Illegal_Instruction ()) : ExecutionResult) ) : SailME
+            ExecutionResult (BitVec n) )
+          let sum ← (( do (read_single_element SEW_widen 0 vs1) ) : SailME ExecutionResult
+            (BitVec o) )
           let sum ← (( do
             let loop_i_lower := 0
             let loop_i_upper := (num_elem_vs -i 1)
@@ -325,7 +329,7 @@ def process_rfvv_widen (funct6 : rfvvfunct6) (vm : (BitVec 1)) (vs2 : vregidx) (
                   (do
                     (fp_add rm_3b sum (← (fp_widen (GetElem?.getElem! vs2_val i)))))
                 else (pure sum)
-            (pure loop_vars) ) : SailME _ (BitVec o) )
+            (pure loop_vars) ) : SailME ExecutionResult (BitVec o) )
           (write_single_element SEW_widen 0 vd sum)
           (set_vstart (zeros (n := 16)))
           (pure RETIRE_SUCCESS)))

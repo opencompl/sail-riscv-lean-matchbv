@@ -1,7 +1,7 @@
 import LeanRV64D.RiscvPmpRegs
 
 set_option maxHeartbeats 1_000_000_000
-set_option maxRecDepth 10_000
+set_option maxRecDepth 1_000_000
 set_option linter.unusedVariables false
 set_option match.ignoreUnusedAlts true
 
@@ -265,8 +265,8 @@ def pmpCheck (addr : physaddr) (width : Nat) (acc : (AccessType Unit)) (priv : P
         else (pure (zeros (n := ((2 ^i 3) *i 8))))
       match (← (pmpMatchEntry addr width acc priv (GetElem?.getElem! (← readReg pmpcfg_n) i)
           (← (pmpReadAddrReg i)) prev_pmpaddr)) with
-      | PMP_Success => throw (none : (Option ExceptionType))
-      | PMP_Fail => throw ((some (accessToFault acc)) : (Option ExceptionType))
+      | PMP_Success => SailME.throw (none : (Option ExceptionType))
+      | PMP_Fail => SailME.throw ((some (accessToFault acc)) : (Option ExceptionType))
       | PMP_Continue => (pure ())
   (pure loop_vars)
   bif (BEq.beq priv Machine)

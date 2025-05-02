@@ -1,7 +1,7 @@
 import LeanRV64D.RiscvInstsZicond
 
 set_option maxHeartbeats 1_000_000_000
-set_option maxRecDepth 10_000
+set_option maxRecDepth 1_000_000
 set_option linter.unusedVariables false
 set_option match.ignoreUnusedAlts true
 
@@ -333,15 +333,18 @@ def init_masked_result (num_elem : Nat) (SEW : Nat) (LMUL_pow : Int) (vd_val : (
   let start_element ← (( do
     match (← (get_start_element ())) with
     | .Ok v => (pure v)
-    | .Err () => throw ((Err ()) : (Result ((Vector (BitVec SEW) num_elem) × (BitVec num_elem)) Unit))
-    ) : SailME _ Nat )
+    | .Err () => SailME.throw ((Err ()) : (Result ((Vector (BitVec SEW) num_elem) × (BitVec num_elem)) Unit))
+    ) : SailME (Result ((Vector (BitVec SEW) num_elem) × (BitVec num_elem)) Unit) Nat )
   let end_element ← do (get_end_element ())
-  let tail_ag ← (( do (get_vtype_vta ()) ) : SailME _ agtype )
-  let mask_ag ← (( do (get_vtype_vma ()) ) : SailME _ agtype )
-  let mask ← (( do (undefined_bitvector (Sail.BitVec.length vm_val)) ) : SailME _
-    (BitVec num_elem) )
+  let tail_ag ← (( do (get_vtype_vta ()) ) : SailME
+    (Result ((Vector (BitVec SEW) num_elem) × (BitVec num_elem)) Unit) agtype )
+  let mask_ag ← (( do (get_vtype_vma ()) ) : SailME
+    (Result ((Vector (BitVec SEW) num_elem) × (BitVec num_elem)) Unit) agtype )
+  let mask ← (( do (undefined_bitvector (Sail.BitVec.length vm_val)) ) : SailME
+    (Result ((Vector (BitVec SEW) num_elem) × (BitVec num_elem)) Unit) (BitVec num_elem) )
   let result ← (( do
-    (undefined_vector (Sail.BitVec.length vm_val) (← (undefined_bitvector SEW))) ) : SailME _
+    (undefined_vector (Sail.BitVec.length vm_val) (← (undefined_bitvector SEW))) ) : SailME
+    (Result ((Vector (BitVec SEW) num_elem) × (BitVec num_elem)) Unit)
     (Vector (BitVec SEW) num_elem) )
   let real_num_elem :=
     bif (LMUL_pow ≥b 0)
@@ -402,7 +405,8 @@ def init_masked_result (num_elem : Nat) (SEW : Nat) (LMUL_pow : Int) (vd_val : (
                 (mask, result))
             (mask, result))
         (mask, result)
-    (pure loop_vars) ) : SailME _ ((BitVec num_elem) × (Vector (BitVec SEW) num_elem)) )
+    (pure loop_vars) ) : SailME (Result ((Vector (BitVec SEW) num_elem) × (BitVec num_elem)) Unit)
+    ((BitVec num_elem) × (Vector (BitVec SEW) num_elem)) )
   (pure (Ok (result, mask)))
 
 /-- Type quantifiers: num_elem : Nat, LMUL_pow : Int, num_elem > 0 -/
@@ -410,10 +414,11 @@ def init_masked_source (num_elem : Nat) (LMUL_pow : Int) (vm_val : (BitVec num_e
   let start_element ← (( do
     match (← (get_start_element ())) with
     | .Ok v => (pure v)
-    | .Err () => throw ((Err ()) : (Result (BitVec num_elem) Unit)) ) : SailME _ Nat )
+    | .Err () => SailME.throw ((Err ()) : (Result (BitVec num_elem) Unit)) ) : SailME
+    (Result (BitVec num_elem) Unit) Nat )
   let end_element ← do (get_end_element ())
-  let mask ← (( do (undefined_bitvector (Sail.BitVec.length vm_val)) ) : SailME _
-    (BitVec num_elem) )
+  let mask ← (( do (undefined_bitvector (Sail.BitVec.length vm_val)) ) : SailME
+    (Result (BitVec num_elem) Unit) (BitVec num_elem) )
   let real_num_elem :=
     bif (LMUL_pow ≥b 0)
     then num_elem
@@ -438,7 +443,7 @@ def init_masked_source (num_elem : Nat) (LMUL_pow : Int) (vm_val : (BitVec num_e
               (bif (BEq.beq (BitVec.access vm_val i) 0#1)
               then (BitVec.update mask i 0#1)
               else (BitVec.update mask i 1#1))))
-    (pure loop_vars) ) : SailME _ (BitVec num_elem) )
+    (pure loop_vars) ) : SailME (Result (BitVec num_elem) Unit) (BitVec num_elem) )
   (pure (Ok mask))
 
 /-- Type quantifiers: num_elem : Nat, SEW : Int, LMUL_pow : Int, num_elem ≥ 0 -/
@@ -446,13 +451,13 @@ def init_masked_result_carry (num_elem : Nat) (SEW : Int) (LMUL_pow : Int) (vd_v
   let start_element ← (( do
     match (← (get_start_element ())) with
     | .Ok v => (pure v)
-    | .Err () => throw ((Err ()) : (Result ((BitVec num_elem) × (BitVec num_elem)) Unit)) ) :
-    SailME _ Nat )
+    | .Err () => SailME.throw ((Err ()) : (Result ((BitVec num_elem) × (BitVec num_elem)) Unit)) )
+    : SailME (Result ((BitVec num_elem) × (BitVec num_elem)) Unit) Nat )
   let end_element ← do (get_end_element ())
-  let mask ← (( do (undefined_bitvector (Sail.BitVec.length vd_val)) ) : SailME _
-    (BitVec num_elem) )
-  let result ← (( do (undefined_bitvector (Sail.BitVec.length vd_val)) ) : SailME _
-    (BitVec num_elem) )
+  let mask ← (( do (undefined_bitvector (Sail.BitVec.length vd_val)) ) : SailME
+    (Result ((BitVec num_elem) × (BitVec num_elem)) Unit) (BitVec num_elem) )
+  let result ← (( do (undefined_bitvector (Sail.BitVec.length vd_val)) ) : SailME
+    (Result ((BitVec num_elem) × (BitVec num_elem)) Unit) (BitVec num_elem) )
   let real_num_elem :=
     bif (LMUL_pow ≥b 0)
     then num_elem
@@ -492,7 +497,8 @@ def init_masked_result_carry (num_elem : Nat) (SEW : Int) (LMUL_pow : Int) (vd_v
                 (mask, result))
             (mask, result))
         (mask, result)
-    (pure loop_vars) ) : SailME _ ((BitVec num_elem) × (BitVec num_elem)) )
+    (pure loop_vars) ) : SailME (Result ((BitVec num_elem) × (BitVec num_elem)) Unit)
+    ((BitVec num_elem) × (BitVec num_elem)) )
   (pure (Ok (result, mask)))
 
 /-- Type quantifiers: num_elem : Nat, SEW : Int, LMUL_pow : Int, num_elem ≥ 0 -/
@@ -500,14 +506,15 @@ def init_masked_result_cmp (num_elem : Nat) (SEW : Int) (LMUL_pow : Int) (vd_val
   let start_element ← (( do
     match (← (get_start_element ())) with
     | .Ok v => (pure v)
-    | .Err () => throw ((Err ()) : (Result ((BitVec num_elem) × (BitVec num_elem)) Unit)) ) :
-    SailME _ Nat )
+    | .Err () => SailME.throw ((Err ()) : (Result ((BitVec num_elem) × (BitVec num_elem)) Unit)) )
+    : SailME (Result ((BitVec num_elem) × (BitVec num_elem)) Unit) Nat )
   let end_element ← do (get_end_element ())
-  let mask_ag ← (( do (get_vtype_vma ()) ) : SailME _ agtype )
-  let mask ← (( do (undefined_bitvector (Sail.BitVec.length vm_val)) ) : SailME _
-    (BitVec num_elem) )
-  let result ← (( do (undefined_bitvector (Sail.BitVec.length vm_val)) ) : SailME _
-    (BitVec num_elem) )
+  let mask_ag ← (( do (get_vtype_vma ()) ) : SailME
+    (Result ((BitVec num_elem) × (BitVec num_elem)) Unit) agtype )
+  let mask ← (( do (undefined_bitvector (Sail.BitVec.length vm_val)) ) : SailME
+    (Result ((BitVec num_elem) × (BitVec num_elem)) Unit) (BitVec num_elem) )
+  let result ← (( do (undefined_bitvector (Sail.BitVec.length vm_val)) ) : SailME
+    (Result ((BitVec num_elem) × (BitVec num_elem)) Unit) (BitVec num_elem) )
   let real_num_elem :=
     bif (LMUL_pow ≥b 0)
     then num_elem
@@ -559,7 +566,8 @@ def init_masked_result_cmp (num_elem : Nat) (SEW : Int) (LMUL_pow : Int) (vd_val
                 (mask, result))
             (mask, result))
         (mask, result)
-    (pure loop_vars) ) : SailME _ ((BitVec num_elem) × (BitVec num_elem)) )
+    (pure loop_vars) ) : SailME (Result ((BitVec num_elem) × (BitVec num_elem)) Unit)
+    ((BitVec num_elem) × (BitVec num_elem)) )
   (pure (Ok (result, mask)))
 
 /-- Type quantifiers: num_elem : Nat, SEW : Nat, LMUL_pow : Int, nf : Nat, num_elem ≥ 0 ∧
