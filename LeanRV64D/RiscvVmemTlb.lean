@@ -182,10 +182,10 @@ def tlb_get_ppn (sv_width : Nat) (ent : TLB_Entry) (vpn : (BitVec (sv_width - 12
   let vpn : (BitVec 64) := (sign_extend (m := 64) vpn)
   let levelMask : (BitVec 64) := (zero_extend (m := 64) ent.levelMask)
   let ppn : (BitVec 64) := (zero_extend (m := 64) ent.ppn)
-  (Sail.BitVec.truncate (ppn ||| (vpn &&& levelMask))
-    (bif (BEq.beq sv_width 32)
+  (trunc
+    (m := (bif (BEq.beq sv_width 32)
     then 22
-    else 44))
+    else 44)) (ppn ||| (vpn &&& levelMask)))
 
 /-- Type quantifiers: sv_mode : Nat, is_sv_mode(sv_mode) -/
 def tlb_hash (sv_mode : Nat) (vpn : (BitVec (sv_mode - 12))) : Nat :=
@@ -224,7 +224,7 @@ def lookup_TLB (sv_width : Nat) (asid : (BitVec 16)) (vpn : (BitVec (sv_width - 
     then (pure (some (index, entry)))
     else (pure none))
 
-/-- Type quantifiers: k_ex351591# : Bool, level : Nat, sv_width : Nat, is_sv_mode(sv_width), 0 ≤
+/-- Type quantifiers: k_ex351550# : Bool, level : Nat, sv_width : Nat, is_sv_mode(sv_width), 0 ≤
   level ∧
   level ≤
   (bif sv_width = 32 then 1 else (bif sv_width = 39 then 2 else (bif sv_width = 48 then 3 else 4))) -/

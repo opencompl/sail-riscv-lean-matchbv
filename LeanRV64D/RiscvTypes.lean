@@ -2893,10 +2893,7 @@ def freg_name_forwards (arg_ : fregidx) : String :=
 
 def fregidx_to_regidx (app_0 : fregidx) : regidx :=
   let .Fregidx b := app_0
-  (Regidx
-    (Sail.BitVec.truncate b
-      (let .Regidx zreg_bits := zreg
-      (Sail.BitVec.length zreg_bits))))
+  (Regidx (trunc (m := 5) b))
 
 def reg_name_raw_forwards (arg_ : (BitVec 5)) : String :=
   let b__0 := arg_
@@ -3132,7 +3129,7 @@ def ma_flag_backwards (arg_ : (BitVec 1)) : String :=
   then (String.append (sep_forwards ()) (String.append "ma" ""))
   else (String.append (sep_forwards ()) (String.append "mu" ""))
 
-/-- Type quantifiers: k_ex346375# : Bool -/
+/-- Type quantifiers: k_ex346339# : Bool -/
 def maybe_aq_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".aq"
@@ -3171,19 +3168,19 @@ def maybe_lmul_flag_backwards (arg_ : (BitVec 3)) : SailM String := do
                               assert false "Pattern match failure at unknown location"
                               throw Error.Exit)))))))
 
-/-- Type quantifiers: k_ex346383# : Bool -/
+/-- Type quantifiers: k_ex346347# : Bool -/
 def maybe_not_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | false => "u"
   | true => ""
 
-/-- Type quantifiers: k_ex346384# : Bool -/
+/-- Type quantifiers: k_ex346348# : Bool -/
 def maybe_rl_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".rl"
   | false => ""
 
-/-- Type quantifiers: k_ex346385# : Bool -/
+/-- Type quantifiers: k_ex346349# : Bool -/
 def maybe_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => "u"

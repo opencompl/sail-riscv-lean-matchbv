@@ -8,17 +8,20 @@ is still work-in-progress. As a result, our semantics are still full of warnings
 and errors. Similarly, our output is not yet polished for readability.
 # Statistics
 
-Lines: 135093  
-Definitions: 3620  
+Lines: 135089  
+Definitions: 3621  
 Inductive definitions: 159  
 Abbreviations: 132  
 
 # Warnings and Errors
 
-Errors found: 2  
-Warnings found: 0  
+Errors found: 15  
+Warnings found: 1  
 
 ## Error Classes
 
-- 1x failed to prove termination, possible solutions:
+- 11x don't know how to synthesize implicit argument 'α'
+- 1x don't know how to synthesize implicit argument 'k_m'
+- 1x don't know how to synthesize implicit argument 'a'
+- 1x application type mismatch
 - 1x Lean exited with code 1
