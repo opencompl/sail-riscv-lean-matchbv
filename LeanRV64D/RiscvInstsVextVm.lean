@@ -171,11 +171,11 @@ def encdec_vvmfunct6_forwards (arg_ : vvmfunct6) : (BitVec 6) :=
 
 def encdec_vvmfunct6_backwards (arg_ : (BitVec 6)) : SailM vvmfunct6 := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b010001 : (BitVec 6)))
+  bif (b__0 == (0b010001 : (BitVec 6)))
   then (pure VVM_VMADC)
   else
     (do
-      bif (BEq.beq b__0 (0b010011 : (BitVec 6)))
+      bif (b__0 == (0b010011 : (BitVec 6)))
       then (pure VVM_VMSBC)
       else
         (do
@@ -189,10 +189,10 @@ def encdec_vvmfunct6_forwards_matches (arg_ : vvmfunct6) : Bool :=
 
 def encdec_vvmfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b010001 : (BitVec 6)))
+  bif (b__0 == (0b010001 : (BitVec 6)))
   then true
   else
-    (bif (BEq.beq b__0 (0b010011 : (BitVec 6)))
+    (bif (b__0 == (0b010011 : (BitVec 6)))
     then true
     else false)
 
@@ -222,11 +222,11 @@ def encdec_vvmcfunct6_forwards (arg_ : vvmcfunct6) : (BitVec 6) :=
 
 def encdec_vvmcfunct6_backwards (arg_ : (BitVec 6)) : SailM vvmcfunct6 := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b010001 : (BitVec 6)))
+  bif (b__0 == (0b010001 : (BitVec 6)))
   then (pure VVMC_VMADC)
   else
     (do
-      bif (BEq.beq b__0 (0b010011 : (BitVec 6)))
+      bif (b__0 == (0b010011 : (BitVec 6)))
       then (pure VVMC_VMSBC)
       else
         (do
@@ -240,10 +240,10 @@ def encdec_vvmcfunct6_forwards_matches (arg_ : vvmcfunct6) : Bool :=
 
 def encdec_vvmcfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b010001 : (BitVec 6)))
+  bif (b__0 == (0b010001 : (BitVec 6)))
   then true
   else
-    (bif (BEq.beq b__0 (0b010011 : (BitVec 6)))
+    (bif (b__0 == (0b010011 : (BitVec 6)))
     then true
     else false)
 
@@ -273,11 +273,11 @@ def encdec_vvmsfunct6_forwards (arg_ : vvmsfunct6) : (BitVec 6) :=
 
 def encdec_vvmsfunct6_backwards (arg_ : (BitVec 6)) : SailM vvmsfunct6 := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b010000 : (BitVec 6)))
+  bif (b__0 == (0b010000 : (BitVec 6)))
   then (pure VVMS_VADC)
   else
     (do
-      bif (BEq.beq b__0 (0b010010 : (BitVec 6)))
+      bif (b__0 == (0b010010 : (BitVec 6)))
       then (pure VVMS_VSBC)
       else
         (do
@@ -291,10 +291,10 @@ def encdec_vvmsfunct6_forwards_matches (arg_ : vvmsfunct6) : Bool :=
 
 def encdec_vvmsfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b010000 : (BitVec 6)))
+  bif (b__0 == (0b010000 : (BitVec 6)))
   then true
   else
-    (bif (BEq.beq b__0 (0b010010 : (BitVec 6)))
+    (bif (b__0 == (0b010010 : (BitVec 6)))
     then true
     else false)
 
@@ -328,27 +328,27 @@ def encdec_vvcmpfunct6_forwards (arg_ : vvcmpfunct6) : (BitVec 6) :=
 
 def encdec_vvcmpfunct6_backwards (arg_ : (BitVec 6)) : SailM vvcmpfunct6 := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b011000 : (BitVec 6)))
+  bif (b__0 == (0b011000 : (BitVec 6)))
   then (pure VVCMP_VMSEQ)
   else
     (do
-      bif (BEq.beq b__0 (0b011001 : (BitVec 6)))
+      bif (b__0 == (0b011001 : (BitVec 6)))
       then (pure VVCMP_VMSNE)
       else
         (do
-          bif (BEq.beq b__0 (0b011010 : (BitVec 6)))
+          bif (b__0 == (0b011010 : (BitVec 6)))
           then (pure VVCMP_VMSLTU)
           else
             (do
-              bif (BEq.beq b__0 (0b011011 : (BitVec 6)))
+              bif (b__0 == (0b011011 : (BitVec 6)))
               then (pure VVCMP_VMSLT)
               else
                 (do
-                  bif (BEq.beq b__0 (0b011100 : (BitVec 6)))
+                  bif (b__0 == (0b011100 : (BitVec 6)))
                   then (pure VVCMP_VMSLEU)
                   else
                     (do
-                      bif (BEq.beq b__0 (0b011101 : (BitVec 6)))
+                      bif (b__0 == (0b011101 : (BitVec 6)))
                       then (pure VVCMP_VMSLE)
                       else
                         (do
@@ -366,22 +366,22 @@ def encdec_vvcmpfunct6_forwards_matches (arg_ : vvcmpfunct6) : Bool :=
 
 def encdec_vvcmpfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b011000 : (BitVec 6)))
+  bif (b__0 == (0b011000 : (BitVec 6)))
   then true
   else
-    (bif (BEq.beq b__0 (0b011001 : (BitVec 6)))
+    (bif (b__0 == (0b011001 : (BitVec 6)))
     then true
     else
-      (bif (BEq.beq b__0 (0b011010 : (BitVec 6)))
+      (bif (b__0 == (0b011010 : (BitVec 6)))
       then true
       else
-        (bif (BEq.beq b__0 (0b011011 : (BitVec 6)))
+        (bif (b__0 == (0b011011 : (BitVec 6)))
         then true
         else
-          (bif (BEq.beq b__0 (0b011100 : (BitVec 6)))
+          (bif (b__0 == (0b011100 : (BitVec 6)))
           then true
           else
-            (bif (BEq.beq b__0 (0b011101 : (BitVec 6)))
+            (bif (b__0 == (0b011101 : (BitVec 6)))
             then true
             else false)))))
 
@@ -423,11 +423,11 @@ def encdec_vxmfunct6_forwards (arg_ : vxmfunct6) : (BitVec 6) :=
 
 def encdec_vxmfunct6_backwards (arg_ : (BitVec 6)) : SailM vxmfunct6 := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b010001 : (BitVec 6)))
+  bif (b__0 == (0b010001 : (BitVec 6)))
   then (pure VXM_VMADC)
   else
     (do
-      bif (BEq.beq b__0 (0b010011 : (BitVec 6)))
+      bif (b__0 == (0b010011 : (BitVec 6)))
       then (pure VXM_VMSBC)
       else
         (do
@@ -441,10 +441,10 @@ def encdec_vxmfunct6_forwards_matches (arg_ : vxmfunct6) : Bool :=
 
 def encdec_vxmfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b010001 : (BitVec 6)))
+  bif (b__0 == (0b010001 : (BitVec 6)))
   then true
   else
-    (bif (BEq.beq b__0 (0b010011 : (BitVec 6)))
+    (bif (b__0 == (0b010011 : (BitVec 6)))
     then true
     else false)
 
@@ -474,11 +474,11 @@ def encdec_vxmcfunct6_forwards (arg_ : vxmcfunct6) : (BitVec 6) :=
 
 def encdec_vxmcfunct6_backwards (arg_ : (BitVec 6)) : SailM vxmcfunct6 := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b010001 : (BitVec 6)))
+  bif (b__0 == (0b010001 : (BitVec 6)))
   then (pure VXMC_VMADC)
   else
     (do
-      bif (BEq.beq b__0 (0b010011 : (BitVec 6)))
+      bif (b__0 == (0b010011 : (BitVec 6)))
       then (pure VXMC_VMSBC)
       else
         (do
@@ -492,10 +492,10 @@ def encdec_vxmcfunct6_forwards_matches (arg_ : vxmcfunct6) : Bool :=
 
 def encdec_vxmcfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b010001 : (BitVec 6)))
+  bif (b__0 == (0b010001 : (BitVec 6)))
   then true
   else
-    (bif (BEq.beq b__0 (0b010011 : (BitVec 6)))
+    (bif (b__0 == (0b010011 : (BitVec 6)))
     then true
     else false)
 
@@ -525,11 +525,11 @@ def encdec_vxmsfunct6_forwards (arg_ : vxmsfunct6) : (BitVec 6) :=
 
 def encdec_vxmsfunct6_backwards (arg_ : (BitVec 6)) : SailM vxmsfunct6 := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b010000 : (BitVec 6)))
+  bif (b__0 == (0b010000 : (BitVec 6)))
   then (pure VXMS_VADC)
   else
     (do
-      bif (BEq.beq b__0 (0b010010 : (BitVec 6)))
+      bif (b__0 == (0b010010 : (BitVec 6)))
       then (pure VXMS_VSBC)
       else
         (do
@@ -543,10 +543,10 @@ def encdec_vxmsfunct6_forwards_matches (arg_ : vxmsfunct6) : Bool :=
 
 def encdec_vxmsfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b010000 : (BitVec 6)))
+  bif (b__0 == (0b010000 : (BitVec 6)))
   then true
   else
-    (bif (BEq.beq b__0 (0b010010 : (BitVec 6)))
+    (bif (b__0 == (0b010010 : (BitVec 6)))
     then true
     else false)
 
@@ -582,35 +582,35 @@ def encdec_vxcmpfunct6_forwards (arg_ : vxcmpfunct6) : (BitVec 6) :=
 
 def encdec_vxcmpfunct6_backwards (arg_ : (BitVec 6)) : SailM vxcmpfunct6 := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b011000 : (BitVec 6)))
+  bif (b__0 == (0b011000 : (BitVec 6)))
   then (pure VXCMP_VMSEQ)
   else
     (do
-      bif (BEq.beq b__0 (0b011001 : (BitVec 6)))
+      bif (b__0 == (0b011001 : (BitVec 6)))
       then (pure VXCMP_VMSNE)
       else
         (do
-          bif (BEq.beq b__0 (0b011010 : (BitVec 6)))
+          bif (b__0 == (0b011010 : (BitVec 6)))
           then (pure VXCMP_VMSLTU)
           else
             (do
-              bif (BEq.beq b__0 (0b011011 : (BitVec 6)))
+              bif (b__0 == (0b011011 : (BitVec 6)))
               then (pure VXCMP_VMSLT)
               else
                 (do
-                  bif (BEq.beq b__0 (0b011100 : (BitVec 6)))
+                  bif (b__0 == (0b011100 : (BitVec 6)))
                   then (pure VXCMP_VMSLEU)
                   else
                     (do
-                      bif (BEq.beq b__0 (0b011101 : (BitVec 6)))
+                      bif (b__0 == (0b011101 : (BitVec 6)))
                       then (pure VXCMP_VMSLE)
                       else
                         (do
-                          bif (BEq.beq b__0 (0b011110 : (BitVec 6)))
+                          bif (b__0 == (0b011110 : (BitVec 6)))
                           then (pure VXCMP_VMSGTU)
                           else
                             (do
-                              bif (BEq.beq b__0 (0b011111 : (BitVec 6)))
+                              bif (b__0 == (0b011111 : (BitVec 6)))
                               then (pure VXCMP_VMSGT)
                               else
                                 (do
@@ -630,28 +630,28 @@ def encdec_vxcmpfunct6_forwards_matches (arg_ : vxcmpfunct6) : Bool :=
 
 def encdec_vxcmpfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b011000 : (BitVec 6)))
+  bif (b__0 == (0b011000 : (BitVec 6)))
   then true
   else
-    (bif (BEq.beq b__0 (0b011001 : (BitVec 6)))
+    (bif (b__0 == (0b011001 : (BitVec 6)))
     then true
     else
-      (bif (BEq.beq b__0 (0b011010 : (BitVec 6)))
+      (bif (b__0 == (0b011010 : (BitVec 6)))
       then true
       else
-        (bif (BEq.beq b__0 (0b011011 : (BitVec 6)))
+        (bif (b__0 == (0b011011 : (BitVec 6)))
         then true
         else
-          (bif (BEq.beq b__0 (0b011100 : (BitVec 6)))
+          (bif (b__0 == (0b011100 : (BitVec 6)))
           then true
           else
-            (bif (BEq.beq b__0 (0b011101 : (BitVec 6)))
+            (bif (b__0 == (0b011101 : (BitVec 6)))
             then true
             else
-              (bif (BEq.beq b__0 (0b011110 : (BitVec 6)))
+              (bif (b__0 == (0b011110 : (BitVec 6)))
               then true
               else
-                (bif (BEq.beq b__0 (0b011111 : (BitVec 6)))
+                (bif (b__0 == (0b011111 : (BitVec 6)))
                 then true
                 else false)))))))
 
@@ -698,7 +698,7 @@ def encdec_vimfunct6_forwards (arg_ : vimfunct6) : (BitVec 6) :=
 
 def encdec_vimfunct6_backwards (arg_ : (BitVec 6)) : SailM vimfunct6 := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b010001 : (BitVec 6)))
+  bif (b__0 == (0b010001 : (BitVec 6)))
   then (pure VIM_VMADC)
   else
     (do
@@ -711,7 +711,7 @@ def encdec_vimfunct6_forwards_matches (arg_ : vimfunct6) : Bool :=
 
 def encdec_vimfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b010001 : (BitVec 6)))
+  bif (b__0 == (0b010001 : (BitVec 6)))
   then true
   else false
 
@@ -737,7 +737,7 @@ def encdec_vimcfunct6_forwards (arg_ : vimcfunct6) : (BitVec 6) :=
 
 def encdec_vimcfunct6_backwards (arg_ : (BitVec 6)) : SailM vimcfunct6 := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b010001 : (BitVec 6)))
+  bif (b__0 == (0b010001 : (BitVec 6)))
   then (pure VIMC_VMADC)
   else
     (do
@@ -750,7 +750,7 @@ def encdec_vimcfunct6_forwards_matches (arg_ : vimcfunct6) : Bool :=
 
 def encdec_vimcfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b010001 : (BitVec 6)))
+  bif (b__0 == (0b010001 : (BitVec 6)))
   then true
   else false
 
@@ -776,7 +776,7 @@ def encdec_vimsfunct6_forwards (arg_ : vimsfunct6) : (BitVec 6) :=
 
 def encdec_vimsfunct6_backwards (arg_ : (BitVec 6)) : SailM vimsfunct6 := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b010000 : (BitVec 6)))
+  bif (b__0 == (0b010000 : (BitVec 6)))
   then (pure VIMS_VADC)
   else
     (do
@@ -789,7 +789,7 @@ def encdec_vimsfunct6_forwards_matches (arg_ : vimsfunct6) : Bool :=
 
 def encdec_vimsfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b010000 : (BitVec 6)))
+  bif (b__0 == (0b010000 : (BitVec 6)))
   then true
   else false
 
@@ -820,27 +820,27 @@ def encdec_vicmpfunct6_forwards (arg_ : vicmpfunct6) : (BitVec 6) :=
 
 def encdec_vicmpfunct6_backwards (arg_ : (BitVec 6)) : SailM vicmpfunct6 := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b011000 : (BitVec 6)))
+  bif (b__0 == (0b011000 : (BitVec 6)))
   then (pure VICMP_VMSEQ)
   else
     (do
-      bif (BEq.beq b__0 (0b011001 : (BitVec 6)))
+      bif (b__0 == (0b011001 : (BitVec 6)))
       then (pure VICMP_VMSNE)
       else
         (do
-          bif (BEq.beq b__0 (0b011100 : (BitVec 6)))
+          bif (b__0 == (0b011100 : (BitVec 6)))
           then (pure VICMP_VMSLEU)
           else
             (do
-              bif (BEq.beq b__0 (0b011101 : (BitVec 6)))
+              bif (b__0 == (0b011101 : (BitVec 6)))
               then (pure VICMP_VMSLE)
               else
                 (do
-                  bif (BEq.beq b__0 (0b011110 : (BitVec 6)))
+                  bif (b__0 == (0b011110 : (BitVec 6)))
                   then (pure VICMP_VMSGTU)
                   else
                     (do
-                      bif (BEq.beq b__0 (0b011111 : (BitVec 6)))
+                      bif (b__0 == (0b011111 : (BitVec 6)))
                       then (pure VICMP_VMSGT)
                       else
                         (do
@@ -858,22 +858,22 @@ def encdec_vicmpfunct6_forwards_matches (arg_ : vicmpfunct6) : Bool :=
 
 def encdec_vicmpfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b011000 : (BitVec 6)))
+  bif (b__0 == (0b011000 : (BitVec 6)))
   then true
   else
-    (bif (BEq.beq b__0 (0b011001 : (BitVec 6)))
+    (bif (b__0 == (0b011001 : (BitVec 6)))
     then true
     else
-      (bif (BEq.beq b__0 (0b011100 : (BitVec 6)))
+      (bif (b__0 == (0b011100 : (BitVec 6)))
       then true
       else
-        (bif (BEq.beq b__0 (0b011101 : (BitVec 6)))
+        (bif (b__0 == (0b011101 : (BitVec 6)))
         then true
         else
-          (bif (BEq.beq b__0 (0b011110 : (BitVec 6)))
+          (bif (b__0 == (0b011110 : (BitVec 6)))
           then true
           else
-            (bif (BEq.beq b__0 (0b011111 : (BitVec 6)))
+            (bif (b__0 == (0b011111 : (BitVec 6)))
             then true
             else false)))))
 

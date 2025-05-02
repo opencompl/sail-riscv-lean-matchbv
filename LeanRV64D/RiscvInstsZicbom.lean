@@ -176,15 +176,15 @@ def encdec_cbop_forwards (arg_ : cbop_zicbom) : (BitVec 12) :=
 
 def encdec_cbop_backwards (arg_ : (BitVec 12)) : SailM cbop_zicbom := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0x001 : (BitVec 12)))
+  bif (b__0 == (0x001 : (BitVec 12)))
   then (pure CBO_CLEAN)
   else
     (do
-      bif (BEq.beq b__0 (0x002 : (BitVec 12)))
+      bif (b__0 == (0x002 : (BitVec 12)))
       then (pure CBO_FLUSH)
       else
         (do
-          bif (BEq.beq b__0 (0x000 : (BitVec 12)))
+          bif (b__0 == (0x000 : (BitVec 12)))
           then (pure CBO_INVAL)
           else
             (do
@@ -199,13 +199,13 @@ def encdec_cbop_forwards_matches (arg_ : cbop_zicbom) : Bool :=
 
 def encdec_cbop_backwards_matches (arg_ : (BitVec 12)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0x001 : (BitVec 12)))
+  bif (b__0 == (0x001 : (BitVec 12)))
   then true
   else
-    (bif (BEq.beq b__0 (0x002 : (BitVec 12)))
+    (bif (b__0 == (0x002 : (BitVec 12)))
     then true
     else
-      (bif (BEq.beq b__0 (0x000 : (BitVec 12)))
+      (bif (b__0 == (0x000 : (BitVec 12)))
       then true
       else false))
 
@@ -255,15 +255,15 @@ def encdec_cbie_forwards (arg_ : cbie) : (BitVec 2) :=
 
 def encdec_cbie_backwards (arg_ : (BitVec 2)) : SailM cbie := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b00 : (BitVec 2)))
+  bif (b__0 == (0b00 : (BitVec 2)))
   then (pure CBIE_ILLEGAL)
   else
     (do
-      bif (BEq.beq b__0 (0b01 : (BitVec 2)))
+      bif (b__0 == (0b01 : (BitVec 2)))
       then (pure CBIE_EXEC_FLUSH)
       else
         (do
-          bif (BEq.beq b__0 (0b11 : (BitVec 2)))
+          bif (b__0 == (0b11 : (BitVec 2)))
           then (pure CBIE_EXEC_INVAL)
           else (internal_error "riscv_insts_zicbom.sail" 44 "reserved CBIE")))
 
@@ -275,16 +275,16 @@ def encdec_cbie_forwards_matches (arg_ : cbie) : Bool :=
 
 def encdec_cbie_backwards_matches (arg_ : (BitVec 2)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b00 : (BitVec 2)))
+  bif (b__0 == (0b00 : (BitVec 2)))
   then true
   else
-    (bif (BEq.beq b__0 (0b01 : (BitVec 2)))
+    (bif (b__0 == (0b01 : (BitVec 2)))
     then true
     else
-      (bif (BEq.beq b__0 (0b11 : (BitVec 2)))
+      (bif (b__0 == (0b11 : (BitVec 2)))
       then true
       else
-        (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
+        (bif (b__0 == (0b10 : (BitVec 2)))
         then true
         else false)))
 

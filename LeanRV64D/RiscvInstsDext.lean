@@ -173,61 +173,52 @@ def fmake_D (sign : (BitVec 1)) (exp : (BitVec 11)) (mant : (BitVec 52)) : (BitV
 
 def f_is_neg_inf_D (x64 : (BitVec 64)) : Bool :=
   let (sign, exp, mant) := (fsplit_D x64)
-  (Bool.and (BEq.beq sign (0b1 : (BitVec 1)))
-    (Bool.and (BEq.beq exp (ones (n := 11))) (BEq.beq mant (zeros (n := 52)))))
+  ((sign == (0b1 : (BitVec 1))) && ((exp == (ones (n := 11))) && (mant == (zeros (n := 52)))))
 
 def f_is_neg_norm_D (x64 : (BitVec 64)) : Bool :=
   let (sign, exp, mant) := (fsplit_D x64)
-  (Bool.and (BEq.beq sign (0b1 : (BitVec 1)))
-    (Bool.and (bne exp (zeros (n := 11))) (bne exp (ones (n := 11)))))
+  ((sign == (0b1 : (BitVec 1))) && ((exp != (zeros (n := 11))) && (exp != (ones (n := 11)))))
 
 def f_is_neg_subnorm_D (x64 : (BitVec 64)) : Bool :=
   let (sign, exp, mant) := (fsplit_D x64)
-  (Bool.and (BEq.beq sign (0b1 : (BitVec 1)))
-    (Bool.and (BEq.beq exp (zeros (n := 11))) (bne mant (zeros (n := 52)))))
+  ((sign == (0b1 : (BitVec 1))) && ((exp == (zeros (n := 11))) && (mant != (zeros (n := 52)))))
 
 def f_is_neg_zero_D (x64 : (BitVec 64)) : Bool :=
   let (sign, exp, mant) := (fsplit_D x64)
-  (Bool.and (BEq.beq sign (ones (n := 1)))
-    (Bool.and (BEq.beq exp (zeros (n := 11))) (BEq.beq mant (zeros (n := 52)))))
+  ((sign == (ones (n := 1))) && ((exp == (zeros (n := 11))) && (mant == (zeros (n := 52)))))
 
 def f_is_pos_zero_D (x64 : (BitVec 64)) : Bool :=
   let (sign, exp, mant) := (fsplit_D x64)
-  (Bool.and (BEq.beq sign (zeros (n := 1)))
-    (Bool.and (BEq.beq exp (zeros (n := 11))) (BEq.beq mant (zeros (n := 52)))))
+  ((sign == (zeros (n := 1))) && ((exp == (zeros (n := 11))) && (mant == (zeros (n := 52)))))
 
 def f_is_pos_subnorm_D (x64 : (BitVec 64)) : Bool :=
   let (sign, exp, mant) := (fsplit_D x64)
-  (Bool.and (BEq.beq sign (zeros (n := 1)))
-    (Bool.and (BEq.beq exp (zeros (n := 11))) (bne mant (zeros (n := 52)))))
+  ((sign == (zeros (n := 1))) && ((exp == (zeros (n := 11))) && (mant != (zeros (n := 52)))))
 
 def f_is_pos_norm_D (x64 : (BitVec 64)) : Bool :=
   let (sign, exp, mant) := (fsplit_D x64)
-  (Bool.and (BEq.beq sign (zeros (n := 1)))
-    (Bool.and (bne exp (zeros (n := 11))) (bne exp (ones (n := 11)))))
+  ((sign == (zeros (n := 1))) && ((exp != (zeros (n := 11))) && (exp != (ones (n := 11)))))
 
 def f_is_pos_inf_D (x64 : (BitVec 64)) : Bool :=
   let (sign, exp, mant) := (fsplit_D x64)
-  (Bool.and (BEq.beq sign (zeros (n := 1)))
-    (Bool.and (BEq.beq exp (ones (n := 11))) (BEq.beq mant (zeros (n := 52)))))
+  ((sign == (zeros (n := 1))) && ((exp == (ones (n := 11))) && (mant == (zeros (n := 52)))))
 
 def f_is_SNaN_D (x64 : (BitVec 64)) : Bool :=
   let (sign, exp, mant) := (fsplit_D x64)
-  (Bool.and (BEq.beq exp (ones (n := 11)))
-    (Bool.and (BEq.beq (BitVec.access mant 51) 0#1) (bne mant (zeros (n := 52)))))
+  ((exp == (ones (n := 11))) && (((BitVec.access mant 51) == 0#1) && (mant != (zeros (n := 52)))))
 
 def f_is_QNaN_D (x64 : (BitVec 64)) : Bool :=
   let (sign, exp, mant) := (fsplit_D x64)
-  (Bool.and (BEq.beq exp (ones (n := 11))) (BEq.beq (BitVec.access mant 51) 1#1))
+  ((exp == (ones (n := 11))) && ((BitVec.access mant 51) == 1#1))
 
 def f_is_NaN_D (x64 : (BitVec 64)) : Bool :=
   let (sign, exp, mant) := (fsplit_D x64)
-  (Bool.and (BEq.beq exp (ones (n := 11))) (bne mant (zeros (n := 52))))
+  ((exp == (ones (n := 11))) && (mant != (zeros (n := 52))))
 
 def negate_D (x64 : (BitVec 64)) : (BitVec 64) :=
   let (sign, exp, mant) := (fsplit_D x64)
   let new_sign :=
-    bif (BEq.beq sign (0b0 : (BitVec 1)))
+    bif (sign == (0b0 : (BitVec 1)))
     then (0b1 : (BitVec 1))
     else (0b0 : (BitVec 1))
   (fmake_D new_sign exp mant)
@@ -235,11 +226,11 @@ def negate_D (x64 : (BitVec 64)) : (BitVec 64) :=
 def feq_quiet_D (v1 : (BitVec 64)) (v2 : (BitVec 64)) : (Bool × (BitVec 5)) :=
   let (s1, e1, m1) := (fsplit_D v1)
   let (s2, e2, m2) := (fsplit_D v2)
-  let v1Is0 := (Bool.or (f_is_neg_zero_D v1) (f_is_pos_zero_D v1))
-  let v2Is0 := (Bool.or (f_is_neg_zero_D v2) (f_is_pos_zero_D v2))
-  let result := (Bool.or (BEq.beq v1 v2) (Bool.and v1Is0 v2Is0))
+  let v1Is0 := ((f_is_neg_zero_D v1) || (f_is_pos_zero_D v1))
+  let v2Is0 := ((f_is_neg_zero_D v2) || (f_is_pos_zero_D v2))
+  let result := ((v1 == v2) || (v1Is0 && v2Is0))
   let fflags :=
-    bif (Bool.or (f_is_SNaN_D v1) (f_is_SNaN_D v2))
+    bif ((f_is_SNaN_D v1) || (f_is_SNaN_D v2))
     then (nvFlag ())
     else (zeros (n := 5))
   (result, fflags)
@@ -249,29 +240,29 @@ def flt_D (v1 : (BitVec 64)) (v2 : (BitVec 64)) (is_quiet : Bool) : (Bool × (Bi
   let (s1, e1, m1) := (fsplit_D v1)
   let (s2, e2, m2) := (fsplit_D v2)
   let result : Bool :=
-    bif (Bool.and (BEq.beq s1 (0b0 : (BitVec 1))) (BEq.beq s2 (0b0 : (BitVec 1))))
+    bif ((s1 == (0b0 : (BitVec 1))) && (s2 == (0b0 : (BitVec 1))))
     then
-      (bif (BEq.beq e1 e2)
+      (bif (e1 == e2)
       then ((BitVec.toNat m1) <b (BitVec.toNat m2))
       else ((BitVec.toNat e1) <b (BitVec.toNat e2)))
     else
-      (bif (Bool.and (BEq.beq s1 (0b0 : (BitVec 1))) (BEq.beq s2 (0b1 : (BitVec 1))))
+      (bif ((s1 == (0b0 : (BitVec 1))) && (s2 == (0b1 : (BitVec 1))))
       then false
       else
-        (bif (Bool.and (BEq.beq s1 (0b1 : (BitVec 1))) (BEq.beq s2 (0b0 : (BitVec 1))))
+        (bif ((s1 == (0b1 : (BitVec 1))) && (s2 == (0b0 : (BitVec 1))))
         then true
         else
-          (bif (BEq.beq e1 e2)
+          (bif (e1 == e2)
           then ((BitVec.toNat m1) >b (BitVec.toNat m2))
           else ((BitVec.toNat e1) >b (BitVec.toNat e2)))))
   let fflags :=
     bif is_quiet
     then
-      (bif (Bool.or (f_is_SNaN_D v1) (f_is_SNaN_D v2))
+      (bif ((f_is_SNaN_D v1) || (f_is_SNaN_D v2))
       then (nvFlag ())
       else (zeros (n := 5)))
     else
-      (bif (Bool.or (f_is_NaN_D v1) (f_is_NaN_D v2))
+      (bif ((f_is_NaN_D v1) || (f_is_NaN_D v2))
       then (nvFlag ())
       else (zeros (n := 5)))
   (result, fflags)
@@ -280,42 +271,42 @@ def flt_D (v1 : (BitVec 64)) (v2 : (BitVec 64)) (is_quiet : Bool) : (Bool × (Bi
 def fle_D (v1 : (BitVec 64)) (v2 : (BitVec 64)) (is_quiet : Bool) : (Bool × (BitVec 5)) :=
   let (s1, e1, m1) := (fsplit_D v1)
   let (s2, e2, m2) := (fsplit_D v2)
-  let v1Is0 := (Bool.or (f_is_neg_zero_D v1) (f_is_pos_zero_D v1))
-  let v2Is0 := (Bool.or (f_is_neg_zero_D v2) (f_is_pos_zero_D v2))
+  let v1Is0 := ((f_is_neg_zero_D v1) || (f_is_pos_zero_D v1))
+  let v2Is0 := ((f_is_neg_zero_D v2) || (f_is_pos_zero_D v2))
   let result : Bool :=
-    bif (Bool.and (BEq.beq s1 (0b0 : (BitVec 1))) (BEq.beq s2 (0b0 : (BitVec 1))))
+    bif ((s1 == (0b0 : (BitVec 1))) && (s2 == (0b0 : (BitVec 1))))
     then
-      (bif (BEq.beq e1 e2)
+      (bif (e1 == e2)
       then ((BitVec.toNat m1) ≤b (BitVec.toNat m2))
       else ((BitVec.toNat e1) <b (BitVec.toNat e2)))
     else
-      (bif (Bool.and (BEq.beq s1 (0b0 : (BitVec 1))) (BEq.beq s2 (0b1 : (BitVec 1))))
-      then (Bool.and v1Is0 v2Is0)
+      (bif ((s1 == (0b0 : (BitVec 1))) && (s2 == (0b1 : (BitVec 1))))
+      then (v1Is0 && v2Is0)
       else
-        (bif (Bool.and (BEq.beq s1 (0b1 : (BitVec 1))) (BEq.beq s2 (0b0 : (BitVec 1))))
+        (bif ((s1 == (0b1 : (BitVec 1))) && (s2 == (0b0 : (BitVec 1))))
         then true
         else
-          (bif (BEq.beq e1 e2)
+          (bif (e1 == e2)
           then ((BitVec.toNat m1) ≥b (BitVec.toNat m2))
           else ((BitVec.toNat e1) >b (BitVec.toNat e2)))))
   let fflags :=
     bif is_quiet
     then
-      (bif (Bool.or (f_is_SNaN_D v1) (f_is_SNaN_D v2))
+      (bif ((f_is_SNaN_D v1) || (f_is_SNaN_D v2))
       then (nvFlag ())
       else (zeros (n := 5)))
     else
-      (bif (Bool.or (f_is_NaN_D v1) (f_is_NaN_D v2))
+      (bif ((f_is_NaN_D v1) || (f_is_NaN_D v2))
       then (nvFlag ())
       else (zeros (n := 5)))
   (result, fflags)
 
 def haveDoubleFPU (_ : Unit) : SailM Bool := do
-  (pure (Bool.or (← (currentlyEnabled Ext_D)) (← (currentlyEnabled Ext_Zdinx))))
+  (pure ((← (currentlyEnabled Ext_D)) || (← (currentlyEnabled Ext_Zdinx))))
 
 /-- Type quantifiers: n : Nat, n > 0 -/
 def validDoubleRegs {n : _} (regs : (Vector fregidx n)) : SailM Bool := SailME.run do
-  bif (Bool.and (← (currentlyEnabled Ext_Zdinx)) (BEq.beq xlen 32))
+  bif ((← (currentlyEnabled Ext_Zdinx)) && (xlen == 32))
   then
     (do
       let loop_i_lower := 0
@@ -324,7 +315,7 @@ def validDoubleRegs {n : _} (regs : (Vector fregidx n)) : SailM Bool := SailME.r
       for i in [loop_i_lower:loop_i_upper:1]i do
         let () := loop_vars
         loop_vars ← do
-          bif (BEq.beq (BitVec.access (fregidx_bits (GetElem?.getElem! regs i)) 0) 1#1)
+          bif ((BitVec.access (fregidx_bits (GetElem?.getElem! regs i)) 0) == 1#1)
           then SailME.throw (false : Bool)
           else (pure ())
       (pure loop_vars))

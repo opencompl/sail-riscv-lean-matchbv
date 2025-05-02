@@ -199,39 +199,39 @@ def encdec_amoop_forwards (arg_ : amoop) : (BitVec 5) :=
 
 def encdec_amoop_backwards (arg_ : (BitVec 5)) : SailM amoop := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b00001 : (BitVec 5)))
+  bif (b__0 == (0b00001 : (BitVec 5)))
   then (pure AMOSWAP)
   else
     (do
-      bif (BEq.beq b__0 (0b00000 : (BitVec 5)))
+      bif (b__0 == (0b00000 : (BitVec 5)))
       then (pure AMOADD)
       else
         (do
-          bif (BEq.beq b__0 (0b00100 : (BitVec 5)))
+          bif (b__0 == (0b00100 : (BitVec 5)))
           then (pure AMOXOR)
           else
             (do
-              bif (BEq.beq b__0 (0b01100 : (BitVec 5)))
+              bif (b__0 == (0b01100 : (BitVec 5)))
               then (pure AMOAND)
               else
                 (do
-                  bif (BEq.beq b__0 (0b01000 : (BitVec 5)))
+                  bif (b__0 == (0b01000 : (BitVec 5)))
                   then (pure AMOOR)
                   else
                     (do
-                      bif (BEq.beq b__0 (0b10000 : (BitVec 5)))
+                      bif (b__0 == (0b10000 : (BitVec 5)))
                       then (pure AMOMIN)
                       else
                         (do
-                          bif (BEq.beq b__0 (0b10100 : (BitVec 5)))
+                          bif (b__0 == (0b10100 : (BitVec 5)))
                           then (pure AMOMAX)
                           else
                             (do
-                              bif (BEq.beq b__0 (0b11000 : (BitVec 5)))
+                              bif (b__0 == (0b11000 : (BitVec 5)))
                               then (pure AMOMINU)
                               else
                                 (do
-                                  bif (BEq.beq b__0 (0b11100 : (BitVec 5)))
+                                  bif (b__0 == (0b11100 : (BitVec 5)))
                                   then (pure AMOMAXU)
                                   else
                                     (do
@@ -252,31 +252,31 @@ def encdec_amoop_forwards_matches (arg_ : amoop) : Bool :=
 
 def encdec_amoop_backwards_matches (arg_ : (BitVec 5)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b00001 : (BitVec 5)))
+  bif (b__0 == (0b00001 : (BitVec 5)))
   then true
   else
-    (bif (BEq.beq b__0 (0b00000 : (BitVec 5)))
+    (bif (b__0 == (0b00000 : (BitVec 5)))
     then true
     else
-      (bif (BEq.beq b__0 (0b00100 : (BitVec 5)))
+      (bif (b__0 == (0b00100 : (BitVec 5)))
       then true
       else
-        (bif (BEq.beq b__0 (0b01100 : (BitVec 5)))
+        (bif (b__0 == (0b01100 : (BitVec 5)))
         then true
         else
-          (bif (BEq.beq b__0 (0b01000 : (BitVec 5)))
+          (bif (b__0 == (0b01000 : (BitVec 5)))
           then true
           else
-            (bif (BEq.beq b__0 (0b10000 : (BitVec 5)))
+            (bif (b__0 == (0b10000 : (BitVec 5)))
             then true
             else
-              (bif (BEq.beq b__0 (0b10100 : (BitVec 5)))
+              (bif (b__0 == (0b10100 : (BitVec 5)))
               then true
               else
-                (bif (BEq.beq b__0 (0b11000 : (BitVec 5)))
+                (bif (b__0 == (0b11000 : (BitVec 5)))
                 then true
                 else
-                  (bif (BEq.beq b__0 (0b11100 : (BitVec 5)))
+                  (bif (b__0 == (0b11100 : (BitVec 5)))
                   then true
                   else false))))))))
 

@@ -190,11 +190,11 @@ def nan_box {n : _} (x : (BitVec k_n)) : (BitVec n) :=
 
 /-- Type quantifiers: k_n : Nat, m : Nat, m ∈ {16, 32, 64, 128} ∧ k_n ≥ m -/
 def nan_unbox {m : _} (x : (BitVec k_n)) : (BitVec m) :=
-  bif (BEq.beq (Sail.BitVec.length x) m)
+  bif ((Sail.BitVec.length x) == m)
   then x
   else
-    (bif (BEq.beq (Sail.BitVec.extractLsb x ((Sail.BitVec.length x) -i 1) m)
-         (ones (n := ((((Sail.BitVec.length x) -i 1) -i m) +i 1))))
+    (bif ((Sail.BitVec.extractLsb x ((Sail.BitVec.length x) -i 1) m) == (ones
+           (n := ((((Sail.BitVec.length x) -i 1) -i m) +i 1))))
     then (Sail.BitVec.extractLsb x (m -i 1) 0)
     else (canonical_NaN (n := m)))
 
@@ -337,32 +337,32 @@ def wF_bits (i : fregidx) (data : (BitVec (8 * 8))) : SailM Unit := do
 
 def rF_H (i : fregidx) : SailM (BitVec 16) := do
   assert (flen ≥b 16) "riscv_fdext_regs.sail:214.19-214.20"
-  assert (Bool.and (hartSupports Ext_F) (not (hartSupports Ext_Zfinx))) "riscv_fdext_regs.sail:215.59-215.60"
+  assert ((hartSupports Ext_F) && (not (hartSupports Ext_Zfinx))) "riscv_fdext_regs.sail:215.59-215.60"
   (pure (nan_unbox (m := 16) (← (rF_bits i))))
 
 def wF_H (i : fregidx) (data : (BitVec 16)) : SailM Unit := do
   assert (flen ≥b 16) "riscv_fdext_regs.sail:221.19-221.20"
-  assert (Bool.and (hartSupports Ext_F) (not (hartSupports Ext_Zfinx))) "riscv_fdext_regs.sail:222.59-222.60"
+  assert ((hartSupports Ext_F) && (not (hartSupports Ext_Zfinx))) "riscv_fdext_regs.sail:222.59-222.60"
   (wF_bits i (nan_box (n := (8 *i 8)) data))
 
 def rF_S (i : fregidx) : SailM (BitVec 32) := do
   assert (flen ≥b 32) "riscv_fdext_regs.sail:228.19-228.20"
-  assert (Bool.and (hartSupports Ext_F) (not (hartSupports Ext_Zfinx))) "riscv_fdext_regs.sail:229.59-229.60"
+  assert ((hartSupports Ext_F) && (not (hartSupports Ext_Zfinx))) "riscv_fdext_regs.sail:229.59-229.60"
   (pure (nan_unbox (m := 32) (← (rF_bits i))))
 
 def wF_S (i : fregidx) (data : (BitVec 32)) : SailM Unit := do
   assert (flen ≥b 32) "riscv_fdext_regs.sail:235.19-235.20"
-  assert (Bool.and (hartSupports Ext_F) (not (hartSupports Ext_Zfinx))) "riscv_fdext_regs.sail:236.59-236.60"
+  assert ((hartSupports Ext_F) && (not (hartSupports Ext_Zfinx))) "riscv_fdext_regs.sail:236.59-236.60"
   (wF_bits i (nan_box (n := (8 *i 8)) data))
 
 def rF_D (i : fregidx) : SailM (BitVec 64) := do
   assert (flen ≥b 64) "riscv_fdext_regs.sail:242.19-242.20"
-  assert (Bool.and (hartSupports Ext_F) (not (hartSupports Ext_Zfinx))) "riscv_fdext_regs.sail:243.59-243.60"
+  assert ((hartSupports Ext_F) && (not (hartSupports Ext_Zfinx))) "riscv_fdext_regs.sail:243.59-243.60"
   (rF_bits i)
 
 def wF_D (i : fregidx) (data : (BitVec 64)) : SailM Unit := do
   assert (flen ≥b 64) "riscv_fdext_regs.sail:249.19-249.20"
-  assert (Bool.and (hartSupports Ext_F) (not (hartSupports Ext_Zfinx))) "riscv_fdext_regs.sail:250.59-250.60"
+  assert ((hartSupports Ext_F) && (not (hartSupports Ext_Zfinx))) "riscv_fdext_regs.sail:250.59-250.60"
   (wF_bits i data)
 
 def rF_or_X_H (i : fregidx) : SailM (BitVec 16) := do
@@ -447,103 +447,100 @@ def freg_name_raw_backwards (arg_ : String) : SailM (BitVec 5) := do
 
 def freg_name_raw_forwards_matches (arg_ : (BitVec 5)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b00000 : (BitVec 5)))
+  bif (b__0 == (0b00000 : (BitVec 5)))
   then true
   else
-    (bif (BEq.beq b__0 (0b00001 : (BitVec 5)))
+    (bif (b__0 == (0b00001 : (BitVec 5)))
     then true
     else
-      (bif (BEq.beq b__0 (0b00010 : (BitVec 5)))
+      (bif (b__0 == (0b00010 : (BitVec 5)))
       then true
       else
-        (bif (BEq.beq b__0 (0b00011 : (BitVec 5)))
+        (bif (b__0 == (0b00011 : (BitVec 5)))
         then true
         else
-          (bif (BEq.beq b__0 (0b00100 : (BitVec 5)))
+          (bif (b__0 == (0b00100 : (BitVec 5)))
           then true
           else
-            (bif (BEq.beq b__0 (0b00101 : (BitVec 5)))
+            (bif (b__0 == (0b00101 : (BitVec 5)))
             then true
             else
-              (bif (BEq.beq b__0 (0b00110 : (BitVec 5)))
+              (bif (b__0 == (0b00110 : (BitVec 5)))
               then true
               else
-                (bif (BEq.beq b__0 (0b00111 : (BitVec 5)))
+                (bif (b__0 == (0b00111 : (BitVec 5)))
                 then true
                 else
-                  (bif (BEq.beq b__0 (0b01000 : (BitVec 5)))
+                  (bif (b__0 == (0b01000 : (BitVec 5)))
                   then true
                   else
-                    (bif (BEq.beq b__0 (0b01001 : (BitVec 5)))
+                    (bif (b__0 == (0b01001 : (BitVec 5)))
                     then true
                     else
-                      (bif (BEq.beq b__0 (0b01010 : (BitVec 5)))
+                      (bif (b__0 == (0b01010 : (BitVec 5)))
                       then true
                       else
-                        (bif (BEq.beq b__0 (0b01011 : (BitVec 5)))
+                        (bif (b__0 == (0b01011 : (BitVec 5)))
                         then true
                         else
-                          (bif (BEq.beq b__0 (0b01100 : (BitVec 5)))
+                          (bif (b__0 == (0b01100 : (BitVec 5)))
                           then true
                           else
-                            (bif (BEq.beq b__0 (0b01101 : (BitVec 5)))
+                            (bif (b__0 == (0b01101 : (BitVec 5)))
                             then true
                             else
-                              (bif (BEq.beq b__0 (0b01110 : (BitVec 5)))
+                              (bif (b__0 == (0b01110 : (BitVec 5)))
                               then true
                               else
-                                (bif (BEq.beq b__0 (0b01111 : (BitVec 5)))
+                                (bif (b__0 == (0b01111 : (BitVec 5)))
                                 then true
                                 else
-                                  (bif (BEq.beq b__0 (0b10000 : (BitVec 5)))
+                                  (bif (b__0 == (0b10000 : (BitVec 5)))
                                   then true
                                   else
-                                    (bif (BEq.beq b__0 (0b10001 : (BitVec 5)))
+                                    (bif (b__0 == (0b10001 : (BitVec 5)))
                                     then true
                                     else
-                                      (bif (BEq.beq b__0 (0b10010 : (BitVec 5)))
+                                      (bif (b__0 == (0b10010 : (BitVec 5)))
                                       then true
                                       else
-                                        (bif (BEq.beq b__0 (0b10011 : (BitVec 5)))
+                                        (bif (b__0 == (0b10011 : (BitVec 5)))
                                         then true
                                         else
-                                          (bif (BEq.beq b__0 (0b10100 : (BitVec 5)))
+                                          (bif (b__0 == (0b10100 : (BitVec 5)))
                                           then true
                                           else
-                                            (bif (BEq.beq b__0 (0b10101 : (BitVec 5)))
+                                            (bif (b__0 == (0b10101 : (BitVec 5)))
                                             then true
                                             else
-                                              (bif (BEq.beq b__0 (0b10110 : (BitVec 5)))
+                                              (bif (b__0 == (0b10110 : (BitVec 5)))
                                               then true
                                               else
-                                                (bif (BEq.beq b__0 (0b10111 : (BitVec 5)))
+                                                (bif (b__0 == (0b10111 : (BitVec 5)))
                                                 then true
                                                 else
-                                                  (bif (BEq.beq b__0 (0b11000 : (BitVec 5)))
+                                                  (bif (b__0 == (0b11000 : (BitVec 5)))
                                                   then true
                                                   else
-                                                    (bif (BEq.beq b__0 (0b11001 : (BitVec 5)))
+                                                    (bif (b__0 == (0b11001 : (BitVec 5)))
                                                     then true
                                                     else
-                                                      (bif (BEq.beq b__0 (0b11010 : (BitVec 5)))
+                                                      (bif (b__0 == (0b11010 : (BitVec 5)))
                                                       then true
                                                       else
-                                                        (bif (BEq.beq b__0 (0b11011 : (BitVec 5)))
+                                                        (bif (b__0 == (0b11011 : (BitVec 5)))
                                                         then true
                                                         else
-                                                          (bif (BEq.beq b__0 (0b11100 : (BitVec 5)))
+                                                          (bif (b__0 == (0b11100 : (BitVec 5)))
                                                           then true
                                                           else
-                                                            (bif (BEq.beq b__0
-                                                                 (0b11101 : (BitVec 5)))
+                                                            (bif (b__0 == (0b11101 : (BitVec 5)))
                                                             then true
                                                             else
-                                                              (bif (BEq.beq b__0
-                                                                   (0b11110 : (BitVec 5)))
+                                                              (bif (b__0 == (0b11110 : (BitVec 5)))
                                                               then true
                                                               else
-                                                                (bif (BEq.beq b__0
-                                                                     (0b11111 : (BitVec 5)))
+                                                                (bif (b__0 == (0b11111 : (BitVec 5)))
                                                                 then true
                                                                 else false)))))))))))))))))))))))))))))))
 
@@ -708,7 +705,7 @@ def write_fcsr (frm : (BitVec 3)) (fflags : (BitVec 5)) : SailM Unit := do
 
 def accrue_fflags (flags : (BitVec 5)) : SailM Unit := do
   let f ← do (pure ((_get_Fcsr_FFLAGS (← readReg fcsr)) ||| flags))
-  bif (bne (_get_Fcsr_FFLAGS (← readReg fcsr)) f)
+  bif ((_get_Fcsr_FFLAGS (← readReg fcsr)) != f)
   then
     (do
       writeReg fcsr (Sail.BitVec.updateSubrange (← readReg fcsr) 4 0 f)

@@ -171,11 +171,11 @@ def encdec_zvkfunct6_forwards (arg_ : zvkfunct6) : (BitVec 6) :=
 
 def encdec_zvkfunct6_backwards (arg_ : (BitVec 6)) : SailM zvkfunct6 := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b101110 : (BitVec 6)))
+  bif (b__0 == (0b101110 : (BitVec 6)))
   then (pure ZVK_VSHA2CH)
   else
     (do
-      bif (BEq.beq b__0 (0b101111 : (BitVec 6)))
+      bif (b__0 == (0b101111 : (BitVec 6)))
       then (pure ZVK_VSHA2CL)
       else
         (do
@@ -189,10 +189,10 @@ def encdec_zvkfunct6_forwards_matches (arg_ : zvkfunct6) : Bool :=
 
 def encdec_zvkfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b101110 : (BitVec 6)))
+  bif (b__0 == (0b101110 : (BitVec 6)))
   then true
   else
-    (bif (BEq.beq b__0 (0b101111 : (BitVec 6)))
+    (bif (b__0 == (0b101111 : (BitVec 6)))
     then true
     else false)
 

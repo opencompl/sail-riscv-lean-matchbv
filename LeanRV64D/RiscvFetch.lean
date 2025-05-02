@@ -165,15 +165,15 @@ open Architecture
 open AccessType
 
 def isRVC (h : (BitVec 16)) : Bool :=
-  (not (BEq.beq (Sail.BitVec.extractLsb h 1 0) (0b11 : (BitVec 2))))
+  (not ((Sail.BitVec.extractLsb h 1 0) == (0b11 : (BitVec 2))))
 
 def fetch (_ : Unit) : SailM FetchResult := do
   match (ext_fetch_check_pc (← readReg PC) (← readReg PC)) with
   | .Ext_FetchAddr_Error e => (pure (F_Ext_Error e))
   | .Ext_FetchAddr_OK use_pc => (do
       let use_pc_bits := (bits_of_virtaddr use_pc)
-      bif (Bool.or (bne (BitVec.access use_pc_bits 0) 0#1)
-           (Bool.and (bne (BitVec.access use_pc_bits 1) 0#1) (not (← (currentlyEnabled Ext_Zca)))))
+      bif ((bne (BitVec.access use_pc_bits 0) 0#1) || ((bne (BitVec.access use_pc_bits 1) 0#1) && (not
+               (← (currentlyEnabled Ext_Zca)))))
       then (pure (F_Error ((E_Fetch_Addr_Align ()), (← readReg PC))))
       else
         (do

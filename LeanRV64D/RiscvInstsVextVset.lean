@@ -184,16 +184,16 @@ def sew_flag_forwards_matches (arg_ : String) : Bool :=
 
 def sew_flag_backwards_matches (arg_ : (BitVec 3)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (b__0 == (0b000 : (BitVec 3)))
   then true
   else
-    (bif (BEq.beq b__0 (0b001 : (BitVec 3)))
+    (bif (b__0 == (0b001 : (BitVec 3)))
     then true
     else
-      (bif (BEq.beq b__0 (0b010 : (BitVec 3)))
+      (bif (b__0 == (0b010 : (BitVec 3)))
       then true
       else
-        (bif (BEq.beq b__0 (0b011 : (BitVec 3)))
+        (bif (b__0 == (0b011 : (BitVec 3)))
         then true
         else false)))
 
@@ -207,25 +207,25 @@ def maybe_lmul_flag_forwards_matches (arg_ : String) : SailM Bool := do
 
 def maybe_lmul_flag_backwards_matches (arg_ : (BitVec 3)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b101 : (BitVec 3)))
+  bif (b__0 == (0b101 : (BitVec 3)))
   then true
   else
-    (bif (BEq.beq b__0 (0b110 : (BitVec 3)))
+    (bif (b__0 == (0b110 : (BitVec 3)))
     then true
     else
-      (bif (BEq.beq b__0 (0b111 : (BitVec 3)))
+      (bif (b__0 == (0b111 : (BitVec 3)))
       then true
       else
-        (bif (BEq.beq b__0 (0b000 : (BitVec 3)))
+        (bif (b__0 == (0b000 : (BitVec 3)))
         then true
         else
-          (bif (BEq.beq b__0 (0b001 : (BitVec 3)))
+          (bif (b__0 == (0b001 : (BitVec 3)))
           then true
           else
-            (bif (BEq.beq b__0 (0b010 : (BitVec 3)))
+            (bif (b__0 == (0b010 : (BitVec 3)))
             then true
             else
-              (bif (BEq.beq b__0 (0b011 : (BitVec 3)))
+              (bif (b__0 == (0b011 : (BitVec 3)))
               then true
               else false))))))
 
@@ -239,10 +239,10 @@ def ta_flag_forwards_matches (arg_ : String) : SailM Bool := do
 
 def ta_flag_backwards_matches (arg_ : (BitVec 1)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b1 : (BitVec 1)))
+  bif (b__0 == (0b1 : (BitVec 1)))
   then true
   else
-    (bif (BEq.beq b__0 (0b0 : (BitVec 1)))
+    (bif (b__0 == (0b0 : (BitVec 1)))
     then true
     else false)
 
@@ -256,10 +256,10 @@ def ma_flag_forwards_matches (arg_ : String) : SailM Bool := do
 
 def ma_flag_backwards_matches (arg_ : (BitVec 1)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b1 : (BitVec 1)))
+  bif (b__0 == (0b1 : (BitVec 1)))
   then true
   else
-    (bif (BEq.beq b__0 (0b0 : (BitVec 1)))
+    (bif (b__0 == (0b0 : (BitVec 1)))
     then true
     else false)
 

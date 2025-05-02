@@ -165,13 +165,13 @@ open Architecture
 open AccessType
 
 def not_bit (b : (BitVec 1)) : (BitVec 1) :=
-  bif (BEq.beq b 1#1)
+  bif (b == 1#1)
   then 0#1
   else 1#1
 
 /-- Type quantifiers: k_p : Bool -/
 def not (b : Bool) : Bool :=
-  (Bool.not b)
+  (! b)
 
 def bit_str (b : (BitVec 1)) : SailM String := do
   match b with
@@ -250,7 +250,7 @@ def bool_bits_forwards (arg_ : Bool) : (BitVec 1) :=
 
 def bool_bits_backwards (arg_ : (BitVec 1)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b1 : (BitVec 1)))
+  bif (b__0 == (0b1 : (BitVec 1)))
   then true
   else false
 
@@ -262,10 +262,10 @@ def bool_bits_forwards_matches (arg_ : Bool) : Bool :=
 
 def bool_bits_backwards_matches (arg_ : (BitVec 1)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b1 : (BitVec 1)))
+  bif (b__0 == (0b1 : (BitVec 1)))
   then true
   else
-    (bif (BEq.beq b__0 (0b0 : (BitVec 1)))
+    (bif (b__0 == (0b0 : (BitVec 1)))
     then true
     else false)
 
@@ -277,7 +277,7 @@ def bool_not_bits_forwards (arg_ : Bool) : (BitVec 1) :=
 
 def bool_not_bits_backwards (arg_ : (BitVec 1)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b0 : (BitVec 1)))
+  bif (b__0 == (0b0 : (BitVec 1)))
   then true
   else false
 
@@ -289,10 +289,10 @@ def bool_not_bits_forwards_matches (arg_ : Bool) : Bool :=
 
 def bool_not_bits_backwards_matches (arg_ : (BitVec 1)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b0 : (BitVec 1)))
+  bif (b__0 == (0b0 : (BitVec 1)))
   then true
   else
-    (bif (BEq.beq b__0 (0b1 : (BitVec 1)))
+    (bif (b__0 == (0b1 : (BitVec 1)))
     then true
     else false)
 

@@ -189,8 +189,7 @@ def run_hart_waiting (step_no : Nat) (exit_wait : Bool) (instbits : (BitVec 32))
                   (BitVec.toFormatted (← readReg PC)))))
           else (pure ())
           writeReg hart_state (HART_ACTIVE ())
-          bif (Bool.or (BEq.beq (← readReg cur_privilege) Machine)
-               (BEq.beq (_get_Mstatus_TW (← readReg mstatus)) (0b0 : (BitVec 1))))
+          bif (((← readReg cur_privilege) == Machine) || ((_get_Mstatus_TW (← readReg mstatus)) == (0b0 : (BitVec 1))))
           then (pure (Step_Execute ((Retire_Success ()), instbits)))
           else (pure (Step_Execute ((Illegal_Instruction ()), instbits))))
       else
@@ -307,7 +306,7 @@ def try_step (step_no : Nat) (exit_wait : Bool) : SailM Bool := do
           then true
           else false)
         | _ => false
-      bif (Bool.and retired (← readReg minstret_increment))
+      bif (retired && (← readReg minstret_increment))
       then writeReg minstret (BitVec.addInt (← readReg minstret) 1)
       else (pure ())
       let _ : Unit := (ext_post_step_hook ())
@@ -341,14 +340,14 @@ def loop (_ : Unit) : SailM Unit := do
             (do
               let exit_val ← do (pure (BitVec.toNat (← readReg htif_exit_code)))
               let _ : Unit :=
-                bif (BEq.beq exit_val 0)
+                bif (exit_val == 0)
                 then (print "SUCCESS")
                 else (print_int "FAILURE: " exit_val)
               (pure i))
           else
             (do
               let i : Nat := (i +i 1)
-              bif (BEq.beq i insns_per_tick)
+              bif (i == insns_per_tick)
               then
                 (do
                   (tick_clock ())

@@ -166,25 +166,25 @@ open AccessType
 
 def nfields_int_forwards (arg_ : (BitVec 3)) : Int :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (b__0 == (0b000 : (BitVec 3)))
   then 1
   else
-    (bif (BEq.beq b__0 (0b001 : (BitVec 3)))
+    (bif (b__0 == (0b001 : (BitVec 3)))
     then 2
     else
-      (bif (BEq.beq b__0 (0b010 : (BitVec 3)))
+      (bif (b__0 == (0b010 : (BitVec 3)))
       then 3
       else
-        (bif (BEq.beq b__0 (0b011 : (BitVec 3)))
+        (bif (b__0 == (0b011 : (BitVec 3)))
         then 4
         else
-          (bif (BEq.beq b__0 (0b100 : (BitVec 3)))
+          (bif (b__0 == (0b100 : (BitVec 3)))
           then 5
           else
-            (bif (BEq.beq b__0 (0b101 : (BitVec 3)))
+            (bif (b__0 == (0b101 : (BitVec 3)))
             then 6
             else
-              (bif (BEq.beq b__0 (0b110 : (BitVec 3)))
+              (bif (b__0 == (0b110 : (BitVec 3)))
               then 7
               else 8))))))
 
@@ -202,28 +202,28 @@ def nfields_int_backwards (arg_ : Nat) : (BitVec 3) :=
 
 def nfields_int_forwards_matches (arg_ : (BitVec 3)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (b__0 == (0b000 : (BitVec 3)))
   then true
   else
-    (bif (BEq.beq b__0 (0b001 : (BitVec 3)))
+    (bif (b__0 == (0b001 : (BitVec 3)))
     then true
     else
-      (bif (BEq.beq b__0 (0b010 : (BitVec 3)))
+      (bif (b__0 == (0b010 : (BitVec 3)))
       then true
       else
-        (bif (BEq.beq b__0 (0b011 : (BitVec 3)))
+        (bif (b__0 == (0b011 : (BitVec 3)))
         then true
         else
-          (bif (BEq.beq b__0 (0b100 : (BitVec 3)))
+          (bif (b__0 == (0b100 : (BitVec 3)))
           then true
           else
-            (bif (BEq.beq b__0 (0b101 : (BitVec 3)))
+            (bif (b__0 == (0b101 : (BitVec 3)))
             then true
             else
-              (bif (BEq.beq b__0 (0b110 : (BitVec 3)))
+              (bif (b__0 == (0b110 : (BitVec 3)))
               then true
               else
-                (bif (BEq.beq b__0 (0b111 : (BitVec 3)))
+                (bif (b__0 == (0b111 : (BitVec 3)))
                 then true
                 else false)))))))
 
@@ -256,28 +256,28 @@ def nfields_string_backwards (arg_ : String) : SailM (BitVec 3) := do
 
 def nfields_string_forwards_matches (arg_ : (BitVec 3)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (b__0 == (0b000 : (BitVec 3)))
   then true
   else
-    (bif (BEq.beq b__0 (0b001 : (BitVec 3)))
+    (bif (b__0 == (0b001 : (BitVec 3)))
     then true
     else
-      (bif (BEq.beq b__0 (0b010 : (BitVec 3)))
+      (bif (b__0 == (0b010 : (BitVec 3)))
       then true
       else
-        (bif (BEq.beq b__0 (0b011 : (BitVec 3)))
+        (bif (b__0 == (0b011 : (BitVec 3)))
         then true
         else
-          (bif (BEq.beq b__0 (0b100 : (BitVec 3)))
+          (bif (b__0 == (0b100 : (BitVec 3)))
           then true
           else
-            (bif (BEq.beq b__0 (0b101 : (BitVec 3)))
+            (bif (b__0 == (0b101 : (BitVec 3)))
             then true
             else
-              (bif (BEq.beq b__0 (0b110 : (BitVec 3)))
+              (bif (b__0 == (0b110 : (BitVec 3)))
               then true
               else
-                (bif (BEq.beq b__0 (0b111 : (BitVec 3)))
+                (bif (b__0 == (0b111 : (BitVec 3)))
                 then true
                 else false)))))))
 
@@ -327,19 +327,19 @@ def encdec_vlewidth_forwards (arg_ : vlewidth) : (BitVec 3) :=
 
 def encdec_vlewidth_backwards (arg_ : (BitVec 3)) : SailM vlewidth := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (b__0 == (0b000 : (BitVec 3)))
   then (pure VLE8)
   else
     (do
-      bif (BEq.beq b__0 (0b101 : (BitVec 3)))
+      bif (b__0 == (0b101 : (BitVec 3)))
       then (pure VLE16)
       else
         (do
-          bif (BEq.beq b__0 (0b110 : (BitVec 3)))
+          bif (b__0 == (0b110 : (BitVec 3)))
           then (pure VLE32)
           else
             (do
-              bif (BEq.beq b__0 (0b111 : (BitVec 3)))
+              bif (b__0 == (0b111 : (BitVec 3)))
               then (pure VLE64)
               else
                 (do
@@ -355,16 +355,16 @@ def encdec_vlewidth_forwards_matches (arg_ : vlewidth) : Bool :=
 
 def encdec_vlewidth_backwards_matches (arg_ : (BitVec 3)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (b__0 == (0b000 : (BitVec 3)))
   then true
   else
-    (bif (BEq.beq b__0 (0b101 : (BitVec 3)))
+    (bif (b__0 == (0b101 : (BitVec 3)))
     then true
     else
-      (bif (BEq.beq b__0 (0b110 : (BitVec 3)))
+      (bif (b__0 == (0b110 : (BitVec 3)))
       then true
       else
-        (bif (BEq.beq b__0 (0b111 : (BitVec 3)))
+        (bif (b__0 == (0b111 : (BitVec 3)))
         then true
         else false)))
 
@@ -453,7 +453,7 @@ def process_vlseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_bytes 
   for i in [loop_i_lower:loop_i_upper:1]i do
     let () := loop_vars
     loop_vars ← do
-      bif (BEq.beq (BitVec.access mask i) 1#1)
+      bif ((BitVec.access mask i) == 1#1)
       then
         (do
           (set_vstart (to_bits 16 i))
@@ -529,7 +529,7 @@ def process_vlsegff (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_byte
         bif (not trimmed)
         then
           (do
-            bif (BEq.beq (BitVec.access mask i) 1#1)
+            bif ((BitVec.access mask i) == 1#1)
             then
               (do
                 let loop_j_lower := 0
@@ -542,7 +542,7 @@ def process_vlsegff (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_byte
                     match (← (ext_data_get_addr rs1 (to_bits xlen elem_offset) (Read Data)
                         load_width_bytes)) with
                     | .Ext_DataAddr_Error e => (do
-                        bif (BEq.beq i 0)
+                        bif (i == 0)
                         then SailME.throw ((Ext_DataAddr_Check_Failure e) : ExecutionResult)
                         else
                           (do
@@ -554,7 +554,7 @@ def process_vlsegff (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_byte
                         bif (check_misaligned vaddr width_type)
                         then
                           (do
-                            bif (BEq.beq i 0)
+                            bif (i == 0)
                             then
                               SailME.throw ((Memory_Exception (vaddr, (E_Load_Addr_Align ()))) : ExecutionResult)
                             else
@@ -568,7 +568,7 @@ def process_vlsegff (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_byte
                           (do
                             match (← (translateAddr vaddr (Read Data))) with
                             | .TR_Failure (e, _) => (do
-                                bif (BEq.beq i 0)
+                                bif (i == 0)
                                 then SailME.throw ((Memory_Exception (vaddr, e)) : ExecutionResult)
                                 else
                                   (do
@@ -585,7 +585,7 @@ def process_vlsegff (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_byte
                                       (vregidx_offset vd (to_bits 5 (j *i EMUL_reg))) elem)
                                     (pure trimmed))
                                 | .Err e => (do
-                                    bif (BEq.beq i 0)
+                                    bif (i == 0)
                                     then
                                       SailME.throw ((Memory_Exception (vaddr, e)) : ExecutionResult)
                                     else
@@ -614,7 +614,7 @@ def process_vlsegff (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_byte
                 (pure trimmed)))
         else
           (do
-            bif (BEq.beq tail_ag AGNOSTIC)
+            bif (tail_ag == AGNOSTIC)
             then
               (do
                 let loop_j_lower := 0
@@ -658,7 +658,7 @@ def process_vsseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (load_width_bytes
   for i in [loop_i_lower:loop_i_upper:1]i do
     let () := loop_vars
     loop_vars ← do
-      bif (BEq.beq (BitVec.access mask i) 1#1)
+      bif ((BitVec.access mask i) == 1#1)
       then
         (do
           (set_vstart (to_bits 16 i))
@@ -725,7 +725,7 @@ def process_vlsseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_bytes
   for i in [loop_i_lower:loop_i_upper:1]i do
     let () := loop_vars
     loop_vars ← do
-      bif (BEq.beq (BitVec.access mask i) 1#1)
+      bif ((BitVec.access mask i) == 1#1)
       then
         (do
           (set_vstart (to_bits 16 i))
@@ -796,7 +796,7 @@ def process_vssseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (load_width_byte
   for i in [loop_i_lower:loop_i_upper:1]i do
     let () := loop_vars
     loop_vars ← do
-      bif (BEq.beq (BitVec.access mask i) 1#1)
+      bif ((BitVec.access mask i) == 1#1)
       then
         (do
           (set_vstart (to_bits 16 i))
@@ -865,7 +865,7 @@ def process_vlxseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (EEW_index_bytes 
   for i in [loop_i_lower:loop_i_upper:1]i do
     let () := loop_vars
     loop_vars ← do
-      bif (BEq.beq (BitVec.access mask i) 1#1)
+      bif ((BitVec.access mask i) == 1#1)
       then
         (do
           (set_vstart (to_bits 16 i))
@@ -938,7 +938,7 @@ def process_vsxseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (EEW_index_bytes
   for i in [loop_i_lower:loop_i_upper:1]i do
     let () := loop_vars
     loop_vars ← do
-      bif (BEq.beq (BitVec.access mask i) 1#1)
+      bif ((BitVec.access mask i) == 1#1)
       then
         (do
           (set_vstart (to_bits 16 i))
@@ -1181,11 +1181,11 @@ def encdec_lsop_forwards (arg_ : vmlsop) : (BitVec 7) :=
 
 def encdec_lsop_backwards (arg_ : (BitVec 7)) : SailM vmlsop := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b0000111 : (BitVec 7)))
+  bif (b__0 == (0b0000111 : (BitVec 7)))
   then (pure VLM)
   else
     (do
-      bif (BEq.beq b__0 (0b0100111 : (BitVec 7)))
+      bif (b__0 == (0b0100111 : (BitVec 7)))
       then (pure VSM)
       else
         (do
@@ -1199,10 +1199,10 @@ def encdec_lsop_forwards_matches (arg_ : vmlsop) : Bool :=
 
 def encdec_lsop_backwards_matches (arg_ : (BitVec 7)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b0000111 : (BitVec 7)))
+  bif (b__0 == (0b0000111 : (BitVec 7)))
   then true
   else
-    (bif (BEq.beq b__0 (0b0100111 : (BitVec 7)))
+    (bif (b__0 == (0b0100111 : (BitVec 7)))
     then true
     else false)
 
@@ -1226,7 +1226,7 @@ def process_vm (vd_or_vs3 : vregidx) (rs1 : regidx) (num_elem : Nat) (evl : Nat)
       then
         (do
           (set_vstart (to_bits 16 i))
-          bif (BEq.beq op VLM)
+          bif (op == VLM)
           then
             (do
               match (← (ext_data_get_addr rs1 (to_bits xlen i) (Read Data) 1)) with
@@ -1245,7 +1245,7 @@ def process_vm (vd_or_vs3 : vregidx) (rs1 : regidx) (num_elem : Nat) (evl : Nat)
                           | .Err e => SailME.throw ((Memory_Exception (vaddr, e)) : ExecutionResult)))))
           else
             (do
-              bif (BEq.beq op VSM)
+              bif (op == VSM)
               then
                 (do
                   match (← (ext_data_get_addr rs1 (to_bits xlen i) (Write Data) 1)) with
@@ -1271,7 +1271,7 @@ def process_vm (vd_or_vs3 : vregidx) (rs1 : regidx) (num_elem : Nat) (evl : Nat)
               else (pure ())))
       else
         (do
-          bif (BEq.beq op VLM)
+          bif (op == VLM)
           then (write_single_element 8 i vd_or_vs3 (GetElem?.getElem! vd_or_vs3_val i))
           else (pure ()))
   (pure loop_vars)

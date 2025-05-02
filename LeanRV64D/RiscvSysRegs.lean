@@ -830,9 +830,8 @@ def ext_veto_disable_C (_ : Unit) : Bool :=
 
 def legalize_misa (m : (BitVec (2 ^ 3 * 8))) (v : (BitVec (2 ^ 3 * 8))) : SailM (BitVec (2 ^ 3 * 8)) := do
   let v := (Mk_Misa v)
-  bif (Bool.or (not (sys_enable_writable_misa ()))
-       (Bool.and (BEq.beq (_get_Misa_C v) (0b0 : (BitVec 1)))
-         (Bool.or (BEq.beq (BitVec.access (← readReg nextPC) 1) 1#1) (ext_veto_disable_C ()))))
+  bif ((not (sys_enable_writable_misa ())) || (((_get_Misa_C v) == (0b0 : (BitVec 1))) && (((BitVec.access
+               (← readReg nextPC) 1) == 1#1) || (ext_veto_disable_C ()))))
   then (pure m)
   else
     (pure (_update_Misa_V
@@ -854,7 +853,7 @@ def legalize_misa (m : (BitVec (2 ^ 3 * 8))) (v : (BitVec (2 ^ 3 * 8))) : SailM 
                       (bif (hartSupports Ext_C)
                       then (_get_Misa_C v)
                       else (0b0 : (BitVec 1))))
-                    (bif (Bool.and (hartSupports Ext_D) (BEq.beq (_get_Misa_F v) (0b1 : (BitVec 1))))
+                    (bif ((hartSupports Ext_D) && ((_get_Misa_F v) == (0b1 : (BitVec 1))))
                     then (_get_Misa_D v)
                     else (0b0 : (BitVec 1))))
                   (bif (hartSupports Ext_F)
@@ -863,15 +862,13 @@ def legalize_misa (m : (BitVec (2 ^ 3 * 8))) (v : (BitVec (2 ^ 3 * 8))) : SailM 
               (bif (hartSupports Ext_M)
               then (_get_Misa_M v)
               else (0b0 : (BitVec 1))))
-            (bif (Bool.and (hartSupports Ext_S) (BEq.beq (_get_Misa_U v) (0b1 : (BitVec 1))))
+            (bif ((hartSupports Ext_S) && ((_get_Misa_U v) == (0b1 : (BitVec 1))))
             then (_get_Misa_S v)
             else (0b0 : (BitVec 1))))
           (bif (hartSupports Ext_U)
           then (_get_Misa_U v)
           else (0b0 : (BitVec 1))))
-        (bif (Bool.and (hartSupports Ext_V)
-             (Bool.and (BEq.beq (_get_Misa_F v) (0b1 : (BitVec 1)))
-               (BEq.beq (_get_Misa_D v) (0b1 : (BitVec 1)))))
+        (bif ((hartSupports Ext_V) && (((_get_Misa_F v) == (0b1 : (BitVec 1))) && ((_get_Misa_D v) == (0b1 : (BitVec 1)))))
         then (_get_Misa_V v)
         else (0b0 : (BitVec 1)))))
 
@@ -916,70 +913,56 @@ def currentlyEnabled_measure (ext : extension) : Int :=
 def currentlyEnabled (merge_var : extension) : SailM Bool := do
   match merge_var with
   | Ext_Sstc => (pure (hartSupports Ext_Sstc))
-  | Ext_U => (pure (Bool.and (hartSupports Ext_U)
-        (BEq.beq (_get_Misa_U (← readReg misa)) (0b1 : (BitVec 1)))))
-  | Ext_S => (pure (Bool.and (hartSupports Ext_S)
-        (BEq.beq (_get_Misa_S (← readReg misa)) (0b1 : (BitVec 1)))))
+  | Ext_U => (pure ((hartSupports Ext_U) && ((_get_Misa_U (← readReg misa)) == (0b1 : (BitVec 1)))))
+  | Ext_S => (pure ((hartSupports Ext_S) && ((_get_Misa_S (← readReg misa)) == (0b1 : (BitVec 1)))))
   | Ext_Svbare => (currentlyEnabled Ext_S)
-  | Ext_Sv32 => (pure (Bool.and (hartSupports Ext_Sv32) (← (currentlyEnabled Ext_S))))
-  | Ext_Sv39 => (pure (Bool.and (hartSupports Ext_Sv39) (← (currentlyEnabled Ext_S))))
-  | Ext_Sv48 => (pure (Bool.and (hartSupports Ext_Sv48) (← (currentlyEnabled Ext_S))))
-  | Ext_Sv57 => (pure (Bool.and (hartSupports Ext_Sv57) (← (currentlyEnabled Ext_S))))
-  | Ext_V => (pure (Bool.and (hartSupports Ext_V)
-        (Bool.and (BEq.beq (_get_Misa_V (← readReg misa)) (0b1 : (BitVec 1)))
-          (bne (_get_Mstatus_VS (← readReg mstatus)) (0b00 : (BitVec 2))))))
-  | Ext_Zihpm => (pure (Bool.and (hartSupports Ext_Zihpm) (← (currentlyEnabled Ext_Zicntr))))
-  | Ext_Sscofpmf => (pure (Bool.and (hartSupports Ext_Sscofpmf) (← (currentlyEnabled Ext_Zihpm))))
+  | Ext_Sv32 => (pure ((hartSupports Ext_Sv32) && (← (currentlyEnabled Ext_S))))
+  | Ext_Sv39 => (pure ((hartSupports Ext_Sv39) && (← (currentlyEnabled Ext_S))))
+  | Ext_Sv48 => (pure ((hartSupports Ext_Sv48) && (← (currentlyEnabled Ext_S))))
+  | Ext_Sv57 => (pure ((hartSupports Ext_Sv57) && (← (currentlyEnabled Ext_S))))
+  | Ext_V => (pure ((hartSupports Ext_V) && (((_get_Misa_V (← readReg misa)) == (0b1 : (BitVec 1))) && ((_get_Mstatus_VS
+              (← readReg mstatus)) != (0b00 : (BitVec 2))))))
+  | Ext_Zihpm => (pure ((hartSupports Ext_Zihpm) && (← (currentlyEnabled Ext_Zicntr))))
+  | Ext_Sscofpmf => (pure ((hartSupports Ext_Sscofpmf) && (← (currentlyEnabled Ext_Zihpm))))
   | Ext_Zkr => (pure (hartSupports Ext_Zkr))
   | Ext_Zicntr => (pure (hartSupports Ext_Zicntr))
-  | Ext_F => (pure (Bool.and (hartSupports Ext_F)
-        (Bool.and (BEq.beq (_get_Misa_F (← readReg misa)) (0b1 : (BitVec 1)))
-          (bne (_get_Mstatus_FS (← readReg mstatus)) (0b00 : (BitVec 2))))))
-  | Ext_D => (pure (Bool.and (hartSupports Ext_D)
-        (Bool.and (BEq.beq (_get_Misa_D (← readReg misa)) (0b1 : (BitVec 1)))
-          (Bool.and (bne (_get_Mstatus_FS (← readReg mstatus)) (0b00 : (BitVec 2))) (flen ≥b 64)))))
+  | Ext_F => (pure ((hartSupports Ext_F) && (((_get_Misa_F (← readReg misa)) == (0b1 : (BitVec 1))) && ((_get_Mstatus_FS
+              (← readReg mstatus)) != (0b00 : (BitVec 2))))))
+  | Ext_D => (pure ((hartSupports Ext_D) && (((_get_Misa_D (← readReg misa)) == (0b1 : (BitVec 1))) && (((_get_Mstatus_FS
+                (← readReg mstatus)) != (0b00 : (BitVec 2))) && (flen ≥b 64)))))
   | Ext_Zfinx => (pure (hartSupports Ext_Zfinx))
-  | Ext_Smcntrpmf => (pure (Bool.and (hartSupports Ext_Smcntrpmf)
-        (← (currentlyEnabled Ext_Zicntr))))
+  | Ext_Smcntrpmf => (pure ((hartSupports Ext_Smcntrpmf) && (← (currentlyEnabled Ext_Zicntr))))
   | Ext_Svnapot => (pure false)
   | Ext_Svpbmt => (pure false)
-  | Ext_C => (pure (Bool.and (hartSupports Ext_C)
-        (BEq.beq (_get_Misa_C (← readReg misa)) (0b1 : (BitVec 1)))))
-  | Ext_Zca => (pure (Bool.and (hartSupports Ext_Zca)
-        (Bool.or (← (currentlyEnabled Ext_C)) (not (hartSupports Ext_C)))))
+  | Ext_C => (pure ((hartSupports Ext_C) && ((_get_Misa_C (← readReg misa)) == (0b1 : (BitVec 1)))))
+  | Ext_Zca => (pure ((hartSupports Ext_Zca) && ((← (currentlyEnabled Ext_C)) || (not
+            (hartSupports Ext_C)))))
   | Ext_Zifencei => (pure (hartSupports Ext_Zifencei))
-  | Ext_A => (pure (Bool.and (hartSupports Ext_A)
-        (BEq.beq (_get_Misa_A (← readReg misa)) (0b1 : (BitVec 1)))))
-  | Ext_Zabha => (pure (Bool.and (hartSupports Ext_Zabha) (← (currentlyEnabled Ext_Zaamo))))
-  | Ext_Zalrsc => (pure (Bool.or (hartSupports Ext_Zalrsc) (← (currentlyEnabled Ext_A))))
-  | Ext_Zaamo => (pure (Bool.or (hartSupports Ext_Zaamo) (← (currentlyEnabled Ext_A))))
-  | Ext_M => (pure (Bool.and (hartSupports Ext_M)
-        (BEq.beq (_get_Misa_M (← readReg misa)) (0b1 : (BitVec 1)))))
-  | Ext_Zmmul => (pure (Bool.or (hartSupports Ext_Zmmul) (← (currentlyEnabled Ext_M))))
-  | Ext_Zfh => (pure (Bool.and (hartSupports Ext_Zfh) (← (currentlyEnabled Ext_F))))
-  | Ext_Zfhmin => (pure (Bool.or (Bool.and (hartSupports Ext_Zfhmin) (← (currentlyEnabled Ext_F)))
-        (← (currentlyEnabled Ext_Zfh))))
-  | Ext_Zcf => (pure (Bool.and (hartSupports Ext_Zcf)
-        (Bool.and (← (currentlyEnabled Ext_F))
-          (Bool.and (← (currentlyEnabled Ext_Zca))
-            (Bool.or (← (currentlyEnabled Ext_C)) (not (hartSupports Ext_C)))))))
-  | Ext_Zdinx => (pure (Bool.and (hartSupports Ext_Zdinx) (flen ≥b 64)))
-  | Ext_Zcd => (pure (Bool.and (hartSupports Ext_Zcd)
-        (Bool.and (← (currentlyEnabled Ext_D))
-          (Bool.and (← (currentlyEnabled Ext_Zca))
-            (Bool.or (← (currentlyEnabled Ext_C)) (not (hartSupports Ext_C)))))))
+  | Ext_A => (pure ((hartSupports Ext_A) && ((_get_Misa_A (← readReg misa)) == (0b1 : (BitVec 1)))))
+  | Ext_Zabha => (pure ((hartSupports Ext_Zabha) && (← (currentlyEnabled Ext_Zaamo))))
+  | Ext_Zalrsc => (pure ((hartSupports Ext_Zalrsc) || (← (currentlyEnabled Ext_A))))
+  | Ext_Zaamo => (pure ((hartSupports Ext_Zaamo) || (← (currentlyEnabled Ext_A))))
+  | Ext_M => (pure ((hartSupports Ext_M) && ((_get_Misa_M (← readReg misa)) == (0b1 : (BitVec 1)))))
+  | Ext_Zmmul => (pure ((hartSupports Ext_Zmmul) || (← (currentlyEnabled Ext_M))))
+  | Ext_Zfh => (pure ((hartSupports Ext_Zfh) && (← (currentlyEnabled Ext_F))))
+  | Ext_Zfhmin => (pure (((hartSupports Ext_Zfhmin) && (← (currentlyEnabled Ext_F))) || (← (currentlyEnabled
+            Ext_Zfh))))
+  | Ext_Zcf => (pure ((hartSupports Ext_Zcf) && ((← (currentlyEnabled Ext_F)) && ((← (currentlyEnabled
+                Ext_Zca)) && ((← (currentlyEnabled Ext_C)) || (not (hartSupports Ext_C)))))))
+  | Ext_Zdinx => (pure ((hartSupports Ext_Zdinx) && (flen ≥b 64)))
+  | Ext_Zcd => (pure ((hartSupports Ext_Zcd) && ((← (currentlyEnabled Ext_D)) && ((← (currentlyEnabled
+                Ext_Zca)) && ((← (currentlyEnabled Ext_C)) || (not (hartSupports Ext_C)))))))
   | Ext_Svinval => (pure (hartSupports Ext_Svinval))
-  | Ext_B => (pure (Bool.and (hartSupports Ext_B)
-        (BEq.beq (_get_Misa_B (← readReg misa)) (0b1 : (BitVec 1)))))
-  | Ext_Zba => (pure (Bool.or (hartSupports Ext_Zba) (← (currentlyEnabled Ext_B))))
-  | Ext_Zbb => (pure (Bool.or (hartSupports Ext_Zbb) (← (currentlyEnabled Ext_B))))
+  | Ext_B => (pure ((hartSupports Ext_B) && ((_get_Misa_B (← readReg misa)) == (0b1 : (BitVec 1)))))
+  | Ext_Zba => (pure ((hartSupports Ext_Zba) || (← (currentlyEnabled Ext_B))))
+  | Ext_Zbb => (pure ((hartSupports Ext_Zbb) || (← (currentlyEnabled Ext_B))))
   | Ext_Zbkb => (pure (hartSupports Ext_Zbkb))
   | Ext_Zbc => (pure (hartSupports Ext_Zbc))
   | Ext_Zbkc => (pure (hartSupports Ext_Zbkc))
-  | Ext_Zbs => (pure (Bool.or (hartSupports Ext_Zbs) (← (currentlyEnabled Ext_B))))
-  | Ext_Zcb => (pure (Bool.and (hartSupports Ext_Zcb) (← (currentlyEnabled Ext_Zca))))
-  | Ext_Zhinx => (pure (Bool.and (hartSupports Ext_Zhinx) (← (currentlyEnabled Ext_Zfinx))))
-  | Ext_Zfa => (pure (Bool.and (hartSupports Ext_Zfa) (← (currentlyEnabled Ext_F))))
+  | Ext_Zbs => (pure ((hartSupports Ext_Zbs) || (← (currentlyEnabled Ext_B))))
+  | Ext_Zcb => (pure ((hartSupports Ext_Zcb) && (← (currentlyEnabled Ext_Zca))))
+  | Ext_Zhinx => (pure ((hartSupports Ext_Zhinx) && (← (currentlyEnabled Ext_Zfinx))))
+  | Ext_Zfa => (pure ((hartSupports Ext_Zfa) && (← (currentlyEnabled Ext_F))))
   | Ext_Zknh => (pure (hartSupports Ext_Zknh))
   | Ext_Zkne => (pure (hartSupports Ext_Zkne))
   | Ext_Zknd => (pure (hartSupports Ext_Zknd))
@@ -989,21 +972,20 @@ def currentlyEnabled (merge_var : extension) : SailM Bool := do
   | Ext_Zicond => (pure (hartSupports Ext_Zicond))
   | Ext_Zicbom => (pure (hartSupports Ext_Zicbom))
   | Ext_Zicboz => (pure (hartSupports Ext_Zicboz))
-  | Ext_Zvbb => (pure (Bool.and (hartSupports Ext_Zvbb) (← (currentlyEnabled Ext_V))))
-  | Ext_Zvkb => (pure (Bool.and (Bool.or (hartSupports Ext_Zvkb) (← (currentlyEnabled Ext_Zvbb)))
-        (← (currentlyEnabled Ext_V))))
-  | Ext_Zvbc => (pure (Bool.and (hartSupports Ext_Zvbc) (← (currentlyEnabled Ext_V))))
-  | Ext_Zvknha => (pure (Bool.and (hartSupports Ext_Zvknha) (← (currentlyEnabled Ext_V))))
-  | Ext_Zvknhb => (pure (Bool.and (hartSupports Ext_Zvknhb) (← (currentlyEnabled Ext_V))))
-  | Ext_Zvksh => (pure (Bool.and (hartSupports Ext_Zvksh) (← (currentlyEnabled Ext_V))))
+  | Ext_Zvbb => (pure ((hartSupports Ext_Zvbb) && (← (currentlyEnabled Ext_V))))
+  | Ext_Zvkb => (pure (((hartSupports Ext_Zvkb) || (← (currentlyEnabled Ext_Zvbb))) && (← (currentlyEnabled
+            Ext_V))))
+  | Ext_Zvbc => (pure ((hartSupports Ext_Zvbc) && (← (currentlyEnabled Ext_V))))
+  | Ext_Zvknha => (pure ((hartSupports Ext_Zvknha) && (← (currentlyEnabled Ext_V))))
+  | Ext_Zvknhb => (pure ((hartSupports Ext_Zvknhb) && (← (currentlyEnabled Ext_V))))
+  | Ext_Zvksh => (pure ((hartSupports Ext_Zvksh) && (← (currentlyEnabled Ext_V))))
   | Ext_Zimop => (pure (hartSupports Ext_Zimop))
-  | Ext_Zcmop => (pure (Bool.and (hartSupports Ext_Zcmop) (← (currentlyEnabled Ext_Zca))))
+  | Ext_Zcmop => (pure ((hartSupports Ext_Zcmop) && (← (currentlyEnabled Ext_Zca))))
 termination_by let ext := merge_var; ((currentlyEnabled_measure ext)).toNat
 
 def virtual_memory_supported (_ : Unit) : SailM Bool := do
-  (pure (Bool.or (← (currentlyEnabled Ext_Sv32))
-      (Bool.or (← (currentlyEnabled Ext_Sv39))
-        (Bool.or (← (currentlyEnabled Ext_Sv48)) (← (currentlyEnabled Ext_Sv57))))))
+  (pure ((← (currentlyEnabled Ext_Sv32)) || ((← (currentlyEnabled Ext_Sv39)) || ((← (currentlyEnabled
+              Ext_Sv48)) || (← (currentlyEnabled Ext_Sv57))))))
 
 def lowest_supported_privLevel (_ : Unit) : SailM Privilege := do
   bif (← (currentlyEnabled Ext_U))
@@ -1012,14 +994,14 @@ def lowest_supported_privLevel (_ : Unit) : SailM Privilege := do
 
 def have_privLevel (priv : (BitVec 2)) : SailM Bool := do
   let b__0 := priv
-  bif (BEq.beq b__0 (0b00 : (BitVec 2)))
+  bif (b__0 == (0b00 : (BitVec 2)))
   then (currentlyEnabled Ext_U)
   else
     (do
-      bif (BEq.beq b__0 (0b01 : (BitVec 2)))
+      bif (b__0 == (0b01 : (BitVec 2)))
       then (currentlyEnabled Ext_S)
       else
-        (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
+        (bif (b__0 == (0b10 : (BitVec 2)))
         then (pure false)
         else (pure true)))
 
@@ -1315,7 +1297,7 @@ def _set_Sstatus_XS (r_ref : (RegisterRef (BitVec 64))) (v : (BitVec 2)) : SailM
   writeRegRef r_ref (_update_Sstatus_XS r v)
 
 def effectivePrivilege (t : (AccessType Unit)) (m : (BitVec 64)) (priv : Privilege) : SailM Privilege := do
-  bif (Bool.and (bne t (InstructionFetch ())) (BEq.beq (_get_Mstatus_MPRV m) (0b1 : (BitVec 1))))
+  bif ((bne t (InstructionFetch ())) && ((_get_Mstatus_MPRV m) == (0b1 : (BitVec 1))))
   then (privLevel_of_bits (_get_Mstatus_MPP m))
   else (pure priv)
 
@@ -1387,9 +1369,8 @@ def legalize_mstatus (o : (BitVec 64)) (v : (BitVec 64)) : SailM (BitVec 64) := 
           then (pure (_get_Mstatus_SIE v))
           else (pure (0b0 : (BitVec 1))))))
   let dirty :=
-    (Bool.or (BEq.beq (extStatus_of_bits (_get_Mstatus_FS o)) Dirty)
-      (Bool.or (BEq.beq (extStatus_of_bits (_get_Mstatus_XS o)) Dirty)
-        (BEq.beq (extStatus_of_bits (_get_Mstatus_VS o)) Dirty)))
+    (((extStatus_of_bits (_get_Mstatus_FS o)) == Dirty) || (((extStatus_of_bits (_get_Mstatus_XS o)) == Dirty) || ((extStatus_of_bits
+            (_get_Mstatus_VS o)) == Dirty)))
   (pure (_update_Mstatus_SD o (bool_to_bits dirty)))
 
 def cur_architecture (_ : Unit) : SailM Architecture := do
@@ -1401,7 +1382,7 @@ def cur_architecture (_ : Unit) : SailM Architecture := do
   (architecture_backwards a)
 
 def in32BitMode (_ : Unit) : SailM Bool := do
-  (pure (BEq.beq (← (cur_architecture ())) RV32))
+  (pure ((← (cur_architecture ())) == RV32))
 
 def undefined_MEnvcfg (_ : Unit) : SailM (BitVec 64) := do
   (undefined_bitvector 64)
@@ -1566,7 +1547,7 @@ def legalize_menvcfg (o : (BitVec 64)) (v : (BitVec 64)) : SailM (BitVec 64) := 
         (← do
           bif (← (currentlyEnabled Ext_Zicbom))
           then
-            (bif (bne (_get_MEnvcfg_CBIE v) (0b10 : (BitVec 2)))
+            (bif ((_get_MEnvcfg_CBIE v) != (0b10 : (BitVec 2)))
             then (pure (_get_MEnvcfg_CBIE v))
             else (pure (0b00 : (BitVec 2))))
           else (pure (0b00 : (BitVec 2)))))
@@ -1595,7 +1576,7 @@ def legalize_senvcfg (o : (BitVec (2 ^ 3 * 8))) (v : (BitVec (2 ^ 3 * 8))) : Sai
       (← do
         bif (← (currentlyEnabled Ext_Zicbom))
         then
-          (bif (bne (_get_SEnvcfg_CBIE v) (0b10 : (BitVec 2)))
+          (bif ((_get_SEnvcfg_CBIE v) != (0b10 : (BitVec 2)))
           then (pure (_get_SEnvcfg_CBIE v))
           else (pure (0b00 : (BitVec 2))))
         else (pure (0b00 : (BitVec 2))))))
@@ -1603,10 +1584,9 @@ def legalize_senvcfg (o : (BitVec (2 ^ 3 * 8))) (v : (BitVec (2 ^ 3 * 8))) : Sai
 def is_fiom_active (_ : Unit) : SailM Bool := do
   match (← readReg cur_privilege) with
   | Machine => (pure false)
-  | Supervisor => (pure (BEq.beq (_get_MEnvcfg_FIOM (← readReg menvcfg)) (0b1 : (BitVec 1))))
-  | User => (pure (BEq.beq
-        ((_get_MEnvcfg_FIOM (← readReg menvcfg)) ||| (_get_SEnvcfg_FIOM (← readReg senvcfg)))
-        (0b1 : (BitVec 1))))
+  | Supervisor => (pure ((_get_MEnvcfg_FIOM (← readReg menvcfg)) == (0b1 : (BitVec 1))))
+  | User => (pure (((_get_MEnvcfg_FIOM (← readReg menvcfg)) ||| (_get_SEnvcfg_FIOM
+            (← readReg senvcfg))) == (0b1 : (BitVec 1))))
 
 def undefined_Minterrupts (_ : Unit) : SailM (BitVec (2 ^ 3 * 8)) := do
   (undefined_bitvector ((2 ^i 3) *i 8))
@@ -1721,8 +1701,7 @@ def legalize_mip (o : (BitVec (2 ^ 3 * 8))) (v : (BitVec (2 ^ 3 * 8))) : SailM (
         bif (← (currentlyEnabled Ext_S))
         then
           (do
-            bif (Bool.and (← (currentlyEnabled Ext_Sstc))
-                 (BEq.beq (_get_MEnvcfg_STCE (← readReg menvcfg)) (0b1 : (BitVec 1))))
+            bif ((← (currentlyEnabled Ext_Sstc)) && ((_get_MEnvcfg_STCE (← readReg menvcfg)) == (0b1 : (BitVec 1))))
             then (pure (_get_Minterrupts_STI o))
             else (pure (_get_Minterrupts_STI v)))
         else (pure (0b0 : (BitVec 1))))))
@@ -1985,7 +1964,7 @@ def tvec_addr (m : (BitVec (2 ^ 3 * 8))) (c : (BitVec (2 ^ 3 * 8))) : (Option (B
   let base : xlenbits := ((_get_Mtvec_Base m) ++ (0b00 : (BitVec 2)))
   match (trapVectorMode_of_bits (_get_Mtvec_Mode m)) with
   | TV_Direct => (some base)
-  | TV_Vector => (bif (BEq.beq (_get_Mcause_IsInterrupt c) (0b1 : (BitVec 1)))
+  | TV_Vector => (bif ((_get_Mcause_IsInterrupt c) == (0b1 : (BitVec 1)))
     then (some (base + (shiftl (zero_extend (m := ((2 ^i 3) *i 8)) (_get_Mcause_Cause c)) 2)))
     else (some base))
   | TV_Reserved => none
@@ -1996,7 +1975,7 @@ def legalize_xepc (v : (BitVec (2 ^ 3 * 8))) : (BitVec (2 ^ 3 * 8)) :=
   else (Sail.BitVec.updateSubrange v 1 0 (zeros (n := (1 -i (0 -i 1)))))
 
 def align_pc (addr : (BitVec (2 ^ 3 * 8))) : SailM (BitVec (2 ^ 3 * 8)) := do
-  bif (BEq.beq (_get_Misa_C (← readReg misa)) (0b1 : (BitVec 1)))
+  bif ((_get_Misa_C (← readReg misa)) == (0b1 : (BitVec 1)))
   then (pure (BitVec.update addr 0 0#1))
   else (pure (Sail.BitVec.updateSubrange addr 1 0 (zeros (n := (1 -i (0 -i 1))))))
 
@@ -2120,9 +2099,8 @@ def lower_mstatus (m : (BitVec 64)) : (BitVec 64) :=
 
 def lift_sstatus (m : (BitVec 64)) (s : (BitVec 64)) : (BitVec 64) :=
   let dirty :=
-    (Bool.or (BEq.beq (extStatus_of_bits (_get_Sstatus_FS s)) Dirty)
-      (Bool.or (BEq.beq (extStatus_of_bits (_get_Sstatus_XS s)) Dirty)
-        (BEq.beq (extStatus_of_bits (_get_Sstatus_VS s)) Dirty)))
+    (((extStatus_of_bits (_get_Sstatus_FS s)) == Dirty) || (((extStatus_of_bits (_get_Sstatus_XS s)) == Dirty) || ((extStatus_of_bits
+            (_get_Sstatus_VS s)) == Dirty)))
   (_update_Mstatus_SIE
     (_update_Mstatus_SPIE
       (_update_Mstatus_SPP
@@ -2163,7 +2141,7 @@ def lower_mie (m : (BitVec (2 ^ 3 * 8))) (d : (BitVec (2 ^ 3 * 8))) : (BitVec (2
 
 def lift_sip (o : (BitVec (2 ^ 3 * 8))) (d : (BitVec (2 ^ 3 * 8))) (s : (BitVec (2 ^ 3 * 8))) : (BitVec (2 ^ 3 * 8)) :=
   let m : Minterrupts := o
-  bif (BEq.beq (_get_Minterrupts_SSI d) (0b1 : (BitVec 1)))
+  bif ((_get_Minterrupts_SSI d) == (0b1 : (BitVec 1)))
   then (_update_Minterrupts_SSI m (_get_Sinterrupts_SSI s))
   else m
 
@@ -2175,13 +2153,13 @@ def lift_sie (o : (BitVec (2 ^ 3 * 8))) (d : (BitVec (2 ^ 3 * 8))) (s : (BitVec 
   (_update_Minterrupts_SSI
     (_update_Minterrupts_STI
       (_update_Minterrupts_SEI m
-        (bif (BEq.beq (_get_Minterrupts_SEI d) (0b1 : (BitVec 1)))
+        (bif ((_get_Minterrupts_SEI d) == (0b1 : (BitVec 1)))
         then (_get_Sinterrupts_SEI s)
         else (_get_Minterrupts_SEI m)))
-      (bif (BEq.beq (_get_Minterrupts_STI d) (0b1 : (BitVec 1)))
+      (bif ((_get_Minterrupts_STI d) == (0b1 : (BitVec 1)))
       then (_get_Sinterrupts_STI s)
       else (_get_Minterrupts_STI m)))
-    (bif (BEq.beq (_get_Minterrupts_SSI d) (0b1 : (BitVec 1)))
+    (bif ((_get_Minterrupts_SSI d) == (0b1 : (BitVec 1)))
     then (_get_Sinterrupts_SSI s)
     else (_get_Minterrupts_SSI m)))
 
@@ -2345,19 +2323,19 @@ def _set_Vtype_vta (r_ref : (RegisterRef (BitVec (2 ^ 3 * 8)))) (v : (BitVec 1))
 
 def get_sew_pow (_ : Unit) : SailM Int := do
   let b__0 ← do (pure (_get_Vtype_vsew (← readReg vtype)))
-  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (b__0 == (0b000 : (BitVec 3)))
   then (pure 3)
   else
     (do
-      bif (BEq.beq b__0 (0b001 : (BitVec 3)))
+      bif (b__0 == (0b001 : (BitVec 3)))
       then (pure 4)
       else
         (do
-          bif (BEq.beq b__0 (0b010 : (BitVec 3)))
+          bif (b__0 == (0b010 : (BitVec 3)))
           then (pure 5)
           else
             (do
-              bif (BEq.beq b__0 (0b011 : (BitVec 3)))
+              bif (b__0 == (0b011 : (BitVec 3)))
               then (pure 6)
               else
                 (do
@@ -2386,31 +2364,31 @@ def get_sew_bytes (_ : Unit) : SailM Int := do
 
 def get_lmul_pow (_ : Unit) : SailM Int := do
   let b__0 ← do (pure (_get_Vtype_vlmul (← readReg vtype)))
-  bif (BEq.beq b__0 (0b101 : (BitVec 3)))
+  bif (b__0 == (0b101 : (BitVec 3)))
   then (pure (-3))
   else
     (do
-      bif (BEq.beq b__0 (0b110 : (BitVec 3)))
+      bif (b__0 == (0b110 : (BitVec 3)))
       then (pure (-2))
       else
         (do
-          bif (BEq.beq b__0 (0b111 : (BitVec 3)))
+          bif (b__0 == (0b111 : (BitVec 3)))
           then (pure (-1))
           else
             (do
-              bif (BEq.beq b__0 (0b000 : (BitVec 3)))
+              bif (b__0 == (0b000 : (BitVec 3)))
               then (pure 0)
               else
                 (do
-                  bif (BEq.beq b__0 (0b001 : (BitVec 3)))
+                  bif (b__0 == (0b001 : (BitVec 3)))
                   then (pure 1)
                   else
                     (do
-                      bif (BEq.beq b__0 (0b010 : (BitVec 3)))
+                      bif (b__0 == (0b010 : (BitVec 3)))
                       then (pure 2)
                       else
                         (do
-                          bif (BEq.beq b__0 (0b011 : (BitVec 3)))
+                          bif (b__0 == (0b011 : (BitVec 3)))
                           then (pure 3)
                           else
                             (do
@@ -2433,7 +2411,7 @@ def num_of_agtype (arg_ : agtype) : Int :=
 
 def decode_agtype (ag : (BitVec 1)) : agtype :=
   let b__0 := ag
-  bif (BEq.beq b__0 (0b0 : (BitVec 1)))
+  bif (b__0 == (0b0 : (BitVec 1)))
   then UNDISTURBED
   else AGNOSTIC
 

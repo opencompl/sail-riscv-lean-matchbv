@@ -166,9 +166,9 @@ open AccessType
 
 def fcvtmod_helper (x64 : (BitVec 64)) : ((BitVec 5) × (BitVec 32)) :=
   let (sign, exp, mant) := (fsplit_D x64)
-  let is_subnorm := (Bool.and (BEq.beq exp (zeros (n := 11))) (bne mant (zeros (n := 52))))
-  let is_zero := (Bool.and (BEq.beq exp (zeros (n := 11))) (BEq.beq mant (zeros (n := 52))))
-  let is_nan_or_inf := (BEq.beq exp (ones (n := 11)))
+  let is_subnorm := ((exp == (zeros (n := 11))) && (mant != (zeros (n := 52))))
+  let is_zero := ((exp == (zeros (n := 11))) && (mant == (zeros (n := 52))))
+  let is_nan_or_inf := (exp == (ones (n := 11)))
   let true_mant := ((0b1 : (BitVec 1)) ++ mant)
   let true_exp := ((BitVec.toNat exp) -i 1023)
   let is_too_large := (true_exp ≥b 84)
@@ -192,11 +192,11 @@ def fcvtmod_helper (x64 : (BitVec 64)) : ((BitVec 5) × (BitVec 32)) :=
             let integer := (Sail.BitVec.extractLsb fixedpoint 83 52)
             let fractional := (Sail.BitVec.extractLsb fixedpoint 51 0)
             let result :=
-              bif (BEq.beq sign (0b1 : (BitVec 1)))
+              bif (sign == (0b1 : (BitVec 1)))
               then (BitVec.addInt (Complement.complement integer) 1)
               else integer
             let max_integer :=
-              bif (BEq.beq sign (0b1 : (BitVec 1)))
+              bif (sign == (0b1 : (BitVec 1)))
               then (BitVec.toNat (0x80000000 : (BitVec 32)))
               else (BitVec.toNat (0x7FFFFFFF : (BitVec 32)))
             let flags : (BitVec 5) :=
@@ -206,7 +206,7 @@ def fcvtmod_helper (x64 : (BitVec 64)) : ((BitVec 5) × (BitVec 32)) :=
                 (bif ((BitVec.toNat integer) >b max_integer)
                 then (nvFlag ())
                 else
-                  (bif (bne fractional (zeros (n := ((51 -i 0) +i 1))))
+                  (bif (fractional != (zeros (n := ((51 -i 0) +i 1))))
                   then (nxFlag ())
                   else (zeros (n := 5))))
             (flags, result))))))

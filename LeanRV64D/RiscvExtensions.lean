@@ -198,11 +198,10 @@ def hartSupports (merge_var : extension) : Bool :=
   | Ext_Zca => true
   | Ext_Zcb => true
   | Ext_Zcd => true
-  | Ext_Zcf => (Bool.and (true : Bool) (BEq.beq xlen 32))
+  | Ext_Zcf => ((true : Bool) && (xlen == 32))
   | Ext_Zcmop => true
-  | Ext_C => (Bool.and (hartSupports Ext_Zca)
-      (Bool.and (Bool.or (hartSupports Ext_Zcf) (Bool.or (not (hartSupports Ext_F)) (bne xlen 32)))
-        (Bool.or (hartSupports Ext_Zcd) (not (hartSupports Ext_D)))))
+  | Ext_C => ((hartSupports Ext_Zca) && (((hartSupports Ext_Zcf) || ((not (hartSupports Ext_F)) || (xlen != 32))) && ((hartSupports
+            Ext_Zcd) || (not (hartSupports Ext_D)))))
   | Ext_Zba => false
   | Ext_Zbb => false
   | Ext_Zbc => true
@@ -229,10 +228,10 @@ def hartSupports (merge_var : extension) : Bool :=
   | Ext_Svnapot => false
   | Ext_Svpbmt => false
   | Ext_Svbare => true
-  | Ext_Sv32 => (Bool.and (true : Bool) (BEq.beq xlen 32))
-  | Ext_Sv39 => (Bool.and (true : Bool) (BEq.beq xlen 64))
-  | Ext_Sv48 => (Bool.and (true : Bool) (BEq.beq xlen 64))
-  | Ext_Sv57 => (Bool.and (true : Bool) (BEq.beq xlen 64))
+  | Ext_Sv32 => ((true : Bool) && (xlen == 32))
+  | Ext_Sv39 => ((true : Bool) && (xlen == 64))
+  | Ext_Sv48 => ((true : Bool) && (xlen == 64))
+  | Ext_Sv57 => ((true : Bool) && (xlen == 64))
   | Ext_Smcntrpmf => true
 termination_by let ext := merge_var; ((hartSupports_measure ext)).toNat
 

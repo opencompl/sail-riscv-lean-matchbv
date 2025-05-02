@@ -88,26 +88,26 @@ warning: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/mode
 ✔ [88/99] Built LeanRV64D.RiscvInstsZvknhab
 ✖ [89/99] Building LeanRV64D.RiscvInstsEnd
 trace: .> LEAN_PATH=/home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/lib/lean /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-04-07/bin/lean --tstack=400000 -Dweak.linter.style.nameCheck=false /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean -R /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D -o /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/lib/lean/LeanRV64D/RiscvInstsEnd.olean -i /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/lib/lean/LeanRV64D/RiscvInstsEnd.ilean -c /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/ir/LeanRV64D/RiscvInstsEnd.c --json
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:72613:11: don't know how to synthesize implicit argument 'k_m'
-  @vrev8 (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w) 8
+error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:59806:11: don't know how to synthesize implicit argument 'k_m'
+  @vrev8 (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w) 8
     {
       toArray :=
         #[BitVec.setWidth
-            (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[16]!,
+            (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[16]!,
           BitVec.setWidth
-            (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[17]!,
+            (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[17]!,
           BitVec.setWidth
-            (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[18]!,
+            (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[18]!,
           BitVec.setWidth
-            (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[19]!,
+            (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[19]!,
           BitVec.setWidth
-            (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[20]!,
+            (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[20]!,
           BitVec.setWidth
-            (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[21]!,
+            (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[21]!,
           BitVec.setWidth
-            (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[22]!,
+            (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[22]!,
           BitVec.setWidth
-            (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[23]!],
+            (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[23]!],
       size_toArray := ⋯ }
 context:
 vs2 vs1 vd : vregidx
@@ -126,24 +126,24 @@ w✝¹ : Vector (BitVec 32) 24 := loop_vars
 x✝ : PUnit
 w✝ w : Vector (BitVec 32) 24
 ⊢ Nat
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:72614:12: don't know how to synthesize implicit argument 'α'
-  @Vector.mk (BitVec (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8))
+error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:59807:12: don't know how to synthesize implicit argument 'α'
+  @Vector.mk (BitVec (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8))
     8
-    #[BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+    #[BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[16]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[17]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[18]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[19]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[20]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[21]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[22]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[23]!]
     ⋯
 context:
@@ -163,24 +163,24 @@ w✝¹ : Vector (BitVec 32) 24 := loop_vars
 x✝ : PUnit
 w✝ w : Vector (BitVec 32) 24
 ⊢ Type
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:72614:12: don't know how to synthesize implicit argument 'a'
+error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:59807:12: don't know how to synthesize implicit argument 'a'
   @rfl Nat
-    #[BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+    #[BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
           w[16]!,
         BitVec.setWidth
-          (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[17]!,
+          (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[17]!,
         BitVec.setWidth
-          (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[18]!,
+          (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[18]!,
         BitVec.setWidth
-          (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[19]!,
+          (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[19]!,
         BitVec.setWidth
-          (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[20]!,
+          (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[20]!,
         BitVec.setWidth
-          (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[21]!,
+          (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[21]!,
         BitVec.setWidth
-          (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[22]!,
+          (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8) w[22]!,
         BitVec.setWidth
-          (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+          (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
           w[23]!].size
 context:
 vs2 vs1 vd : vregidx
@@ -199,24 +199,24 @@ w✝¹ : Vector (BitVec 32) 24 := loop_vars
 x✝ : PUnit
 w✝ w : Vector (BitVec 32) 24
 ⊢ Nat
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:72614:12: don't know how to synthesize implicit argument 'α'
+error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:59807:12: don't know how to synthesize implicit argument 'α'
   @List.toArray
-    (BitVec (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8))
-    [BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+    (BitVec (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8))
+    [BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[16]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[17]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[18]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[19]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[20]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[21]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[22]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[23]!]
 context:
 vs2 vs1 vd : vregidx
@@ -235,23 +235,23 @@ w✝¹ : Vector (BitVec 32) 24 := loop_vars
 x✝ : PUnit
 w✝ w : Vector (BitVec 32) 24
 ⊢ Type
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:72614:12: don't know how to synthesize implicit argument 'α'
-  @List.cons (BitVec (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8))
-    (BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:59807:12: don't know how to synthesize implicit argument 'α'
+  @List.cons (BitVec (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8))
+    (BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
       w[16]!)
-    [BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+    [BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[17]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[18]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[19]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[20]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[21]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[22]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[23]!]
 context:
 vs2 vs1 vd : vregidx
@@ -270,21 +270,21 @@ w✝¹ : Vector (BitVec 32) 24 := loop_vars
 x✝ : PUnit
 w✝ w : Vector (BitVec 32) 24
 ⊢ Type
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:72614:12: don't know how to synthesize implicit argument 'α'
-  @List.cons (BitVec (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8))
-    (BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:59807:12: don't know how to synthesize implicit argument 'α'
+  @List.cons (BitVec (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8))
+    (BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
       w[17]!)
-    [BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+    [BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[18]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[19]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[20]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[21]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[22]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[23]!]
 context:
 vs2 vs1 vd : vregidx
@@ -303,19 +303,19 @@ w✝¹ : Vector (BitVec 32) 24 := loop_vars
 x✝ : PUnit
 w✝ w : Vector (BitVec 32) 24
 ⊢ Type
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:72614:12: don't know how to synthesize implicit argument 'α'
-  @List.cons (BitVec (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8))
-    (BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:59807:12: don't know how to synthesize implicit argument 'α'
+  @List.cons (BitVec (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8))
+    (BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
       w[18]!)
-    [BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+    [BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[19]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[20]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[21]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[22]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[23]!]
 context:
 vs2 vs1 vd : vregidx
@@ -334,17 +334,17 @@ w✝¹ : Vector (BitVec 32) 24 := loop_vars
 x✝ : PUnit
 w✝ w : Vector (BitVec 32) 24
 ⊢ Type
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:72614:12: don't know how to synthesize implicit argument 'α'
-  @List.cons (BitVec (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8))
-    (BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:59807:12: don't know how to synthesize implicit argument 'α'
+  @List.cons (BitVec (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8))
+    (BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
       w[19]!)
-    [BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+    [BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[20]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[21]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[22]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[23]!]
 context:
 vs2 vs1 vd : vregidx
@@ -363,15 +363,15 @@ w✝¹ : Vector (BitVec 32) 24 := loop_vars
 x✝ : PUnit
 w✝ w : Vector (BitVec 32) 24
 ⊢ Type
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:72614:12: don't know how to synthesize implicit argument 'α'
-  @List.cons (BitVec (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8))
-    (BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:59807:12: don't know how to synthesize implicit argument 'α'
+  @List.cons (BitVec (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8))
+    (BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
       w[20]!)
-    [BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+    [BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[21]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[22]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[23]!]
 context:
 vs2 vs1 vd : vregidx
@@ -390,13 +390,13 @@ w✝¹ : Vector (BitVec 32) 24 := loop_vars
 x✝ : PUnit
 w✝ w : Vector (BitVec 32) 24
 ⊢ Type
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:72614:12: don't know how to synthesize implicit argument 'α'
-  @List.cons (BitVec (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8))
-    (BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:59807:12: don't know how to synthesize implicit argument 'α'
+  @List.cons (BitVec (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8))
+    (BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
       w[21]!)
-    [BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+    [BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[22]!,
-      BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+      BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[23]!]
 context:
 vs2 vs1 vd : vregidx
@@ -415,11 +415,11 @@ w✝¹ : Vector (BitVec 32) 24 := loop_vars
 x✝ : PUnit
 w✝ w : Vector (BitVec 32) 24
 ⊢ Type
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:72614:12: don't know how to synthesize implicit argument 'α'
-  @List.cons (BitVec (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8))
-    (BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:59807:12: don't know how to synthesize implicit argument 'α'
+  @List.cons (BitVec (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8))
+    (BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
       w[22]!)
-    [BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+    [BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
         w[23]!]
 context:
 vs2 vs1 vd : vregidx
@@ -438,9 +438,9 @@ w✝¹ : Vector (BitVec 32) 24 := loop_vars
 x✝ : PUnit
 w✝ w : Vector (BitVec 32) 24
 ⊢ Type
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:72614:12: don't know how to synthesize implicit argument 'α'
-  @List.cons (BitVec (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8))
-    (BitVec.setWidth (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
+error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:59807:12: don't know how to synthesize implicit argument 'α'
+  @List.cons (BitVec (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8))
+    (BitVec.setWidth (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8)
       w[23]!)
     []
 context:
@@ -460,8 +460,8 @@ w✝¹ : Vector (BitVec 32) 24 := loop_vars
 x✝ : PUnit
 w✝ w : Vector (BitVec 32) 24
 ⊢ Type
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:72614:12: don't know how to synthesize implicit argument 'α'
-  @List.nil (BitVec (?m.1112300 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8))
+error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:59807:12: don't know how to synthesize implicit argument 'α'
+  @List.nil (BitVec (?m.1075233 vs2 vs1 vd SEW LMUL_pow num_elem x✝¹ vs2_val vs1_val eg_len eg_start i r✝ x✝ w✝ w * 8))
 context:
 vs2 vs1 vd : vregidx
 SEW LMUL_pow num_elem : Int
@@ -479,15 +479,15 @@ w✝¹ : Vector (BitVec 32) 24 := loop_vars
 x✝ : PUnit
 w✝ w : Vector (BitVec 32) 24
 ⊢ Type
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:72640:66: application type mismatch
+error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvInstsEnd.lean:59833:66: application type mismatch
   get_velem_oct_vec vs2_val
 argument
   vs2_val
 has type
   Vector (BitVec SEW.toNat) num_elem.toNat : Type
 but is expected to have type
-  Vector (BitVec (?m.1126847 SEW LMUL_pow num_elem x✝¹ vs2_val vd_val eg_len eg_start i r✝ x✝ * 8))
-    (?m.1126848 SEW LMUL_pow num_elem x✝¹ vs2_val vd_val eg_len eg_start i r✝ x✝) : Type
+  Vector (BitVec (?m.1089774 SEW LMUL_pow num_elem x✝¹ vs2_val vd_val eg_len eg_start i r✝ x✝ * 8))
+    (?m.1089775 SEW LMUL_pow num_elem x✝¹ vs2_val vd_val eg_len eg_start i r✝ x✝) : Type
 error: Lean exited with code 1
 Some required builds logged failures:
 - LeanRV64D.RiscvInstsEnd

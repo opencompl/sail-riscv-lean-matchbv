@@ -172,14 +172,12 @@ def zvk_valid_reg_overlap (rs : vregidx) (rd : vregidx) (emul_pow : Int) : Bool 
     else 1
   let rs_int := (BitVec.toNat (vregidx_bits rs))
   let rd_int := (BitVec.toNat (vregidx_bits rd))
-  (Bool.or ((rs_int +i reg_group_size) ≤b rd_int) ((rd_int +i reg_group_size) ≤b rs_int))
+  (((rs_int +i reg_group_size) ≤b rd_int) || ((rd_int +i reg_group_size) ≤b rs_int))
 
 /-- Type quantifiers: EGS : Int, EGW : Int -/
 def zvk_check_encdec (EGW : Int) (EGS : Int) : SailM Bool := do
-  (pure (Bool.and (BEq.beq (Int.emod (BitVec.toNat (← readReg vl)) EGS) 0)
-      (← do
-        (pure (Bool.and (BEq.beq (Int.emod (BitVec.toNat (← readReg vstart)) EGS) 0)
-            (← do
+  (pure (((Int.emod (BitVec.toNat (← readReg vl)) EGS) == 0) && (← do
+        (pure (((Int.emod (BitVec.toNat (← readReg vstart)) EGS) == 0) && (← do
               (pure (((2 ^i (← (get_lmul_pow ()))) *i VLEN) ≥b EGW))))))))
 
 def undefined_zvkfunct6 (_ : Unit) : SailM zvkfunct6 := do
@@ -199,8 +197,8 @@ def num_of_zvkfunct6 (arg_ : zvkfunct6) : Int :=
 def zvknhab_check_encdec (vs2 : vregidx) (vs1 : vregidx) (vd : vregidx) : SailM Bool := do
   let SEW ← do (get_sew ())
   let LMUL_pow ← do (get_lmul_pow ())
-  (pure (Bool.and (← (zvk_check_encdec SEW 4))
-      (Bool.and (zvk_valid_reg_overlap vs1 vd LMUL_pow) (zvk_valid_reg_overlap vs2 vd LMUL_pow))))
+  (pure ((← (zvk_check_encdec SEW 4)) && ((zvk_valid_reg_overlap vs1 vd LMUL_pow) && (zvk_valid_reg_overlap
+          vs2 vd LMUL_pow))))
 
 /-- Type quantifiers: k_n : Nat, SEW : Nat, k_n = SEW ∧ SEW = 32 ∨ SEW = 64 -/
 def zvk_sig0 (x : (BitVec k_n)) (SEW : Nat) : (BitVec k_n) :=

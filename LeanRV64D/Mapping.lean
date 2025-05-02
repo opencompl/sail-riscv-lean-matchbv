@@ -175,7 +175,7 @@ def spc_backwards (x_0 : String) : Unit :=
 
 def spc_backwards_matches (s : String) : Bool :=
   let len := (String.length s)
-  (Bool.and (BEq.beq (String.leadingSpaces s) len) (len >b 0))
+  (((String.leadingSpaces s) == len) && (len >b 0))
 
 def opt_spc_forwards (_ : Unit) : String :=
   ""
@@ -187,7 +187,7 @@ def opt_spc_backwards (x_0 : String) : Unit :=
   ()
 
 def opt_spc_backwards_matches (s : String) : Bool :=
-  (BEq.beq (String.leadingSpaces s) (String.length s))
+  ((String.leadingSpaces s) == (String.length s))
 
 def def_spc_forwards (_ : Unit) : String :=
   " "
@@ -199,7 +199,7 @@ def def_spc_backwards (x_0 : String) : Unit :=
   ()
 
 def def_spc_backwards_matches (s : String) : Bool :=
-  (BEq.beq (String.leadingSpaces s) (String.length s))
+  ((String.leadingSpaces s) == (String.length s))
 
 def sep_forwards (arg_ : Unit) : String :=
   match arg_ with

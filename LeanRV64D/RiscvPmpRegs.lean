@@ -184,13 +184,13 @@ def num_of_PmpAddrMatchType (arg_ : PmpAddrMatchType) : Int :=
 
 def pmpAddrMatchType_of_bits (bs : (BitVec 2)) : PmpAddrMatchType :=
   let b__0 := bs
-  bif (BEq.beq b__0 (0b00 : (BitVec 2)))
+  bif (b__0 == (0b00 : (BitVec 2)))
   then OFF
   else
-    (bif (BEq.beq b__0 (0b01 : (BitVec 2)))
+    (bif (b__0 == (0b01 : (BitVec 2)))
     then TOR
     else
-      (bif (BEq.beq b__0 (0b10 : (BitVec 2)))
+      (bif (b__0 == (0b10 : (BitVec 2)))
       then NA4
       else NAPOT))
 
@@ -209,7 +209,7 @@ def Mk_Pmpcfg_ent (v : (BitVec 8)) : (BitVec 8) :=
 
 /-- Type quantifiers: n : Nat, 0 ≤ n ∧ n ≤ 15 -/
 def pmpReadCfgReg (n : Nat) : SailM (BitVec (2 ^ 3 * 8)) := do
-  assert (BEq.beq (Int.emod n 2) 0) "Unexpected pmp config reg read"
+  assert ((Int.emod n 2) == 0) "Unexpected pmp config reg read"
   (pure ((GetElem?.getElem! (← readReg pmpcfg_n) ((n *i 4) +i 7)) ++ ((GetElem?.getElem!
           (← readReg pmpcfg_n) ((n *i 4) +i 6)) ++ ((GetElem?.getElem! (← readReg pmpcfg_n)
             ((n *i 4) +i 5)) ++ ((GetElem?.getElem! (← readReg pmpcfg_n) ((n *i 4) +i 4)) ++ ((GetElem?.getElem!
@@ -238,11 +238,11 @@ def pmpReadAddrReg (n : Nat) : SailM (BitVec (2 ^ 3 * 8)) := do
   | _ => (pure addr)
 
 def pmpLocked (cfg : (BitVec 8)) : Bool :=
-  (BEq.beq (_get_Pmpcfg_ent_L cfg) (0b1 : (BitVec 1)))
+  ((_get_Pmpcfg_ent_L cfg) == (0b1 : (BitVec 1)))
 
 def pmpTORLocked (cfg : (BitVec 8)) : Bool :=
-  (Bool.and (BEq.beq (_get_Pmpcfg_ent_L cfg) (0b1 : (BitVec 1)))
-    (BEq.beq (pmpAddrMatchType_of_bits (_get_Pmpcfg_ent_A cfg)) TOR))
+  (((_get_Pmpcfg_ent_L cfg) == (0b1 : (BitVec 1))) && ((pmpAddrMatchType_of_bits
+        (_get_Pmpcfg_ent_A cfg)) == TOR))
 
 /-- Type quantifiers: n : Nat, 0 ≤ n ∧ n ≤ 63 -/
 def pmpWriteCfg (n : Nat) (cfg : (BitVec 8)) (v : (BitVec 8)) : (BitVec 8) :=
@@ -251,21 +251,19 @@ def pmpWriteCfg (n : Nat) (cfg : (BitVec 8)) (v : (BitVec 8)) : (BitVec 8) :=
   else
     (let cfg := (Mk_Pmpcfg_ent (v &&& (0x9F : (BitVec 8))))
     let cfg :=
-      bif (Bool.and (BEq.beq (_get_Pmpcfg_ent_W cfg) (0b1 : (BitVec 1)))
-           (BEq.beq (_get_Pmpcfg_ent_R cfg) (0b0 : (BitVec 1))))
+      bif (((_get_Pmpcfg_ent_W cfg) == (0b1 : (BitVec 1))) && ((_get_Pmpcfg_ent_R cfg) == (0b0 : (BitVec 1))))
       then
         (_update_Pmpcfg_ent_R
           (_update_Pmpcfg_ent_W (_update_Pmpcfg_ent_X cfg (0b0 : (BitVec 1))) (0b0 : (BitVec 1)))
           (0b0 : (BitVec 1)))
       else cfg
-    bif (Bool.and ((sys_pmp_grain ()) ≥b 1)
-         (BEq.beq (pmpAddrMatchType_of_bits (_get_Pmpcfg_ent_A cfg)) NA4))
+    bif (((sys_pmp_grain ()) ≥b 1) && ((pmpAddrMatchType_of_bits (_get_Pmpcfg_ent_A cfg)) == NA4))
     then (_update_Pmpcfg_ent_A cfg (pmpAddrMatchType_to_bits OFF))
     else cfg)
 
 /-- Type quantifiers: n : Nat, 0 ≤ n ∧ n ≤ 15 -/
 def pmpWriteCfgReg (n : Nat) (v : (BitVec (2 ^ 3 * 8))) : SailM Unit := do
-  assert (BEq.beq (Int.emod n 2) 0) "Unexpected pmp config reg write"
+  assert ((Int.emod n 2) == 0) "Unexpected pmp config reg write"
   let loop_i_lower := 0
   let loop_i_upper := 7
   let mut loop_vars := ()
@@ -280,7 +278,7 @@ def pmpWriteCfgReg (n : Nat) (v : (BitVec (2 ^ 3 * 8))) : SailM Unit := do
 
 /-- Type quantifiers: k_ex348306# : Bool, k_ex348305# : Bool -/
 def pmpWriteAddr (locked : Bool) (tor_locked : Bool) (reg : (BitVec (2 ^ 3 * 8))) (v : (BitVec (2 ^ 3 * 8))) : (BitVec (2 ^ 3 * 8)) :=
-  bif (Bool.or locked tor_locked)
+  bif (locked || tor_locked)
   then reg
   else (zero_extend (m := ((2 ^i 3) *i 8)) (Sail.BitVec.extractLsb v 53 0))
 

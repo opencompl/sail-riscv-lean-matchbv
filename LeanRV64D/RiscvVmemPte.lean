@@ -185,13 +185,13 @@ def default_sv32_ext_pte : pte_ext_bits := (zeros (n := 10))
 /-- Type quantifiers: k_pte_size : Nat, k_pte_size ∈ {32, 64} -/
 def ext_bits_of_PTE (pte : (BitVec k_pte_size)) : (BitVec 10) :=
   (Mk_PTE_Ext
-    (bif (BEq.beq (Sail.BitVec.length pte) 64)
+    (bif ((Sail.BitVec.length pte) == 64)
     then (Sail.BitVec.extractLsb pte 63 54)
     else default_sv32_ext_pte))
 
 /-- Type quantifiers: k_pte_size : Nat, k_pte_size ∈ {32, 64} -/
 def PPN_of_PTE (pte : (BitVec k_pte_size)) : (BitVec (bif k_pte_size = 32 then 22 else 44)) :=
-  bif (BEq.beq (Sail.BitVec.length pte) 32)
+  bif ((Sail.BitVec.length pte) == 32)
   then (Sail.BitVec.extractLsb pte 31 10)
   else (Sail.BitVec.extractLsb pte 53 10)
 
@@ -202,22 +202,15 @@ def Mk_PTE_Flags (v : (BitVec 8)) : (BitVec 8) :=
   v
 
 def pte_is_non_leaf (pte_flags : (BitVec 8)) : Bool :=
-  (Bool.and (BEq.beq (_get_PTE_Flags_X pte_flags) (0b0 : (BitVec 1)))
-    (Bool.and (BEq.beq (_get_PTE_Flags_W pte_flags) (0b0 : (BitVec 1)))
-      (BEq.beq (_get_PTE_Flags_R pte_flags) (0b0 : (BitVec 1)))))
+  (((_get_PTE_Flags_X pte_flags) == (0b0 : (BitVec 1))) && (((_get_PTE_Flags_W pte_flags) == (0b0 : (BitVec 1))) && ((_get_PTE_Flags_R
+          pte_flags) == (0b0 : (BitVec 1)))))
 
 def pte_is_invalid (pte_flags : (BitVec 8)) (pte_ext : (BitVec 10)) : SailM Bool := do
-  (pure (Bool.or (BEq.beq (_get_PTE_Flags_V pte_flags) (0b0 : (BitVec 1)))
-      (Bool.or
-        (Bool.and (BEq.beq (_get_PTE_Flags_W pte_flags) (0b1 : (BitVec 1)))
-          (BEq.beq (_get_PTE_Flags_R pte_flags) (0b0 : (BitVec 1))))
-        (Bool.or
-          (Bool.and (bne (_get_PTE_Ext_N pte_ext) (0b0 : (BitVec 1)))
-            (not (← (currentlyEnabled Ext_Svnapot))))
-          (Bool.or
-            (Bool.and (bne (_get_PTE_Ext_PBMT pte_ext) (zeros (n := 2)))
-              (not (← (currentlyEnabled Ext_Svpbmt))))
-            (bne (_get_PTE_Ext_reserved pte_ext) (zeros (n := 7))))))))
+  (pure (((_get_PTE_Flags_V pte_flags) == (0b0 : (BitVec 1))) || ((((_get_PTE_Flags_W pte_flags) == (0b1 : (BitVec 1))) && ((_get_PTE_Flags_R
+              pte_flags) == (0b0 : (BitVec 1)))) || ((((_get_PTE_Ext_N pte_ext) != (0b0 : (BitVec 1))) && (not
+              (← (currentlyEnabled Ext_Svnapot)))) || ((((_get_PTE_Ext_PBMT pte_ext) != (zeros
+                  (n := 2))) && (not (← (currentlyEnabled Ext_Svpbmt)))) || ((_get_PTE_Ext_reserved
+                pte_ext) != (zeros (n := 7))))))))
 
 /-- Type quantifiers: k_ex351154# : Bool, k_ex351153# : Bool -/
 def check_PTE_permission (ac : (AccessType Unit)) (priv : Privilege) (mxr : Bool) (do_sum : Bool) (pte_flags : (BitVec 8)) (ext : (BitVec 10)) (ext_ptw : Unit) : SailM PTE_Check := do
@@ -227,29 +220,14 @@ def check_PTE_permission (ac : (AccessType Unit)) (priv : Privilege) (mxr : Bool
   let pte_X := (_get_PTE_Flags_X pte_flags)
   let success ← (( do
     match (ac, priv) with
-    | (.Read _, User) => (pure (Bool.and (BEq.beq pte_U (0b1 : (BitVec 1)))
-          (Bool.or (BEq.beq pte_R (0b1 : (BitVec 1)))
-            (Bool.and (BEq.beq pte_X (0b1 : (BitVec 1))) mxr))))
-    | (.Write _, User) => (pure (Bool.and (BEq.beq pte_U (0b1 : (BitVec 1)))
-          (BEq.beq pte_W (0b1 : (BitVec 1)))))
-    | (.ReadWrite (_, _), User) => (pure (Bool.and (BEq.beq pte_U (0b1 : (BitVec 1)))
-          (Bool.and (BEq.beq pte_W (0b1 : (BitVec 1)))
-            (Bool.or (BEq.beq pte_R (0b1 : (BitVec 1)))
-              (Bool.and (BEq.beq pte_X (0b1 : (BitVec 1))) mxr)))))
-    | (.InstructionFetch (), User) => (pure (Bool.and (BEq.beq pte_U (0b1 : (BitVec 1)))
-          (BEq.beq pte_X (0b1 : (BitVec 1)))))
-    | (.Read _, Supervisor) => (pure (Bool.and (Bool.or (BEq.beq pte_U (0b0 : (BitVec 1))) do_sum)
-          (Bool.or (BEq.beq pte_R (0b1 : (BitVec 1)))
-            (Bool.and (BEq.beq pte_X (0b1 : (BitVec 1))) mxr))))
-    | (.Write _, Supervisor) => (pure (Bool.and (Bool.or (BEq.beq pte_U (0b0 : (BitVec 1))) do_sum)
-          (BEq.beq pte_W (0b1 : (BitVec 1)))))
-    | (.ReadWrite (_, _), Supervisor) => (pure (Bool.and
-          (Bool.or (BEq.beq pte_U (0b0 : (BitVec 1))) do_sum)
-          (Bool.and (BEq.beq pte_W (0b1 : (BitVec 1)))
-            (Bool.or (BEq.beq pte_R (0b1 : (BitVec 1)))
-              (Bool.and (BEq.beq pte_X (0b1 : (BitVec 1))) mxr)))))
-    | (.InstructionFetch (), Supervisor) => (pure (Bool.and (BEq.beq pte_U (0b0 : (BitVec 1)))
-          (BEq.beq pte_X (0b1 : (BitVec 1)))))
+    | (.Read _, User) => (pure ((pte_U == (0b1 : (BitVec 1))) && ((pte_R == (0b1 : (BitVec 1))) || ((pte_X == (0b1 : (BitVec 1))) && mxr))))
+    | (.Write _, User) => (pure ((pte_U == (0b1 : (BitVec 1))) && (pte_W == (0b1 : (BitVec 1)))))
+    | (.ReadWrite (_, _), User) => (pure ((pte_U == (0b1 : (BitVec 1))) && ((pte_W == (0b1 : (BitVec 1))) && ((pte_R == (0b1 : (BitVec 1))) || ((pte_X == (0b1 : (BitVec 1))) && mxr)))))
+    | (.InstructionFetch (), User) => (pure ((pte_U == (0b1 : (BitVec 1))) && (pte_X == (0b1 : (BitVec 1)))))
+    | (.Read _, Supervisor) => (pure (((pte_U == (0b0 : (BitVec 1))) || do_sum) && ((pte_R == (0b1 : (BitVec 1))) || ((pte_X == (0b1 : (BitVec 1))) && mxr))))
+    | (.Write _, Supervisor) => (pure (((pte_U == (0b0 : (BitVec 1))) || do_sum) && (pte_W == (0b1 : (BitVec 1)))))
+    | (.ReadWrite (_, _), Supervisor) => (pure (((pte_U == (0b0 : (BitVec 1))) || do_sum) && ((pte_W == (0b1 : (BitVec 1))) && ((pte_R == (0b1 : (BitVec 1))) || ((pte_X == (0b1 : (BitVec 1))) && mxr)))))
+    | (.InstructionFetch (), Supervisor) => (pure ((pte_U == (0b0 : (BitVec 1))) && (pte_X == (0b1 : (BitVec 1)))))
     | (_, Machine) => (internal_error "riscv_vmem_pte.sail" 132 "m-mode mem perm check") ) : SailM
     Bool )
   bif success
@@ -260,14 +238,13 @@ def check_PTE_permission (ac : (AccessType Unit)) (priv : Privilege) (mxr : Bool
 def update_PTE_Bits (pte : (BitVec k_pte_size)) (a : (AccessType Unit)) : (Option (BitVec k_pte_size)) :=
   let pte_flags := (Mk_PTE_Flags (Sail.BitVec.extractLsb pte 7 0))
   let update_d : Bool :=
-    (Bool.and (BEq.beq (_get_PTE_Flags_D pte_flags) (0b0 : (BitVec 1)))
-      (match a with
+    (((_get_PTE_Flags_D pte_flags) == (0b0 : (BitVec 1))) && (match a with
       | .InstructionFetch () => false
       | .Read _ => false
       | .Write _ => true
       | .ReadWrite (_, _) => true : Bool))
-  let update_a := (BEq.beq (_get_PTE_Flags_A pte_flags) (0b0 : (BitVec 1)))
-  bif (Bool.or update_d update_a)
+  let update_a := ((_get_PTE_Flags_A pte_flags) == (0b0 : (BitVec 1)))
+  bif (update_d || update_a)
   then
     (let pte_flags :=
       (_update_PTE_Flags_D (_update_PTE_Flags_A pte_flags (0b1 : (BitVec 1)))

@@ -175,27 +175,27 @@ def encdec_rfvvfunct6_forwards (arg_ : rfvvfunct6) : (BitVec 6) :=
 
 def encdec_rfvvfunct6_backwards (arg_ : (BitVec 6)) : SailM rfvvfunct6 := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b000011 : (BitVec 6)))
+  bif (b__0 == (0b000011 : (BitVec 6)))
   then (pure FVV_VFREDOSUM)
   else
     (do
-      bif (BEq.beq b__0 (0b000001 : (BitVec 6)))
+      bif (b__0 == (0b000001 : (BitVec 6)))
       then (pure FVV_VFREDUSUM)
       else
         (do
-          bif (BEq.beq b__0 (0b000111 : (BitVec 6)))
+          bif (b__0 == (0b000111 : (BitVec 6)))
           then (pure FVV_VFREDMAX)
           else
             (do
-              bif (BEq.beq b__0 (0b000101 : (BitVec 6)))
+              bif (b__0 == (0b000101 : (BitVec 6)))
               then (pure FVV_VFREDMIN)
               else
                 (do
-                  bif (BEq.beq b__0 (0b110011 : (BitVec 6)))
+                  bif (b__0 == (0b110011 : (BitVec 6)))
                   then (pure FVV_VFWREDOSUM)
                   else
                     (do
-                      bif (BEq.beq b__0 (0b110001 : (BitVec 6)))
+                      bif (b__0 == (0b110001 : (BitVec 6)))
                       then (pure FVV_VFWREDUSUM)
                       else
                         (do
@@ -213,22 +213,22 @@ def encdec_rfvvfunct6_forwards_matches (arg_ : rfvvfunct6) : Bool :=
 
 def encdec_rfvvfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b000011 : (BitVec 6)))
+  bif (b__0 == (0b000011 : (BitVec 6)))
   then true
   else
-    (bif (BEq.beq b__0 (0b000001 : (BitVec 6)))
+    (bif (b__0 == (0b000001 : (BitVec 6)))
     then true
     else
-      (bif (BEq.beq b__0 (0b000111 : (BitVec 6)))
+      (bif (b__0 == (0b000111 : (BitVec 6)))
       then true
       else
-        (bif (BEq.beq b__0 (0b000101 : (BitVec 6)))
+        (bif (b__0 == (0b000101 : (BitVec 6)))
         then true
         else
-          (bif (BEq.beq b__0 (0b110011 : (BitVec 6)))
+          (bif (b__0 == (0b110011 : (BitVec 6)))
           then true
           else
-            (bif (BEq.beq b__0 (0b110001 : (BitVec 6)))
+            (bif (b__0 == (0b110001 : (BitVec 6)))
             then true
             else false)))))
 
@@ -241,8 +241,8 @@ def process_rfvv_single (funct6 : rfvvfunct6) (vm : (BitVec 1)) (vs2 : vregidx) 
   then (pure (Illegal_Instruction ()))
   else
     (do
-      assert (bne SEW 8) "riscv_insts_vext_fp_red.sail:36.17-36.18"
-      bif (BEq.beq (BitVec.toNat (← readReg vl)) 0)
+      assert (SEW != 8) "riscv_insts_vext_fp_red.sail:36.17-36.18"
+      bif ((BitVec.toNat (← readReg vl)) == 0)
       then (pure RETIRE_SUCCESS)
       else
         (do
@@ -268,7 +268,7 @@ def process_rfvv_single (funct6 : rfvvfunct6) (vm : (BitVec 1)) (vs2 : vregidx) 
             for i in [loop_i_lower:loop_i_upper:1]i do
               let sum := loop_vars
               loop_vars ← do
-                bif (BEq.beq (BitVec.access mask i) 1#1)
+                bif ((BitVec.access mask i) == 1#1)
                 then
                   (do
                     match funct6 with
@@ -295,8 +295,8 @@ def process_rfvv_widen (funct6 : rfvvfunct6) (vm : (BitVec 1)) (vs2 : vregidx) (
   then (pure (Illegal_Instruction ()))
   else
     (do
-      assert (Bool.and (SEW ≥b 16) (SEW_widen ≤b 64)) "riscv_insts_vext_fp_red.sail:81.36-81.37"
-      bif (BEq.beq (BitVec.toNat (← readReg vl)) 0)
+      assert ((SEW ≥b 16) && (SEW_widen ≤b 64)) "riscv_insts_vext_fp_red.sail:81.36-81.37"
+      bif ((BitVec.toNat (← readReg vl)) == 0)
       then (pure RETIRE_SUCCESS)
       else
         (do
@@ -324,7 +324,7 @@ def process_rfvv_widen (funct6 : rfvvfunct6) (vm : (BitVec 1)) (vs2 : vregidx) (
             for i in [loop_i_lower:loop_i_upper:1]i do
               let sum := loop_vars
               loop_vars ← do
-                bif (BEq.beq (BitVec.access mask i) 1#1)
+                bif ((BitVec.access mask i) == 1#1)
                 then
                   (do
                     (fp_add rm_3b sum (← (fp_widen (GetElem?.getElem! vs2_val i)))))

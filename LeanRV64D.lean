@@ -313,10 +313,10 @@ def sail_model_init (x_0 : Unit) : SailM Unit := do
   writeReg mstatus (let mxl := (architecture_forwards RV64)
   (_update_Mstatus_UXL
     (_update_Mstatus_SXL (Mk_Mstatus (zeros (n := 64)))
-      (bif (Bool.and (bne xlen 32) (hartSupports Ext_S))
+      (bif ((xlen != 32) && (hartSupports Ext_S))
       then mxl
       else (zeros (n := 2))))
-    (bif (Bool.and (bne xlen 32) (hartSupports Ext_U))
+    (bif ((xlen != 32) && (hartSupports Ext_U))
     then mxl
     else (zeros (n := 2)))))
   writeReg menvcfg (← (legalize_menvcfg (Mk_MEnvcfg (zeros (n := 64))) (zeros (n := 64))))

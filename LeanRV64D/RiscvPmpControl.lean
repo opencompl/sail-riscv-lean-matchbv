@@ -166,11 +166,10 @@ open AccessType
 
 def pmpCheckRWX (ent : (BitVec 8)) (acc : (AccessType Unit)) : Bool :=
   match acc with
-  | .Read _ => (BEq.beq (_get_Pmpcfg_ent_R ent) (0b1 : (BitVec 1)))
-  | .Write _ => (BEq.beq (_get_Pmpcfg_ent_W ent) (0b1 : (BitVec 1)))
-  | .ReadWrite _ => (Bool.and (BEq.beq (_get_Pmpcfg_ent_R ent) (0b1 : (BitVec 1)))
-      (BEq.beq (_get_Pmpcfg_ent_W ent) (0b1 : (BitVec 1))))
-  | .InstructionFetch () => (BEq.beq (_get_Pmpcfg_ent_X ent) (0b1 : (BitVec 1)))
+  | .Read _ => ((_get_Pmpcfg_ent_R ent) == (0b1 : (BitVec 1)))
+  | .Write _ => ((_get_Pmpcfg_ent_W ent) == (0b1 : (BitVec 1)))
+  | .ReadWrite _ => (((_get_Pmpcfg_ent_R ent) == (0b1 : (BitVec 1))) && ((_get_Pmpcfg_ent_W ent) == (0b1 : (BitVec 1))))
+  | .InstructionFetch () => ((_get_Pmpcfg_ent_X ent) == (0b1 : (BitVec 1)))
 
 def undefined_pmpAddrMatch (_ : Unit) : SailM pmpAddrMatch := do
   (internal_pick [PMP_NoMatch, PMP_PartialMatch, PMP_Match])
@@ -191,10 +190,10 @@ def num_of_pmpAddrMatch (arg_ : pmpAddrMatch) : Int :=
 /-- Type quantifiers: width : Nat, addr : Nat, end_ : Nat, begin : Nat, 0 ≤ begin, 0 ≤ end_, 0
   ≤ addr, 0 ≤ width -/
 def pmpRangeMatch (begin : Nat) (end_ : Nat) (addr : Nat) (width : Nat) : pmpAddrMatch :=
-  bif (Bool.or ((addr +i width) ≤b begin) (end_ ≤b addr))
+  bif (((addr +i width) ≤b begin) || (end_ ≤b addr))
   then PMP_NoMatch
   else
-    (bif (Bool.and (begin ≤b addr) ((addr +i width) ≤b end_))
+    (bif ((begin ≤b addr) && ((addr +i width) ≤b end_))
     then PMP_Match
     else PMP_PartialMatch)
 
@@ -238,8 +237,7 @@ def pmpMatchEntry (addr : physaddr) (width : (BitVec (2 ^ 3 * 8))) (acc : (Acces
   match (← (pmpMatchAddr addr width ent pmpaddr prev_pmpaddr)) with
   | PMP_NoMatch => (pure PMP_Continue)
   | PMP_PartialMatch => (pure PMP_Fail)
-  | PMP_Match => (bif (Bool.or (pmpCheckRWX ent acc)
-         (Bool.and (BEq.beq priv Machine) (not (pmpLocked ent))))
+  | PMP_Match => (bif ((pmpCheckRWX ent acc) || ((priv == Machine) && (not (pmpLocked ent))))
     then (pure PMP_Success)
     else (pure PMP_Fail))
 
@@ -269,13 +267,12 @@ def pmpCheck (addr : physaddr) (width : Nat) (acc : (AccessType Unit)) (priv : P
       | PMP_Fail => SailME.throw ((some (accessToFault acc)) : (Option ExceptionType))
       | PMP_Continue => (pure ())
   (pure loop_vars)
-  bif (BEq.beq priv Machine)
+  bif (priv == Machine)
   then (pure none)
   else (pure (some (accessToFault acc)))
 
 def reset_pmp (_ : Unit) : SailM Unit := do
-  assert (Bool.or (BEq.beq (sys_pmp_count ()) 0)
-    ((Bool.or (BEq.beq (sys_pmp_count ()) 16) ((BEq.beq (sys_pmp_count ()) 64) : Bool)) : Bool)) "sys_pmp_count() must be 0, 16, or 64"
+  assert (((sys_pmp_count ()) == 0) || ((((sys_pmp_count ()) == 16) || (((sys_pmp_count ()) == 64) : Bool)) : Bool)) "sys_pmp_count() must be 0, 16, or 64"
   let loop_i_lower := 0
   let loop_i_upper := 63
   let mut loop_vars := ()

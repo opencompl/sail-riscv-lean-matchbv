@@ -171,11 +171,11 @@ def encdec_uop_forwards (arg_ : uop) : (BitVec 7) :=
 
 def encdec_uop_backwards (arg_ : (BitVec 7)) : SailM uop := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b0110111 : (BitVec 7)))
+  bif (b__0 == (0b0110111 : (BitVec 7)))
   then (pure LUI)
   else
     (do
-      bif (BEq.beq b__0 (0b0010111 : (BitVec 7)))
+      bif (b__0 == (0b0010111 : (BitVec 7)))
       then (pure AUIPC)
       else
         (do
@@ -189,10 +189,10 @@ def encdec_uop_forwards_matches (arg_ : uop) : Bool :=
 
 def encdec_uop_backwards_matches (arg_ : (BitVec 7)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b0110111 : (BitVec 7)))
+  bif (b__0 == (0b0110111 : (BitVec 7)))
   then true
   else
-    (bif (BEq.beq b__0 (0b0010111 : (BitVec 7)))
+    (bif (b__0 == (0b0010111 : (BitVec 7)))
     then true
     else false)
 
@@ -226,27 +226,27 @@ def encdec_bop_forwards (arg_ : bop) : (BitVec 3) :=
 
 def encdec_bop_backwards (arg_ : (BitVec 3)) : SailM bop := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (b__0 == (0b000 : (BitVec 3)))
   then (pure BEQ)
   else
     (do
-      bif (BEq.beq b__0 (0b001 : (BitVec 3)))
+      bif (b__0 == (0b001 : (BitVec 3)))
       then (pure BNE)
       else
         (do
-          bif (BEq.beq b__0 (0b100 : (BitVec 3)))
+          bif (b__0 == (0b100 : (BitVec 3)))
           then (pure BLT)
           else
             (do
-              bif (BEq.beq b__0 (0b101 : (BitVec 3)))
+              bif (b__0 == (0b101 : (BitVec 3)))
               then (pure BGE)
               else
                 (do
-                  bif (BEq.beq b__0 (0b110 : (BitVec 3)))
+                  bif (b__0 == (0b110 : (BitVec 3)))
                   then (pure BLTU)
                   else
                     (do
-                      bif (BEq.beq b__0 (0b111 : (BitVec 3)))
+                      bif (b__0 == (0b111 : (BitVec 3)))
                       then (pure BGEU)
                       else
                         (do
@@ -264,22 +264,22 @@ def encdec_bop_forwards_matches (arg_ : bop) : Bool :=
 
 def encdec_bop_backwards_matches (arg_ : (BitVec 3)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (b__0 == (0b000 : (BitVec 3)))
   then true
   else
-    (bif (BEq.beq b__0 (0b001 : (BitVec 3)))
+    (bif (b__0 == (0b001 : (BitVec 3)))
     then true
     else
-      (bif (BEq.beq b__0 (0b100 : (BitVec 3)))
+      (bif (b__0 == (0b100 : (BitVec 3)))
       then true
       else
-        (bif (BEq.beq b__0 (0b101 : (BitVec 3)))
+        (bif (b__0 == (0b101 : (BitVec 3)))
         then true
         else
-          (bif (BEq.beq b__0 (0b110 : (BitVec 3)))
+          (bif (b__0 == (0b110 : (BitVec 3)))
           then true
           else
-            (bif (BEq.beq b__0 (0b111 : (BitVec 3)))
+            (bif (b__0 == (0b111 : (BitVec 3)))
             then true
             else false)))))
 
@@ -325,27 +325,27 @@ def encdec_iop_forwards (arg_ : iop) : (BitVec 3) :=
 
 def encdec_iop_backwards (arg_ : (BitVec 3)) : SailM iop := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (b__0 == (0b000 : (BitVec 3)))
   then (pure ADDI)
   else
     (do
-      bif (BEq.beq b__0 (0b010 : (BitVec 3)))
+      bif (b__0 == (0b010 : (BitVec 3)))
       then (pure SLTI)
       else
         (do
-          bif (BEq.beq b__0 (0b011 : (BitVec 3)))
+          bif (b__0 == (0b011 : (BitVec 3)))
           then (pure SLTIU)
           else
             (do
-              bif (BEq.beq b__0 (0b111 : (BitVec 3)))
+              bif (b__0 == (0b111 : (BitVec 3)))
               then (pure ANDI)
               else
                 (do
-                  bif (BEq.beq b__0 (0b110 : (BitVec 3)))
+                  bif (b__0 == (0b110 : (BitVec 3)))
                   then (pure ORI)
                   else
                     (do
-                      bif (BEq.beq b__0 (0b100 : (BitVec 3)))
+                      bif (b__0 == (0b100 : (BitVec 3)))
                       then (pure XORI)
                       else
                         (do
@@ -363,22 +363,22 @@ def encdec_iop_forwards_matches (arg_ : iop) : Bool :=
 
 def encdec_iop_backwards_matches (arg_ : (BitVec 3)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b000 : (BitVec 3)))
+  bif (b__0 == (0b000 : (BitVec 3)))
   then true
   else
-    (bif (BEq.beq b__0 (0b010 : (BitVec 3)))
+    (bif (b__0 == (0b010 : (BitVec 3)))
     then true
     else
-      (bif (BEq.beq b__0 (0b011 : (BitVec 3)))
+      (bif (b__0 == (0b011 : (BitVec 3)))
       then true
       else
-        (bif (BEq.beq b__0 (0b111 : (BitVec 3)))
+        (bif (b__0 == (0b111 : (BitVec 3)))
         then true
         else
-          (bif (BEq.beq b__0 (0b110 : (BitVec 3)))
+          (bif (b__0 == (0b110 : (BitVec 3)))
           then true
           else
-            (bif (BEq.beq b__0 (0b100 : (BitVec 3)))
+            (bif (b__0 == (0b100 : (BitVec 3)))
             then true
             else false)))))
 
@@ -421,15 +421,15 @@ def encdec_sop_forwards (arg_ : sop) : (BitVec 3) :=
 
 def encdec_sop_backwards (arg_ : (BitVec 3)) : SailM sop := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b001 : (BitVec 3)))
+  bif (b__0 == (0b001 : (BitVec 3)))
   then (pure SLLI)
   else
     (do
-      bif (BEq.beq b__0 (0b101 : (BitVec 3)))
+      bif (b__0 == (0b101 : (BitVec 3)))
       then (pure SRLI)
       else
         (do
-          bif (BEq.beq b__0 (0b101 : (BitVec 3)))
+          bif (b__0 == (0b101 : (BitVec 3)))
           then (pure SRAI)
           else
             (do
@@ -444,13 +444,13 @@ def encdec_sop_forwards_matches (arg_ : sop) : Bool :=
 
 def encdec_sop_backwards_matches (arg_ : (BitVec 3)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b001 : (BitVec 3)))
+  bif (b__0 == (0b001 : (BitVec 3)))
   then true
   else
-    (bif (BEq.beq b__0 (0b101 : (BitVec 3)))
+    (bif (b__0 == (0b101 : (BitVec 3)))
     then true
     else
-      (bif (BEq.beq b__0 (0b101 : (BitVec 3)))
+      (bif (b__0 == (0b101 : (BitVec 3)))
       then true
       else false))
 
@@ -528,13 +528,12 @@ def extend_value (is_unsigned : Bool) (value : (BitVec k_n)) : (BitVec (2 ^ 3 * 
 def is_aligned (vaddr : (BitVec (2 ^ 3 * 8))) (width : word_width) : Bool :=
   match width with
   | BYTE => true
-  | HALF => (BEq.beq (Sail.BitVec.extractLsb vaddr 0 0) (zeros (n := ((0 -i 0) +i 1))))
-  | WORD => (BEq.beq (Sail.BitVec.extractLsb vaddr 1 0) (zeros (n := ((1 -i 0) +i 1))))
-  | DOUBLE => (BEq.beq (Sail.BitVec.extractLsb vaddr 2 0) (zeros (n := ((2 -i 0) +i 1))))
+  | HALF => ((Sail.BitVec.extractLsb vaddr 0 0) == (zeros (n := ((0 -i 0) +i 1))))
+  | WORD => ((Sail.BitVec.extractLsb vaddr 1 0) == (zeros (n := ((1 -i 0) +i 1))))
+  | DOUBLE => ((Sail.BitVec.extractLsb vaddr 2 0) == (zeros (n := ((2 -i 0) +i 1))))
 
 def check_misaligned (vaddr : virtaddr) (width : word_width) : Bool :=
-  (Bool.and (not (plat_enable_misaligned_access ()))
-    (not (is_aligned (bits_of_virtaddr vaddr) width)))
+  ((not (plat_enable_misaligned_access ())) && (not (is_aligned (bits_of_virtaddr vaddr) width)))
 
 def maybe_aq_backwards (arg_ : String) : SailM Bool := do
   match arg_ with
@@ -664,10 +663,10 @@ def bit_maybe_r_backwards (arg_ : String) : SailM (BitVec 1) := do
 
 def bit_maybe_r_forwards_matches (arg_ : (BitVec 1)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b1 : (BitVec 1)))
+  bif (b__0 == (0b1 : (BitVec 1)))
   then true
   else
-    (bif (BEq.beq b__0 (0b0 : (BitVec 1)))
+    (bif (b__0 == (0b0 : (BitVec 1)))
     then true
     else false)
 
@@ -687,10 +686,10 @@ def bit_maybe_w_backwards (arg_ : String) : SailM (BitVec 1) := do
 
 def bit_maybe_w_forwards_matches (arg_ : (BitVec 1)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b1 : (BitVec 1)))
+  bif (b__0 == (0b1 : (BitVec 1)))
   then true
   else
-    (bif (BEq.beq b__0 (0b0 : (BitVec 1)))
+    (bif (b__0 == (0b0 : (BitVec 1)))
     then true
     else false)
 
@@ -710,10 +709,10 @@ def bit_maybe_i_backwards (arg_ : String) : SailM (BitVec 1) := do
 
 def bit_maybe_i_forwards_matches (arg_ : (BitVec 1)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b1 : (BitVec 1)))
+  bif (b__0 == (0b1 : (BitVec 1)))
   then true
   else
-    (bif (BEq.beq b__0 (0b0 : (BitVec 1)))
+    (bif (b__0 == (0b0 : (BitVec 1)))
     then true
     else false)
 
@@ -733,10 +732,10 @@ def bit_maybe_o_backwards (arg_ : String) : SailM (BitVec 1) := do
 
 def bit_maybe_o_forwards_matches (arg_ : (BitVec 1)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b1 : (BitVec 1)))
+  bif (b__0 == (0b1 : (BitVec 1)))
   then true
   else
-    (bif (BEq.beq b__0 (0b0 : (BitVec 1)))
+    (bif (b__0 == (0b0 : (BitVec 1)))
     then true
     else false)
 

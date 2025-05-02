@@ -190,10 +190,10 @@ def counter_priv_filter_bit (reg : (BitVec 64)) (priv : Privilege) : (BitVec 1) 
   | User => (_get_CountSmcntrpmf_UINH reg)
 
 def should_inc_mcycle (priv : Privilege) : SailM Bool := do
-  (pure (Bool.and (BEq.beq (_get_Counterin_CY (← readReg mcountinhibit)) (0b0 : (BitVec 1)))
-      (BEq.beq (counter_priv_filter_bit (← readReg mcyclecfg) priv) (0b0 : (BitVec 1)))))
+  (pure (((_get_Counterin_CY (← readReg mcountinhibit)) == (0b0 : (BitVec 1))) && ((counter_priv_filter_bit
+          (← readReg mcyclecfg) priv) == (0b0 : (BitVec 1)))))
 
 def should_inc_minstret (priv : Privilege) : SailM Bool := do
-  (pure (Bool.and (BEq.beq (_get_Counterin_IR (← readReg mcountinhibit)) (0b0 : (BitVec 1)))
-      (BEq.beq (counter_priv_filter_bit (← readReg minstretcfg) priv) (0b0 : (BitVec 1)))))
+  (pure (((_get_Counterin_IR (← readReg mcountinhibit)) == (0b0 : (BitVec 1))) && ((counter_priv_filter_bit
+          (← readReg minstretcfg) priv) == (0b0 : (BitVec 1)))))
 

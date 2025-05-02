@@ -168,7 +168,7 @@ open AccessType
 def hex_bits_signed_forwards (bv : (BitVec k_n)) : (Nat × String) :=
   let len := (Sail.BitVec.length bv)
   let s :=
-    bif (BEq.beq (BitVec.access bv (len -i 1)) 1#1)
+    bif ((BitVec.access bv (len -i 1)) == 1#1)
     then (HAppend.hAppend "-" (Int.toHex ((BitVec.toNat (Complement.complement bv)) +i 1)))
     else (Int.toHex (BitVec.toNat bv))
   ((Sail.BitVec.length bv), s)
@@ -180,24 +180,24 @@ def hex_bits_signed_forwards_matches (bv : (BitVec k_n)) : Bool :=
 /-- Type quantifiers: tuple_0.1 : Nat, tuple_0.1 > 0 -/
 def hex_bits_signed_backwards (tuple_0 : (Nat × String)) : (BitVec tuple_0.1) :=
   let (n, str) := tuple_0
-  bif (BEq.beq (String.take str 1) "-")
+  bif ((String.take str 1) == "-")
   then ((BitVec.zero n) - (parse_hex_bits n (String.drop str 1)))
   else
     (let parsed := (parse_hex_bits n str)
-    bif (BEq.beq (BitVec.access parsed (n -i 1)) 0#1)
+    bif ((BitVec.access parsed (n -i 1)) == 0#1)
     then parsed
     else (BitVec.zero n))
 
 /-- Type quantifiers: tuple_0.1 : Nat, tuple_0.1 > 0 -/
 def hex_bits_signed_backwards_matches (tuple_0 : (Nat × String)) : Bool :=
   let (n, str) := tuple_0
-  bif (BEq.beq (String.take str 1) "-")
+  bif ((String.take str 1) == "-")
   then (valid_hex_bits n (String.drop str 1))
   else
     (bif (valid_hex_bits n str)
     then
       (let parsed := (parse_hex_bits n str)
-      (BEq.beq (BitVec.access parsed (n -i 1)) 0#1))
+      ((BitVec.access parsed (n -i 1)) == 0#1))
     else false)
 
 def hex_bits_signed_1_forwards (arg_ : (BitVec 1)) : SailM String := do

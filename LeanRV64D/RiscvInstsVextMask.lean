@@ -177,35 +177,35 @@ def encdec_mmfunct6_forwards (arg_ : mmfunct6) : (BitVec 6) :=
 
 def encdec_mmfunct6_backwards (arg_ : (BitVec 6)) : SailM mmfunct6 := do
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b011001 : (BitVec 6)))
+  bif (b__0 == (0b011001 : (BitVec 6)))
   then (pure MM_VMAND)
   else
     (do
-      bif (BEq.beq b__0 (0b011101 : (BitVec 6)))
+      bif (b__0 == (0b011101 : (BitVec 6)))
       then (pure MM_VMNAND)
       else
         (do
-          bif (BEq.beq b__0 (0b011000 : (BitVec 6)))
+          bif (b__0 == (0b011000 : (BitVec 6)))
           then (pure MM_VMANDN)
           else
             (do
-              bif (BEq.beq b__0 (0b011011 : (BitVec 6)))
+              bif (b__0 == (0b011011 : (BitVec 6)))
               then (pure MM_VMXOR)
               else
                 (do
-                  bif (BEq.beq b__0 (0b011010 : (BitVec 6)))
+                  bif (b__0 == (0b011010 : (BitVec 6)))
                   then (pure MM_VMOR)
                   else
                     (do
-                      bif (BEq.beq b__0 (0b011110 : (BitVec 6)))
+                      bif (b__0 == (0b011110 : (BitVec 6)))
                       then (pure MM_VMNOR)
                       else
                         (do
-                          bif (BEq.beq b__0 (0b011100 : (BitVec 6)))
+                          bif (b__0 == (0b011100 : (BitVec 6)))
                           then (pure MM_VMORN)
                           else
                             (do
-                              bif (BEq.beq b__0 (0b011111 : (BitVec 6)))
+                              bif (b__0 == (0b011111 : (BitVec 6)))
                               then (pure MM_VMXNOR)
                               else
                                 (do
@@ -225,28 +225,28 @@ def encdec_mmfunct6_forwards_matches (arg_ : mmfunct6) : Bool :=
 
 def encdec_mmfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
   let b__0 := arg_
-  bif (BEq.beq b__0 (0b011001 : (BitVec 6)))
+  bif (b__0 == (0b011001 : (BitVec 6)))
   then true
   else
-    (bif (BEq.beq b__0 (0b011101 : (BitVec 6)))
+    (bif (b__0 == (0b011101 : (BitVec 6)))
     then true
     else
-      (bif (BEq.beq b__0 (0b011000 : (BitVec 6)))
+      (bif (b__0 == (0b011000 : (BitVec 6)))
       then true
       else
-        (bif (BEq.beq b__0 (0b011011 : (BitVec 6)))
+        (bif (b__0 == (0b011011 : (BitVec 6)))
         then true
         else
-          (bif (BEq.beq b__0 (0b011010 : (BitVec 6)))
+          (bif (b__0 == (0b011010 : (BitVec 6)))
           then true
           else
-            (bif (BEq.beq b__0 (0b011110 : (BitVec 6)))
+            (bif (b__0 == (0b011110 : (BitVec 6)))
             then true
             else
-              (bif (BEq.beq b__0 (0b011100 : (BitVec 6)))
+              (bif (b__0 == (0b011100 : (BitVec 6)))
               then true
               else
-                (bif (BEq.beq b__0 (0b011111 : (BitVec 6)))
+                (bif (b__0 == (0b011111 : (BitVec 6)))
                 then true
                 else false)))))))
 
