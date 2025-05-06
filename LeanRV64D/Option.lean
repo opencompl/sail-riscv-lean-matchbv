@@ -3,6 +3,7 @@ import LeanRV64D.Sail.BitVec
 import LeanRV64D.Sail.IntRange
 import LeanRV64D.Defs
 import LeanRV64D.Specialization
+import LeanRV64D.FakeReal
 import LeanRV64D.RiscvExtras
 
 set_option maxHeartbeats 1_000_000_000
