@@ -168,7 +168,8 @@ def zicond_mnemonic_backwards (arg_ : String) : SailM zicondop := do
   match arg_ with
   | "czero.eqz" => (pure CZERO_EQZ)
   | "czero.nez" => (pure CZERO_NEZ)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 

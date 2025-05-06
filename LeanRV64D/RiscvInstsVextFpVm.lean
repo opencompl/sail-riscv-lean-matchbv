@@ -220,7 +220,8 @@ def fvvmtype_mnemonic_backwards (arg_ : String) : SailM fvvmfunct6 := do
   | "vmfle.vv" => (pure FVVM_VMFLE)
   | "vmflt.vv" => (pure FVVM_VMFLT)
   | "vmfne.vv" => (pure FVVM_VMFNE)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -315,7 +316,8 @@ def fvfmtype_mnemonic_backwards (arg_ : String) : SailM fvfmfunct6 := do
   | "vmfne.vf" => (pure VFM_VMFNE)
   | "vmfgt.vf" => (pure VFM_VMFGT)
   | "vmfge.vf" => (pure VFM_VMFGE)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 

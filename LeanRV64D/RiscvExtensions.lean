@@ -200,7 +200,8 @@ def hartSupports (merge_var : extension) : Bool :=
   | Ext_Zcd => true
   | Ext_Zcf => ((true : Bool) && (xlen == 32))
   | Ext_Zcmop => true
-  | Ext_C => ((hartSupports Ext_Zca) && (((hartSupports Ext_Zcf) || ((not (hartSupports Ext_F)) || (xlen != 32))) && ((hartSupports
+  | Ext_C =>
+    ((hartSupports Ext_Zca) && (((hartSupports Ext_Zcf) || ((not (hartSupports Ext_F)) || (xlen != 32))) && ((hartSupports
             Ext_Zcd) || (not (hartSupports Ext_D)))))
   | Ext_Zba => false
   | Ext_Zbb => false

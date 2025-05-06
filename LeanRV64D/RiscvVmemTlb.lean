@@ -208,7 +208,8 @@ def flush_TLB_Entry (ent : TLB_Entry) (asid : (Option (BitVec 16))) (vaddr : (Op
     | none => true
   let addr_matches : Bool :=
     match vaddr with
-    | .some vaddr => (let vaddr : (BitVec 64) := (sign_extend (m := 64) vaddr)
+    | .some vaddr =>
+      (let vaddr : (BitVec 64) := (sign_extend (m := 64) vaddr)
       (ent.vpn == ((Sail.BitVec.extractLsb vaddr 56 pagesize_bits) &&& (Complement.complement
             ent.levelMask))))
     | none => true
@@ -219,7 +220,8 @@ def lookup_TLB (sv_width : Nat) (asid : (BitVec 16)) (vpn : (BitVec (sv_width - 
   let index := (tlb_hash sv_width vpn)
   match (GetElem?.getElem! (← readReg tlb) index) with
   | none => (pure none)
-  | .some entry => (bif (match_TLB_Entry entry asid (sign_extend (m := (57 -i 12)) vpn))
+  | .some entry =>
+    (bif (match_TLB_Entry entry asid (sign_extend (m := (57 -i 12)) vpn))
     then (pure (some (index, entry)))
     else (pure none))
 
@@ -261,7 +263,8 @@ def flush_TLB (asid : (Option (BitVec 16))) (addr : (Option (BitVec (2 ^ 3 * 8))
     loop_vars ← do
       match (GetElem?.getElem! (← readReg tlb) i) with
       | none => (pure ())
-      | .some entry => (do
+      | .some entry =>
+        (do
           bif (flush_TLB_Entry entry asid addr)
           then writeReg tlb (vectorUpdate (← readReg tlb) i none)
           else (pure ()))

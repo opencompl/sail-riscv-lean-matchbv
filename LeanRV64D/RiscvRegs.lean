@@ -200,7 +200,8 @@ def rX (app_0 : regno) : SailM (BitVec (2 ^ 3 * 8)) := do
     | 29 => readReg x29
     | 30 => readReg x30
     | 31 => readReg x31
-    | _ => (do
+    | _ =>
+      (do
         assert false "invalid register number"
         throw Error.Exit) ) : SailM regtype )
   (pure (regval_from_reg v))
@@ -295,7 +296,8 @@ def reg_name_raw_backwards (arg_ : String) : SailM (BitVec 5) := do
   | "t4" => (pure (0b11101 : (BitVec 5)))
   | "t5" => (pure (0b11110 : (BitVec 5)))
   | "t6" => (pure (0b11111 : (BitVec 5)))
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -445,7 +447,8 @@ def reg_name_backwards (arg_ : String) : SailM regidx := do
         | i => (pure (some (Regidx i))))
     else (pure none)) with
   | .some result => (pure result)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -464,7 +467,8 @@ def reg_name_backwards_matches (arg_ : String) : SailM Bool := do
         | i => (pure (some true)))
     else (pure none)) with
   | .some result => (pure result)
-  | none => (match head_exp_ with
+  | none =>
+    (match head_exp_ with
     | _ => (pure false))
 
 def creg_name_raw_backwards (arg_ : String) : SailM (BitVec 3) := do
@@ -477,7 +481,8 @@ def creg_name_raw_backwards (arg_ : String) : SailM (BitVec 3) := do
   | "a3" => (pure (0b101 : (BitVec 3)))
   | "a4" => (pure (0b110 : (BitVec 3)))
   | "a5" => (pure (0b111 : (BitVec 3)))
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -531,7 +536,8 @@ def creg_name_backwards (arg_ : String) : SailM cregidx := do
         | i => (pure (some (Cregidx i))))
     else (pure none)) with
   | .some result => (pure result)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -550,7 +556,8 @@ def creg_name_backwards_matches (arg_ : String) : SailM Bool := do
         | i => (pure (some true)))
     else (pure none)) with
   | .some result => (pure result)
-  | none => (match head_exp_ with
+  | none =>
+    (match head_exp_ with
     | _ => (pure false))
 
 def encdec_reg_forwards (arg_ : regidx) : (BitVec 5) :=

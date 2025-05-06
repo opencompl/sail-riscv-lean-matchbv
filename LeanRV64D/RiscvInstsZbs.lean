@@ -170,7 +170,8 @@ def zbs_iop_mnemonic_backwards (arg_ : String) : SailM biop_zbs := do
   | "bexti" => (pure BEXTI)
   | "binvi" => (pure BINVI)
   | "bseti" => (pure BSETI)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -195,7 +196,8 @@ def zbs_rtype_mnemonic_backwards (arg_ : String) : SailM brop_zbs := do
   | "bext" => (pure BEXT)
   | "binv" => (pure BINV)
   | "bset" => (pure BSET)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 

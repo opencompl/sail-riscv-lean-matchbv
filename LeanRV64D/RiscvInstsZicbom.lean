@@ -214,7 +214,8 @@ def cbop_mnemonic_backwards (arg_ : String) : SailM cbop_zicbom := do
   | "cbo.clean" => (pure CBO_CLEAN)
   | "cbo.flush" => (pure CBO_FLUSH)
   | "cbo.inval" => (pure CBO_INVAL)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -330,10 +331,12 @@ def process_clean_inval (rs1 : regidx) (cbop : cbop_zicbom) : SailM ExecutionRes
           (zero_extend (m := ((2 ^i 3) *i 8)) (ones (n := cache_block_size_exp))))) - rs1_val)
   match (← (ext_data_get_addr rs1 negative_offset (Read Data) cache_block_size)) with
   | .Ext_DataAddr_Error e => (pure (Ext_DataAddr_Check_Failure e))
-  | .Ext_DataAddr_OK vaddr => (do
+  | .Ext_DataAddr_OK vaddr =>
+    (do
       let res ← (( do
         match (← (translateAddr vaddr (Read Data))) with
-        | .TR_Address (paddr, _) => (do
+        | .TR_Address (paddr, _) =>
+          (do
             let ep ← do
               (effectivePrivilege (Read Data) (← readReg mstatus) (← readReg cur_privilege))
             let exc_read ← do (phys_access_check (Read Data) ep paddr cache_block_size)
@@ -344,14 +347,16 @@ def process_clean_inval (rs1 : regidx) (cbop : cbop_zicbom) : SailM ExecutionRes
         | .TR_Failure (e, _) => (pure (some e)) ) : SailM (Option ExceptionType) )
       match res with
       | none => (pure RETIRE_SUCCESS)
-      | .some e => (do
+      | .some e =>
+        (do
           let e ← (( do
             match e with
             | .E_Load_Access_Fault () => (pure (E_SAMO_Access_Fault ()))
             | .E_SAMO_Access_Fault () => (pure (E_SAMO_Access_Fault ()))
             | .E_Load_Page_Fault () => (pure (E_SAMO_Page_Fault ()))
             | .E_SAMO_Page_Fault () => (pure (E_SAMO_Page_Fault ()))
-            | _ => (internal_error "riscv_insts_zicbom.sail" 125
+            | _ =>
+              (internal_error "riscv_insts_zicbom.sail" 125
                 "unexpected exception for cmo.clean/inval") ) : SailM ExceptionType )
           (pure (Memory_Exception ((sub_virtaddr_xlenbits vaddr negative_offset), e)))))
 

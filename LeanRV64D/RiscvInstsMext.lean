@@ -170,7 +170,8 @@ def encdec_mul_op_forwards (arg_ : mul_op) : SailM (BitVec 3) := do
   | { high := true, signed_rs1 := true, signed_rs2 := true } => (pure (0b001 : (BitVec 3)))
   | { high := true, signed_rs1 := true, signed_rs2 := false } => (pure (0b010 : (BitVec 3)))
   | { high := true, signed_rs1 := false, signed_rs2 := false } => (pure (0b011 : (BitVec 3)))
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -232,19 +233,24 @@ def encdec_mul_op_backwards_matches (arg_ : (BitVec 3)) : Bool :=
 
 def mul_mnemonic_backwards (arg_ : String) : SailM mul_op := do
   match arg_ with
-  | "mul" => (pure { high := false
-                     signed_rs1 := true
-                     signed_rs2 := true })
-  | "mulh" => (pure { high := true
-                      signed_rs1 := true
-                      signed_rs2 := true })
-  | "mulhsu" => (pure { high := true
-                        signed_rs1 := true
-                        signed_rs2 := false })
-  | "mulhu" => (pure { high := true
-                       signed_rs1 := false
-                       signed_rs2 := false })
-  | _ => (do
+  | "mul" =>
+    (pure { high := false
+            signed_rs1 := true
+            signed_rs2 := true })
+  | "mulh" =>
+    (pure { high := true
+            signed_rs1 := true
+            signed_rs2 := true })
+  | "mulhsu" =>
+    (pure { high := true
+            signed_rs1 := true
+            signed_rs2 := false })
+  | "mulhu" =>
+    (pure { high := true
+            signed_rs1 := false
+            signed_rs2 := false })
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -268,7 +274,8 @@ def maybe_not_u_backwards (arg_ : String) : SailM Bool := do
   match arg_ with
   | "u" => (pure false)
   | "" => (pure true)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 

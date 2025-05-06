@@ -270,7 +270,8 @@ def fvvtype_mnemonic_backwards (arg_ : String) : SailM fvvfunct6 := do
   | "vfsgnjx.vv" => (pure FVV_VSGNJX)
   | "vfdiv.vv" => (pure FVV_VDIV)
   | "vfmul.vv" => (pure FVV_VMUL)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -395,7 +396,8 @@ def fvvmatype_mnemonic_backwards (arg_ : String) : SailM fvvmafunct6 := do
   | "vfnmacc.vv" => (pure FVV_VNMACC)
   | "vfmsac.vv" => (pure FVV_VMSAC)
   | "vfnmsac.vv" => (pure FVV_VNMSAC)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -468,7 +470,8 @@ def fwvvtype_mnemonic_backwards (arg_ : String) : SailM fwvvfunct6 := do
   | "vfwadd.vv" => (pure FWVV_VADD)
   | "vfwsub.vv" => (pure FWVV_VSUB)
   | "vfwmul.vv" => (pure FWVV_VMUL)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -541,7 +544,8 @@ def fwvvmatype_mnemonic_backwards (arg_ : String) : SailM fwvvmafunct6 := do
   | "vfwnmacc.vv" => (pure FWVV_VNMACC)
   | "vfwmsac.vv" => (pure FWVV_VMSAC)
   | "vfwnmsac.vv" => (pure FWVV_VNMSAC)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -596,7 +600,8 @@ def fwvtype_mnemonic_backwards (arg_ : String) : SailM fwvfunct6 := do
   match arg_ with
   | "vfwadd.wv" => (pure FWV_VADD)
   | "vfwsub.wv" => (pure FWV_VSUB)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -687,7 +692,8 @@ def vfunary0_mnemonic_backwards (arg_ : String) : SailM vfunary0 := do
   | "vfcvt.f.x.v" => (pure FV_CVT_F_X)
   | "vfcvt.rtz.xu.f.v" => (pure FV_CVT_RTZ_XU_F)
   | "vfcvt.rtz.x.f.v" => (pure FV_CVT_RTZ_X_F)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -796,7 +802,8 @@ def vfwunary0_mnemonic_backwards (arg_ : String) : SailM vfwunary0 := do
   | "vfwcvt.f.f.v" => (pure FWV_CVT_F_F)
   | "vfwcvt.rtz.xu.f.v" => (pure FWV_CVT_RTZ_XU_F)
   | "vfwcvt.rtz.x.f.v" => (pure FWV_CVT_RTZ_X_F)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -917,7 +924,8 @@ def vfnunary0_mnemonic_backwards (arg_ : String) : SailM vfnunary0 := do
   | "vfncvt.rod.f.f.w" => (pure FNV_CVT_ROD_F_F)
   | "vfncvt.rtz.xu.f.w" => (pure FNV_CVT_RTZ_XU_F)
   | "vfncvt.rtz.x.f.w" => (pure FNV_CVT_RTZ_X_F)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -1000,7 +1008,8 @@ def vfunary1_mnemonic_backwards (arg_ : String) : SailM vfunary1 := do
   | "vfrsqrt7.v" => (pure FVV_VRSQRT7)
   | "vfrec7.v" => (pure FVV_VREC7)
   | "vfclass.v" => (pure FVV_VCLASS)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -1165,7 +1174,8 @@ def fvftype_mnemonic_backwards (arg_ : String) : SailM fvffunct6 := do
   | "vfrdiv.vf" => (pure VF_VRDIV)
   | "vfmul.vf" => (pure VF_VMUL)
   | "vfrsub.vf" => (pure VF_VRSUB)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -1298,7 +1308,8 @@ def fvfmatype_mnemonic_backwards (arg_ : String) : SailM fvfmafunct6 := do
   | "vfnmacc.vf" => (pure VF_VNMACC)
   | "vfmsac.vf" => (pure VF_VMSAC)
   | "vfnmsac.vf" => (pure VF_VNMSAC)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -1371,7 +1382,8 @@ def fwvftype_mnemonic_backwards (arg_ : String) : SailM fwvffunct6 := do
   | "vfwadd.vf" => (pure FWVF_VADD)
   | "vfwsub.vf" => (pure FWVF_VSUB)
   | "vfwmul.vf" => (pure FWVF_VMUL)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -1444,7 +1456,8 @@ def fwvfmatype_mnemonic_backwards (arg_ : String) : SailM fwvfmafunct6 := do
   | "vfwnmacc.vf" => (pure FWVF_VNMACC)
   | "vfwmsac.vf" => (pure FWVF_VMSAC)
   | "vfwnmsac.vf" => (pure FWVF_VNMSAC)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -1499,7 +1512,8 @@ def fwftype_mnemonic_backwards (arg_ : String) : SailM fwffunct6 := do
   match arg_ with
   | "vfwadd.wf" => (pure FWF_VADD)
   | "vfwsub.wf" => (pure FWF_VSUB)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 

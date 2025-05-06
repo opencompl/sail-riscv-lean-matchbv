@@ -186,7 +186,8 @@ def feature_enabled_for_priv (p : Privilege) (machine_enable_bit : (BitVec 1)) (
   match p with
   | Machine => (pure true)
   | Supervisor => (pure (machine_enable_bit == 1#1))
-  | User => (pure ((machine_enable_bit == 1#1) && ((not (← (currentlyEnabled Ext_S))) || (supervisor_enable_bit == 1#1))))
+  | User =>
+    (pure ((machine_enable_bit == 1#1) && ((not (← (currentlyEnabled Ext_S))) || (supervisor_enable_bit == 1#1))))
 
 def check_Counteren (csr : (BitVec 12)) (p : Privilege) : SailM Bool := do
   bif ((zopz0zI_u csr (0xC00 : (BitVec 12))) || (zopz0zI_u (0xC1F : (BitVec 12)) csr))
@@ -780,7 +781,8 @@ def shouldWakeForInterrupt (_ : Unit) : SailM Bool := do
 def dispatchInterrupt (priv : Privilege) : SailM (Option (InterruptType × Privilege)) := do
   match (← (getPendingSet priv)) with
   | none => (pure none)
-  | .some (ip, p) => (match (findPendingInterrupt ip) with
+  | .some (ip, p) =>
+    (match (findPendingInterrupt ip) with
     | none => (pure none)
     | .some i => (pure (some (i, p))))
 
@@ -810,7 +812,8 @@ def trap_handler (del_priv : Privilege) (intr : Bool) (c : (BitVec 8)) (pc : (Bi
                   (HAppend.hAppend " with tval " (BitVec.toFormatted (tval info)))))))))
     else ()
   match del_priv with
-  | Machine => (do
+  | Machine =>
+    (do
       writeReg mcause (Sail.BitVec.updateSubrange (← readReg mcause) (((2 ^i 3) *i 8) -i 1)
         (((2 ^i 3) *i 8) -i 1) (bool_to_bits intr))
       writeReg mcause (Sail.BitVec.updateSubrange (← readReg mcause) (((2 ^i 3) *i 8) -i 2) 0
@@ -830,7 +833,8 @@ def trap_handler (del_priv : Privilege) (intr : Bool) (c : (BitVec 8)) (pc : (Bi
             (HAppend.hAppend "CSR mstatus <- " (BitVec.toFormatted (← readReg mstatus)))))
       else (pure ())
       (prepare_trap_vector del_priv (← readReg mcause)))
-  | Supervisor => (do
+  | Supervisor =>
+    (do
       assert (← (currentlyEnabled Ext_S)) "no supervisor mode present for delegation"
       writeReg scause (Sail.BitVec.updateSubrange (← readReg scause) (((2 ^i 3) *i 8) -i 1)
         (((2 ^i 3) *i 8) -i 1) (bool_to_bits intr))
@@ -844,8 +848,8 @@ def trap_handler (del_priv : Privilege) (intr : Bool) (c : (BitVec 8)) (pc : (Bi
           match (← readReg cur_privilege) with
           | User => (pure (0b0 : (BitVec 1)))
           | Supervisor => (pure (0b1 : (BitVec 1)))
-          | Machine => (internal_error "riscv_sys_control.sail" 255
-              "invalid privilege for s-mode trap")))
+          | Machine =>
+            (internal_error "riscv_sys_control.sail" 255 "invalid privilege for s-mode trap")))
       writeReg stval (tval info)
       writeReg sepc pc
       writeReg cur_privilege del_priv
@@ -860,7 +864,8 @@ def trap_handler (del_priv : Privilege) (intr : Bool) (c : (BitVec 8)) (pc : (Bi
 
 def exception_handler (cur_priv : Privilege) (ctl : ctl_result) (pc : (BitVec (2 ^ 3 * 8))) : SailM (BitVec (2 ^ 3 * 8)) := do
   match (cur_priv, ctl) with
-  | (_, .CTL_TRAP e) => (do
+  | (_, .CTL_TRAP e) =>
+    (do
       let del_priv ← do (exception_delegatee e.trap cur_priv)
       let _ : Unit :=
         bif (get_config_print_platform ())
@@ -873,7 +878,8 @@ def exception_handler (cur_priv : Privilege) (ctl : ctl_result) (pc : (BitVec (2
                     (HAppend.hAppend " to handle " (exceptionType_to_str e.trap)))))))
         else ()
       (trap_handler del_priv false (exceptionType_to_bits e.trap) pc e.excinfo e.ext))
-  | (_, .CTL_MRET ()) => (do
+  | (_, .CTL_MRET ()) =>
+    (do
       let prev_priv ← do readReg cur_privilege
       writeReg mstatus (Sail.BitVec.updateSubrange (← readReg mstatus) 3 3
         (_get_Mstatus_MPIE (← readReg mstatus)))
@@ -902,7 +908,8 @@ def exception_handler (cur_priv : Privilege) (ctl : ctl_result) (pc : (BitVec (2
                 (HAppend.hAppend " to " (privLevel_to_str (← readReg cur_privilege)))))))
       else (pure ())
       (prepare_xret_target Machine))
-  | (_, .CTL_SRET ()) => (do
+  | (_, .CTL_SRET ()) =>
+    (do
       let prev_priv ← do readReg cur_privilege
       writeReg mstatus (Sail.BitVec.updateSubrange (← readReg mstatus) 1 1
         (_get_Mstatus_SPIE (← readReg mstatus)))

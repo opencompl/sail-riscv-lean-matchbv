@@ -200,7 +200,8 @@ def vvmtype_mnemonic_backwards (arg_ : String) : SailM vvmfunct6 := do
   match arg_ with
   | "vmadc.vvm" => (pure VVM_VMADC)
   | "vmsbc.vvm" => (pure VVM_VMSBC)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -251,7 +252,8 @@ def vvmctype_mnemonic_backwards (arg_ : String) : SailM vvmcfunct6 := do
   match arg_ with
   | "vmadc.vv" => (pure VVMC_VMADC)
   | "vmsbc.vv" => (pure VVMC_VMSBC)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -302,7 +304,8 @@ def vvmstype_mnemonic_backwards (arg_ : String) : SailM vvmsfunct6 := do
   match arg_ with
   | "vadc.vvm" => (pure VVMS_VADC)
   | "vsbc.vvm" => (pure VVMS_VSBC)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -393,7 +396,8 @@ def vvcmptype_mnemonic_backwards (arg_ : String) : SailM vvcmpfunct6 := do
   | "vmslt.vv" => (pure VVCMP_VMSLT)
   | "vmsleu.vv" => (pure VVCMP_VMSLEU)
   | "vmsle.vv" => (pure VVCMP_VMSLE)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -452,7 +456,8 @@ def vxmtype_mnemonic_backwards (arg_ : String) : SailM vxmfunct6 := do
   match arg_ with
   | "vmadc.vxm" => (pure VXM_VMADC)
   | "vmsbc.vxm" => (pure VXM_VMSBC)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -503,7 +508,8 @@ def vxmctype_mnemonic_backwards (arg_ : String) : SailM vxmcfunct6 := do
   match arg_ with
   | "vmadc.vx" => (pure VXMC_VMADC)
   | "vmsbc.vx" => (pure VXMC_VMSBC)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -554,7 +560,8 @@ def vxmstype_mnemonic_backwards (arg_ : String) : SailM vxmsfunct6 := do
   match arg_ with
   | "vadc.vxm" => (pure VXMS_VADC)
   | "vsbc.vxm" => (pure VXMS_VSBC)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -665,7 +672,8 @@ def vxcmptype_mnemonic_backwards (arg_ : String) : SailM vxcmpfunct6 := do
   | "vmsle.vx" => (pure VXCMP_VMSLE)
   | "vmsgtu.vx" => (pure VXCMP_VMSGTU)
   | "vmsgt.vx" => (pure VXCMP_VMSGT)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -718,7 +726,8 @@ def encdec_vimfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
 def vimtype_mnemonic_backwards (arg_ : String) : SailM vimfunct6 := do
   match arg_ with
   | "vmadc.vim" => (pure VIM_VMADC)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -757,7 +766,8 @@ def encdec_vimcfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
 def vimctype_mnemonic_backwards (arg_ : String) : SailM vimcfunct6 := do
   match arg_ with
   | "vmadc.vi" => (pure VIMC_VMADC)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -796,7 +806,8 @@ def encdec_vimsfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
 def vimstype_mnemonic_backwards (arg_ : String) : SailM vimsfunct6 := do
   match arg_ with
   | "vadc.vim" => (pure VIMS_VADC)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -885,7 +896,8 @@ def vicmptype_mnemonic_backwards (arg_ : String) : SailM vicmpfunct6 := do
   | "vmsle.vi" => (pure VICMP_VMSLE)
   | "vmsgtu.vi" => (pure VICMP_VMSGTU)
   | "vmsgt.vi" => (pure VICMP_VMSGT)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 

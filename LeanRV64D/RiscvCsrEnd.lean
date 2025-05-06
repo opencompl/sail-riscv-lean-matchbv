@@ -485,13 +485,15 @@ def csr_name_map_backwards (arg_ : String) : SailM (BitVec 12) := do
   | "stimecmp" => (some (0x14D : (BitVec 12)))
   | "stimecmph" => (some (0x15D : (BitVec 12)))
   | "satp" => (some (0x180 : (BitVec 12)))
-  | mapping0_ => (bif (hex_bits_12_backwards_matches mapping0_)
+  | mapping0_ =>
+    (bif (hex_bits_12_backwards_matches mapping0_)
     then
       (match (hex_bits_12_backwards mapping0_) with
       | reg => (some reg))
     else none)) with
   | .some result => (pure result)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -2047,12 +2049,14 @@ def csr_name_map_backwards_matches (arg_ : String) : Bool :=
   | "stimecmp" => (some true)
   | "stimecmph" => (some true)
   | "satp" => (some true)
-  | mapping0_ => (bif (hex_bits_12_backwards_matches mapping0_)
+  | mapping0_ =>
+    (bif (hex_bits_12_backwards_matches mapping0_)
     then
       (match (hex_bits_12_backwards mapping0_) with
       | reg => (some true))
     else none)) with
   | .some result => result
-  | none => (match head_exp_ with
+  | none =>
+    (match head_exp_ with
     | _ => false)
 

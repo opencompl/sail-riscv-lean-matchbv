@@ -256,17 +256,21 @@ def write_ram (wk : write_kind) (app_1 : physaddr) (width : Nat) (data : (BitVec
   let .Physaddr addr := app_1
   let request : (Mem_write_request width 64 physaddrbits Unit RISCV_strong_access) :=
     { access_kind := match wk with
-      | Write_plain => (AK_explicit
+      | Write_plain =>
+        (AK_explicit
           { variety := AV_plain
             strength := AS_normal })
-      | Write_RISCV_release => (AK_explicit
+      | Write_RISCV_release =>
+        (AK_explicit
           { variety := AV_plain
             strength := AS_rel_or_acq })
       | Write_RISCV_strong_release => (AK_arch { variety := AV_plain })
-      | Write_RISCV_conditional => (AK_explicit
+      | Write_RISCV_conditional =>
+        (AK_explicit
           { variety := AV_exclusive
             strength := AS_normal })
-      | Write_RISCV_conditional_release => (AK_explicit
+      | Write_RISCV_conditional_release =>
+        (AK_explicit
           { variety := AV_exclusive
             strength := AS_rel_or_acq })
       | Write_RISCV_conditional_strong_release => (AK_arch { variety := AV_exclusive })
@@ -277,7 +281,8 @@ def write_ram (wk : write_kind) (app_1 : physaddr) (width : Nat) (data : (BitVec
       value := (some data)
       tag := none }
   match (← (sail_mem_write request)) with
-  | .Ok _ => (let _ : Unit := (__WriteRAM_Meta addr width meta)
+  | .Ok _ =>
+    (let _ : Unit := (__WriteRAM_Meta addr width meta)
     (pure true))
   | .Err () => (pure false)
 
@@ -295,18 +300,22 @@ def read_ram (rk : read_kind) (app_1 : physaddr) (width : Nat) (read_meta : Bool
     else default_meta
   let request : (Mem_read_request width 64 physaddrbits Unit RISCV_strong_access) :=
     { access_kind := match rk with
-      | Read_plain => (AK_explicit
+      | Read_plain =>
+        (AK_explicit
           { variety := AV_plain
             strength := AS_normal })
       | Read_ifetch => (AK_ifetch ())
-      | Read_RISCV_acquire => (AK_explicit
+      | Read_RISCV_acquire =>
+        (AK_explicit
           { variety := AV_plain
             strength := AS_rel_or_acq })
       | Read_RISCV_strong_acquire => (AK_arch { variety := AV_plain })
-      | Read_RISCV_reserved => (AK_explicit
+      | Read_RISCV_reserved =>
+        (AK_explicit
           { variety := AV_exclusive
             strength := AS_normal })
-      | Read_RISCV_reserved_acquire => (AK_explicit
+      | Read_RISCV_reserved_acquire =>
+        (AK_explicit
           { variety := AV_exclusive
             strength := AS_rel_or_acq })
       | Read_RISCV_reserved_strong_acquire => (AK_arch { variety := AV_exclusive })

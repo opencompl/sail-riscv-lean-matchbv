@@ -224,13 +224,15 @@ def pmpReadAddrReg (n : Nat) : SailM (BitVec (2 ^ 3 * 8)) := do
   let match_type ← do (pure (_get_Pmpcfg_ent_A (GetElem?.getElem! (← readReg pmpcfg_n) n)))
   let addr ← do (pure (GetElem?.getElem! (← readReg pmpaddr_n) n))
   match (BitVec.access match_type 1) with
-  | 1#1 => (bif (G ≥b 2)
+  | 1#1 =>
+    (bif (G ≥b 2)
     then
       (let mask : xlenbits :=
         (zero_extend (m := ((2 ^i 3) *i 8)) (ones (n := (Min.min (G -i 1) xlen))))
       (pure (addr ||| mask)))
     else (pure addr))
-  | 0#1 => (bif (G ≥b 1)
+  | 0#1 =>
+    (bif (G ≥b 1)
     then
       (let mask : xlenbits := (zero_extend (m := ((2 ^i 3) *i 8)) (ones (n := (Min.min G xlen))))
       (pure (addr &&& (Complement.complement mask))))

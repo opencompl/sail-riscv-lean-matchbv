@@ -279,7 +279,8 @@ def rF (app_0 : fregno) : SailM (BitVec (8 * 8)) := do
     | 29 => readReg f29
     | 30 => readReg f30
     | 31 => readReg f31
-    | _ => (do
+    | _ =>
+      (do
         assert false "invalid floating point register number"
         throw Error.Exit) ) : SailM fregtype )
   (pure (fregval_from_freg v))
@@ -441,7 +442,8 @@ def freg_name_raw_backwards (arg_ : String) : SailM (BitVec 5) := do
   | "ft9" => (pure (0b11101 : (BitVec 5)))
   | "ft10" => (pure (0b11110 : (BitVec 5)))
   | "ft11" => (pure (0b11111 : (BitVec 5)))
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -591,7 +593,8 @@ def freg_name_backwards (arg_ : String) : SailM fregidx := do
         | i => (pure (some (Fregidx i))))
     else (pure none)) with
   | .some result => (pure result)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -610,7 +613,8 @@ def freg_name_backwards_matches (arg_ : String) : SailM Bool := do
         | i => (pure (some true)))
     else (pure none)) with
   | .some result => (pure result)
-  | none => (match head_exp_ with
+  | none =>
+    (match head_exp_ with
     | _ => (pure false))
 
 def freg_or_reg_name_backwards (arg_ : String) : SailM fregidx := do
@@ -621,12 +625,14 @@ def freg_or_reg_name_backwards (arg_ : String) : SailM fregidx := do
     then
       (do
         match (← (reg_name_backwards mapping0_)) with
-        | .Regidx i => (bif (hartSupports Ext_Zfinx)
+        | .Regidx i =>
+          (bif (hartSupports Ext_Zfinx)
           then (pure (some (Fregidx (zero_extend (m := 5) i))))
           else (pure none)))
     else (pure none)) with
   | .some result => (pure result)
-  | none => (do
+  | none =>
+    (do
       match (← do
         let mapping1_ := head_exp_
         bif (← (freg_name_backwards_matches mapping1_))
@@ -636,7 +642,8 @@ def freg_or_reg_name_backwards (arg_ : String) : SailM fregidx := do
             | f => (pure (some f)))
         else (pure none)) with
       | .some result => (pure result)
-      | _ => (do
+      | _ =>
+        (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
 
@@ -654,12 +661,14 @@ def freg_or_reg_name_backwards_matches (arg_ : String) : SailM Bool := do
     then
       (do
         match (← (reg_name_backwards mapping0_)) with
-        | .Regidx i => (bif (hartSupports Ext_Zfinx)
+        | .Regidx i =>
+          (bif (hartSupports Ext_Zfinx)
           then (pure (some true))
           else (pure none)))
     else (pure none)) with
   | .some result => (pure result)
-  | none => (do
+  | none =>
+    (do
       match (← do
         let mapping1_ := head_exp_
         bif (← (freg_name_backwards_matches mapping1_))
@@ -669,7 +678,8 @@ def freg_or_reg_name_backwards_matches (arg_ : String) : SailM Bool := do
             | f => (pure (some true)))
         else (pure none)) with
       | .some result => (pure result)
-      | none => (match head_exp_ with
+      | none =>
+        (match head_exp_ with
         | _ => (pure false)))
 
 def undefined_Fcsr (_ : Unit) : SailM (BitVec 32) := do

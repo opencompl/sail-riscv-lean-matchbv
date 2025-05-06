@@ -177,7 +177,8 @@ def bit_str (b : (BitVec 1)) : SailM String := do
   match b with
   | 0#1 => (pure "0b0")
   | 1#1 => (pure "0b1")
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at prelude.sail:36.2-39.3"
       throw Error.Exit)
 
@@ -226,7 +227,8 @@ def bool_bit_backwards (arg_ : (BitVec 1)) : SailM Bool := do
   match arg_ with
   | 1#1 => (pure true)
   | 0#1 => (pure false)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 

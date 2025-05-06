@@ -168,7 +168,8 @@ def pmpCheckRWX (ent : (BitVec 8)) (acc : (AccessType Unit)) : Bool :=
   match acc with
   | .Read _ => ((_get_Pmpcfg_ent_R ent) == (0b1 : (BitVec 1)))
   | .Write _ => ((_get_Pmpcfg_ent_W ent) == (0b1 : (BitVec 1)))
-  | .ReadWrite _ => (((_get_Pmpcfg_ent_R ent) == (0b1 : (BitVec 1))) && ((_get_Pmpcfg_ent_W ent) == (0b1 : (BitVec 1))))
+  | .ReadWrite _ =>
+    (((_get_Pmpcfg_ent_R ent) == (0b1 : (BitVec 1))) && ((_get_Pmpcfg_ent_W ent) == (0b1 : (BitVec 1))))
   | .InstructionFetch () => ((_get_Pmpcfg_ent_X ent) == (0b1 : (BitVec 1)))
 
 def undefined_pmpAddrMatch (_ : Unit) : SailM pmpAddrMatch := do
@@ -203,16 +204,19 @@ def pmpMatchAddr (typ_0 : physaddr) (width : (BitVec (2 ^ 3 * 8))) (ent : (BitVe
   let width := (BitVec.toNat width)
   match (pmpAddrMatchType_of_bits (_get_Pmpcfg_ent_A ent)) with
   | OFF => (pure PMP_NoMatch)
-  | TOR => (bif (zopz0zKzJ_u prev_pmpaddr pmpaddr)
+  | TOR =>
+    (bif (zopz0zKzJ_u prev_pmpaddr pmpaddr)
     then (pure PMP_NoMatch)
     else
       (pure (pmpRangeMatch ((BitVec.toNat prev_pmpaddr) *i 4) ((BitVec.toNat pmpaddr) *i 4) addr
           width)))
-  | NA4 => (do
+  | NA4 =>
+    (do
       assert ((sys_pmp_grain ()) <b 1) "NA4 cannot be selected when PMP grain G >= 1."
       let begin := ((BitVec.toNat pmpaddr) *i 4)
       (pure (pmpRangeMatch begin (begin +i 4) addr width)))
-  | NAPOT => (let mask := (pmpaddr ^^^ (BitVec.addInt pmpaddr 1))
+  | NAPOT =>
+    (let mask := (pmpaddr ^^^ (BitVec.addInt pmpaddr 1))
     let begin_words := (BitVec.toNat (pmpaddr &&& (Complement.complement mask)))
     let end_words := ((begin_words +i (BitVec.toNat mask)) +i 1)
     (pure (pmpRangeMatch (begin_words *i 4) (end_words *i 4) addr width)))
@@ -237,7 +241,8 @@ def pmpMatchEntry (addr : physaddr) (width : (BitVec (2 ^ 3 * 8))) (acc : (Acces
   match (← (pmpMatchAddr addr width ent pmpaddr prev_pmpaddr)) with
   | PMP_NoMatch => (pure PMP_Continue)
   | PMP_PartialMatch => (pure PMP_Fail)
-  | PMP_Match => (bif ((pmpCheckRWX ent acc) || ((priv == Machine) && (not (pmpLocked ent))))
+  | PMP_Match =>
+    (bif ((pmpCheckRWX ent acc) || ((priv == Machine) && (not (pmpLocked ent))))
     then (pure PMP_Success)
     else (pure PMP_Fail))
 

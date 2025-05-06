@@ -269,7 +269,8 @@ def f_bin_rm_type_mnemonic_H_backwards (arg_ : String) : SailM f_bin_rm_op_H := 
   | "fsub.h" => (pure FSUB_H)
   | "fmul.h" => (pure FMUL_H)
   | "fdiv.h" => (pure FDIV_H)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -294,7 +295,8 @@ def f_madd_type_mnemonic_H_backwards (arg_ : String) : SailM f_madd_op_H := do
   | "fmsub.h" => (pure FMSUB_H)
   | "fnmsub.h" => (pure FNMSUB_H)
   | "fnmadd.h" => (pure FNMADD_H)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -320,7 +322,8 @@ def f_bin_f_type_mnemonic_H_backwards (arg_ : String) : SailM f_bin_f_op_H := do
   | "fsgnjx.h" => (pure FSGNJX_H)
   | "fmin.h" => (pure FMIN_H)
   | "fmax.h" => (pure FMAX_H)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -346,7 +349,8 @@ def f_bin_x_type_mnemonic_H_backwards (arg_ : String) : SailM f_bin_x_op_H := do
   | "feq.h" => (pure FEQ_H)
   | "flt.h" => (pure FLT_H)
   | "fle.h" => (pure FLE_H)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -370,7 +374,8 @@ def f_un_rm_ff_type_mnemonic_H_backwards (arg_ : String) : SailM f_un_rm_ff_op_H
   | "fcvt.h.d" => (pure FCVT_H_D)
   | "fcvt.s.h" => (pure FCVT_S_H)
   | "fcvt.d.h" => (pure FCVT_D_H)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -397,7 +402,8 @@ def f_un_rm_fx_type_mnemonic_H_backwards (arg_ : String) : SailM f_un_rm_fx_op_H
   | "fcvt.wu.h" => (pure FCVT_WU_H)
   | "fcvt.l.h" => (pure FCVT_L_H)
   | "fcvt.lu.h" => (pure FCVT_LU_H)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -422,7 +428,8 @@ def f_un_rm_xf_type_mnemonic_H_backwards (arg_ : String) : SailM f_un_rm_xf_op_H
   | "fcvt.h.wu" => (pure FCVT_H_WU)
   | "fcvt.h.l" => (pure FCVT_H_L)
   | "fcvt.h.lu" => (pure FCVT_H_LU)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -444,7 +451,8 @@ def f_un_rm_xf_type_mnemonic_H_backwards_matches (arg_ : String) : Bool :=
 def f_un_f_type_mnemonic_H_backwards (arg_ : String) : SailM f_un_f_op_H := do
   match arg_ with
   | "fmv.h.x" => (pure FMV_H_X)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -461,7 +469,8 @@ def f_un_x_type_mnemonic_H_backwards (arg_ : String) : SailM f_un_x_op_H := do
   match arg_ with
   | "fmv.x.h" => (pure FMV_X_H)
   | "fclass.h" => (pure FCLASS_H)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 

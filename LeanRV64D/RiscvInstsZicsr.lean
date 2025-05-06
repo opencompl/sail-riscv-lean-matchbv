@@ -1636,7 +1636,8 @@ def csr_mnemonic_backwards (arg_ : String) : SailM csrop := do
   | "csrrw" => (pure CSRRW)
   | "csrrs" => (pure CSRRS)
   | "csrrc" => (pure CSRRC)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 

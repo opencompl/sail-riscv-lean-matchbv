@@ -200,7 +200,8 @@ def vsha2c_mnemonic_backwards (arg_ : String) : SailM zvkfunct6 := do
   match arg_ with
   | "vsha2ch.vv" => (pure ZVK_VSHA2CH)
   | "vsha2cl.vv" => (pure ZVK_VSHA2CL)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 

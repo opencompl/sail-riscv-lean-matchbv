@@ -170,7 +170,8 @@ def sew_flag_forwards (arg_ : String) : SailM (BitVec 3) := do
   | "e16" => (pure (0b001 : (BitVec 3)))
   | "e32" => (pure (0b010 : (BitVec 3)))
   | "e64" => (pure (0b011 : (BitVec 3)))
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 

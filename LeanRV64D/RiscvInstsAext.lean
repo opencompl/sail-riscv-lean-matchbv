@@ -291,7 +291,8 @@ def amo_mnemonic_backwards (arg_ : String) : SailM amoop := do
   | "amomax" => (pure AMOMAX)
   | "amominu" => (pure AMOMINU)
   | "amomaxu" => (pure AMOMAXU)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 

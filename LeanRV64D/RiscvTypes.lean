@@ -2180,7 +2180,8 @@ def bit_maybe_w_forwards (arg_ : (BitVec 1)) : String :=
 
 def fence_bits_forwards (arg_ : (BitVec 4)) : String :=
   match arg_ with
-  | v__0 => (let i : (BitVec 1) := (Sail.BitVec.extractLsb v__0 3 3)
+  | v__0 =>
+    (let i : (BitVec 1) := (Sail.BitVec.extractLsb v__0 3 3)
     let w : (BitVec 1) := (Sail.BitVec.extractLsb v__0 0 0)
     let r : (BitVec 1) := (Sail.BitVec.extractLsb v__0 1 1)
     let o : (BitVec 1) := (Sail.BitVec.extractLsb v__0 2 2)
@@ -2605,7 +2606,8 @@ def mul_mnemonic_forwards (arg_ : mul_op) : SailM String := do
   | { high := true, signed_rs1 := true, signed_rs2 := true } => (pure "mulh")
   | { high := true, signed_rs1 := true, signed_rs2 := false } => (pure "mulhsu")
   | { high := true, signed_rs1 := false, signed_rs2 := false } => (pure "mulhu")
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -3250,50 +3252,58 @@ def zicond_mnemonic_forwards (arg_ : zicondop) : String :=
 
 def assembly_forwards (arg_ : ast) : SailM String := do
   match arg_ with
-  | .UTYPE (imm, rd, op) => (pure (String.append (utype_mnemonic_forwards op)
+  | .UTYPE (imm, rd, op) =>
+    (pure (String.append (utype_mnemonic_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (← (hex_bits_signed_20_forwards imm)) ""))))))
-  | .JAL (imm, rd) => (pure (String.append "jal"
+  | .JAL (imm, rd) =>
+    (pure (String.append "jal"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (← (hex_bits_signed_21_forwards imm)) ""))))))
-  | .JALR (imm, rs1, rd) => (pure (String.append "jalr"
+  | .JALR (imm, rs1, rd) =>
+    (pure (String.append "jalr"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (← (hex_bits_signed_12_forwards imm))
                 (String.append "(" (String.append (reg_name_forwards rs1) (String.append ")" "")))))))))
-  | .BTYPE (imm, rs2, rs1, op) => (pure (String.append (btype_mnemonic_forwards op)
+  | .BTYPE (imm, rs2, rs1, op) =>
+    (pure (String.append (btype_mnemonic_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rs1)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs2)
                 (String.append (sep_forwards ())
                   (String.append (← (hex_bits_signed_13_forwards imm)) ""))))))))
-  | .ITYPE (imm, rs1, rd, op) => (pure (String.append (itype_mnemonic_forwards op)
+  | .ITYPE (imm, rs1, rd, op) =>
+    (pure (String.append (itype_mnemonic_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ())
                   (String.append (← (hex_bits_signed_12_forwards imm)) ""))))))))
-  | .SHIFTIOP (shamt, rs1, rd, op) => (pure (String.append (shiftiop_mnemonic_forwards op)
+  | .SHIFTIOP (shamt, rs1, rd, op) =>
+    (pure (String.append (shiftiop_mnemonic_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ())
                   (String.append (← (hex_bits_6_forwards shamt)) ""))))))))
-  | .RTYPE (rs2, rs1, rd, op) => (pure (String.append (rtype_mnemonic_forwards op)
+  | .RTYPE (rs2, rs1, rd, op) =>
+    (pure (String.append (rtype_mnemonic_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .LOAD (imm, rs1, rd, is_unsigned, size, aq, rl) => (pure (String.append "l"
+  | .LOAD (imm, rs1, rd, is_unsigned, size, aq, rl) =>
+    (pure (String.append "l"
         (String.append (size_mnemonic_forwards size)
           (String.append (maybe_u_forwards is_unsigned)
             (String.append (maybe_aq_forwards aq)
@@ -3304,7 +3314,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                       (String.append (← (hex_bits_signed_12_forwards imm))
                         (String.append "("
                           (String.append (reg_name_forwards rs1) (String.append ")" "")))))))))))))
-  | .STORE (imm, rs2, rs1, size, aq, rl) => (pure (String.append "s"
+  | .STORE (imm, rs2, rs1, size, aq, rl) =>
+    (pure (String.append "s"
         (String.append (size_mnemonic_forwards size)
           (String.append (maybe_aq_forwards aq)
             (String.append (maybe_rl_forwards rl)
@@ -3317,7 +3328,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                           (String.append (opt_spc_forwards ())
                             (String.append (reg_name_forwards rs1)
                               (String.append (opt_spc_forwards ()) (String.append ")" "")))))))))))))))
-  | .ADDIW (imm, rs1, rd) => (do
+  | .ADDIW (imm, rs1, rd) =>
+    (do
       bif (xlen == 64)
       then
         (pure (String.append "addiw"
@@ -3331,7 +3343,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .RTYPEW (rs2, rs1, rd, op) => (do
+  | .RTYPEW (rs2, rs1, rd, op) =>
+    (do
       bif (xlen == 64)
       then
         (pure (String.append (rtypew_mnemonic_forwards op)
@@ -3344,7 +3357,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .SHIFTIWOP (shamt, rs1, rd, op) => (do
+  | .SHIFTIWOP (shamt, rs1, rd, op) =>
+    (do
       bif (xlen == 64)
       then
         (pure (String.append (shiftiwop_mnemonic_forwards op)
@@ -3358,11 +3372,13 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .FENCE (pred, succ) => (pure (String.append "fence"
+  | .FENCE (pred, succ) =>
+    (pure (String.append "fence"
         (String.append (spc_forwards ())
           (String.append (fence_bits_forwards pred)
             (String.append (sep_forwards ()) (String.append (fence_bits_forwards succ) ""))))))
-  | .FENCE_TSO (pred, succ) => (pure (String.append "fence.tso"
+  | .FENCE_TSO (pred, succ) =>
+    (pure (String.append "fence.tso"
         (String.append (spc_forwards ())
           (String.append (fence_bits_forwards pred)
             (String.append (sep_forwards ()) (String.append (fence_bits_forwards succ) ""))))))
@@ -3371,12 +3387,14 @@ def assembly_forwards (arg_ : ast) : SailM String := do
   | .SRET () => (pure "sret")
   | .EBREAK () => (pure "ebreak")
   | .WFI () => (pure "wfi")
-  | .SFENCE_VMA (rs1, rs2) => (pure (String.append "sfence.vma"
+  | .SFENCE_VMA (rs1, rs2) =>
+    (pure (String.append "sfence.vma"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rs1)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))
   | .FENCEI () => (pure "fence.i")
-  | .LOADRES (aq, rl, rs1, size, rd) => (pure (String.append "lr."
+  | .LOADRES (aq, rl, rs1, size, rd) =>
+    (pure (String.append "lr."
         (String.append (size_mnemonic_forwards size)
           (String.append (maybe_aq_forwards aq)
             (String.append (maybe_rl_forwards rl)
@@ -3385,7 +3403,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                   (String.append (sep_forwards ())
                     (String.append "("
                       (String.append (reg_name_forwards rs1) (String.append ")" "")))))))))))
-  | .STORECON (aq, rl, rs2, rs1, size, rd) => (pure (String.append "sc."
+  | .STORECON (aq, rl, rs2, rs1, size, rd) =>
+    (pure (String.append "sc."
         (String.append (size_mnemonic_forwards size)
           (String.append (maybe_aq_forwards aq)
             (String.append (maybe_rl_forwards rl)
@@ -3396,7 +3415,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                       (String.append (sep_forwards ())
                         (String.append "("
                           (String.append (reg_name_forwards rs1) (String.append ")" "")))))))))))))
-  | .AMO (op, aq, rl, rs2, rs1, width, rd) => (pure (String.append (amo_mnemonic_forwards op)
+  | .AMO (op, aq, rl, rs2, rs1, width, rd) =>
+    (pure (String.append (amo_mnemonic_forwards op)
         (String.append "."
           (String.append (size_mnemonic_forwards width)
             (String.append (maybe_aq_forwards aq)
@@ -3409,7 +3429,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                           (String.append "("
                             (String.append (reg_name_forwards rs1) (String.append ")" ""))))))))))))))
   | .C_NOP () => (pure "c.nop")
-  | .C_ADDI4SPN (rdc, nzimm) => (do
+  | .C_ADDI4SPN (rdc, nzimm) =>
+    (do
       bif (nzimm != (0x00 : (BitVec 8)))
       then
         (pure (String.append "c.addi4spn"
@@ -3422,7 +3443,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_LW (uimm, rsc, rdc) => (pure (String.append "c.lw"
+  | .C_LW (uimm, rsc, rdc) =>
+    (pure (String.append "c.lw"
         (String.append (spc_forwards ())
           (String.append (creg_name_forwards rdc)
             (String.append (sep_forwards ())
@@ -3430,7 +3452,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append
                     (← (hex_bits_7_forwards ((uimm : (BitVec 5)) ++ (0b00 : (BitVec 2))))) ""))))))))
-  | .C_LD (uimm, rsc, rdc) => (do
+  | .C_LD (uimm, rsc, rdc) =>
+    (do
       bif (xlen == 64)
       then
         (pure (String.append "c.ld"
@@ -3445,7 +3468,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_SW (uimm, rsc1, rsc2) => (pure (String.append "c.sw"
+  | .C_SW (uimm, rsc1, rsc2) =>
+    (pure (String.append "c.sw"
         (String.append (spc_forwards ())
           (String.append (creg_name_forwards rsc1)
             (String.append (sep_forwards ())
@@ -3453,7 +3477,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append
                     (← (hex_bits_7_forwards ((uimm : (BitVec 5)) ++ (0b00 : (BitVec 2))))) ""))))))))
-  | .C_SD (uimm, rsc1, rsc2) => (do
+  | .C_SD (uimm, rsc1, rsc2) =>
+    (do
       bif (xlen == 64)
       then
         (pure (String.append "c.sd"
@@ -3468,7 +3493,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_ADDI (nzi, rsd) => (do
+  | .C_ADDI (nzi, rsd) =>
+    (do
       bif ((nzi != (0b000000 : (BitVec 6))) && (bne rsd zreg))
       then
         (pure (String.append "c.addi"
@@ -3480,7 +3506,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_JAL imm => (do
+  | .C_JAL imm =>
+    (do
       bif (xlen == 32)
       then
         (pure (String.append "c.jal"
@@ -3491,7 +3518,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_ADDIW (imm, rsd) => (do
+  | .C_ADDIW (imm, rsd) =>
+    (do
       bif (xlen == 64)
       then
         (pure (String.append "c.addiw"
@@ -3503,7 +3531,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_LI (imm, rd) => (do
+  | .C_LI (imm, rd) =>
+    (do
       bif (bne rd zreg)
       then
         (pure (String.append "c.li"
@@ -3515,7 +3544,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_ADDI16SP imm => (do
+  | .C_ADDI16SP imm =>
+    (do
       bif (imm != (0b000000 : (BitVec 6)))
       then
         (pure (String.append "c.addi16sp"
@@ -3525,7 +3555,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_LUI (imm, rd) => (do
+  | .C_LUI (imm, rd) =>
+    (do
       bif ((bne rd zreg) && ((bne rd sp) && (imm != (0b000000 : (BitVec 6)))))
       then
         (pure (String.append "c.lui"
@@ -3537,7 +3568,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_SRLI (shamt, rsd) => (do
+  | .C_SRLI (shamt, rsd) =>
+    (do
       bif (shamt != (0b000000 : (BitVec 6)))
       then
         (pure (String.append "c.srli"
@@ -3549,7 +3581,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_SRAI (shamt, rsd) => (do
+  | .C_SRAI (shamt, rsd) =>
+    (do
       bif (shamt != (0b000000 : (BitVec 6)))
       then
         (pure (String.append "c.srai"
@@ -3561,28 +3594,34 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_ANDI (imm, rsd) => (pure (String.append "c.andi"
+  | .C_ANDI (imm, rsd) =>
+    (pure (String.append "c.andi"
         (String.append (spc_forwards ())
           (String.append (creg_name_forwards rsd)
             (String.append (sep_forwards ())
               (String.append (← (hex_bits_signed_6_forwards imm)) ""))))))
-  | .C_SUB (rsd, rs2) => (pure (String.append "c.sub"
+  | .C_SUB (rsd, rs2) =>
+    (pure (String.append "c.sub"
         (String.append (spc_forwards ())
           (String.append (creg_name_forwards rsd)
             (String.append (sep_forwards ()) (String.append (creg_name_forwards rs2) ""))))))
-  | .C_XOR (rsd, rs2) => (pure (String.append "c.xor"
+  | .C_XOR (rsd, rs2) =>
+    (pure (String.append "c.xor"
         (String.append (spc_forwards ())
           (String.append (creg_name_forwards rsd)
             (String.append (sep_forwards ()) (String.append (creg_name_forwards rs2) ""))))))
-  | .C_OR (rsd, rs2) => (pure (String.append "c.or"
+  | .C_OR (rsd, rs2) =>
+    (pure (String.append "c.or"
         (String.append (spc_forwards ())
           (String.append (creg_name_forwards rsd)
             (String.append (sep_forwards ()) (String.append (creg_name_forwards rs2) ""))))))
-  | .C_AND (rsd, rs2) => (pure (String.append "c.and"
+  | .C_AND (rsd, rs2) =>
+    (pure (String.append "c.and"
         (String.append (spc_forwards ())
           (String.append (creg_name_forwards rsd)
             (String.append (sep_forwards ()) (String.append (creg_name_forwards rs2) ""))))))
-  | .C_SUBW (rsd, rs2) => (do
+  | .C_SUBW (rsd, rs2) =>
+    (do
       bif (xlen == 64)
       then
         (pure (String.append "c.subw"
@@ -3593,7 +3632,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_ADDW (rsd, rs2) => (do
+  | .C_ADDW (rsd, rs2) =>
+    (do
       bif (xlen == 64)
       then
         (pure (String.append "c.addw"
@@ -3604,21 +3644,25 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_J imm => (pure (String.append "c.j"
+  | .C_J imm =>
+    (pure (String.append "c.j"
         (String.append (spc_forwards ())
           (String.append
             (← (hex_bits_signed_12_forwards ((imm : (BitVec 11)) ++ (0b0 : (BitVec 1))))) ""))))
-  | .C_BEQZ (imm, rs) => (pure (String.append "c.beqz"
+  | .C_BEQZ (imm, rs) =>
+    (pure (String.append "c.beqz"
         (String.append (spc_forwards ())
           (String.append (creg_name_forwards rs)
             (String.append (sep_forwards ())
               (String.append (← (hex_bits_signed_8_forwards imm)) ""))))))
-  | .C_BNEZ (imm, rs) => (pure (String.append "c.bnez"
+  | .C_BNEZ (imm, rs) =>
+    (pure (String.append "c.bnez"
         (String.append (spc_forwards ())
           (String.append (creg_name_forwards rs)
             (String.append (sep_forwards ())
               (String.append (← (hex_bits_signed_8_forwards imm)) ""))))))
-  | .C_SLLI (shamt, rsd) => (do
+  | .C_SLLI (shamt, rsd) =>
+    (do
       bif ((shamt != (0b000000 : (BitVec 6))) && (bne rsd zreg))
       then
         (pure (String.append "c.slli"
@@ -3630,7 +3674,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_LWSP (uimm, rd) => (do
+  | .C_LWSP (uimm, rd) =>
+    (do
       bif (bne rd zreg)
       then
         (pure (String.append "c.lwsp"
@@ -3641,7 +3686,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_LDSP (uimm, rd) => (do
+  | .C_LDSP (uimm, rd) =>
+    (do
       bif ((bne rd zreg) && (xlen == 64))
       then
         (pure (String.append "c.ldsp"
@@ -3652,11 +3698,13 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_SWSP (uimm, rs2) => (pure (String.append "c.swsp"
+  | .C_SWSP (uimm, rs2) =>
+    (pure (String.append "c.swsp"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rs2)
             (String.append (sep_forwards ()) (String.append (← (hex_bits_6_forwards uimm)) ""))))))
-  | .C_SDSP (uimm, rs2) => (do
+  | .C_SDSP (uimm, rs2) =>
+    (do
       bif (xlen == 64)
       then
         (pure (String.append "c.sdsp"
@@ -3667,7 +3715,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_JR rs1 => (do
+  | .C_JR rs1 =>
+    (do
       bif (bne rs1 zreg)
       then
         (pure (String.append "c.jr"
@@ -3676,7 +3725,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_JALR rs1 => (do
+  | .C_JALR rs1 =>
+    (do
       bif (bne rs1 zreg)
       then
         (pure (String.append "c.jalr"
@@ -3685,7 +3735,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_MV (rd, rs2) => (do
+  | .C_MV (rd, rs2) =>
+    (do
       bif ((bne rd zreg) && (bne rs2 zreg))
       then
         (pure (String.append "c.mv"
@@ -3697,7 +3748,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
   | .C_EBREAK () => (pure "c.ebreak")
-  | .C_ADD (rsd, rs2) => (do
+  | .C_ADD (rsd, rs2) =>
+    (do
       bif ((bne rsd zreg) && (bne rs2 zreg))
       then
         (pure (String.append "c.add"
@@ -3708,27 +3760,31 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .MUL (rs2, rs1, rd, mul_op) => (pure (String.append (← (mul_mnemonic_forwards mul_op))
+  | .MUL (rs2, rs1, rd, mul_op) =>
+    (pure (String.append (← (mul_mnemonic_forwards mul_op))
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .DIV (rs2, rs1, rd, s) => (pure (String.append "div"
+  | .DIV (rs2, rs1, rd, s) =>
+    (pure (String.append "div"
         (String.append (maybe_not_u_forwards s)
           (String.append (spc_forwards ())
             (String.append (reg_name_forwards rd)
               (String.append (sep_forwards ())
                 (String.append (reg_name_forwards rs1)
                   (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) "")))))))))
-  | .REM (rs2, rs1, rd, s) => (pure (String.append "rem"
+  | .REM (rs2, rs1, rd, s) =>
+    (pure (String.append "rem"
         (String.append (maybe_not_u_forwards s)
           (String.append (spc_forwards ())
             (String.append (reg_name_forwards rd)
               (String.append (sep_forwards ())
                 (String.append (reg_name_forwards rs1)
                   (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) "")))))))))
-  | .MULW (rs2, rs1, rd) => (do
+  | .MULW (rs2, rs1, rd) =>
+    (do
       bif (xlen == 64)
       then
         (pure (String.append "mulw"
@@ -3741,7 +3797,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .DIVW (rs2, rs1, rd, s) => (do
+  | .DIVW (rs2, rs1, rd, s) =>
+    (do
       bif (xlen == 64)
       then
         (pure (String.append "div"
@@ -3756,7 +3813,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .REMW (rs2, rs1, rd, s) => (do
+  | .REMW (rs2, rs1, rd, s) =>
+    (do
       bif (xlen == 64)
       then
         (pure (String.append "rem"
@@ -3771,7 +3829,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .CSRImm (csr, imm, rd, op) => (pure (String.append (csr_mnemonic_forwards op)
+  | .CSRImm (csr, imm, rd, op) =>
+    (pure (String.append (csr_mnemonic_forwards op)
         (String.append "i"
           (String.append (spc_forwards ())
             (String.append (reg_name_forwards rd)
@@ -3779,45 +3838,51 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (← (csr_name_map_forwards csr))
                   (String.append (sep_forwards ())
                     (String.append (← (hex_bits_5_forwards imm)) "")))))))))
-  | .CSRReg (csr, rs1, rd, op) => (pure (String.append (csr_mnemonic_forwards op)
+  | .CSRReg (csr, rs1, rd, op) =>
+    (pure (String.append (csr_mnemonic_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (← (csr_name_map_forwards csr))
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))))
-  | .C_NOP_HINT imm => (pure (String.append "c.nop.hint."
-        (String.append (← (hex_bits_6_forwards imm)) "")))
-  | .C_ADDI_HINT rsd => (do
+  | .C_NOP_HINT imm =>
+    (pure (String.append "c.nop.hint." (String.append (← (hex_bits_6_forwards imm)) "")))
+  | .C_ADDI_HINT rsd =>
+    (do
       bif (bne rsd zreg)
       then (pure (String.append "c.addi.hint." (String.append (reg_name_forwards rsd) "")))
       else
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_LI_HINT imm => (pure (String.append "c.li.hint."
-        (String.append (← (hex_bits_6_forwards imm)) "")))
-  | .C_LUI_HINT imm => (do
+  | .C_LI_HINT imm =>
+    (pure (String.append "c.li.hint." (String.append (← (hex_bits_6_forwards imm)) "")))
+  | .C_LUI_HINT imm =>
+    (do
       bif (imm != (0b000000 : (BitVec 6)))
       then (pure (String.append "c.lui.hint." (String.append (← (hex_bits_6_forwards imm)) "")))
       else
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_MV_HINT rs2 => (do
+  | .C_MV_HINT rs2 =>
+    (do
       bif (bne rs2 zreg)
       then (pure (String.append "c.mv.hint." (String.append (reg_name_forwards rs2) "")))
       else
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_ADD_HINT rs2 => (do
+  | .C_ADD_HINT rs2 =>
+    (do
       bif (bne rs2 zreg)
       then (pure (String.append "c.add.hint." (String.append (reg_name_forwards rs2) "")))
       else
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_SLLI_HINT (shamt, rsd) => (do
+  | .C_SLLI_HINT (shamt, rsd) =>
+    (do
       bif ((shamt == (0b000000 : (BitVec 6))) || (rsd == zreg))
       then
         (pure (String.append "c.slli.hint."
@@ -3827,11 +3892,12 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_SRLI_HINT rsd => (pure (String.append "c.srli.hint."
-        (String.append (creg_name_forwards rsd) "")))
-  | .C_SRAI_HINT rsd => (pure (String.append "c.srai.hint."
-        (String.append (creg_name_forwards rsd) "")))
-  | .FENCE_RESERVED (fm, pred, succ, rs, rd) => (do
+  | .C_SRLI_HINT rsd =>
+    (pure (String.append "c.srli.hint." (String.append (creg_name_forwards rsd) "")))
+  | .C_SRAI_HINT rsd =>
+    (pure (String.append "c.srai.hint." (String.append (creg_name_forwards rsd) "")))
+  | .FENCE_RESERVED (fm, pred, succ, rs, rd) =>
+    (do
       bif (((fm != (0x0 : (BitVec 4))) && (fm != (0x8 : (BitVec 4)))) || ((bne rs zreg) || (bne rd
                zreg)))
       then
@@ -3848,7 +3914,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .FENCEI_RESERVED (imm, rs, rd) => (do
+  | .FENCEI_RESERVED (imm, rs, rd) =>
+    (do
       bif ((imm != (0x000 : (BitVec 12))) || ((bne rs zreg) || (bne rd zreg)))
       then
         (pure (String.append "fence.i.reserved."
@@ -3860,7 +3927,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .LOAD_FP (imm, rs1, rd, width) => (pure (String.append "fl"
+  | .LOAD_FP (imm, rs1, rd, width) =>
+    (pure (String.append "fl"
         (String.append (size_mnemonic_forwards width)
           (String.append (spc_forwards ())
             (String.append (freg_or_reg_name_forwards rd)
@@ -3871,7 +3939,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                       (String.append (opt_spc_forwards ())
                         (String.append (reg_name_forwards rs1)
                           (String.append (opt_spc_forwards ()) (String.append ")" "")))))))))))))
-  | .STORE_FP (imm, rs2, rs1, width) => (pure (String.append "fs"
+  | .STORE_FP (imm, rs2, rs1, width) =>
+    (pure (String.append "fs"
         (String.append (size_mnemonic_forwards width)
           (String.append (spc_forwards ())
             (String.append (freg_name_forwards rs2)
@@ -3882,8 +3951,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                       (String.append (opt_spc_forwards ())
                         (String.append (reg_name_forwards rs1)
                           (String.append (opt_spc_forwards ()) (String.append ")" "")))))))))))))
-  | .F_MADD_TYPE_S (rs3, rs2, rs1, rm, rd, op) => (pure (String.append
-        (f_madd_type_mnemonic_S_forwards op)
+  | .F_MADD_TYPE_S (rs3, rs2, rs1, rm, rd, op) =>
+    (pure (String.append (f_madd_type_mnemonic_S_forwards op)
         (String.append (spc_forwards ())
           (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
@@ -3894,8 +3963,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                       (String.append (freg_or_reg_name_forwards rs3)
                         (String.append (sep_forwards ())
                           (String.append (frm_mnemonic_forwards rm) ""))))))))))))
-  | .F_BIN_RM_TYPE_S (rs2, rs1, rm, rd, op) => (pure (String.append
-        (f_bin_rm_type_mnemonic_S_forwards op)
+  | .F_BIN_RM_TYPE_S (rs2, rs1, rm, rd, op) =>
+    (pure (String.append (f_bin_rm_type_mnemonic_S_forwards op)
         (String.append (spc_forwards ())
           (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
@@ -3903,47 +3972,53 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (freg_or_reg_name_forwards rs2)
                     (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))))
-  | .F_UN_RM_FF_TYPE_S (rs1, rm, rd, FSQRT_S) => (pure (String.append "fsqrt.s"
+  | .F_UN_RM_FF_TYPE_S (rs1, rm, rd, FSQRT_S) =>
+    (pure (String.append "fsqrt.s"
         (String.append (spc_forwards ())
           (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_or_reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
-  | .F_UN_RM_FX_TYPE_S (rs1, rm, rd, op) => (pure (String.append
-        (f_un_rm_fx_type_mnemonic_S_forwards op)
+  | .F_UN_RM_FX_TYPE_S (rs1, rm, rd, op) =>
+    (pure (String.append (f_un_rm_fx_type_mnemonic_S_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_or_reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
-  | .F_UN_RM_XF_TYPE_S (rs1, rm, rd, op) => (pure (String.append
-        (f_un_rm_xf_type_mnemonic_S_forwards op)
+  | .F_UN_RM_XF_TYPE_S (rs1, rm, rd, op) =>
+    (pure (String.append (f_un_rm_xf_type_mnemonic_S_forwards op)
         (String.append (spc_forwards ())
           (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
-  | .F_BIN_TYPE_F_S (rs2, rs1, rd, op) => (pure (String.append (f_bin_type_mnemonic_f_S_forwards op)
+  | .F_BIN_TYPE_F_S (rs2, rs1, rd, op) =>
+    (pure (String.append (f_bin_type_mnemonic_f_S_forwards op)
         (String.append (spc_forwards ())
           (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_or_reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_or_reg_name_forwards rs2) ""))))))))
-  | .F_BIN_TYPE_X_S (rs2, rs1, rd, op) => (pure (String.append (f_bin_type_mnemonic_x_S_forwards op)
+  | .F_BIN_TYPE_X_S (rs2, rs1, rd, op) =>
+    (pure (String.append (f_bin_type_mnemonic_x_S_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_or_reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_or_reg_name_forwards rs2) ""))))))))
-  | .F_UN_TYPE_X_S (rs1, rd, op) => (pure (String.append (f_un_type_mnemonic_x_S_forwards op)
+  | .F_UN_TYPE_X_S (rs1, rd, op) =>
+    (pure (String.append (f_un_type_mnemonic_x_S_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (freg_name_forwards rs1) ""))))))
-  | .F_UN_TYPE_F_S (rs1, rd, op) => (pure (String.append (f_un_type_mnemonic_f_S_forwards op)
+  | .F_UN_TYPE_F_S (rs1, rd, op) =>
+    (pure (String.append (f_un_type_mnemonic_f_S_forwards op)
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .C_FLWSP (imm, rd) => (do
+  | .C_FLWSP (imm, rd) =>
+    (do
       bif (xlen == 32)
       then
         (pure (String.append "c.flwsp"
@@ -3954,7 +4029,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_FSWSP (uimm, rs2) => (do
+  | .C_FSWSP (uimm, rs2) =>
+    (do
       bif (xlen == 32)
       then
         (pure (String.append "c.fswsp"
@@ -3965,7 +4041,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_FLW (uimm, rsc, rdc) => (do
+  | .C_FLW (uimm, rsc, rdc) =>
+    (do
       bif (xlen == 32)
       then
         (pure (String.append "c.flw"
@@ -3980,7 +4057,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_FSW (uimm, rsc1, rsc2) => (do
+  | .C_FSW (uimm, rsc1, rsc2) =>
+    (do
       bif (xlen == 32)
       then
         (pure (String.append "c.fsw"
@@ -3995,8 +4073,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .F_MADD_TYPE_D (rs3, rs2, rs1, rm, rd, op) => (pure (String.append
-        (f_madd_type_mnemonic_D_forwards op)
+  | .F_MADD_TYPE_D (rs3, rs2, rs1, rm, rd, op) =>
+    (pure (String.append (f_madd_type_mnemonic_D_forwards op)
         (String.append (spc_forwards ())
           (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
@@ -4007,8 +4085,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                       (String.append (freg_or_reg_name_forwards rs3)
                         (String.append (sep_forwards ())
                           (String.append (frm_mnemonic_forwards rm) ""))))))))))))
-  | .F_BIN_RM_TYPE_D (rs2, rs1, rm, rd, op) => (pure (String.append
-        (f_bin_rm_type_mnemonic_D_forwards op)
+  | .F_BIN_RM_TYPE_D (rs2, rs1, rm, rd, op) =>
+    (pure (String.append (f_bin_rm_type_mnemonic_D_forwards op)
         (String.append (spc_forwards ())
           (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
@@ -4016,48 +4094,53 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (freg_or_reg_name_forwards rs2)
                     (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))))
-  | .F_UN_RM_FF_TYPE_D (rs1, rm, rd, op) => (pure (String.append
-        (f_un_rm_ff_type_mnemonic_D_forwards op)
+  | .F_UN_RM_FF_TYPE_D (rs1, rm, rd, op) =>
+    (pure (String.append (f_un_rm_ff_type_mnemonic_D_forwards op)
         (String.append (spc_forwards ())
           (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_or_reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
-  | .F_UN_RM_FX_TYPE_D (rs1, rm, rd, op) => (pure (String.append
-        (f_un_rm_fx_type_mnemonic_D_forwards op)
+  | .F_UN_RM_FX_TYPE_D (rs1, rm, rd, op) =>
+    (pure (String.append (f_un_rm_fx_type_mnemonic_D_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_or_reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
-  | .F_UN_RM_XF_TYPE_D (rs1, rm, rd, op) => (pure (String.append
-        (f_un_rm_xf_type_mnemonic_D_forwards op)
+  | .F_UN_RM_XF_TYPE_D (rs1, rm, rd, op) =>
+    (pure (String.append (f_un_rm_xf_type_mnemonic_D_forwards op)
         (String.append (spc_forwards ())
           (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
-  | .F_BIN_F_TYPE_D (rs2, rs1, rd, op) => (pure (String.append (f_bin_f_type_mnemonic_D_forwards op)
+  | .F_BIN_F_TYPE_D (rs2, rs1, rd, op) =>
+    (pure (String.append (f_bin_f_type_mnemonic_D_forwards op)
         (String.append (spc_forwards ())
           (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_or_reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_or_reg_name_forwards rs2) ""))))))))
-  | .F_BIN_X_TYPE_D (rs2, rs1, rd, op) => (pure (String.append (f_bin_x_type_mnemonic_D_forwards op)
+  | .F_BIN_X_TYPE_D (rs2, rs1, rd, op) =>
+    (pure (String.append (f_bin_x_type_mnemonic_D_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_or_reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_or_reg_name_forwards rs2) ""))))))))
-  | .F_UN_X_TYPE_D (rs1, rd, op) => (pure (String.append (f_un_x_type_mnemonic_D_forwards op)
+  | .F_UN_X_TYPE_D (rs1, rd, op) =>
+    (pure (String.append (f_un_x_type_mnemonic_D_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (freg_name_forwards rs1) ""))))))
-  | .F_UN_F_TYPE_D (rs1, rd, op) => (pure (String.append (f_un_f_type_mnemonic_D_forwards op)
+  | .F_UN_F_TYPE_D (rs1, rd, op) =>
+    (pure (String.append (f_un_f_type_mnemonic_D_forwards op)
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .C_FLDSP (uimm, rd) => (do
+  | .C_FLDSP (uimm, rd) =>
+    (do
       bif ((xlen == 32) || (xlen == 64))
       then
         (pure (String.append "c.fldsp"
@@ -4068,7 +4151,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_FSDSP (uimm, rs2) => (do
+  | .C_FSDSP (uimm, rs2) =>
+    (do
       bif ((xlen == 32) || (xlen == 64))
       then
         (pure (String.append "c.fsdsp"
@@ -4079,7 +4163,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_FLD (uimm, rsc, rdc) => (do
+  | .C_FLD (uimm, rsc, rdc) =>
+    (do
       bif ((xlen == 32) || (xlen == 64))
       then
         (pure (String.append "c.fld"
@@ -4094,7 +4179,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .C_FSD (uimm, rsc1, rsc2) => (do
+  | .C_FSD (uimm, rsc1, rsc2) =>
+    (do
       bif ((xlen == 32) || (xlen == 64))
       then
         (pure (String.append "c.fsd"
@@ -4109,125 +4195,148 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .SINVAL_VMA (rs1, rs2) => (pure (String.append "sinval.vma"
+  | .SINVAL_VMA (rs1, rs2) =>
+    (pure (String.append "sinval.vma"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rs1)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))
   | .SFENCE_W_INVAL () => (pure "sfence.w.inval")
   | .SFENCE_INVAL_IR () => (pure "sfence.inval.ir")
-  | .SLLIUW (shamt, rs1, rd) => (pure (String.append "slli.uw"
+  | .SLLIUW (shamt, rs1, rd) =>
+    (pure (String.append "slli.uw"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ())
                   (String.append (← (hex_bits_6_forwards shamt)) ""))))))))
-  | .ZBA_RTYPEUW (rs2, rs1, rd, op) => (pure (String.append (zba_rtypeuw_mnemonic_forwards op)
+  | .ZBA_RTYPEUW (rs2, rs1, rd, op) =>
+    (pure (String.append (zba_rtypeuw_mnemonic_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .ZBA_RTYPE (rs2, rs1, rd, op) => (pure (String.append (zba_rtype_mnemonic_forwards op)
+  | .ZBA_RTYPE (rs2, rs1, rd, op) =>
+    (pure (String.append (zba_rtype_mnemonic_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .RORIW (shamt, rs1, rd) => (pure (String.append "roriw"
+  | .RORIW (shamt, rs1, rd) =>
+    (pure (String.append "roriw"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ())
                   (String.append (← (hex_bits_5_forwards shamt)) ""))))))))
-  | .RORI (shamt, rs1, rd) => (pure (String.append "rori"
+  | .RORI (shamt, rs1, rd) =>
+    (pure (String.append "rori"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ())
                   (String.append (← (hex_bits_6_forwards shamt)) ""))))))))
-  | .ZBB_RTYPEW (rs2, rs1, rd, op) => (pure (String.append (zbb_rtypew_mnemonic_forwards op)
+  | .ZBB_RTYPEW (rs2, rs1, rd, op) =>
+    (pure (String.append (zbb_rtypew_mnemonic_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .ZBB_RTYPE (rs2, rs1, rd, op) => (pure (String.append (zbb_rtype_mnemonic_forwards op)
+  | .ZBB_RTYPE (rs2, rs1, rd, op) =>
+    (pure (String.append (zbb_rtype_mnemonic_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .ZBB_EXTOP (rs1, rd, op) => (pure (String.append (zbb_extop_mnemonic_forwards op)
+  | .ZBB_EXTOP (rs1, rd, op) =>
+    (pure (String.append (zbb_extop_mnemonic_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .REV8 (rs1, rd) => (pure (String.append "rev8"
+  | .REV8 (rs1, rd) =>
+    (pure (String.append "rev8"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .ORCB (rs1, rd) => (pure (String.append "orc.b"
+  | .ORCB (rs1, rd) =>
+    (pure (String.append "orc.b"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .CPOP (rs1, rd) => (pure (String.append "cpop"
+  | .CPOP (rs1, rd) =>
+    (pure (String.append "cpop"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .CPOPW (rs1, rd) => (pure (String.append "cpopw"
+  | .CPOPW (rs1, rd) =>
+    (pure (String.append "cpopw"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .CLZ (rs1, rd) => (pure (String.append "clz"
+  | .CLZ (rs1, rd) =>
+    (pure (String.append "clz"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .CLZW (rs1, rd) => (pure (String.append "clzw"
+  | .CLZW (rs1, rd) =>
+    (pure (String.append "clzw"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .CTZ (rs1, rd) => (pure (String.append "ctz"
+  | .CTZ (rs1, rd) =>
+    (pure (String.append "ctz"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .CTZW (rs1, rd) => (pure (String.append "ctzw"
+  | .CTZW (rs1, rd) =>
+    (pure (String.append "ctzw"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .CLMUL (rs2, rs1, rd) => (pure (String.append "clmul"
+  | .CLMUL (rs2, rs1, rd) =>
+    (pure (String.append "clmul"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .CLMULH (rs2, rs1, rd) => (pure (String.append "clmulh"
+  | .CLMULH (rs2, rs1, rd) =>
+    (pure (String.append "clmulh"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .CLMULR (rs2, rs1, rd) => (pure (String.append "clmulr"
+  | .CLMULR (rs2, rs1, rd) =>
+    (pure (String.append "clmulr"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .ZBS_IOP (shamt, rs1, rd, op) => (pure (String.append (zbs_iop_mnemonic_forwards op)
+  | .ZBS_IOP (shamt, rs1, rd, op) =>
+    (pure (String.append (zbs_iop_mnemonic_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ())
                   (String.append (← (hex_bits_6_forwards shamt)) ""))))))))
-  | .ZBS_RTYPE (rs2, rs1, rd, op) => (pure (String.append (zbs_rtype_mnemonic_forwards op)
+  | .ZBS_RTYPE (rs2, rs1, rd, op) =>
+    (pure (String.append (zbs_rtype_mnemonic_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .C_LBU (uimm, rdc, rs1c) => (pure (String.append "c.lbu"
+  | .C_LBU (uimm, rdc, rs1c) =>
+    (pure (String.append "c.lbu"
         (String.append (spc_forwards ())
           (String.append (creg_name_forwards rdc)
             (String.append (sep_forwards ())
@@ -4237,7 +4346,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                     (String.append (opt_spc_forwards ())
                       (String.append (creg_name_forwards rs1c)
                         (String.append (opt_spc_forwards ()) (String.append ")" ""))))))))))))
-  | .C_LHU (uimm, rdc, rs1c) => (pure (String.append "c.lhu"
+  | .C_LHU (uimm, rdc, rs1c) =>
+    (pure (String.append "c.lhu"
         (String.append (spc_forwards ())
           (String.append (creg_name_forwards rdc)
             (String.append (sep_forwards ())
@@ -4247,7 +4357,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                     (String.append (opt_spc_forwards ())
                       (String.append (creg_name_forwards rs1c)
                         (String.append (opt_spc_forwards ()) (String.append ")" ""))))))))))))
-  | .C_LH (uimm, rdc, rs1c) => (pure (String.append "c.lh"
+  | .C_LH (uimm, rdc, rs1c) =>
+    (pure (String.append "c.lh"
         (String.append (spc_forwards ())
           (String.append (creg_name_forwards rdc)
             (String.append (sep_forwards ())
@@ -4257,7 +4368,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                     (String.append (opt_spc_forwards ())
                       (String.append (creg_name_forwards rs1c)
                         (String.append (opt_spc_forwards ()) (String.append ")" ""))))))))))))
-  | .C_SB (uimm, rs1c, rs2c) => (pure (String.append "c.sb"
+  | .C_SB (uimm, rs1c, rs2c) =>
+    (pure (String.append "c.sb"
         (String.append (spc_forwards ())
           (String.append (creg_name_forwards rs2c)
             (String.append (sep_forwards ())
@@ -4267,7 +4379,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                     (String.append (opt_spc_forwards ())
                       (String.append (creg_name_forwards rs1c)
                         (String.append (opt_spc_forwards ()) (String.append ")" ""))))))))))))
-  | .C_SH (uimm, rs1c, rs2c) => (pure (String.append "c.sh"
+  | .C_SH (uimm, rs1c, rs2c) =>
+    (pure (String.append "c.sh"
         (String.append (spc_forwards ())
           (String.append (creg_name_forwards rs1c)
             (String.append (sep_forwards ())
@@ -4277,24 +4390,31 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                     (String.append (opt_spc_forwards ())
                       (String.append (creg_name_forwards rs2c)
                         (String.append (opt_spc_forwards ()) (String.append ")" ""))))))))))))
-  | .C_ZEXT_B rsdc => (pure (String.append "c.zext.b"
+  | .C_ZEXT_B rsdc =>
+    (pure (String.append "c.zext.b"
         (String.append (spc_forwards ()) (String.append (creg_name_forwards rsdc) ""))))
-  | .C_SEXT_B rsdc => (pure (String.append "c.sext.b"
+  | .C_SEXT_B rsdc =>
+    (pure (String.append "c.sext.b"
         (String.append (spc_forwards ()) (String.append (creg_name_forwards rsdc) ""))))
-  | .C_ZEXT_H rsdc => (pure (String.append "c.zext.h"
+  | .C_ZEXT_H rsdc =>
+    (pure (String.append "c.zext.h"
         (String.append (spc_forwards ()) (String.append (creg_name_forwards rsdc) ""))))
-  | .C_SEXT_H rsdc => (pure (String.append "c.sext.h"
+  | .C_SEXT_H rsdc =>
+    (pure (String.append "c.sext.h"
         (String.append (spc_forwards ()) (String.append (creg_name_forwards rsdc) ""))))
-  | .C_ZEXT_W rsdc => (pure (String.append "c.zext.w"
+  | .C_ZEXT_W rsdc =>
+    (pure (String.append "c.zext.w"
         (String.append (spc_forwards ()) (String.append (creg_name_forwards rsdc) ""))))
-  | .C_NOT rsdc => (pure (String.append "c.not"
+  | .C_NOT rsdc =>
+    (pure (String.append "c.not"
         (String.append (spc_forwards ()) (String.append (creg_name_forwards rsdc) ""))))
-  | .C_MUL (rsdc, rs2c) => (pure (String.append "c.mul"
+  | .C_MUL (rsdc, rs2c) =>
+    (pure (String.append "c.mul"
         (String.append (spc_forwards ())
           (String.append (creg_name_forwards rsdc)
             (String.append (sep_forwards ()) (String.append (creg_name_forwards rs2c) ""))))))
-  | .F_BIN_RM_TYPE_H (rs2, rs1, rm, rd, op) => (pure (String.append
-        (f_bin_rm_type_mnemonic_H_forwards op)
+  | .F_BIN_RM_TYPE_H (rs2, rs1, rm, rd, op) =>
+    (pure (String.append (f_bin_rm_type_mnemonic_H_forwards op)
         (String.append (spc_forwards ())
           (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
@@ -4302,8 +4422,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (freg_or_reg_name_forwards rs2)
                     (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))))
-  | .F_MADD_TYPE_H (rs3, rs2, rs1, rm, rd, op) => (pure (String.append
-        (f_madd_type_mnemonic_H_forwards op)
+  | .F_MADD_TYPE_H (rs3, rs2, rs1, rm, rd, op) =>
+    (pure (String.append (f_madd_type_mnemonic_H_forwards op)
         (String.append (spc_forwards ())
           (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
@@ -4314,201 +4434,234 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                       (String.append (freg_or_reg_name_forwards rs3)
                         (String.append (sep_forwards ())
                           (String.append (frm_mnemonic_forwards rm) ""))))))))))))
-  | .F_BIN_F_TYPE_H (rs2, rs1, rd, op) => (pure (String.append (f_bin_f_type_mnemonic_H_forwards op)
+  | .F_BIN_F_TYPE_H (rs2, rs1, rd, op) =>
+    (pure (String.append (f_bin_f_type_mnemonic_H_forwards op)
         (String.append (spc_forwards ())
           (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_or_reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_or_reg_name_forwards rs2) ""))))))))
-  | .F_BIN_X_TYPE_H (rs2, rs1, rd, op) => (pure (String.append (f_bin_x_type_mnemonic_H_forwards op)
+  | .F_BIN_X_TYPE_H (rs2, rs1, rd, op) =>
+    (pure (String.append (f_bin_x_type_mnemonic_H_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_or_reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_or_reg_name_forwards rs2) ""))))))))
-  | .F_UN_RM_FF_TYPE_H (rs1, rm, rd, op) => (pure (String.append
-        (f_un_rm_ff_type_mnemonic_H_forwards op)
+  | .F_UN_RM_FF_TYPE_H (rs1, rm, rd, op) =>
+    (pure (String.append (f_un_rm_ff_type_mnemonic_H_forwards op)
         (String.append (spc_forwards ())
           (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_or_reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
-  | .F_UN_RM_FX_TYPE_H (rs1, rm, rd, op) => (pure (String.append
-        (f_un_rm_fx_type_mnemonic_H_forwards op)
+  | .F_UN_RM_FX_TYPE_H (rs1, rm, rd, op) =>
+    (pure (String.append (f_un_rm_fx_type_mnemonic_H_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_or_reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
-  | .F_UN_RM_XF_TYPE_H (rs1, rm, rd, op) => (pure (String.append
-        (f_un_rm_xf_type_mnemonic_H_forwards op)
+  | .F_UN_RM_XF_TYPE_H (rs1, rm, rd, op) =>
+    (pure (String.append (f_un_rm_xf_type_mnemonic_H_forwards op)
         (String.append (spc_forwards ())
           (String.append (freg_or_reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
-  | .F_UN_F_TYPE_H (rs1, rd, op) => (pure (String.append (f_un_f_type_mnemonic_H_forwards op)
+  | .F_UN_F_TYPE_H (rs1, rd, op) =>
+    (pure (String.append (f_un_f_type_mnemonic_H_forwards op)
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .F_UN_X_TYPE_H (rs1, rd, op) => (pure (String.append (f_un_x_type_mnemonic_H_forwards op)
+  | .F_UN_X_TYPE_H (rs1, rd, op) =>
+    (pure (String.append (f_un_x_type_mnemonic_H_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (freg_name_forwards rs1) ""))))))
-  | .FLI_H (constantidx, rd) => (pure (String.append "fli.h"
+  | .FLI_H (constantidx, rd) =>
+    (pure (String.append "fli.h"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (← (hex_bits_5_forwards constantidx)) ""))))))
-  | .FLI_S (constantidx, rd) => (pure (String.append "fli.s"
+  | .FLI_S (constantidx, rd) =>
+    (pure (String.append "fli.s"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (← (hex_bits_5_forwards constantidx)) ""))))))
-  | .FLI_D (constantidx, rd) => (pure (String.append "fli.d"
+  | .FLI_D (constantidx, rd) =>
+    (pure (String.append "fli.d"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (← (hex_bits_5_forwards constantidx)) ""))))))
-  | .FMINM_H (rs2, rs1, rd) => (pure (String.append "fminm.h"
+  | .FMINM_H (rs2, rs1, rd) =>
+    (pure (String.append "fminm.h"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
-  | .FMAXM_H (rs2, rs1, rd) => (pure (String.append "fmaxm.h"
+  | .FMAXM_H (rs2, rs1, rd) =>
+    (pure (String.append "fmaxm.h"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
-  | .FMINM_S (rs2, rs1, rd) => (pure (String.append "fminm.s"
+  | .FMINM_S (rs2, rs1, rd) =>
+    (pure (String.append "fminm.s"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
-  | .FMAXM_S (rs2, rs1, rd) => (pure (String.append "fmaxm.s"
+  | .FMAXM_S (rs2, rs1, rd) =>
+    (pure (String.append "fmaxm.s"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
-  | .FMINM_D (rs2, rs1, rd) => (pure (String.append "fminm.d"
+  | .FMINM_D (rs2, rs1, rd) =>
+    (pure (String.append "fminm.d"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
-  | .FMAXM_D (rs2, rs1, rd) => (pure (String.append "fmaxm.d"
+  | .FMAXM_D (rs2, rs1, rd) =>
+    (pure (String.append "fmaxm.d"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
-  | .FROUND_H (rs1, rm, rd) => (pure (String.append "fround.h"
+  | .FROUND_H (rs1, rm, rd) =>
+    (pure (String.append "fround.h"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
-  | .FROUNDNX_H (rs1, rm, rd) => (pure (String.append "froundnx.h"
+  | .FROUNDNX_H (rs1, rm, rd) =>
+    (pure (String.append "froundnx.h"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
-  | .FROUND_S (rs1, rm, rd) => (pure (String.append "fround.s"
+  | .FROUND_S (rs1, rm, rd) =>
+    (pure (String.append "fround.s"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
-  | .FROUNDNX_S (rs1, rm, rd) => (pure (String.append "froundnx.s"
+  | .FROUNDNX_S (rs1, rm, rd) =>
+    (pure (String.append "froundnx.s"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
-  | .FROUND_D (rs1, rm, rd) => (pure (String.append "fround.d"
+  | .FROUND_D (rs1, rm, rd) =>
+    (pure (String.append "fround.d"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
-  | .FROUNDNX_D (rs1, rm, rd) => (pure (String.append "froundnx.d"
+  | .FROUNDNX_D (rs1, rm, rd) =>
+    (pure (String.append "froundnx.d"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (frm_mnemonic_forwards rm) ""))))))))
-  | .FMVH_X_D (rs1, rd) => (pure (String.append "fmvh.x.d"
+  | .FMVH_X_D (rs1, rd) =>
+    (pure (String.append "fmvh.x.d"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (freg_name_forwards rs1) ""))))))
-  | .FMVP_D_X (rs2, rs1, rd) => (pure (String.append "fmvp.d.x"
+  | .FMVP_D_X (rs2, rs1, rd) =>
+    (pure (String.append "fmvp.d.x"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .FLEQ_H (rs2, rs1, rd) => (pure (String.append "fleq.h"
+  | .FLEQ_H (rs2, rs1, rd) =>
+    (pure (String.append "fleq.h"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
-  | .FLTQ_H (rs2, rs1, rd) => (pure (String.append "fltq.h"
+  | .FLTQ_H (rs2, rs1, rd) =>
+    (pure (String.append "fltq.h"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
-  | .FLEQ_S (rs2, rs1, rd) => (pure (String.append "fleq.s"
+  | .FLEQ_S (rs2, rs1, rd) =>
+    (pure (String.append "fleq.s"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
-  | .FLTQ_S (rs2, rs1, rd) => (pure (String.append "fltq.s"
+  | .FLTQ_S (rs2, rs1, rd) =>
+    (pure (String.append "fltq.s"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
-  | .FLEQ_D (rs2, rs1, rd) => (pure (String.append "fleq.d"
+  | .FLEQ_D (rs2, rs1, rd) =>
+    (pure (String.append "fleq.d"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
-  | .FLTQ_D (rs2, rs1, rd) => (pure (String.append "fltq.d"
+  | .FLTQ_D (rs2, rs1, rd) =>
+    (pure (String.append "fltq.d"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (freg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (freg_name_forwards rs2) ""))))))))
-  | .FCVTMOD_W_D (rs1, rd) => (pure (String.append "fcvtmod.w.d"
+  | .FCVTMOD_W_D (rs1, rd) =>
+    (pure (String.append "fcvtmod.w.d"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (freg_name_forwards rs1) ""))))))
-  | .SHA256SIG0 (rs1, rd) => (pure (String.append "sha256sig0"
+  | .SHA256SIG0 (rs1, rd) =>
+    (pure (String.append "sha256sig0"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .SHA256SIG1 (rs1, rd) => (pure (String.append "sha256sig1"
+  | .SHA256SIG1 (rs1, rd) =>
+    (pure (String.append "sha256sig1"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .SHA256SUM0 (rs1, rd) => (pure (String.append "sha256sum0"
+  | .SHA256SUM0 (rs1, rd) =>
+    (pure (String.append "sha256sum0"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .SHA256SUM1 (rs1, rd) => (pure (String.append "sha256sum1"
+  | .SHA256SUM1 (rs1, rd) =>
+    (pure (String.append "sha256sum1"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .AES32ESMI (bs, rs2, rs1, rd) => (pure (String.append "aes32esmi"
+  | .AES32ESMI (bs, rs2, rs1, rd) =>
+    (pure (String.append "aes32esmi"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
@@ -4517,7 +4670,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                   (String.append (reg_name_forwards rs2)
                     (String.append (sep_forwards ())
                       (String.append (← (hex_bits_2_forwards bs)) ""))))))))))
-  | .AES32ESI (bs, rs2, rs1, rd) => (pure (String.append "aes32esi"
+  | .AES32ESI (bs, rs2, rs1, rd) =>
+    (pure (String.append "aes32esi"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
@@ -4526,7 +4680,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                   (String.append (reg_name_forwards rs2)
                     (String.append (sep_forwards ())
                       (String.append (← (hex_bits_2_forwards bs)) ""))))))))))
-  | .AES32DSMI (bs, rs2, rs1, rd) => (pure (String.append "aes32dsmi"
+  | .AES32DSMI (bs, rs2, rs1, rd) =>
+    (pure (String.append "aes32dsmi"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
@@ -4535,7 +4690,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                   (String.append (reg_name_forwards rs2)
                     (String.append (sep_forwards ())
                       (String.append (← (hex_bits_2_forwards bs)) ""))))))))))
-  | .AES32DSI (bs, rs2, rs1, rd) => (pure (String.append "aes32dsi"
+  | .AES32DSI (bs, rs2, rs1, rd) =>
+    (pure (String.append "aes32dsi"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
@@ -4544,107 +4700,127 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                   (String.append (reg_name_forwards rs2)
                     (String.append (sep_forwards ())
                       (String.append (← (hex_bits_2_forwards bs)) ""))))))))))
-  | .SHA512SIG0L (rs2, rs1, rd) => (pure (String.append "sha512sig0l"
+  | .SHA512SIG0L (rs2, rs1, rd) =>
+    (pure (String.append "sha512sig0l"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .SHA512SIG0H (rs2, rs1, rd) => (pure (String.append "sha512sig0h"
+  | .SHA512SIG0H (rs2, rs1, rd) =>
+    (pure (String.append "sha512sig0h"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .SHA512SIG1L (rs2, rs1, rd) => (pure (String.append "sha512sig1l"
+  | .SHA512SIG1L (rs2, rs1, rd) =>
+    (pure (String.append "sha512sig1l"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .SHA512SIG1H (rs2, rs1, rd) => (pure (String.append "sha512sig1h"
+  | .SHA512SIG1H (rs2, rs1, rd) =>
+    (pure (String.append "sha512sig1h"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .SHA512SUM0R (rs2, rs1, rd) => (pure (String.append "sha512sum0r"
+  | .SHA512SUM0R (rs2, rs1, rd) =>
+    (pure (String.append "sha512sum0r"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .SHA512SUM1R (rs2, rs1, rd) => (pure (String.append "sha512sum1r"
+  | .SHA512SUM1R (rs2, rs1, rd) =>
+    (pure (String.append "sha512sum1r"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .AES64KS1I (rnum, rs1, rd) => (pure (String.append "aes64ks1i"
+  | .AES64KS1I (rnum, rs1, rd) =>
+    (pure (String.append "aes64ks1i"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (← (hex_bits_4_forwards rnum)) ""))))))))
-  | .AES64KS2 (rs2, rs1, rd) => (pure (String.append "aes64ks2"
+  | .AES64KS2 (rs2, rs1, rd) =>
+    (pure (String.append "aes64ks2"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .AES64IM (rs1, rd) => (pure (String.append "aes64im"
+  | .AES64IM (rs1, rd) =>
+    (pure (String.append "aes64im"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .AES64ESM (rs2, rs1, rd) => (pure (String.append "aes64esm"
+  | .AES64ESM (rs2, rs1, rd) =>
+    (pure (String.append "aes64esm"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .AES64ES (rs2, rs1, rd) => (pure (String.append "aes64es"
+  | .AES64ES (rs2, rs1, rd) =>
+    (pure (String.append "aes64es"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .AES64DSM (rs2, rs1, rd) => (pure (String.append "aes64dsm"
+  | .AES64DSM (rs2, rs1, rd) =>
+    (pure (String.append "aes64dsm"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .AES64DS (rs2, rs1, rd) => (pure (String.append "aes64ds"
+  | .AES64DS (rs2, rs1, rd) =>
+    (pure (String.append "aes64ds"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .SHA512SIG0 (rs1, rd) => (pure (String.append "sha512sig0"
+  | .SHA512SIG0 (rs1, rd) =>
+    (pure (String.append "sha512sig0"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .SHA512SIG1 (rs1, rd) => (pure (String.append "sha512sig1"
+  | .SHA512SIG1 (rs1, rd) =>
+    (pure (String.append "sha512sig1"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .SHA512SUM0 (rs1, rd) => (pure (String.append "sha512sum0"
+  | .SHA512SUM0 (rs1, rd) =>
+    (pure (String.append "sha512sum0"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .SHA512SUM1 (rs1, rd) => (pure (String.append "sha512sum1"
+  | .SHA512SUM1 (rs1, rd) =>
+    (pure (String.append "sha512sum1"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .SM3P0 (rs1, rd) => (pure (String.append "sm3p0"
+  | .SM3P0 (rs1, rd) =>
+    (pure (String.append "sm3p0"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .SM3P1 (rs1, rd) => (pure (String.append "sm3p1"
+  | .SM3P1 (rs1, rd) =>
+    (pure (String.append "sm3p1"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .SM4ED (bs, rs2, rs1, rd) => (pure (String.append "sm4ed"
+  | .SM4ED (bs, rs2, rs1, rd) =>
+    (pure (String.append "sm4ed"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
@@ -4653,7 +4829,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                   (String.append (reg_name_forwards rs2)
                     (String.append (sep_forwards ())
                       (String.append (← (hex_bits_2_forwards bs)) ""))))))))))
-  | .SM4KS (bs, rs2, rs1, rd) => (pure (String.append "sm4ks"
+  | .SM4KS (bs, rs2, rs1, rd) =>
+    (pure (String.append "sm4ks"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
@@ -4662,49 +4839,58 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                   (String.append (reg_name_forwards rs2)
                     (String.append (sep_forwards ())
                       (String.append (← (hex_bits_2_forwards bs)) ""))))))))))
-  | .ZBKB_RTYPE (rs2, rs1, rd, op) => (pure (String.append (zbkb_rtype_mnemonic_forwards op)
+  | .ZBKB_RTYPE (rs2, rs1, rd, op) =>
+    (pure (String.append (zbkb_rtype_mnemonic_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .ZBKB_PACKW (rs2, rs1, rd) => (pure (String.append "packw"
+  | .ZBKB_PACKW (rs2, rs1, rd) =>
+    (pure (String.append "packw"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .ZIP (rs1, rd) => (pure (String.append "zip"
+  | .ZIP (rs1, rd) =>
+    (pure (String.append "zip"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .UNZIP (rs1, rd) => (pure (String.append "unzip"
+  | .UNZIP (rs1, rd) =>
+    (pure (String.append "unzip"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .BREV8 (rs1, rd) => (pure (String.append "brev8"
+  | .BREV8 (rs1, rd) =>
+    (pure (String.append "brev8"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .XPERM8 (rs2, rs1, rd) => (pure (String.append "xperm8"
+  | .XPERM8 (rs2, rs1, rd) =>
+    (pure (String.append "xperm8"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .XPERM4 (rs2, rs1, rd) => (pure (String.append "xperm4"
+  | .XPERM4 (rs2, rs1, rd) =>
+    (pure (String.append "xperm4"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .ZICOND_RTYPE (rs2, rs1, rd, op) => (pure (String.append (zicond_mnemonic_forwards op)
+  | .ZICOND_RTYPE (rs2, rs1, rd, op) =>
+    (pure (String.append (zicond_mnemonic_forwards op)
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .VSETVLI (ma, ta, sew, lmul, rs1, rd) => (pure (String.append "vsetvli"
+  | .VSETVLI (ma, ta, sew, lmul, rs1, rd) =>
+    (pure (String.append "vsetvli"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
@@ -4714,13 +4900,15 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                     (String.append (← (maybe_lmul_flag_backwards lmul))
                       (String.append (ta_flag_backwards ta)
                         (String.append (ma_flag_backwards ma) "")))))))))))
-  | .VSETVL (rs2, rs1, rd) => (pure (String.append "vsetvl"
+  | .VSETVL (rs2, rs1, rd) =>
+    (pure (String.append "vsetvl"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .VSETIVLI (ma, ta, sew, lmul, uimm, rd) => (pure (String.append "vsetivli"
+  | .VSETIVLI (ma, ta, sew, lmul, uimm, rd) =>
+    (pure (String.append "vsetivli"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
@@ -4730,7 +4918,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                     (String.append (← (maybe_lmul_flag_backwards lmul))
                       (String.append (ta_flag_backwards ta)
                         (String.append (ma_flag_backwards ma) "")))))))))))
-  | .VVTYPE (funct6, vm, vs2, vs1, vd) => (pure (String.append (vvtype_mnemonic_forwards funct6)
+  | .VVTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (vvtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4738,7 +4927,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .NVSTYPE (funct6, vm, vs2, vs1, vd) => (pure (String.append (nvstype_mnemonic_forwards funct6)
+  | .NVSTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (nvstype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4746,7 +4936,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .NVTYPE (funct6, vm, vs2, vs1, vd) => (pure (String.append (nvtype_mnemonic_forwards funct6)
+  | .NVTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (nvtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4754,7 +4945,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .MASKTYPEV (vs2, vs1, vd) => (pure (String.append "vmerge.vvm"
+  | .MASKTYPEV (vs2, vs1, vd) =>
+    (pure (String.append "vmerge.vvm"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4762,11 +4954,13 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
                     (String.append (sep_forwards ()) (String.append "v0" ""))))))))))
-  | .MOVETYPEV (vs1, vd) => (pure (String.append "vmv.v.v"
+  | .MOVETYPEV (vs1, vd) =>
+    (pure (String.append "vmv.v.v"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs1) ""))))))
-  | .VXTYPE (funct6, vm, vs2, rs1, vd) => (pure (String.append (vxtype_mnemonic_forwards funct6)
+  | .VXTYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (vxtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4774,7 +4968,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (reg_name_forwards rs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .NXSTYPE (funct6, vm, vs2, rs1, vd) => (pure (String.append (nxstype_mnemonic_forwards funct6)
+  | .NXSTYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (nxstype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4782,7 +4977,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (reg_name_forwards rs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .NXTYPE (funct6, vm, vs2, rs1, vd) => (pure (String.append (nxtype_mnemonic_forwards funct6)
+  | .NXTYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (nxtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4790,7 +4986,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (reg_name_forwards rs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .VXSG (funct6, vm, vs2, rs1, vd) => (pure (String.append (vxsg_mnemonic_forwards funct6)
+  | .VXSG (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (vxsg_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4798,7 +4995,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (reg_name_forwards rs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .MASKTYPEX (vs2, rs1, vd) => (pure (String.append "vmerge.vxm"
+  | .MASKTYPEX (vs2, rs1, vd) =>
+    (pure (String.append "vmerge.vxm"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4806,11 +5004,13 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (reg_name_forwards rs1)
                     (String.append (sep_forwards ()) (String.append "v0" ""))))))))))
-  | .MOVETYPEX (rs1, vd) => (pure (String.append "vmv.v.x"
+  | .MOVETYPEX (rs1, vd) =>
+    (pure (String.append "vmv.v.x"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .VITYPE (funct6, vm, vs2, simm, vd) => (pure (String.append (vitype_mnemonic_forwards funct6)
+  | .VITYPE (funct6, vm, vs2, simm, vd) =>
+    (pure (String.append (vitype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4818,7 +5018,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (← (hex_bits_5_forwards simm))
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .NISTYPE (funct6, vm, vs2, simm, vd) => (pure (String.append (nistype_mnemonic_forwards funct6)
+  | .NISTYPE (funct6, vm, vs2, simm, vd) =>
+    (pure (String.append (nistype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4826,7 +5027,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (← (hex_bits_5_forwards simm))
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .NITYPE (funct6, vm, vs2, simm, vd) => (pure (String.append (nitype_mnemonic_forwards funct6)
+  | .NITYPE (funct6, vm, vs2, simm, vd) =>
+    (pure (String.append (nitype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4834,7 +5036,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (← (hex_bits_5_forwards simm))
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .VISG (funct6, vm, vs2, simm, vd) => (pure (String.append (visg_mnemonic_forwards funct6)
+  | .VISG (funct6, vm, vs2, simm, vd) =>
+    (pure (String.append (visg_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4842,7 +5045,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (← (hex_bits_5_forwards simm))
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .MASKTYPEI (vs2, simm, vd) => (pure (String.append "vmerge.vim"
+  | .MASKTYPEI (vs2, simm, vd) =>
+    (pure (String.append "vmerge.vim"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4850,17 +5054,20 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (← (hex_bits_5_forwards simm))
                     (String.append (sep_forwards ()) (String.append "v0" ""))))))))))
-  | .MOVETYPEI (vd, simm) => (pure (String.append "vmv.v.i"
+  | .MOVETYPEI (vd, simm) =>
+    (pure (String.append "vmv.v.i"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ()) (String.append (← (hex_bits_5_forwards simm)) ""))))))
-  | .VMVRTYPE (vs2, simm, vd) => (pure (String.append "vmv"
+  | .VMVRTYPE (vs2, simm, vd) =>
+    (pure (String.append "vmv"
         (String.append (← (simm_string_forwards simm))
           (String.append "r.v"
             (String.append (spc_forwards ())
               (String.append (vreg_name_forwards vd)
                 (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs2) ""))))))))
-  | .MVVTYPE (funct6, vm, vs2, vs1, vd) => (pure (String.append (mvvtype_mnemonic_forwards funct6)
+  | .MVVTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (mvvtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4868,8 +5075,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .MVVMATYPE (funct6, vm, vs2, vs1, vd) => (pure (String.append
-        (mvvmatype_mnemonic_forwards funct6)
+  | .MVVMATYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (mvvmatype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4877,7 +5084,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs2)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .WVVTYPE (funct6, vm, vs2, vs1, vd) => (pure (String.append (wvvtype_mnemonic_forwards funct6)
+  | .WVVTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (wvvtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4885,7 +5093,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .WVTYPE (funct6, vm, vs2, vs1, vd) => (pure (String.append (wvtype_mnemonic_forwards funct6)
+  | .WVTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (wvtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4893,7 +5102,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .WMVVTYPE (funct6, vm, vs2, vs1, vd) => (pure (String.append (wmvvtype_mnemonic_forwards funct6)
+  | .WMVVTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (wmvvtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4901,32 +5111,38 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs2)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .VEXT2TYPE (funct6, vm, vs2, vd) => (pure (String.append (vext2type_mnemonic_forwards funct6)
+  | .VEXT2TYPE (funct6, vm, vs2, vd) =>
+    (pure (String.append (vext2type_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
-  | .VEXT4TYPE (funct6, vm, vs2, vd) => (pure (String.append (vext4type_mnemonic_forwards funct6)
+  | .VEXT4TYPE (funct6, vm, vs2, vd) =>
+    (pure (String.append (vext4type_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
-  | .VEXT8TYPE (funct6, vm, vs2, vd) => (pure (String.append (vext8type_mnemonic_forwards funct6)
+  | .VEXT8TYPE (funct6, vm, vs2, vd) =>
+    (pure (String.append (vext8type_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
-  | .VMVXS (vs2, rd) => (pure (String.append "vmv.x.s"
+  | .VMVXS (vs2, rd) =>
+    (pure (String.append "vmv.x.s"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs2) ""))))))
-  | .MVVCOMPRESS (vs2, vs1, vd) => (pure (String.append "vcompress.vm"
+  | .MVVCOMPRESS (vs2, vs1, vd) =>
+    (pure (String.append "vcompress.vm"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2)
                 (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs1) ""))))))))
-  | .MVXTYPE (funct6, vm, vs2, rs1, vd) => (pure (String.append (mvxtype_mnemonic_forwards funct6)
+  | .MVXTYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (mvxtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4934,8 +5150,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (reg_name_forwards rs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .MVXMATYPE (funct6, vm, vs2, rs1, vd) => (pure (String.append
-        (mvxmatype_mnemonic_forwards funct6)
+  | .MVXMATYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (mvxmatype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4943,7 +5159,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs2)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .WVXTYPE (funct6, vm, vs2, rs1, vd) => (pure (String.append (wvxtype_mnemonic_forwards funct6)
+  | .WVXTYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (wvxtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4951,7 +5168,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (reg_name_forwards rs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .WXTYPE (funct6, vm, vs2, rs1, vd) => (pure (String.append (wxtype_mnemonic_forwards funct6)
+  | .WXTYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (wxtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4959,7 +5177,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (reg_name_forwards rs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .WMVXTYPE (funct6, vm, vs2, rs1, vd) => (pure (String.append (wmvxtype_mnemonic_forwards funct6)
+  | .WMVXTYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (wmvxtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4967,11 +5186,13 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs2)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .VMVSX (rs1, vd) => (pure (String.append "vmv.s.x"
+  | .VMVSX (rs1, vd) =>
+    (pure (String.append "vmv.s.x"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))
-  | .FVVTYPE (funct6, vm, vs2, vs1, vd) => (pure (String.append (fvvtype_mnemonic_forwards funct6)
+  | .FVVTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (fvvtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4979,8 +5200,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .FVVMATYPE (funct6, vm, vs2, vs1, vd) => (pure (String.append
-        (fvvmatype_mnemonic_forwards funct6)
+  | .FVVMATYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (fvvmatype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4988,7 +5209,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs2)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .FWVVTYPE (funct6, vm, vs2, vs1, vd) => (pure (String.append (fwvvtype_mnemonic_forwards funct6)
+  | .FWVVTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (fwvvtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -4996,8 +5218,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .FWVVMATYPE (funct6, vm, vs1, vs2, vd) => (pure (String.append
-        (fwvvmatype_mnemonic_forwards funct6)
+  | .FWVVMATYPE (funct6, vm, vs1, vs2, vd) =>
+    (pure (String.append (fwvvmatype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5005,7 +5227,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs2)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .FWVTYPE (funct6, vm, vs2, vs1, vd) => (pure (String.append (fwvtype_mnemonic_forwards funct6)
+  | .FWVTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (fwvtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5013,33 +5236,37 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .VFUNARY0 (vm, vs2, vfunary0, vd) => (pure (String.append (vfunary0_mnemonic_forwards vfunary0)
+  | .VFUNARY0 (vm, vs2, vfunary0, vd) =>
+    (pure (String.append (vfunary0_mnemonic_forwards vfunary0)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
-  | .VFWUNARY0 (vm, vs2, vfwunary0, vd) => (pure (String.append
-        (vfwunary0_mnemonic_forwards vfwunary0)
+  | .VFWUNARY0 (vm, vs2, vfwunary0, vd) =>
+    (pure (String.append (vfwunary0_mnemonic_forwards vfwunary0)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
-  | .VFNUNARY0 (vm, vs2, vfnunary0, vd) => (pure (String.append
-        (vfnunary0_mnemonic_forwards vfnunary0)
+  | .VFNUNARY0 (vm, vs2, vfnunary0, vd) =>
+    (pure (String.append (vfnunary0_mnemonic_forwards vfnunary0)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
-  | .VFUNARY1 (vm, vs2, vfunary1, vd) => (pure (String.append (vfunary1_mnemonic_forwards vfunary1)
+  | .VFUNARY1 (vm, vs2, vfunary1, vd) =>
+    (pure (String.append (vfunary1_mnemonic_forwards vfunary1)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
-  | .VFMVFS (vs2, rd) => (pure (String.append "vfmv.f.s"
+  | .VFMVFS (vs2, rd) =>
+    (pure (String.append "vfmv.f.s"
         (String.append (spc_forwards ())
           (String.append (freg_name_forwards rd)
             (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs2) ""))))))
-  | .FVFTYPE (funct6, vm, vs2, rs1, vd) => (pure (String.append (fvftype_mnemonic_forwards funct6)
+  | .FVFTYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (fvftype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5047,8 +5274,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (freg_name_forwards rs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .FVFMATYPE (funct6, vm, vs2, rs1, vd) => (pure (String.append
-        (fvfmatype_mnemonic_forwards funct6)
+  | .FVFMATYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (fvfmatype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5056,7 +5283,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs2)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .FWVFTYPE (funct6, vm, vs2, rs1, vd) => (pure (String.append (fwvftype_mnemonic_forwards funct6)
+  | .FWVFTYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (fwvftype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5064,8 +5292,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (freg_name_forwards rs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .FWVFMATYPE (funct6, vm, rs1, vs2, vd) => (pure (String.append
-        (fwvfmatype_mnemonic_forwards funct6)
+  | .FWVFMATYPE (funct6, vm, rs1, vs2, vd) =>
+    (pure (String.append (fwvfmatype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5073,7 +5301,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs2)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .FWFTYPE (funct6, vm, vs2, rs1, vd) => (pure (String.append (fwftype_mnemonic_forwards funct6)
+  | .FWFTYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (fwftype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5081,7 +5310,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (freg_name_forwards rs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .VFMERGE (vs2, rs1, vd) => (pure (String.append "vfmerge.vfm"
+  | .VFMERGE (vs2, rs1, vd) =>
+    (pure (String.append "vfmerge.vfm"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5089,15 +5319,18 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (freg_name_forwards rs1)
                     (String.append (sep_forwards ()) (String.append "v0" ""))))))))))
-  | .VFMV (rs1, vd) => (pure (String.append "vfmv.v.f"
+  | .VFMV (rs1, vd) =>
+    (pure (String.append "vfmv.v.f"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ()) (String.append (freg_name_forwards rs1) ""))))))
-  | .VFMVSF (rs1, vd) => (pure (String.append "vfmv.s.f"
+  | .VFMVSF (rs1, vd) =>
+    (pure (String.append "vfmv.s.f"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ()) (String.append (freg_name_forwards rs1) ""))))))
-  | .VLSEGTYPE (nf, vm, rs1, width, vd) => (pure (String.append "vl"
+  | .VLSEGTYPE (nf, vm, rs1, width, vd) =>
+    (pure (String.append "vl"
         (String.append (nfields_string_forwards nf)
           (String.append "e"
             (String.append (vlewidth_bitsnumberstr_forwards width)
@@ -5108,7 +5341,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                       (String.append "("
                         (String.append (reg_name_forwards rs1)
                           (String.append ")" (String.append (maybe_vmask_backwards vm) "")))))))))))))
-  | .VLSEGFFTYPE (nf, vm, rs1, width, vd) => (pure (String.append "vl"
+  | .VLSEGFFTYPE (nf, vm, rs1, width, vd) =>
+    (pure (String.append "vl"
         (String.append (nfields_string_forwards nf)
           (String.append "e"
             (String.append (vlewidth_bitsnumberstr_forwards width)
@@ -5119,7 +5353,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                       (String.append "("
                         (String.append (reg_name_forwards rs1)
                           (String.append ")" (String.append (maybe_vmask_backwards vm) "")))))))))))))
-  | .VSSEGTYPE (nf, vm, rs1, width, vs3) => (pure (String.append "vs"
+  | .VSSEGTYPE (nf, vm, rs1, width, vs3) =>
+    (pure (String.append "vs"
         (String.append (nfields_string_forwards nf)
           (String.append "e"
             (String.append (vlewidth_bitsnumberstr_forwards width)
@@ -5130,7 +5365,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                       (String.append "("
                         (String.append (reg_name_forwards rs1)
                           (String.append ")" (String.append (maybe_vmask_backwards vm) "")))))))))))))
-  | .VLSSEGTYPE (nf, vm, rs2, rs1, width, vd) => (pure (String.append "vls"
+  | .VLSSEGTYPE (nf, vm, rs2, rs1, width, vd) =>
+    (pure (String.append "vls"
         (String.append (nfields_string_forwards nf)
           (String.append "e"
             (String.append (vlewidth_bitsnumberstr_forwards width)
@@ -5144,7 +5380,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                             (String.append (sep_forwards ())
                               (String.append (reg_name_forwards rs2)
                                 (String.append (maybe_vmask_backwards vm) "")))))))))))))))
-  | .VSSSEGTYPE (nf, vm, rs2, rs1, width, vs3) => (pure (String.append "vss"
+  | .VSSSEGTYPE (nf, vm, rs2, rs1, width, vs3) =>
+    (pure (String.append "vss"
         (String.append (nfields_string_forwards nf)
           (String.append "e"
             (String.append (vlewidth_bitsnumberstr_forwards width)
@@ -5158,7 +5395,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                             (String.append (sep_forwards ())
                               (String.append (reg_name_forwards rs2)
                                 (String.append (maybe_vmask_backwards vm) "")))))))))))))))
-  | .VLUXSEGTYPE (nf, vm, vs2, rs1, width, vd) => (pure (String.append "vlux"
+  | .VLUXSEGTYPE (nf, vm, vs2, rs1, width, vd) =>
+    (pure (String.append "vlux"
         (String.append (nfields_string_forwards nf)
           (String.append "ei"
             (String.append (vlewidth_bitsnumberstr_forwards width)
@@ -5172,7 +5410,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                             (String.append (sep_forwards ())
                               (String.append (vreg_name_forwards vs2)
                                 (String.append (maybe_vmask_backwards vm) "")))))))))))))))
-  | .VLOXSEGTYPE (nf, vm, vs2, rs1, width, vd) => (pure (String.append "vlox"
+  | .VLOXSEGTYPE (nf, vm, vs2, rs1, width, vd) =>
+    (pure (String.append "vlox"
         (String.append (nfields_string_forwards nf)
           (String.append "ei"
             (String.append (vlewidth_bitsnumberstr_forwards width)
@@ -5186,7 +5425,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                             (String.append (sep_forwards ())
                               (String.append (vreg_name_forwards vs2)
                                 (String.append (maybe_vmask_backwards vm) "")))))))))))))))
-  | .VSUXSEGTYPE (nf, vm, vs2, rs1, width, vs3) => (pure (String.append "vsux"
+  | .VSUXSEGTYPE (nf, vm, vs2, rs1, width, vs3) =>
+    (pure (String.append "vsux"
         (String.append (nfields_string_forwards nf)
           (String.append "ei"
             (String.append (vlewidth_bitsnumberstr_forwards width)
@@ -5200,7 +5440,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                             (String.append (sep_forwards ())
                               (String.append (vreg_name_forwards vs2)
                                 (String.append (maybe_vmask_backwards vm) "")))))))))))))))
-  | .VSOXSEGTYPE (nf, vm, vs2, rs1, width, vs3) => (pure (String.append "vsox"
+  | .VSOXSEGTYPE (nf, vm, vs2, rs1, width, vs3) =>
+    (pure (String.append "vsox"
         (String.append (nfields_string_forwards nf)
           (String.append "ei"
             (String.append (vlewidth_bitsnumberstr_forwards width)
@@ -5214,7 +5455,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                             (String.append (sep_forwards ())
                               (String.append (vreg_name_forwards vs2)
                                 (String.append (maybe_vmask_backwards vm) "")))))))))))))))
-  | .VLRETYPE (nf, rs1, width, vd) => (pure (String.append "vl"
+  | .VLRETYPE (nf, rs1, width, vd) =>
+    (pure (String.append "vl"
         (String.append (nfields_string_forwards nf)
           (String.append "re"
             (String.append (vlewidth_bitsnumberstr_forwards width)
@@ -5224,58 +5466,69 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                     (String.append (sep_forwards ())
                       (String.append "("
                         (String.append (reg_name_forwards rs1) (String.append ")" ""))))))))))))
-  | .VSRETYPE (nf, rs1, vs3) => (pure (String.append "vs"
+  | .VSRETYPE (nf, rs1, vs3) =>
+    (pure (String.append "vs"
         (String.append (nfields_string_forwards nf)
           (String.append "r.v"
             (String.append (spc_forwards ())
               (String.append (vreg_name_forwards vs3)
                 (String.append (sep_forwards ())
                   (String.append "(" (String.append (reg_name_forwards rs1) (String.append ")" ""))))))))))
-  | .VMTYPE (rs1, vd_or_vs3, op) => (pure (String.append (vmtype_mnemonic_forwards op)
+  | .VMTYPE (rs1, vd_or_vs3, op) =>
+    (pure (String.append (vmtype_mnemonic_forwards op)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd_or_vs3)
             (String.append (sep_forwards ())
               (String.append "(" (String.append (reg_name_forwards rs1) (String.append ")" ""))))))))
-  | .MMTYPE (funct6, vs2, vs1, vd) => (pure (String.append (mmtype_mnemonic_forwards funct6)
+  | .MMTYPE (funct6, vs2, vs1, vd) =>
+    (pure (String.append (mmtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2)
                 (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs1) ""))))))))
-  | .VCPOP_M (vm, vs2, rd) => (pure (String.append "vpopc.m"
+  | .VCPOP_M (vm, vs2, rd) =>
+    (pure (String.append "vpopc.m"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
-  | .VFIRST_M (vm, vs2, rd) => (pure (String.append "vfirst.m"
+  | .VFIRST_M (vm, vs2, rd) =>
+    (pure (String.append "vfirst.m"
         (String.append (spc_forwards ())
           (String.append (reg_name_forwards rd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
-  | .VMSBF_M (vm, vs2, vd) => (pure (String.append "vmsbf.m"
+  | .VMSBF_M (vm, vs2, vd) =>
+    (pure (String.append "vmsbf.m"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
-  | .VMSIF_M (vm, vs2, vd) => (pure (String.append "vmsif.m"
+  | .VMSIF_M (vm, vs2, vd) =>
+    (pure (String.append "vmsif.m"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
-  | .VMSOF_M (vm, vs2, vd) => (pure (String.append "vmsof.m"
+  | .VMSOF_M (vm, vs2, vd) =>
+    (pure (String.append "vmsof.m"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
-  | .VIOTA_M (vm, vs2, vd) => (pure (String.append "viota.m"
+  | .VIOTA_M (vm, vs2, vd) =>
+    (pure (String.append "viota.m"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
-  | .VID_V (vm, vd) => (pure (String.append "vid.v"
+  | .VID_V (vm, vd) =>
+    (pure (String.append "vid.v"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd) (String.append (maybe_vmask_backwards vm) "")))))
-  | .VVMTYPE (funct6, vs2, vs1, vd) => (pure (String.append (vvmtype_mnemonic_forwards funct6)
+  | .VVMTYPE (funct6, vs2, vs1, vd) =>
+    (pure (String.append (vvmtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5283,13 +5536,15 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
                     (String.append (sep_forwards ()) (String.append "v0" ""))))))))))
-  | .VVMCTYPE (funct6, vs2, vs1, vd) => (pure (String.append (vvmctype_mnemonic_forwards funct6)
+  | .VVMCTYPE (funct6, vs2, vs1, vd) =>
+    (pure (String.append (vvmctype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2)
                 (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs1) ""))))))))
-  | .VVMSTYPE (funct6, vs2, vs1, vd) => (pure (String.append (vvmstype_mnemonic_forwards funct6)
+  | .VVMSTYPE (funct6, vs2, vs1, vd) =>
+    (pure (String.append (vvmstype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5297,8 +5552,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
                     (String.append (sep_forwards ()) (String.append "v0" ""))))))))))
-  | .VVCMPTYPE (funct6, vm, vs2, vs1, vd) => (pure (String.append
-        (vvcmptype_mnemonic_forwards funct6)
+  | .VVCMPTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (vvcmptype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5306,7 +5561,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .VXMTYPE (funct6, vs2, rs1, vd) => (pure (String.append (vxmtype_mnemonic_forwards funct6)
+  | .VXMTYPE (funct6, vs2, rs1, vd) =>
+    (pure (String.append (vxmtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5314,13 +5570,15 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (reg_name_forwards rs1)
                     (String.append (sep_forwards ()) (String.append "v0" ""))))))))))
-  | .VXMCTYPE (funct6, vs2, rs1, vd) => (pure (String.append (vxmctype_mnemonic_forwards funct6)
+  | .VXMCTYPE (funct6, vs2, rs1, vd) =>
+    (pure (String.append (vxmctype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) ""))))))))
-  | .VXMSTYPE (funct6, vs2, rs1, vd) => (pure (String.append (vxmstype_mnemonic_forwards funct6)
+  | .VXMSTYPE (funct6, vs2, rs1, vd) =>
+    (pure (String.append (vxmstype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5328,8 +5586,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (reg_name_forwards rs1)
                     (String.append (sep_forwards ()) (String.append "v0" ""))))))))))
-  | .VXCMPTYPE (funct6, vm, vs2, rs1, vd) => (pure (String.append
-        (vxcmptype_mnemonic_forwards funct6)
+  | .VXCMPTYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (vxcmptype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5337,7 +5595,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (reg_name_forwards rs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .VIMTYPE (funct6, vs2, simm, vd) => (pure (String.append (vimtype_mnemonic_forwards funct6)
+  | .VIMTYPE (funct6, vs2, simm, vd) =>
+    (pure (String.append (vimtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5345,13 +5604,15 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (← (hex_bits_5_forwards simm))
                     (String.append (sep_forwards ()) (String.append "v0" ""))))))))))
-  | .VIMCTYPE (funct6, vs2, simm, vd) => (pure (String.append (vimctype_mnemonic_forwards funct6)
+  | .VIMCTYPE (funct6, vs2, simm, vd) =>
+    (pure (String.append (vimctype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2)
                 (String.append (sep_forwards ()) (String.append (← (hex_bits_5_forwards simm)) ""))))))))
-  | .VIMSTYPE (funct6, vs2, simm, vd) => (pure (String.append (vimstype_mnemonic_forwards funct6)
+  | .VIMSTYPE (funct6, vs2, simm, vd) =>
+    (pure (String.append (vimstype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5359,8 +5620,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (← (hex_bits_5_forwards simm))
                     (String.append (sep_forwards ()) (String.append "v0" ""))))))))))
-  | .VICMPTYPE (funct6, vm, vs2, simm, vd) => (pure (String.append
-        (vicmptype_mnemonic_forwards funct6)
+  | .VICMPTYPE (funct6, vm, vs2, simm, vd) =>
+    (pure (String.append (vicmptype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5368,7 +5629,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (← (hex_bits_5_forwards simm))
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .FVVMTYPE (funct6, vm, vs2, vs1, vd) => (pure (String.append (fvvmtype_mnemonic_forwards funct6)
+  | .FVVMTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (fvvmtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5376,7 +5638,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .FVFMTYPE (funct6, vm, vs2, rs1, vd) => (pure (String.append (fvfmtype_mnemonic_forwards funct6)
+  | .FVFMTYPE (funct6, vm, vs2, rs1, vd) =>
+    (pure (String.append (fvfmtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5384,7 +5647,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (freg_name_forwards rs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .RIVVTYPE (funct6, vm, vs2, vs1, vd) => (pure (String.append (rivvtype_mnemonic_forwards funct6)
+  | .RIVVTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (rivvtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5392,7 +5656,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .RMVVTYPE (funct6, vm, vs2, vs1, vd) => (pure (String.append (rmvvtype_mnemonic_forwards funct6)
+  | .RMVVTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (rmvvtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5400,7 +5665,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .RFVVTYPE (funct6, vm, vs2, vs1, vd) => (pure (String.append (rfvvtype_mnemonic_forwards funct6)
+  | .RFVVTYPE (funct6, vm, vs2, vs1, vd) =>
+    (pure (String.append (rfvvtype_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5408,19 +5674,22 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .ZICBOM (cbop, rs1) => (pure (String.append (cbop_mnemonic_forwards cbop)
+  | .ZICBOM (cbop, rs1) =>
+    (pure (String.append (cbop_mnemonic_forwards cbop)
         (String.append (spc_forwards ())
           (String.append "("
             (String.append (opt_spc_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (opt_spc_forwards ()) (String.append ")" ""))))))))
-  | .ZICBOZ rs1 => (pure (String.append "cbo.zero"
+  | .ZICBOZ rs1 =>
+    (pure (String.append "cbo.zero"
         (String.append (spc_forwards ())
           (String.append "("
             (String.append (opt_spc_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (opt_spc_forwards ()) (String.append ")" ""))))))))
-  | .VANDN_VV (vm, vs1, vs2, vd) => (pure (String.append "vandn.vv"
+  | .VANDN_VV (vm, vs1, vs2, vd) =>
+    (pure (String.append "vandn.vv"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5428,7 +5697,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .VANDN_VX (vm, vs2, rs1, vd) => (pure (String.append "vandn.vx"
+  | .VANDN_VX (vm, vs2, rs1, vd) =>
+    (pure (String.append "vandn.vx"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5436,40 +5706,47 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (reg_name_forwards rs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .VBREV_V (vm, vs2, vd) => (pure (String.append "vbrev.v"
+  | .VBREV_V (vm, vs2, vd) =>
+    (pure (String.append "vbrev.v"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
-  | .VBREV8_V (vm, vs2, vd) => (pure (String.append "vbrev8.v"
+  | .VBREV8_V (vm, vs2, vd) =>
+    (pure (String.append "vbrev8.v"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
-  | .VREV8_V (vm, vs2, vd) => (pure (String.append "vrev8.v"
+  | .VREV8_V (vm, vs2, vd) =>
+    (pure (String.append "vrev8.v"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
-  | .VCLZ_V (vm, vs2, vd) => (pure (String.append "vclz.v"
+  | .VCLZ_V (vm, vs2, vd) =>
+    (pure (String.append "vclz.v"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2)
                 (String.append (sep_forwards ()) (String.append (maybe_vmask_backwards vm) ""))))))))
-  | .VCTZ_V (vm, vs2, vd) => (pure (String.append "vctz.v"
+  | .VCTZ_V (vm, vs2, vd) =>
+    (pure (String.append "vctz.v"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2)
                 (String.append (sep_forwards ()) (String.append (maybe_vmask_backwards vm) ""))))))))
-  | .VCPOP_V (vm, vs2, vd) => (pure (String.append "vcpop.v"
+  | .VCPOP_V (vm, vs2, vd) =>
+    (pure (String.append "vcpop.v"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2)
                 (String.append (sep_forwards ()) (String.append (maybe_vmask_backwards vm) ""))))))))
-  | .VROL_VV (vm, vs1, vs2, vd) => (pure (String.append "vrol.vv"
+  | .VROL_VV (vm, vs1, vs2, vd) =>
+    (pure (String.append "vrol.vv"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5477,7 +5754,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .VROL_VX (vm, vs2, rs1, vd) => (pure (String.append "vrol.vx"
+  | .VROL_VX (vm, vs2, rs1, vd) =>
+    (pure (String.append "vrol.vx"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5485,7 +5763,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (reg_name_forwards rs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .VROR_VV (vm, vs1, vs2, vd) => (pure (String.append "vror.vv"
+  | .VROR_VV (vm, vs1, vs2, vd) =>
+    (pure (String.append "vror.vv"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5493,7 +5772,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .VROR_VX (vm, vs2, rs1, vd) => (pure (String.append "vror.vx"
+  | .VROR_VX (vm, vs2, rs1, vd) =>
+    (pure (String.append "vror.vx"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5501,7 +5781,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (reg_name_forwards rs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .VROR_VI (vm, vs2, uimm, vd) => (pure (String.append "vror.vi"
+  | .VROR_VI (vm, vs2, uimm, vd) =>
+    (pure (String.append "vror.vi"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5509,7 +5790,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (← (hex_bits_5_forwards uimm))
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .VWSLL_VV (vm, vs2, vs1, vd) => (pure (String.append "vwsll.vv"
+  | .VWSLL_VV (vm, vs2, vs1, vd) =>
+    (pure (String.append "vwsll.vv"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5517,7 +5799,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
                     (String.append (sep_forwards ()) (String.append (maybe_vmask_backwards vm) ""))))))))))
-  | .VWSLL_VX (vm, vs2, rs1, vd) => (pure (String.append "vwsll.vx"
+  | .VWSLL_VX (vm, vs2, rs1, vd) =>
+    (pure (String.append "vwsll.vx"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5525,7 +5808,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (reg_name_forwards rs1)
                     (String.append (sep_forwards ()) (String.append (maybe_vmask_backwards vm) ""))))))))))
-  | .VWSLL_VI (vm, vs2, uimm, vd) => (pure (String.append "vwsll.vi"
+  | .VWSLL_VI (vm, vs2, uimm, vd) =>
+    (pure (String.append "vwsll.vi"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5533,7 +5817,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (← (hex_bits_5_forwards uimm))
                     (String.append (sep_forwards ()) (String.append (maybe_vmask_backwards vm) ""))))))))))
-  | .VCLMUL_VV (vm, vs2, vs1, vd) => (pure (String.append "vclmul.vv"
+  | .VCLMUL_VV (vm, vs2, vs1, vd) =>
+    (pure (String.append "vclmul.vv"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5541,7 +5826,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .VCLMUL_VX (vm, vs2, rs1, vd) => (pure (String.append "vclmul.vx"
+  | .VCLMUL_VX (vm, vs2, rs1, vd) =>
+    (pure (String.append "vclmul.vx"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5549,7 +5835,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (reg_name_forwards rs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .VCLMULH_VV (vm, vs2, vs1, vd) => (pure (String.append "vclmulh.vv"
+  | .VCLMULH_VV (vm, vs2, vs1, vd) =>
+    (pure (String.append "vclmulh.vv"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5557,7 +5844,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .VCLMULH_VX (vm, vs2, rs1, vd) => (pure (String.append "vclmulh.vx"
+  | .VCLMULH_VX (vm, vs2, rs1, vd) =>
+    (pure (String.append "vclmulh.vx"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
@@ -5565,46 +5853,55 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (reg_name_forwards rs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
-  | .VSHA2MS_VV (vs2, vs1, vd) => (pure (String.append "vsha2ms.vv"
+  | .VSHA2MS_VV (vs2, vs1, vd) =>
+    (pure (String.append "vsha2ms.vv"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2) (String.append (vreg_name_forwards vs1) "")))))))
-  | .ZVKSHA2TYPE (funct6, vs2, vs1, vd) => (pure (String.append (vsha2c_mnemonic_forwards funct6)
+  | .ZVKSHA2TYPE (funct6, vs2, vs1, vd) =>
+    (pure (String.append (vsha2c_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (spc_forwards ())
               (String.append (vreg_name_forwards vs2)
                 (String.append (spc_forwards ()) (String.append (vreg_name_forwards vs1) ""))))))))
-  | .VSM3ME_VV (vs2, vs1, vd) => (pure (String.append "vsm3me.vv"
+  | .VSM3ME_VV (vs2, vs1, vd) =>
+    (pure (String.append "vsm3me.vv"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2)
                 (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs1) ""))))))))
-  | .VSM3C_VI (vs2, uimm, vd) => (pure (String.append "vsm3c.vi"
+  | .VSM3C_VI (vs2, uimm, vd) =>
+    (pure (String.append "vsm3c.vi"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2)
                 (String.append (sep_forwards ()) (String.append (← (hex_bits_5_forwards uimm)) ""))))))))
-  | .ZIMOP_MOP_R (mop, rs1, rd) => (pure (String.append "mop.r."
+  | .ZIMOP_MOP_R (mop, rs1, rd) =>
+    (pure (String.append "mop.r."
         (String.append (← (dec_bits_5_forwards mop))
           (String.append (spc_forwards ())
             (String.append (reg_name_forwards rd)
               (String.append (sep_forwards ()) (String.append (reg_name_forwards rs1) "")))))))
-  | .ZIMOP_MOP_RR (mop, rs2, rs1, rd) => (pure (String.append "mop.rr."
+  | .ZIMOP_MOP_RR (mop, rs2, rs1, rd) =>
+    (pure (String.append "mop.rr."
         (String.append (← (dec_bits_3_forwards mop))
           (String.append (spc_forwards ())
             (String.append (reg_name_forwards rd)
               (String.append (sep_forwards ())
                 (String.append (reg_name_forwards rs1)
                   (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) "")))))))))
-  | .ZCMOP mop => (pure (String.append "c.mop."
+  | .ZCMOP mop =>
+    (pure (String.append "c.mop."
         (String.append (← (dec_bits_4_forwards ((mop : (BitVec 3)) ++ (0b1 : (BitVec 1))))) "")))
-  | .ILLEGAL s => (pure (String.append "illegal"
+  | .ILLEGAL s =>
+    (pure (String.append "illegal"
         (String.append (spc_forwards ()) (String.append (← (hex_bits_32_forwards s)) ""))))
-  | .C_ILLEGAL s => (pure (String.append "c.illegal"
+  | .C_ILLEGAL s =>
+    (pure (String.append "c.illegal"
         (String.append (spc_forwards ()) (String.append (← (hex_bits_16_forwards s)) ""))))
 
 def print_insn (insn : ast) : SailM String := do
@@ -5831,16 +6128,19 @@ def num_of_SATPMode (arg_ : SATPMode) : Int :=
 
 def satpMode_of_bits (a : Architecture) (m : (BitVec 4)) : (Option SATPMode) :=
   match (a, m) with
-  | (g__2, b__0) => (bif (b__0 == (0x0 : (BitVec 4)))
+  | (g__2, b__0) =>
+    (bif (b__0 == (0x0 : (BitVec 4)))
     then (some Bare)
     else
       (match (g__2, b__0) with
-      | (RV32, b__0) => (bif (b__0 == (0x1 : (BitVec 4)))
+      | (RV32, b__0) =>
+        (bif (b__0 == (0x1 : (BitVec 4)))
         then (some Sv32)
         else
           (match (RV32, b__0) with
           | (_, _) => none))
-      | (RV64, b__0) => (bif (b__0 == (0x8 : (BitVec 4)))
+      | (RV64, b__0) =>
+        (bif (b__0 == (0x8 : (BitVec 4)))
         then (some Sv39)
         else
           (bif (b__0 == (0x9 : (BitVec 4)))
@@ -6256,7 +6556,8 @@ def size_mnemonic_backwards (arg_ : String) : SailM word_width := do
   | "h" => (pure HALF)
   | "w" => (pure WORD)
   | "d" => (pure DOUBLE)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 

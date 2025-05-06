@@ -589,11 +589,14 @@ def riscv_f32ToUi16 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (
 def rsqrt7 (v : (BitVec k_m)) (sub : Bool) : SailM (BitVec 64) := do
   let (sig, exp, sign, e, s) : ((BitVec 64) × (BitVec 64) × (BitVec 1) × Nat × Nat) :=
     match (Sail.BitVec.length v) with
-    | 16 => ((zero_extend (m := 64) (Sail.BitVec.extractLsb v 9 0)), (zero_extend (m := 64)
+    | 16 =>
+      ((zero_extend (m := 64) (Sail.BitVec.extractLsb v 9 0)), (zero_extend (m := 64)
         (Sail.BitVec.extractLsb v 14 10)), (BitVec.join1 [(BitVec.access v 15)]), 5, 10)
-    | 32 => ((zero_extend (m := 64) (Sail.BitVec.extractLsb v 22 0)), (zero_extend (m := 64)
+    | 32 =>
+      ((zero_extend (m := 64) (Sail.BitVec.extractLsb v 22 0)), (zero_extend (m := 64)
         (Sail.BitVec.extractLsb v 30 23)), (BitVec.join1 [(BitVec.access v 31)]), 8, 23)
-    | _ => ((zero_extend (m := 64) (Sail.BitVec.extractLsb v 51 0)), (zero_extend (m := 64)
+    | _ =>
+      ((zero_extend (m := 64) (Sail.BitVec.extractLsb v 51 0)), (zero_extend (m := 64)
         (Sail.BitVec.extractLsb v 62 52)), (BitVec.join1 [(BitVec.access v 63)]), 11, 52)
   assert (((s == 10) && (e == 5)) || (((s == 23) && (e == 8)) || ((s == 52) && (e == 11)))) "riscv_insts_vext_fp_utils.sail:458.64-458.65"
   let table : (Vector Int 128) :=
@@ -609,13 +612,16 @@ def rsqrt7 (v : (BitVec k_m)) (sub : Bool) : SailM (BitVec 64) := do
     else (pure (exp, sig))
   let idx : Nat :=
     match (Sail.BitVec.length v) with
-    | 16 => (BitVec.toNat
+    | 16 =>
+      (BitVec.toNat
         ((BitVec.join1 [(BitVec.access normalized_exp 0)]) ++ (Sail.BitVec.extractLsb normalized_sig
             9 4)))
-    | 32 => (BitVec.toNat
+    | 32 =>
+      (BitVec.toNat
         ((BitVec.join1 [(BitVec.access normalized_exp 0)]) ++ (Sail.BitVec.extractLsb normalized_sig
             22 17)))
-    | _ => (BitVec.toNat
+    | _ =>
+      (BitVec.toNat
         ((BitVec.join1 [(BitVec.access normalized_exp 0)]) ++ (Sail.BitVec.extractLsb normalized_sig
             51 46)))
   assert ((idx ≥b 0) && (idx <b 128)) "riscv_insts_vext_fp_utils.sail:491.29-491.30"
@@ -754,11 +760,14 @@ def riscv_f64Rsqrte7 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × 
 def recip7 (v : (BitVec k_m)) (rm_3b : (BitVec 3)) (sub : Bool) : SailM (Bool × (BitVec 64)) := do
   let (sig, exp, sign, e, s) : ((BitVec 64) × (BitVec 64) × (BitVec 1) × Nat × Nat) :=
     match (Sail.BitVec.length v) with
-    | 16 => ((zero_extend (m := 64) (Sail.BitVec.extractLsb v 9 0)), (zero_extend (m := 64)
+    | 16 =>
+      ((zero_extend (m := 64) (Sail.BitVec.extractLsb v 9 0)), (zero_extend (m := 64)
         (Sail.BitVec.extractLsb v 14 10)), (BitVec.join1 [(BitVec.access v 15)]), 5, 10)
-    | 32 => ((zero_extend (m := 64) (Sail.BitVec.extractLsb v 22 0)), (zero_extend (m := 64)
+    | 32 =>
+      ((zero_extend (m := 64) (Sail.BitVec.extractLsb v 22 0)), (zero_extend (m := 64)
         (Sail.BitVec.extractLsb v 30 23)), (BitVec.join1 [(BitVec.access v 31)]), 8, 23)
-    | _ => ((zero_extend (m := 64) (Sail.BitVec.extractLsb v 51 0)), (zero_extend (m := 64)
+    | _ =>
+      ((zero_extend (m := 64) (Sail.BitVec.extractLsb v 51 0)), (zero_extend (m := 64)
         (Sail.BitVec.extractLsb v 62 52)), (BitVec.join1 [(BitVec.access v 63)]), 11, 52)
   assert (((s == 10) && (e == 5)) || (((s == 23) && (e == 8)) || ((s == 52) && (e == 11)))) "riscv_insts_vext_fp_utils.sail:552.64-552.65"
   let table : (Vector Int 128) :=

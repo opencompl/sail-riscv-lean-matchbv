@@ -359,8 +359,9 @@ def write_mhpmevent (index : Nat) (value : (BitVec (2 ^ 3 * 8))) : SailM Unit :=
           (Mk_HpmEvent
             (← do
               match xlen with
-              | 32 => (pure ((Sail.BitVec.extractLsb
-                      (GetElem?.getElem! (← readReg mhpmevent) index) 63 32) ++ value))
+              | 32 =>
+                (pure ((Sail.BitVec.extractLsb (GetElem?.getElem! (← readReg mhpmevent) index) 63
+                      32) ++ value))
               | 64 => (pure value)
               | _ => (internal_error "riscv_zihpm.sail" 223 "Unsupported xlen"))))))
   else (pure ())

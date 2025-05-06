@@ -328,7 +328,8 @@ def f_madd_type_mnemonic_D_backwards (arg_ : String) : SailM f_madd_op_D := do
   | "fmsub.d" => (pure FMSUB_D)
   | "fnmsub.d" => (pure FNMSUB_D)
   | "fnmadd.d" => (pure FNMADD_D)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -353,7 +354,8 @@ def f_bin_rm_type_mnemonic_D_backwards (arg_ : String) : SailM f_bin_rm_op_D := 
   | "fsub.d" => (pure FSUB_D)
   | "fmul.d" => (pure FMUL_D)
   | "fdiv.d" => (pure FDIV_D)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -377,7 +379,8 @@ def f_un_rm_ff_type_mnemonic_D_backwards (arg_ : String) : SailM f_un_rm_ff_op_D
   | "fsqrt.d" => (pure FSQRT_D)
   | "fcvt.s.d" => (pure FCVT_S_D)
   | "fcvt.d.s" => (pure FCVT_D_S)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -400,7 +403,8 @@ def f_un_rm_fx_type_mnemonic_D_backwards (arg_ : String) : SailM f_un_rm_fx_op_D
   | "fcvt.wu.d" => (pure FCVT_WU_D)
   | "fcvt.l.d" => (pure FCVT_L_D)
   | "fcvt.lu.d" => (pure FCVT_LU_D)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -425,7 +429,8 @@ def f_un_rm_xf_type_mnemonic_D_backwards (arg_ : String) : SailM f_un_rm_xf_op_D
   | "fcvt.d.wu" => (pure FCVT_D_WU)
   | "fcvt.d.l" => (pure FCVT_D_L)
   | "fcvt.d.lu" => (pure FCVT_D_LU)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -451,7 +456,8 @@ def f_bin_f_type_mnemonic_D_backwards (arg_ : String) : SailM f_bin_f_op_D := do
   | "fsgnjx.d" => (pure FSGNJX_D)
   | "fmin.d" => (pure FMIN_D)
   | "fmax.d" => (pure FMAX_D)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -477,7 +483,8 @@ def f_bin_x_type_mnemonic_D_backwards (arg_ : String) : SailM f_bin_x_op_D := do
   | "feq.d" => (pure FEQ_D)
   | "flt.d" => (pure FLT_D)
   | "fle.d" => (pure FLE_D)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -498,7 +505,8 @@ def f_un_x_type_mnemonic_D_backwards (arg_ : String) : SailM f_un_x_op_D := do
   match arg_ with
   | "fmv.x.d" => (pure FMV_X_D)
   | "fclass.d" => (pure FCLASS_D)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -516,7 +524,8 @@ def f_un_x_type_mnemonic_D_backwards_matches (arg_ : String) : Bool :=
 def f_un_f_type_mnemonic_D_backwards (arg_ : String) : SailM f_un_f_op_D := do
   match arg_ with
   | "fmv.d.x" => (pure FMV_D_X)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 

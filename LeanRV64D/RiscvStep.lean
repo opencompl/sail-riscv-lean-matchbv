@@ -206,11 +206,13 @@ def run_hart_waiting (step_no : Nat) (exit_wait : Bool) (instbits : (BitVec 32))
 def run_hart_active (step_no : Nat) : SailM Step := do
   match (← (dispatchInterrupt (← readReg cur_privilege))) with
   | .some (intr, priv) => (pure (Step_Pending_Interrupt (intr, priv)))
-  | none => (do
+  | none =>
+    (do
       match (ext_fetch_hook (← (fetch ()))) with
       | .F_Ext_Error e => (pure (Step_Ext_Fetch_Failure e))
       | .F_Error (e, addr) => (pure (Step_Fetch_Failure ((Virtaddr addr), e)))
-      | .F_RVC h => (do
+      | .F_RVC h =>
+        (do
           let _ : Unit := (sail_instr_announce h)
           let instbits : instbits := (zero_extend (m := 32) h)
           let ast ← do (ext_decode_compressed h)
@@ -234,7 +236,8 @@ def run_hart_active (step_no : Nat) : SailM Step := do
               let r ← do (execute ast)
               (pure (Step_Execute (r, instbits))))
           else (pure (Step_Execute ((Illegal_Instruction ()), instbits))))
-      | .F_Base w => (do
+      | .F_Base w =>
+        (do
           let _ : Unit := (sail_instr_announce w)
           let instbits : instbits := (zero_extend (m := 32) w)
           let ast ← do (ext_decode w)
@@ -267,7 +270,8 @@ def try_step (step_no : Nat) (exit_wait : Bool) : SailM Bool := do
     | .HART_WAITING instbits => (run_hart_waiting step_no exit_wait instbits)
     | .HART_ACTIVE () => (run_hart_active step_no) ) : SailM Step )
   match step_val with
-  | .Step_Pending_Interrupt (intr, priv) => (do
+  | .Step_Pending_Interrupt (intr, priv) =>
+    (do
       let _ : Unit :=
         bif (get_config_print_instr ())
         then (print_bits "Handling interrupt: " (interruptType_to_bits intr))
@@ -275,12 +279,15 @@ def try_step (step_no : Nat) (exit_wait : Bool) : SailM Bool := do
       (handle_interrupt intr priv))
   | .Step_Ext_Fetch_Failure e => (pure (ext_handle_fetch_check_error e))
   | .Step_Fetch_Failure (vaddr, e) => (handle_mem_exception vaddr e)
-  | .Step_Waiting () => assert (hart_is_waiting (← readReg hart_state)) "cannot be Waiting in a non-Wait state"
-  | .Step_Execute (.Retire_Success (), _) => assert (hart_is_active (← readReg hart_state)) "riscv_step.sail:147.74-147.75"
+  | .Step_Waiting () =>
+    assert (hart_is_waiting (← readReg hart_state)) "cannot be Waiting in a non-Wait state"
+  | .Step_Execute (.Retire_Success (), _) =>
+    assert (hart_is_active (← readReg hart_state)) "riscv_step.sail:147.74-147.75"
   | .Step_Execute (.Trap (priv, ctl, pc), _) => (set_next_pc (← (exception_handler priv ctl pc)))
   | .Step_Execute (.Memory_Exception (vaddr, e), _) => (handle_mem_exception vaddr e)
   | .Step_Execute (.Illegal_Instruction (), instbits) => (handle_illegal instbits)
-  | .Step_Execute (.Wait_For_Interrupt (), instbits) => (do
+  | .Step_Execute (.Wait_For_Interrupt (), instbits) =>
+    (do
       bif (wfi_is_nop ())
       then assert (hart_is_active (← readReg hart_state)) "riscv_step.sail:155.41-155.42"
       else
@@ -297,12 +304,14 @@ def try_step (step_no : Nat) (exit_wait : Bool) : SailM Bool := do
   | .Step_Execute (.Ext_XRET_Priv_Failure (), _) => (pure (ext_fail_xret_priv ()))
   match (← readReg hart_state) with
   | .HART_WAITING _ => (pure false)
-  | .HART_ACTIVE () => (do
+  | .HART_ACTIVE () =>
+    (do
       (tick_pc ())
       let retired : Bool :=
         match step_val with
         | .Step_Execute (.Retire_Success (), g__0) => true
-        | .Step_Execute (.Wait_For_Interrupt (), g__1) => (bif (wfi_is_nop ())
+        | .Step_Execute (.Wait_For_Interrupt (), g__1) =>
+          (bif (wfi_is_nop ())
           then true
           else false)
         | _ => false

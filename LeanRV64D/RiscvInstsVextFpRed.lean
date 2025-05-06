@@ -276,8 +276,8 @@ def process_rfvv_single (funct6 : rfvvfunct6) (vm : (BitVec 1)) (vs2 : vregidx) 
                     | FVV_VFREDUSUM => (fp_add rm_3b sum (GetElem?.getElem! vs2_val i))
                     | FVV_VFREDMAX => (fp_max sum (GetElem?.getElem! vs2_val i))
                     | FVV_VFREDMIN => (fp_min sum (GetElem?.getElem! vs2_val i))
-                    | _ => (internal_error "riscv_insts_vext_fp_red.sail" 61
-                        "Widening op unexpected"))
+                    | _ =>
+                      (internal_error "riscv_insts_vext_fp_red.sail" 61 "Widening op unexpected"))
                 else (pure sum)
             (pure loop_vars) ) : SailME ExecutionResult (BitVec m) )
           (write_single_element SEW 0 vd sum)
@@ -342,7 +342,8 @@ def rfvvtype_mnemonic_backwards (arg_ : String) : SailM rfvvfunct6 := do
   | "vfredmin.vs" => (pure FVV_VFREDMIN)
   | "vfwredosum.vs" => (pure FVV_VFWREDOSUM)
   | "vfwredusum.vs" => (pure FVV_VFWREDUSUM)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 

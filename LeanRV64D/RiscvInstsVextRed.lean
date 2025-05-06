@@ -200,7 +200,8 @@ def rivvtype_mnemonic_backwards (arg_ : String) : SailM rivvfunct6 := do
   match arg_ with
   | "vwredsumu.vs" => (pure IVV_VWREDSUMU)
   | "vwredsum.vs" => (pure IVV_VWREDSUM)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -311,7 +312,8 @@ def rmvvtype_mnemonic_backwards (arg_ : String) : SailM rmvvfunct6 := do
   | "vredmin.vs" => (pure MVV_VREDMIN)
   | "vredmaxu.vs" => (pure MVV_VREDMAXU)
   | "vredmax.vs" => (pure MVV_VREDMAX)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 

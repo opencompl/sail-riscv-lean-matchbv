@@ -204,7 +204,8 @@ def phys_mem_read (t : (AccessType Unit)) (paddr : physaddr) (width : Nat) (aq :
   | (.InstructionFetch (), none) => (pure (Err (E_Fetch_Access_Fault ())))
   | (.Read Data, none) => (pure (Err (E_Load_Access_Fault ())))
   | (_, none) => (pure (Err (E_SAMO_Access_Fault ())))
-  | (_, .some (v, m)) => (let _ : Unit :=
+  | (_, .some (v, m)) =>
+    (let _ : Unit :=
       bif (get_config_print_mem ())
       then
         (print_endline
@@ -227,7 +228,8 @@ def phys_access_check (t : (AccessType Unit)) (p : Privilege) (paddr : physaddr)
 def checked_mem_read (t : (AccessType Unit)) (priv : Privilege) (paddr : physaddr) (width : Nat) (aq : Bool) (rl : Bool) (res : Bool) (meta : Bool) : SailM (Result ((BitVec (8 * width)) × Unit) ExceptionType) := do
   match (← (phys_access_check t priv paddr width)) with
   | .some e => (pure (Err e))
-  | none => (do
+  | none =>
+    (do
       bif (within_mmio_readable paddr width)
       then (pure (MemoryOpResult_add_meta (← (mmio_read t paddr width)) default_meta))
       else
@@ -314,7 +316,8 @@ def phys_mem_write (wk : write_kind) (paddr : physaddr) (width : Nat) (data : (B
 def checked_mem_write (paddr : physaddr) (width : Nat) (data : (BitVec (8 * width))) (typ : (AccessType Unit)) (priv : Privilege) (meta : Unit) (aq : Bool) (rl : Bool) (con : Bool) : SailM (Result Bool ExceptionType) := do
   match (← (phys_access_check typ priv paddr width)) with
   | .some e => (pure (Err e))
-  | none => (do
+  | none =>
+    (do
       bif (within_mmio_writable paddr width)
       then (mmio_write paddr width data)
       else

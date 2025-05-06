@@ -326,7 +326,8 @@ def init_masked_result (num_elem : Nat) (SEW : Nat) (LMUL_pow : Int) (vd_val : (
   let start_element ← (( do
     match (← (get_start_element ())) with
     | .Ok v => (pure v)
-    | .Err () => SailME.throw ((Err ()) : (Result ((Vector (BitVec SEW) num_elem) × (BitVec num_elem)) Unit))
+    | .Err () =>
+      SailME.throw ((Err ()) : (Result ((Vector (BitVec SEW) num_elem) × (BitVec num_elem)) Unit))
     ) : SailME (Result ((Vector (BitVec SEW) num_elem) × (BitVec num_elem)) Unit) Nat )
   let end_element ← do (get_end_element ())
   let tail_ag ← (( do (get_vtype_vta ()) ) : SailME

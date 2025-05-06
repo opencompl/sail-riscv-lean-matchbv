@@ -260,7 +260,8 @@ def mmtype_mnemonic_backwards (arg_ : String) : SailM mmfunct6 := do
   | "vmnor.mm" => (pure MM_VMNOR)
   | "vmorn.mm" => (pure MM_VMORN)
   | "vmxnor.mm" => (pure MM_VMXNOR)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 

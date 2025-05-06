@@ -170,7 +170,8 @@ def isRVC (h : (BitVec 16)) : Bool :=
 def fetch (_ : Unit) : SailM FetchResult := do
   match (ext_fetch_check_pc (← readReg PC) (← readReg PC)) with
   | .Ext_FetchAddr_Error e => (pure (F_Ext_Error e))
-  | .Ext_FetchAddr_OK use_pc => (do
+  | .Ext_FetchAddr_OK use_pc =>
+    (do
       let use_pc_bits := (bits_of_virtaddr use_pc)
       bif ((bne (BitVec.access use_pc_bits 0) 0#1) || ((bne (BitVec.access use_pc_bits 1) 0#1) && (not
                (← (currentlyEnabled Ext_Zca)))))
@@ -179,10 +180,12 @@ def fetch (_ : Unit) : SailM FetchResult := do
         (do
           match (← (translateAddr use_pc (InstructionFetch ()))) with
           | .TR_Failure (e, _) => (pure (F_Error (e, (← readReg PC))))
-          | .TR_Address (ppclo, _) => (do
+          | .TR_Address (ppclo, _) =>
+            (do
               match (← (mem_read (InstructionFetch ()) ppclo 2 false false false)) with
               | .Err e => (pure (F_Error (e, (← readReg PC))))
-              | .Ok ilo => (do
+              | .Ok ilo =>
+                (do
                   bif (isRVC ilo)
                   then (pure (F_RVC ilo))
                   else
@@ -190,10 +193,12 @@ def fetch (_ : Unit) : SailM FetchResult := do
                       let PC_hi ← do (pure (BitVec.addInt (← readReg PC) 2))
                       match (ext_fetch_check_pc (← readReg PC) PC_hi) with
                       | .Ext_FetchAddr_Error e => (pure (F_Ext_Error e))
-                      | .Ext_FetchAddr_OK use_pc_hi => (do
+                      | .Ext_FetchAddr_OK use_pc_hi =>
+                        (do
                           match (← (translateAddr use_pc_hi (InstructionFetch ()))) with
                           | .TR_Failure (e, _) => (pure (F_Error (e, PC_hi)))
-                          | .TR_Address (ppchi, _) => (do
+                          | .TR_Address (ppchi, _) =>
+                            (do
                               match (← (mem_read (InstructionFetch ()) ppchi 2 false false false)) with
                               | .Err e => (pure (F_Error (e, PC_hi)))
                               | .Ok ihi => (pure (F_Base (ihi ++ ilo))))))))))

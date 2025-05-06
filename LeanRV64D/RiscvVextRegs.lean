@@ -228,7 +228,8 @@ def vreg_name_raw_backwards (arg_ : String) : SailM (BitVec 5) := do
   | "v29" => (pure (0b11101 : (BitVec 5)))
   | "v30" => (pure (0b11110 : (BitVec 5)))
   | "v31" => (pure (0b11111 : (BitVec 5)))
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -378,7 +379,8 @@ def vreg_name_backwards (arg_ : String) : SailM vregidx := do
         | i => (pure (some (Vregidx i))))
     else (pure none)) with
   | .some result => (pure result)
-  | _ => (do
+  | _ =>
+    (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
@@ -397,7 +399,8 @@ def vreg_name_backwards_matches (arg_ : String) : SailM Bool := do
         | i => (pure (some true)))
     else (pure none)) with
   | .some result => (pure result)
-  | none => (match head_exp_ with
+  | none =>
+    (match head_exp_ with
     | _ => (pure false))
 
 def dirty_v_context (_ : Unit) : SailM Unit := do
