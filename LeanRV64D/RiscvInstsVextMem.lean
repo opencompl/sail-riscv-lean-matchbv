@@ -555,8 +555,7 @@ def process_vlsegff (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_byte
                         else
                           (do
                             writeReg vl (to_bits xlen i)
-                            (pure (print_endline
-                                (HAppend.hAppend "CSR vl <- " (BitVec.toFormatted (← readReg vl)))))
+                            (csr_name_write_callback "vl" (← readReg vl))
                             (pure true)))
                     | .Ext_DataAddr_OK vaddr =>
                       (do
@@ -569,9 +568,7 @@ def process_vlsegff (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_byte
                             else
                               (do
                                 writeReg vl (to_bits xlen i)
-                                (pure (print_endline
-                                    (HAppend.hAppend "CSR vl <- "
-                                      (BitVec.toFormatted (← readReg vl)))))
+                                (csr_name_write_callback "vl" (← readReg vl))
                                 (pure true)))
                         else
                           (do
@@ -583,9 +580,7 @@ def process_vlsegff (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_byte
                                 else
                                   (do
                                     writeReg vl (to_bits xlen i)
-                                    (pure (print_endline
-                                        (HAppend.hAppend "CSR vl <- "
-                                          (BitVec.toFormatted (← readReg vl)))))
+                                    (csr_name_write_callback "vl" (← readReg vl))
                                     (pure true)))
                             | .TR_Address (paddr, _) =>
                               (do
@@ -604,9 +599,7 @@ def process_vlsegff (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_byte
                                     else
                                       (do
                                         writeReg vl (to_bits xlen i)
-                                        (pure (print_endline
-                                            (HAppend.hAppend "CSR vl <- "
-                                              (BitVec.toFormatted (← readReg vl)))))
+                                        (csr_name_write_callback "vl" (← readReg vl))
                                         (pure true))))))
                 (pure loop_vars_3))
             else

@@ -164,7 +164,7 @@ open ExceptionType
 open Architecture
 open AccessType
 
-/-- Type quantifiers: k_ex344933# : Bool, k_ex344932# : Bool -/
+/-- Type quantifiers: k_ex344930# : Bool, k_ex344929# : Bool -/
 def neq_bool (x : Bool) (y : Bool) : Bool :=
   (! (x == y))
 

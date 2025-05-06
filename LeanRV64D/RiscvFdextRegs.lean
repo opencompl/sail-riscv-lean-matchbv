@@ -202,6 +202,10 @@ def fregidx_to_fregno (app_0 : fregidx) : fregno :=
   let .Fregidx b := app_0
   (Fregno (BitVec.toNat b))
 
+def fregno_to_fregidx (app_0 : fregno) : fregidx :=
+  let .Fregno b := app_0
+  (Fregidx (to_bits 5 b))
+
 def fregidx_offset (typ_0 : fregidx) (o : (BitVec 5)) : fregidx :=
   let .Fregidx r : fregidx := typ_0
   (Fregidx (r + o))
@@ -231,20 +235,21 @@ def encdec_freg_backwards_matches (arg_ : (BitVec 5)) : Bool :=
   | r => true
 
 def dirty_fd_context (_ : Unit) : SailM Unit := do
-  assert (hartSupports Ext_F) "riscv_fdext_regs.sail:106.28-106.29"
+  assert (hartSupports Ext_F) "riscv_fdext_regs.sail:109.28-109.29"
   writeReg mstatus (Sail.BitVec.updateSubrange (← readReg mstatus) 14 13 (extStatus_to_bits Dirty))
   writeReg mstatus (Sail.BitVec.updateSubrange (← readReg mstatus) (((2 ^i 3) *i 8) -i 1)
     (((2 ^i 3) *i 8) -i 1) (0b1 : (BitVec 1)))
+  (long_csr_write_callback "mstatus" "mstatush" (← readReg mstatus))
 
 def dirty_fd_context_if_present (_ : Unit) : SailM Unit := do
-  assert (neq_bool (hartSupports Ext_F) (hartSupports Ext_Zfinx)) "riscv_fdext_regs.sail:112.55-112.56"
+  assert (neq_bool (hartSupports Ext_F) (hartSupports Ext_Zfinx)) "riscv_fdext_regs.sail:116.55-116.56"
   bif (hartSupports Ext_F)
   then (dirty_fd_context ())
   else (pure ())
 
 def rF (app_0 : fregno) : SailM (BitVec (8 * 8)) := do
   let .Fregno r := app_0
-  assert (hartSupports Ext_F) "riscv_fdext_regs.sail:117.28-117.29"
+  assert (hartSupports Ext_F) "riscv_fdext_regs.sail:121.28-121.29"
   let v ← (( do
     match r with
     | 0 => readReg f0
@@ -287,7 +292,7 @@ def rF (app_0 : fregno) : SailM (BitVec (8 * 8)) := do
 
 def wF (typ_0 : fregno) (in_v : (BitVec (8 * 8))) : SailM Unit := do
   let .Fregno r : fregno := typ_0
-  assert (hartSupports Ext_F) "riscv_fdext_regs.sail:158.28-158.29"
+  assert (hartSupports Ext_F) "riscv_fdext_regs.sail:162.28-162.29"
   let v := (fregval_into_freg in_v)
   match r with
   | 0 => writeReg f0 v
@@ -323,12 +328,8 @@ def wF (typ_0 : fregno) (in_v : (BitVec (8 * 8))) : SailM Unit := do
   | 30 => writeReg f30 v
   | 31 => writeReg f31 v
   | _ => assert false "invalid floating point register number"
+  let _ : Unit := (freg_write_callback (fregno_to_fregidx (Fregno r)) in_v)
   (dirty_fd_context ())
-  bif (get_config_print_reg ())
-  then
-    (pure (print_endline
-        (HAppend.hAppend "f" (HAppend.hAppend (Int.repr r) (HAppend.hAppend " <- " (FRegStr v))))))
-  else (pure ())
 
 def rF_bits (i : fregidx) : SailM (BitVec (8 * 8)) := do
   (rF (fregidx_to_fregno i))

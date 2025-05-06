@@ -267,8 +267,8 @@ def ma_flag_backwards_matches (arg_ : (BitVec 1)) : Bool :=
 def handle_illegal_vtype (_ : Unit) : SailM Unit := do
   writeReg vtype ((0b1 : (BitVec 1)) ++ (zeros (n := (xlen -i 1))))
   writeReg vl (zeros (n := ((2 ^i 3) *i 8)))
-  (pure (print_endline (HAppend.hAppend "CSR vtype <- " (BitVec.toFormatted (← readReg vtype)))))
-  (pure (print_endline (HAppend.hAppend "CSR vl <- " (BitVec.toFormatted (← readReg vl)))))
+  (csr_name_write_callback "vtype" (← readReg vtype))
+  (csr_name_write_callback "vl" (← readReg vl))
 
 def vl_use_ceil (_ : Unit) : Bool :=
   false

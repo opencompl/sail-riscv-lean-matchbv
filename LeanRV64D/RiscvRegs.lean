@@ -206,9 +206,6 @@ def rX (app_0 : regno) : SailM (BitVec (2 ^ 3 * 8)) := do
         throw Error.Exit) ) : SailM regtype )
   (pure (regval_from_reg v))
 
-def rvfi_wX (r : regno) (v : (BitVec (2 ^ 3 * 8))) : Unit :=
-  ()
-
 def wX (typ_0 : regno) (in_v : (BitVec (2 ^ 3 * 8))) : SailM Unit := do
   let .Regno r : regno := typ_0
   let v := (regval_into_reg in_v)
@@ -247,13 +244,7 @@ def wX (typ_0 : regno) (in_v : (BitVec (2 ^ 3 * 8))) : SailM Unit := do
   | 31 => writeReg x31 v
   | _ => assert false "invalid register number"
   bif (r != 0)
-  then
-    (let _ : Unit := (rvfi_wX (Regno r) in_v)
-    bif (get_config_print_reg ())
-    then
-      (pure (print_endline
-          (HAppend.hAppend "x" (HAppend.hAppend (Int.repr r) (HAppend.hAppend " <- " (RegStr v))))))
-    else (pure ()))
+  then (pure (xreg_write_callback (regno_to_regidx (Regno r)) in_v))
   else (pure ())
 
 def rX_bits (i : regidx) : SailM (BitVec (2 ^ 3 * 8)) := do

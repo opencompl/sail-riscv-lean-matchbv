@@ -168,4 +168,5 @@ def set_vstart (value : (BitVec 16)) : SailM Unit := do
   (dirty_v_context ())
   let vstart_length := (get_vlen_pow ())
   writeReg vstart (zero_extend (m := 16) (Sail.BitVec.extractLsb value (vstart_length -i 1) 0))
+  (csr_name_write_callback "vstart" (zero_extend (m := ((2 ^i 3) *i 8)) (← readReg vstart)))
 

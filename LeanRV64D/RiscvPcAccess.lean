@@ -176,4 +176,5 @@ def set_next_pc (pc : (BitVec (2 ^ 3 * 8))) : SailM Unit := do
 
 def tick_pc (_ : Unit) : SailM Unit := do
   writeReg PC (← readReg nextPC)
+  (pure (pc_write_callback (← readReg PC)))
 

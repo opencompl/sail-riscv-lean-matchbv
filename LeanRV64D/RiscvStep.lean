@@ -164,7 +164,7 @@ open ExceptionType
 open Architecture
 open AccessType
 
-/-- Type quantifiers: k_ex406846# : Bool, step_no : Nat, 0 ≤ step_no -/
+/-- Type quantifiers: k_ex406840# : Bool, step_no : Nat, 0 ≤ step_no -/
 def run_hart_waiting (step_no : Nat) (exit_wait : Bool) (instbits : (BitVec 32)) : SailM Step := do
   bif (← (shouldWakeForInterrupt ()))
   then
@@ -261,7 +261,7 @@ def run_hart_active (step_no : Nat) : SailM Step := do
 def wfi_is_nop (_ : Unit) : Bool :=
   true
 
-/-- Type quantifiers: k_ex406866# : Bool, step_no : Nat, 0 ≤ step_no -/
+/-- Type quantifiers: k_ex406860# : Bool, step_no : Nat, 0 ≤ step_no -/
 def try_step (step_no : Nat) (exit_wait : Bool) : SailM Bool := do
   let _ : Unit := (ext_pre_step_hook ())
   writeReg minstret_increment (← (should_inc_minstret (← readReg cur_privilege)))

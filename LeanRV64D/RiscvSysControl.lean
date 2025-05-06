@@ -173,7 +173,7 @@ def csrPriv (csr : (BitVec 12)) : (BitVec 2) :=
 def check_CSR_priv (csr : (BitVec 12)) (p : Privilege) : Bool :=
   (zopz0zKzJ_u (privLevel_to_bits p) (csrPriv csr))
 
-/-- Type quantifiers: k_ex349374# : Bool -/
+/-- Type quantifiers: k_ex349377# : Bool -/
 def check_CSR_access (csr : (BitVec 12)) (isWrite : Bool) : Bool :=
   (not (isWrite && ((csrAccess csr) == (0b11 : (BitVec 2)))))
 
@@ -205,7 +205,7 @@ def check_Stimecmp (csr : (BitVec 12)) (p : Privilege) : SailM Bool := do
     (pure ((p == Machine) || ((p == Supervisor) && (((_get_Counteren_TM (← readReg mcounteren)) == (0b1 : (BitVec 1))) && ((_get_MEnvcfg_STCE
                 (← readReg menvcfg)) == (0b1 : (BitVec 1)))))))
 
-/-- Type quantifiers: k_ex349461# : Bool -/
+/-- Type quantifiers: k_ex349464# : Bool -/
 def check_seed_CSR (csr : (BitVec 12)) (p : Privilege) (isWrite : Bool) : Bool :=
   bif (not (csr == (0x015 : (BitVec 12))))
   then true
@@ -721,7 +721,7 @@ def is_CSR_defined (b__0 : (BitVec 12)) : SailM Bool := do
                                                                                                                                                                                                                                                                                                   else
                                                                                                                                                                                                                                                                                                     (pure false)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
 
-/-- Type quantifiers: k_ex349955# : Bool -/
+/-- Type quantifiers: k_ex349958# : Bool -/
 def check_CSR (csr : (BitVec 12)) (p : Privilege) (isWrite : Bool) : SailM Bool := do
   (pure ((← (is_CSR_defined csr)) && ((check_CSR_priv csr p) && ((check_CSR_access csr isWrite) && ((← (check_TVM_SATP
                 csr p)) && ((← (check_Counteren csr p)) && ((← (check_Stimecmp csr p)) && (check_seed_CSR
@@ -791,12 +791,24 @@ def tval (excinfo : (Option (BitVec (2 ^ 3 * 8)))) : (BitVec (2 ^ 3 * 8)) :=
   | .some e => e
   | none => (zeros (n := ((2 ^i 3) *i 8)))
 
-def rvfi_trap (_ : Unit) : Unit :=
-  ()
+def track_trap (p : Privilege) : SailM Unit := do
+  (long_csr_write_callback "mstatus" "mstatush" (← readReg mstatus))
+  match p with
+  | Machine =>
+    (do
+      (csr_name_write_callback "mcause" (← readReg mcause))
+      (csr_name_write_callback "mtval" (← readReg mtval))
+      (csr_name_write_callback "mepc" (← readReg mepc)))
+  | Supervisor =>
+    (do
+      (csr_name_write_callback "scause" (← readReg scause))
+      (csr_name_write_callback "stval" (← readReg stval))
+      (csr_name_write_callback "sepc" (← readReg sepc)))
+  | User => (internal_error "riscv_sys_control.sail" 217 "Invalid privilege level")
 
-/-- Type quantifiers: k_ex350201# : Bool -/
+/-- Type quantifiers: k_ex350204# : Bool -/
 def trap_handler (del_priv : Privilege) (intr : Bool) (c : (BitVec 8)) (pc : (BitVec (2 ^ 3 * 8))) (info : (Option (BitVec (2 ^ 3 * 8)))) (ext : (Option Unit)) : SailM (BitVec (2 ^ 3 * 8)) := do
-  let _ : Unit := (rvfi_trap ())
+  let _ : Unit := (trap_callback ())
   let _ : Unit :=
     bif (get_config_print_platform ())
     then
@@ -827,11 +839,7 @@ def trap_handler (del_priv : Privilege) (intr : Bool) (c : (BitVec 8)) (pc : (Bi
       writeReg mepc pc
       writeReg cur_privilege del_priv
       let _ : Unit := (handle_trap_extension del_priv pc ext)
-      bif (get_config_print_reg ())
-      then
-        (pure (print_endline
-            (HAppend.hAppend "CSR mstatus <- " (BitVec.toFormatted (← readReg mstatus)))))
-      else (pure ())
+      (track_trap del_priv)
       (prepare_trap_vector del_priv (← readReg mcause)))
   | Supervisor =>
     (do
@@ -849,18 +857,14 @@ def trap_handler (del_priv : Privilege) (intr : Bool) (c : (BitVec 8)) (pc : (Bi
           | User => (pure (0b0 : (BitVec 1)))
           | Supervisor => (pure (0b1 : (BitVec 1)))
           | Machine =>
-            (internal_error "riscv_sys_control.sail" 255 "invalid privilege for s-mode trap")))
+            (internal_error "riscv_sys_control.sail" 260 "invalid privilege for s-mode trap")))
       writeReg stval (tval info)
       writeReg sepc pc
       writeReg cur_privilege del_priv
       let _ : Unit := (handle_trap_extension del_priv pc ext)
-      bif (get_config_print_reg ())
-      then
-        (pure (print_endline
-            (HAppend.hAppend "CSR mstatus <- " (BitVec.toFormatted (← readReg mstatus)))))
-      else (pure ())
+      (track_trap del_priv)
       (prepare_trap_vector del_priv (← readReg scause)))
-  | User => (internal_error "riscv_sys_control.sail" 269 "Invalid privilege level")
+  | User => (internal_error "riscv_sys_control.sail" 273 "Invalid privilege level")
 
 def exception_handler (cur_priv : Privilege) (ctl : ctl_result) (pc : (BitVec (2 ^ 3 * 8))) : SailM (BitVec (2 ^ 3 * 8)) := do
   match (cur_priv, ctl) with
@@ -895,11 +899,7 @@ def exception_handler (cur_priv : Privilege) (ctl : ctl_result) (pc : (BitVec (2
       then
         writeReg mstatus (Sail.BitVec.updateSubrange (← readReg mstatus) 17 17 (0b0 : (BitVec 1)))
       else (pure ())
-      bif (get_config_print_reg ())
-      then
-        (pure (print_endline
-            (HAppend.hAppend "CSR mstatus <- " (BitVec.toFormatted (← readReg mstatus)))))
-      else (pure ())
+      (long_csr_write_callback "mstatus" "mstatush" (← readReg mstatus))
       bif (get_config_print_platform ())
       then
         (pure (print_endline
@@ -923,11 +923,7 @@ def exception_handler (cur_priv : Privilege) (ctl : ctl_result) (pc : (BitVec (2
       then
         writeReg mstatus (Sail.BitVec.updateSubrange (← readReg mstatus) 17 17 (0b0 : (BitVec 1)))
       else (pure ())
-      bif (get_config_print_reg ())
-      then
-        (pure (print_endline
-            (HAppend.hAppend "CSR mstatus <- " (BitVec.toFormatted (← readReg mstatus)))))
-      else (pure ())
+      (long_csr_write_callback "mstatus" "mstatush" (← readReg mstatus))
       bif (get_config_print_platform ())
       then
         (pure (print_endline
@@ -973,20 +969,23 @@ def reset_misa (_ : Unit) : SailM Unit := do
   writeReg misa (Sail.BitVec.updateSubrange (← readReg misa) 21 21
     (bool_to_bits (hartSupports Ext_V)))
   bif ((hartSupports Ext_F) && (hartSupports Ext_Zfinx))
-  then (internal_error "riscv_sys_control.sail" 348 "F and Zfinx cannot both be enabled!")
+  then (internal_error "riscv_sys_control.sail" 352 "F and Zfinx cannot both be enabled!")
   else (pure ())
   writeReg misa (Sail.BitVec.updateSubrange (← readReg misa) 5 5
     (bool_to_bits (hartSupports Ext_F)))
   writeReg misa (Sail.BitVec.updateSubrange (← readReg misa) 3 3
     (bool_to_bits (hartSupports Ext_D)))
+  (csr_name_write_callback "misa" (← readReg misa))
 
 def reset_sys (_ : Unit) : SailM Unit := do
   writeReg cur_privilege Machine
   writeReg mstatus (Sail.BitVec.updateSubrange (← readReg mstatus) 3 3 (0b0 : (BitVec 1)))
   writeReg mstatus (Sail.BitVec.updateSubrange (← readReg mstatus) 17 17 (0b0 : (BitVec 1)))
+  (long_csr_write_callback "mstatus" "mstatush" (← readReg mstatus))
   (reset_misa ())
   (cancel_reservation ())
   writeReg mcause (zeros (n := ((2 ^i 3) *i 8)))
+  (csr_name_write_callback "mcause" (← readReg mcause))
   (reset_pmp ())
   writeReg vstart (zeros (n := 16))
   writeReg vl (zeros (n := ((2 ^i 3) *i 8)))
@@ -1000,14 +999,6 @@ def reset_sys (_ : Unit) : SailM Unit := do
   writeReg vtype (Sail.BitVec.updateSubrange (← readReg vtype) 6 6 (0b0 : (BitVec 1)))
   writeReg vtype (Sail.BitVec.updateSubrange (← readReg vtype) 5 3 (0b000 : (BitVec 3)))
   writeReg vtype (Sail.BitVec.updateSubrange (← readReg vtype) 2 0 (0b000 : (BitVec 3)))
-  bif (get_config_print_reg ())
-  then
-    (pure (print_endline
-        (HAppend.hAppend "CSR mstatus <- "
-          (HAppend.hAppend (BitVec.toFormatted (← readReg mstatus))
-            (HAppend.hAppend " (input: "
-              (HAppend.hAppend (BitVec.toFormatted ((zeros (n := ((2 ^i 3) *i 8))) : xlenbits)) ")"))))))
-  else (pure ())
 
 /-- Type quantifiers: k_t : Type -/
 def MemoryOpResult_add_meta (r : (Result k_t ExceptionType)) (m : Unit) : (Result (k_t × Unit) ExceptionType) :=

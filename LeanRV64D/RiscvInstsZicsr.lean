@@ -1585,7 +1585,7 @@ def write_CSR (b__0 : (BitVec 12)) (value : (BitVec (2 ^ 3 * 8))) : SailM (BitVe
                                                                                                                                                                                                                                                         (BitVec.toFormatted
                                                                                                                                                                                                                                                           b__0)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
 
-/-- Type quantifiers: k_ex353615# : Bool -/
+/-- Type quantifiers: k_ex353612# : Bool -/
 def doCSR (csr : (BitVec 12)) (rs1_val : (BitVec (2 ^ 3 * 8))) (rd : regidx) (op : csrop) (is_CSR_Write : Bool) : SailM ExecutionResult := do
   bif (not (← (check_CSR csr (← readReg cur_privilege) is_CSR_Write)))
   then (pure (Illegal_Instruction ()))
@@ -1609,25 +1609,8 @@ def doCSR (csr : (BitVec 12)) (rs1_val : (BitVec (2 ^ 3 * 8))) (rd : regidx) (op
                 | CSRRS => (csr_val ||| rs1_val)
                 | CSRRC => (csr_val &&& (Complement.complement rs1_val))
               let final_val ← do (write_CSR csr new_val)
-              bif (get_config_print_reg ())
-              then
-                (pure (print_endline
-                    (HAppend.hAppend "CSR "
-                      (HAppend.hAppend (← (csr_name csr))
-                        (HAppend.hAppend " <- "
-                          (HAppend.hAppend (BitVec.toFormatted final_val)
-                            (HAppend.hAppend " (input: "
-                              (HAppend.hAppend (BitVec.toFormatted new_val) ")"))))))))
-              else (pure ()))
-          else
-            (do
-              bif (get_config_print_reg ())
-              then
-                (pure (print_endline
-                    (HAppend.hAppend "CSR "
-                      (HAppend.hAppend (← (csr_name csr))
-                        (HAppend.hAppend " -> " (BitVec.toFormatted csr_val))))))
-              else (pure ()))
+              (csr_id_write_callback csr final_val))
+          else (csr_id_read_callback csr csr_val)
           (wX_bits rd csr_val)
           (pure RETIRE_SUCCESS)))
 
