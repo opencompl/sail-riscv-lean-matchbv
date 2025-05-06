@@ -59,8 +59,7 @@ jobs:
 
     - name: Build the Sail RISCV Model for Lean
       run: |
-        git clone https://github.com/opencompl/sail-riscv.git
-        git checkout enable_matchbv
+        git clone https://github.com/riscv/sail-riscv.git
         cd sail-riscv
         eval $(opam config env)
         cmake -S . -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
