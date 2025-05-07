@@ -524,21 +524,15 @@ def rtype_mnemonic_backwards_matches (arg_ : String) : Bool :=
   | "sra" => true
   | _ => false
 
-/-- Type quantifiers: k_ex352497# : Bool, k_n : Nat, 0 < k_n ∧ k_n ≤ xlen -/
+/-- Type quantifiers: k_ex352471# : Bool -/
+def valid_load_encdec (width : word_width) (is_unsigned : Bool) : Bool :=
+  (((size_bytes_forwards width) <b xlen_bytes) || ((not is_unsigned) && (((size_bytes_forwards width) ≤b xlen_bytes) : Bool)))
+
+/-- Type quantifiers: k_ex352507# : Bool, k_n : Nat, 0 < k_n ∧ k_n ≤ xlen -/
 def extend_value (is_unsigned : Bool) (value : (BitVec k_n)) : (BitVec (2 ^ 3 * 8)) :=
   bif is_unsigned
   then (zero_extend (m := ((2 ^i 3) *i 8)) value)
   else (sign_extend (m := ((2 ^i 3) *i 8)) value)
-
-def is_aligned (vaddr : (BitVec (2 ^ 3 * 8))) (width : word_width) : Bool :=
-  match width with
-  | BYTE => true
-  | HALF => ((Sail.BitVec.extractLsb vaddr 0 0) == (zeros (n := ((0 -i 0) +i 1))))
-  | WORD => ((Sail.BitVec.extractLsb vaddr 1 0) == (zeros (n := ((1 -i 0) +i 1))))
-  | DOUBLE => ((Sail.BitVec.extractLsb vaddr 2 0) == (zeros (n := ((2 -i 0) +i 1))))
-
-def check_misaligned (vaddr : virtaddr) (width : word_width) : Bool :=
-  ((not (plat_enable_misaligned_access ())) && (not (is_aligned (bits_of_virtaddr vaddr) width)))
 
 def maybe_aq_backwards (arg_ : String) : SailM Bool := do
   match arg_ with
@@ -549,7 +543,7 @@ def maybe_aq_backwards (arg_ : String) : SailM Bool := do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
-/-- Type quantifiers: k_ex352512# : Bool -/
+/-- Type quantifiers: k_ex352508# : Bool -/
 def maybe_aq_forwards_matches (arg_ : Bool) : Bool :=
   match arg_ with
   | true => true
@@ -570,7 +564,7 @@ def maybe_rl_backwards (arg_ : String) : SailM Bool := do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
-/-- Type quantifiers: k_ex352513# : Bool -/
+/-- Type quantifiers: k_ex352509# : Bool -/
 def maybe_rl_forwards_matches (arg_ : Bool) : Bool :=
   match arg_ with
   | true => true
@@ -591,7 +585,7 @@ def maybe_u_backwards (arg_ : String) : SailM Bool := do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
-/-- Type quantifiers: k_ex352514# : Bool -/
+/-- Type quantifiers: k_ex352510# : Bool -/
 def maybe_u_forwards_matches (arg_ : Bool) : Bool :=
   match arg_ with
   | true => true
@@ -655,7 +649,7 @@ def shiftiwop_mnemonic_backwards_matches (arg_ : String) : Bool :=
   | "sraiw" => true
   | _ => false
 
-/-- Type quantifiers: k_ex352515# : Bool -/
+/-- Type quantifiers: k_ex352511# : Bool -/
 def effective_fence_set (set : (BitVec 4)) (fiom : Bool) : (BitVec 4) :=
   bif fiom
   then

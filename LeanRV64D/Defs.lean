@@ -1002,6 +1002,8 @@ inductive ctl_result where
 
 abbrev MemoryOpResult k_a := (Result k_a ExceptionType)
 
+abbrev htif_cmd := (BitVec 64)
+
 inductive ExecutionResult where
   | Retire_Success (_ : Unit)
   | Wait_For_Interrupt (_ : Unit)
@@ -1013,8 +1015,6 @@ inductive ExecutionResult where
   | Ext_DataAddr_Check_Failure (_ : ext_data_addr_error)
   | Ext_XRET_Priv_Failure (_ : Unit)
   deriving Inhabited, BEq
-
-abbrev htif_cmd := (BitVec 64)
 
 abbrev pte_flags_bits := (BitVec 8)
 
@@ -1063,6 +1063,8 @@ inductive TR_Result (k_paddr : Type) (k_failure : Type) where
   | TR_Address (_ : (k_paddr × ext_ptw))
   | TR_Failure (_ : (k_failure × ext_ptw))
   deriving Inhabited, BEq
+
+
 
 
 

@@ -2530,7 +2530,7 @@ def ma_flag_backwards (arg_ : (BitVec 1)) : String :=
   then (String.append (sep_forwards ()) (String.append "ma" ""))
   else (String.append (sep_forwards ()) (String.append "mu" ""))
 
-/-- Type quantifiers: k_ex346337# : Bool -/
+/-- Type quantifiers: k_ex346149# : Bool -/
 def maybe_aq_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".aq"
@@ -2569,19 +2569,19 @@ def maybe_lmul_flag_backwards (arg_ : (BitVec 3)) : SailM String := do
                               assert false "Pattern match failure at unknown location"
                               throw Error.Exit)))))))
 
-/-- Type quantifiers: k_ex346345# : Bool -/
+/-- Type quantifiers: k_ex346157# : Bool -/
 def maybe_not_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | false => "u"
   | true => ""
 
-/-- Type quantifiers: k_ex346346# : Bool -/
+/-- Type quantifiers: k_ex346158# : Bool -/
 def maybe_rl_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".rl"
   | false => ""
 
-/-- Type quantifiers: k_ex346347# : Bool -/
+/-- Type quantifiers: k_ex346159# : Bool -/
 def maybe_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => "u"
@@ -3306,9 +3306,9 @@ def assembly_forwards (arg_ : ast) : SailM String := do
             (String.append (sep_forwards ())
               (String.append (reg_name_forwards rs1)
                 (String.append (sep_forwards ()) (String.append (reg_name_forwards rs2) ""))))))))
-  | .LOAD (imm, rs1, rd, is_unsigned, size, aq, rl) =>
+  | .LOAD (imm, rs1, rd, is_unsigned, width, aq, rl) =>
     (pure (String.append "l"
-        (String.append (size_mnemonic_forwards size)
+        (String.append (size_mnemonic_forwards width)
           (String.append (maybe_u_forwards is_unsigned)
             (String.append (maybe_aq_forwards aq)
               (String.append (maybe_rl_forwards rl)
@@ -3318,9 +3318,9 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                       (String.append (← (hex_bits_signed_12_forwards imm))
                         (String.append "("
                           (String.append (reg_name_forwards rs1) (String.append ")" "")))))))))))))
-  | .STORE (imm, rs2, rs1, size, aq, rl) =>
+  | .STORE (imm, rs2, rs1, width, aq, rl) =>
     (pure (String.append "s"
-        (String.append (size_mnemonic_forwards size)
+        (String.append (size_mnemonic_forwards width)
           (String.append (maybe_aq_forwards aq)
             (String.append (maybe_rl_forwards rl)
               (String.append (spc_forwards ())
