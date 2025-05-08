@@ -2,8 +2,8 @@
 ✔ [3/102] Built LeanRV64D.Sail.BitVec
 ✔ [4/102] Built LeanRV64D.Sail.Sail
 ✔ [5/102] Built LeanRV64D.Defs
-✔ [6/102] Built LeanRV64D.FakeReal
-✔ [7/102] Built LeanRV64D.Specialization
+✔ [6/102] Built LeanRV64D.Specialization
+✔ [7/102] Built LeanRV64D.FakeReal
 ✔ [8/102] Built LeanRV64D.RiscvExtras
 ✔ [9/102] Built LeanRV64D.Option
 ✔ [10/102] Built LeanRV64D.Flow
@@ -52,8 +52,8 @@
 ✔ [53/102] Built LeanRV64D.RiscvSmcntrpmf
 ✔ [54/102] Built LeanRV64D.RiscvSysControl
 ✖ [55/102] Building LeanRV64D.RiscvPlatform
-trace: .> LEAN_PATH=/home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/lib/lean /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-04-07/bin/lean --tstack=400000 -Dweak.linter.style.nameCheck=false /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean -R /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D -o /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/lib/lean/LeanRV64D/RiscvPlatform.olean -i /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/lib/lean/LeanRV64D/RiscvPlatform.ilean -c /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/ir/LeanRV64D/RiscvPlatform.c --json
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean:659:6: unsolved goals
+trace: .> LEAN_PATH=/home/runner/work/sail-riscv-lean-matchbv/sail-riscv-lean-matchbv/sail-riscv/build/model/Lean_RV64D/.lake/build/lib/lean /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-04-07/bin/lean --tstack=400000 -Dweak.linter.style.nameCheck=false /home/runner/work/sail-riscv-lean-matchbv/sail-riscv-lean-matchbv/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean -R /home/runner/work/sail-riscv-lean-matchbv/sail-riscv-lean-matchbv/sail-riscv/build/model/Lean_RV64D -o /home/runner/work/sail-riscv-lean-matchbv/sail-riscv-lean-matchbv/sail-riscv/build/model/Lean_RV64D/.lake/build/lib/lean/LeanRV64D/RiscvPlatform.olean -i /home/runner/work/sail-riscv-lean-matchbv/sail-riscv-lean-matchbv/sail-riscv/build/model/Lean_RV64D/.lake/build/lib/lean/LeanRV64D/RiscvPlatform.ilean -c /home/runner/work/sail-riscv-lean-matchbv/sail-riscv-lean-matchbv/sail-riscv/build/model/Lean_RV64D/.lake/build/ir/LeanRV64D/RiscvPlatform.c --json
+error: /home/runner/work/sail-riscv-lean-matchbv/sail-riscv-lean-matchbv/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean:659:6: unsolved goals
 app_0 : physaddr
 width : Nat
 data : BitVec (8 * width)
@@ -69,7 +69,7 @@ x✝ :
       ¬(true && BitVec.extractLsb 7 0 (_get_htif_cmd_device cmd) == 1#8) = true) ∧
     ¬true = true
 ⊢ SailM PUnit
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean:683:10: unsolved goals
+error: /home/runner/work/sail-riscv-lean-matchbv/sail-riscv-lean-matchbv/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean:683:10: unsolved goals
 app_0 : physaddr
 width : Nat
 data : BitVec (8 * width)
@@ -89,12 +89,12 @@ x✝ :
       ¬(true && BitVec.extractLsb 7 0 (_get_htif_cmd_cmd cmd) == 1#8) = true) ∧
     ¬true = true
 ⊢ SailM PUnit
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean:659:6: (kernel) incorrect number of universe levels parameters for 'PUnit', #1 expected, #0 provided
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean:659:6: (kernel) incorrect number of universe levels parameters for 'PUnit', #1 expected, #0 provided
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean:659:6: (kernel) incorrect number of universe levels parameters for 'PUnit', #1 expected, #0 provided
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean:683:10: (kernel) incorrect number of universe levels parameters for 'PUnit', #1 expected, #0 provided
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean:683:10: (kernel) incorrect number of universe levels parameters for 'PUnit', #1 expected, #0 provided
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean:683:10: (kernel) incorrect number of universe levels parameters for 'PUnit', #1 expected, #0 provided
+error: /home/runner/work/sail-riscv-lean-matchbv/sail-riscv-lean-matchbv/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean:659:6: (kernel) incorrect number of universe levels parameters for 'PUnit', #1 expected, #0 provided
+error: /home/runner/work/sail-riscv-lean-matchbv/sail-riscv-lean-matchbv/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean:659:6: (kernel) incorrect number of universe levels parameters for 'PUnit', #1 expected, #0 provided
+error: /home/runner/work/sail-riscv-lean-matchbv/sail-riscv-lean-matchbv/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean:659:6: (kernel) incorrect number of universe levels parameters for 'PUnit', #1 expected, #0 provided
+error: /home/runner/work/sail-riscv-lean-matchbv/sail-riscv-lean-matchbv/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean:683:10: (kernel) incorrect number of universe levels parameters for 'PUnit', #1 expected, #0 provided
+error: /home/runner/work/sail-riscv-lean-matchbv/sail-riscv-lean-matchbv/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean:683:10: (kernel) incorrect number of universe levels parameters for 'PUnit', #1 expected, #0 provided
+error: /home/runner/work/sail-riscv-lean-matchbv/sail-riscv-lean-matchbv/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean:683:10: (kernel) incorrect number of universe levels parameters for 'PUnit', #1 expected, #0 provided
 error: Lean exited with code 1
 Some required builds logged failures:
 - LeanRV64D.RiscvPlatform
