@@ -1107,7 +1107,7 @@ def ma_flag_backwards (arg_ : (BitVec 1)) : String :=
   | 1 => (String.append (sep_forwards ()) (String.append "ma" ""))
   | _ => (String.append (sep_forwards ()) (String.append "mu" ""))
 
-/-- Type quantifiers: k_ex279121# : Bool -/
+/-- Type quantifiers: k_ex279111# : Bool -/
 def maybe_aq_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".aq"
@@ -1127,19 +1127,19 @@ def maybe_lmul_flag_backwards (arg_ : (BitVec 3)) : SailM String := do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
-/-- Type quantifiers: k_ex279122# : Bool -/
+/-- Type quantifiers: k_ex279112# : Bool -/
 def maybe_not_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | false => "u"
   | true => ""
 
-/-- Type quantifiers: k_ex279123# : Bool -/
+/-- Type quantifiers: k_ex279113# : Bool -/
 def maybe_rl_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".rl"
   | false => ""
 
-/-- Type quantifiers: k_ex279124# : Bool -/
+/-- Type quantifiers: k_ex279114# : Bool -/
 def maybe_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => "u"
