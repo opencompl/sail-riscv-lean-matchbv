@@ -76,7 +76,7 @@ jobs:
 
     - name: Install elan
       run: |
-        curl https://elan.lean-lang.org/elan-init.sh -sSf | sh
+        curl https://elan.lean-lang.org/elan-init.sh -ysSf | sh
 
     - name: Use Lean to build the model and record errors
       run: |
