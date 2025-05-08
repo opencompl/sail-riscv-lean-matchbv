@@ -15,8 +15,11 @@ Abbreviations: 136
 
 # Warnings and Errors
 
-Errors found: 0  
+Errors found: 9  
 Warnings found: 0  
 
 ## Error Classes
 
+- 6x (kernel) incorrect number of universe levels parameters for 'PUnit', #1 expected, #0 provided
+- 2x unsolved goals
+- 1x Lean exited with code 1
