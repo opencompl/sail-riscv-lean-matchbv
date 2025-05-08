@@ -74,17 +74,15 @@ jobs:
         cmake --build build/ --target generated_lean_rv64d
         cd ..
 
+    - Name: Install elan
+      run: |
+        curl https://elan.lean-lang.org/elan-init.sh -sSf | sh
+
     - name: Use Lean to build the model and record errors
       run: |
-        wget -q https://raw.githubusercontent.com/leanprover-community/mathlib4/master/scripts/install_debian.sh
-        bash install_debian.sh ; rm -f install_debian.sh
-        source ~/.profile
         cp README.md.template sail-riscv/build/model/Lean_RV64D
         cp report.py sail-riscv/build/model/Lean_RV64D
         cd sail-riscv/build/model/Lean_RV64D
-        echo "Set ulimit"	
-        ulimit -s unlimited
-        ulimit -s
         (lake build | tee build_log.txt || true)
         cp README.md.template README.md
         ./report.py >> README.md
