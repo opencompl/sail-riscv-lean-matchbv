@@ -66,7 +66,7 @@ jobs:
 
     - name: Build the Sail RISCV Model for Lean
       run: |
-        git clone https://github.com/opencompl/sail-riscv.git
+        git clone https://github.com/ineol/sail-riscv.git
         (cd sail-riscv; git checkout push-ltquwsyxprky)
         cd sail-riscv
         eval $(opam config env)
