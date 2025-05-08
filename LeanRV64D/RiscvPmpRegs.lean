@@ -183,16 +183,11 @@ def num_of_PmpAddrMatchType (arg_ : PmpAddrMatchType) : Int :=
   | NAPOT => 3
 
 def pmpAddrMatchType_of_bits (bs : (BitVec 2)) : PmpAddrMatchType :=
-  let b__0 := bs
-  bif (b__0 == (0b00 : (BitVec 2)))
-  then OFF
-  else
-    (bif (b__0 == (0b01 : (BitVec 2)))
-    then TOR
-    else
-      (bif (b__0 == (0b10 : (BitVec 2)))
-      then NA4
-      else NAPOT))
+  match_bv bs with
+  | 00 => OFF
+  | 01 => TOR
+  | 10 => NA4
+  | _ => NAPOT
 
 def pmpAddrMatchType_to_bits (bs : PmpAddrMatchType) : (BitVec 2) :=
   match bs with
@@ -278,7 +273,7 @@ def pmpWriteCfgReg (n : Nat) (v : (BitVec (2 ^ 3 * 8))) : SailM Unit := do
           (Sail.BitVec.extractLsb v ((8 *i i) +i 7) (8 *i i))))
   (pure loop_vars)
 
-/-- Type quantifiers: k_ex348110# : Bool, k_ex348109# : Bool -/
+/-- Type quantifiers: k_ex280958# : Bool, k_ex280957# : Bool -/
 def pmpWriteAddr (locked : Bool) (tor_locked : Bool) (reg : (BitVec (2 ^ 3 * 8))) (v : (BitVec (2 ^ 3 * 8))) : (BitVec (2 ^ 3 * 8)) :=
   bif (locked || tor_locked)
   then reg

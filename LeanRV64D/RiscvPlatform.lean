@@ -656,9 +656,8 @@ def htif_store (app_0 : physaddr) (width : Nat) (data : (BitVec (8 * width))) : 
   then
     (do
       let cmd ← do (pure (Mk_htif_cmd (← readReg htif_tohost)))
-      let b__0 := (_get_htif_cmd_device cmd)
-      bif (b__0 == (0x00 : (BitVec 8)))
-      then
+      match_bv (_get_htif_cmd_device cmd) with
+      | 00000000 => do
         (do
           let _ : Unit :=
             bif (get_config_print_platform ())
@@ -673,29 +672,21 @@ def htif_store (app_0 : physaddr) (width : Nat) (data : (BitVec (8 * width))) : 
               writeReg htif_done true
               writeReg htif_exit_code (shiftr (zero_extend (m := 64) (_get_htif_cmd_payload cmd)) 1))
           else (pure ()))
-      else
+      | 00000001 => do
         (do
-          bif (b__0 == (0x01 : (BitVec 8)))
-          then
-            (do
-              let _ : Unit :=
-                bif (get_config_print_platform ())
-                then
-                  (print_endline
-                    (HAppend.hAppend "htif-term cmd: "
-                      (BitVec.toFormatted (_get_htif_cmd_payload cmd))))
-                else ()
-              let b__2 := (_get_htif_cmd_cmd cmd)
-              bif (b__2 == (0x00 : (BitVec 8)))
-              then (pure ())
-              else
-                (do
-                  bif (b__2 == (0x01 : (BitVec 8)))
-                  then (plat_term_write (Sail.BitVec.extractLsb (_get_htif_cmd_payload cmd) 7 0))
-                  else
-                    (pure (print (HAppend.hAppend "Unknown term cmd: " (BitVec.toFormatted b__2)))))
-              (reset_htif ()))
-          else (pure (print (HAppend.hAppend "htif-???? cmd: " (BitVec.toFormatted data))))))
+          let _ : Unit :=
+            bif (get_config_print_platform ())
+            then
+              (print_endline
+                (HAppend.hAppend "htif-term cmd: " (BitVec.toFormatted (_get_htif_cmd_payload cmd))))
+            else ()
+          match_bv (_get_htif_cmd_cmd cmd) with
+          | 00000000 => do (pure ())
+          | 00000001 => do
+            (plat_term_write (Sail.BitVec.extractLsb (_get_htif_cmd_payload cmd) 7 0))
+          | c => do (pure (print (HAppend.hAppend "Unknown term cmd: " (BitVec.toFormatted c))))
+          (reset_htif ()))
+      | d => do (pure (print (HAppend.hAppend "htif-???? cmd: " (BitVec.toFormatted data)))))
   else (pure ())
   (pure (Ok true))
 

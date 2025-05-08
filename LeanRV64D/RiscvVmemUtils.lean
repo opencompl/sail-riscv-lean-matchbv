@@ -219,7 +219,7 @@ def misaligned_order (n : Int) : (Int × Int × Int) :=
   then ((n -i 1), 0, (-1))
   else (0, (n -i 1), 1)
 
-/-- Type quantifiers: k_ex351622# : Bool, k_ex351621# : Bool, k_ex351620# : Bool, width : Nat, width
+/-- Type quantifiers: k_ex284137# : Bool, k_ex284136# : Bool, k_ex284135# : Bool, width : Nat, width
   ∈ {1, 2, 4, 8} ∧ width ≤ xlen_bytes ∨ width ≤ flen_bytes -/
 def vmem_write_addr (vaddr : virtaddr) (width : Nat) (data : (BitVec (8 * width))) (acc : (AccessType Unit)) (aq : Bool) (rl : Bool) (res : Bool) : SailM (Result Bool ExecutionResult) := SailME.run do
   let (n, bytes) ← do (split_misaligned vaddr width)
@@ -229,46 +229,44 @@ def vmem_write_addr (vaddr : virtaddr) (width : Nat) (data : (BitVec (8 * width)
   let write_success : Bool := true
   let vaddr := (bits_of_virtaddr vaddr)
   let (finished, i, write_success) ← (( do
-    let mut loop_vars := (finished, i, write_success)
-    repeat
-      let (finished, i, write_success) := loop_vars
-      loop_vars ← do
-        let offset := i
-        let vaddr := (BitVec.addInt vaddr (offset *i bytes))
-        let write_success ← (( do
-          match (← (translateAddr (Virtaddr vaddr) acc)) with
-          | .TR_Failure (e, _) =>
-            SailME.throw ((Err (Memory_Exception ((Virtaddr vaddr), e))) : (Result Bool ExecutionResult))
-          | .TR_Address (paddr, _) =>
-            (do
-              bif (res && (not (match_reservation (bits_of_physaddr paddr))))
-              then (pure false)
-              else
-                (do
-                  match (← (mem_write_ea paddr bytes aq rl res)) with
-                  | .Err e =>
-                    SailME.throw ((Err (Memory_Exception ((Virtaddr vaddr), e))) : (Result Bool ExecutionResult))
-                  | .Ok () =>
-                    (do
-                      let write_value :=
-                        (Sail.BitVec.extractLsb data (((8 *i (offset +i 1)) *i bytes) -i 1)
-                          ((8 *i offset) *i bytes))
-                      match (← (mem_write_value paddr bytes write_value aq rl res)) with
-                      | .Err e =>
-                        SailME.throw ((Err (Memory_Exception ((Virtaddr vaddr), e))) : (Result Bool ExecutionResult))
-                      | .Ok s => (pure (write_success && s))))) ) : SailME
-          (Result Bool ExecutionResult) Bool )
-        let (finished, i) : (Bool × Nat) :=
-          bif (offset == last)
-          then
-            (let finished : Bool := true
-            (finished, i))
-          else
-            (let i : Nat := (offset +i step)
-            (finished, i))
-        (pure (finished, i, write_success))
-    until (λ (finished, i, write_success) => finished) loop_vars
-    (pure loop_vars) ) : SailME (Result Bool ExecutionResult) (Bool × Nat × Bool) )
+    (pure (until#t finished (finished, i, write_success)
+        (← do
+          assert true "loop dummy assert"
+          let offset := i
+          let vaddr := (BitVec.addInt vaddr (offset *i bytes))
+          let write_success ← (( do
+            match (← (translateAddr (Virtaddr vaddr) acc)) with
+            | .TR_Failure (e, _) =>
+              SailME.throw ((Err (Memory_Exception ((Virtaddr vaddr), e))) : (Result Bool ExecutionResult))
+            | .TR_Address (paddr, _) =>
+              (do
+                bif (res && (not (match_reservation (bits_of_physaddr paddr))))
+                then (pure false)
+                else
+                  (do
+                    match (← (mem_write_ea paddr bytes aq rl res)) with
+                    | .Err e =>
+                      SailME.throw ((Err (Memory_Exception ((Virtaddr vaddr), e))) : (Result Bool ExecutionResult))
+                    | .Ok () =>
+                      (do
+                        let write_value :=
+                          (Sail.BitVec.extractLsb data (((8 *i (offset +i 1)) *i bytes) -i 1)
+                            ((8 *i offset) *i bytes))
+                        match (← (mem_write_value paddr bytes write_value aq rl res)) with
+                        | .Err e =>
+                          SailME.throw ((Err (Memory_Exception ((Virtaddr vaddr), e))) : (Result Bool ExecutionResult))
+                        | .Ok s => (pure (write_success && s))))) ) : SailME
+            (Result Bool ExecutionResult) Bool )
+          let (finished, i) : (Bool × Nat) :=
+            bif (offset == last)
+            then
+              (let finished : Bool := true
+              (finished, i))
+            else
+              (let i : Nat := (offset +i step)
+              (finished, i))
+          (pure (finished, i, write_success))) n)) ) : SailME (Result Bool ExecutionResult)
+    (Bool × Nat × Bool) )
   (pure (Ok write_success))
 
 def check_misaligned (vaddr : virtaddr) (width : word_width) : Bool :=
@@ -276,7 +274,7 @@ def check_misaligned (vaddr : virtaddr) (width : word_width) : Bool :=
   then false
   else (not (is_aligned_vaddr vaddr (size_bytes_forwards width)))
 
-/-- Type quantifiers: k_ex351668# : Bool, k_ex351667# : Bool, k_ex351666# : Bool, width : Nat, width
+/-- Type quantifiers: k_ex284183# : Bool, k_ex284182# : Bool, k_ex284181# : Bool, width : Nat, width
   ∈ {1, 2, 4, 8} ∧ width ≤ xlen_bytes ∨ width ≤ flen_bytes -/
 def vmem_read (rs : regidx) (offset : (BitVec (2 ^ 3 * 8))) (width : Nat) (acc : (AccessType Unit)) (aq : Bool) (rl : Bool) (res : Bool) : SailM (Result (BitVec (8 * width)) ExecutionResult) := SailME.run do
   let vaddr ← (( do
@@ -305,44 +303,41 @@ def vmem_read (rs : regidx) (offset : (BitVec (2 ^ 3 * 8))) (width : Nat) (acc :
   let finished : Bool := false
   let vaddr := (bits_of_virtaddr vaddr)
   let (data, finished, i) ← (( do
-    let mut loop_vars := (data, finished, i)
-    repeat
-      let (data, finished, i) := loop_vars
-      loop_vars ← do
-        let offset := i
-        let vaddr := (BitVec.addInt vaddr (offset *i bytes))
-        let data ← (( do
-          match (← (translateAddr (Virtaddr vaddr) acc)) with
-          | .TR_Failure (e, _) =>
-            SailME.throw ((Err (Memory_Exception ((Virtaddr vaddr), e))) : (Result (BitVec (8 * width)) ExecutionResult))
-          | .TR_Address (paddr, _) =>
-            (do
-              match (← (mem_read acc paddr bytes aq rl res)) with
-              | .Err e =>
-                SailME.throw ((Err (Memory_Exception ((Virtaddr vaddr), e))) : (Result (BitVec (8 * width)) ExecutionResult))
-              | .Ok v =>
-                (do
-                  bif res
-                  then (load_reservation (bits_of_physaddr paddr))
-                  else (pure ())
-                  (pure (Sail.BitVec.updateSubrange data (((8 *i (offset +i 1)) *i bytes) -i 1)
-                      ((8 *i offset) *i bytes) v)))) ) : SailME
-          (Result (BitVec (8 * width)) ExecutionResult) (BitVec (8 * n * bytes)) )
-        let (finished, i) : (Bool × Nat) :=
-          bif (offset == last)
-          then
-            (let finished : Bool := true
-            (finished, i))
-          else
-            (let i : Nat := (offset +i step)
-            (finished, i))
-        (pure (data, finished, i))
-    until (λ (data, finished, i) => finished) loop_vars
-    (pure loop_vars) ) : SailME (Result (BitVec (8 * width)) ExecutionResult)
+    (pure (until#t finished (data, finished, i)
+        (← do
+          assert true "loop dummy assert"
+          let offset := i
+          let vaddr := (BitVec.addInt vaddr (offset *i bytes))
+          let data ← (( do
+            match (← (translateAddr (Virtaddr vaddr) acc)) with
+            | .TR_Failure (e, _) =>
+              SailME.throw ((Err (Memory_Exception ((Virtaddr vaddr), e))) : (Result (BitVec (8 * width)) ExecutionResult))
+            | .TR_Address (paddr, _) =>
+              (do
+                match (← (mem_read acc paddr bytes aq rl res)) with
+                | .Err e =>
+                  SailME.throw ((Err (Memory_Exception ((Virtaddr vaddr), e))) : (Result (BitVec (8 * width)) ExecutionResult))
+                | .Ok v =>
+                  (do
+                    bif res
+                    then (load_reservation (bits_of_physaddr paddr))
+                    else (pure ())
+                    (pure (Sail.BitVec.updateSubrange data (((8 *i (offset +i 1)) *i bytes) -i 1)
+                        ((8 *i offset) *i bytes) v)))) ) : SailME
+            (Result (BitVec (8 * width)) ExecutionResult) (BitVec (8 * n * bytes)) )
+          let (finished, i) : (Bool × Nat) :=
+            bif (offset == last)
+            then
+              (let finished : Bool := true
+              (finished, i))
+            else
+              (let i : Nat := (offset +i step)
+              (finished, i))
+          (pure (data, finished, i))) n)) ) : SailME (Result (BitVec (8 * width)) ExecutionResult)
     ((BitVec (8 * n * bytes)) × Bool × Nat) )
   (pure (Ok data))
 
-/-- Type quantifiers: k_ex351698# : Bool, k_ex351697# : Bool, k_ex351696# : Bool, width : Nat, width
+/-- Type quantifiers: k_ex284213# : Bool, k_ex284212# : Bool, k_ex284211# : Bool, width : Nat, width
   ∈ {1, 2, 4, 8} ∧ width ≤ xlen_bytes ∨ width ≤ flen_bytes -/
 def vmem_write (rs_addr : regidx) (offset : (BitVec (2 ^ 3 * 8))) (width : Nat) (data : (BitVec (8 * width))) (acc : (AccessType Unit)) (aq : Bool) (rl : Bool) (res : Bool) : SailM (Result Bool ExecutionResult) := SailME.run do
   let vaddr ← (( do

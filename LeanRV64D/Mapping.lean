@@ -214,8 +214,10 @@ def sep_backwards (arg_ : String) : SailM Unit := do
 def sep_forwards_matches (arg_ : Unit) : Bool :=
   match arg_ with
   | () => true
+  | _ => false
 
 def sep_backwards_matches (arg_ : String) : SailM Bool := do
   match arg_ with
   | _ => throw Error.Exit
+  | _ => (pure false)
 

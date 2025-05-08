@@ -165,28 +165,15 @@ open Architecture
 open AccessType
 
 def nfields_int_forwards (arg_ : (BitVec 3)) : Int :=
-  let b__0 := arg_
-  bif (b__0 == (0b000 : (BitVec 3)))
-  then 1
-  else
-    (bif (b__0 == (0b001 : (BitVec 3)))
-    then 2
-    else
-      (bif (b__0 == (0b010 : (BitVec 3)))
-      then 3
-      else
-        (bif (b__0 == (0b011 : (BitVec 3)))
-        then 4
-        else
-          (bif (b__0 == (0b100 : (BitVec 3)))
-          then 5
-          else
-            (bif (b__0 == (0b101 : (BitVec 3)))
-            then 6
-            else
-              (bif (b__0 == (0b110 : (BitVec 3)))
-              then 7
-              else 8))))))
+  match_bv arg_ with
+  | 000 => 1
+  | 001 => 2
+  | 010 => 3
+  | 011 => 4
+  | 100 => 5
+  | 101 => 6
+  | 110 => 7
+  | _ => 8
 
 /-- Type quantifiers: arg_ : Nat, arg_ > 0 ∧ arg_ ≤ 8 -/
 def nfields_int_backwards (arg_ : Nat) : (BitVec 3) :=
@@ -201,31 +188,16 @@ def nfields_int_backwards (arg_ : Nat) : (BitVec 3) :=
   | _ => (0b111 : (BitVec 3))
 
 def nfields_int_forwards_matches (arg_ : (BitVec 3)) : Bool :=
-  let b__0 := arg_
-  bif (b__0 == (0b000 : (BitVec 3)))
-  then true
-  else
-    (bif (b__0 == (0b001 : (BitVec 3)))
-    then true
-    else
-      (bif (b__0 == (0b010 : (BitVec 3)))
-      then true
-      else
-        (bif (b__0 == (0b011 : (BitVec 3)))
-        then true
-        else
-          (bif (b__0 == (0b100 : (BitVec 3)))
-          then true
-          else
-            (bif (b__0 == (0b101 : (BitVec 3)))
-            then true
-            else
-              (bif (b__0 == (0b110 : (BitVec 3)))
-              then true
-              else
-                (bif (b__0 == (0b111 : (BitVec 3)))
-                then true
-                else false)))))))
+  match_bv arg_ with
+  | 000 => true
+  | 001 => true
+  | 010 => true
+  | 011 => true
+  | 100 => true
+  | 101 => true
+  | 110 => true
+  | 111 => true
+  | _ => false
 
 /-- Type quantifiers: arg_ : Nat, arg_ > 0 ∧ arg_ ≤ 8 -/
 def nfields_int_backwards_matches (arg_ : Nat) : Bool :=
@@ -256,31 +228,16 @@ def nfields_string_backwards (arg_ : String) : SailM (BitVec 3) := do
       throw Error.Exit)
 
 def nfields_string_forwards_matches (arg_ : (BitVec 3)) : Bool :=
-  let b__0 := arg_
-  bif (b__0 == (0b000 : (BitVec 3)))
-  then true
-  else
-    (bif (b__0 == (0b001 : (BitVec 3)))
-    then true
-    else
-      (bif (b__0 == (0b010 : (BitVec 3)))
-      then true
-      else
-        (bif (b__0 == (0b011 : (BitVec 3)))
-        then true
-        else
-          (bif (b__0 == (0b100 : (BitVec 3)))
-          then true
-          else
-            (bif (b__0 == (0b101 : (BitVec 3)))
-            then true
-            else
-              (bif (b__0 == (0b110 : (BitVec 3)))
-              then true
-              else
-                (bif (b__0 == (0b111 : (BitVec 3)))
-                then true
-                else false)))))))
+  match_bv arg_ with
+  | 000 => true
+  | 001 => true
+  | 010 => true
+  | 011 => true
+  | 100 => true
+  | 101 => true
+  | 110 => true
+  | 111 => true
+  | _ => false
 
 def nfields_string_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -311,6 +268,7 @@ def vlewidth_bitsnumberstr_forwards_matches (arg_ : vlewidth) : Bool :=
   | VLE16 => true
   | VLE32 => true
   | VLE64 => true
+  | _ => false
 
 def vlewidth_bitsnumberstr_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -328,25 +286,15 @@ def encdec_vlewidth_forwards (arg_ : vlewidth) : (BitVec 3) :=
   | VLE64 => (0b111 : (BitVec 3))
 
 def encdec_vlewidth_backwards (arg_ : (BitVec 3)) : SailM vlewidth := do
-  let b__0 := arg_
-  bif (b__0 == (0b000 : (BitVec 3)))
-  then (pure VLE8)
-  else
+  match_bv arg_ with
+  | 000 => do (pure VLE8)
+  | 101 => do (pure VLE16)
+  | 110 => do (pure VLE32)
+  | 111 => do (pure VLE64)
+  | _ => do
     (do
-      bif (b__0 == (0b101 : (BitVec 3)))
-      then (pure VLE16)
-      else
-        (do
-          bif (b__0 == (0b110 : (BitVec 3)))
-          then (pure VLE32)
-          else
-            (do
-              bif (b__0 == (0b111 : (BitVec 3)))
-              then (pure VLE64)
-              else
-                (do
-                  assert false "Pattern match failure at unknown location"
-                  throw Error.Exit))))
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def encdec_vlewidth_forwards_matches (arg_ : vlewidth) : Bool :=
   match arg_ with
@@ -354,21 +302,15 @@ def encdec_vlewidth_forwards_matches (arg_ : vlewidth) : Bool :=
   | VLE16 => true
   | VLE32 => true
   | VLE64 => true
+  | _ => false
 
 def encdec_vlewidth_backwards_matches (arg_ : (BitVec 3)) : Bool :=
-  let b__0 := arg_
-  bif (b__0 == (0b000 : (BitVec 3)))
-  then true
-  else
-    (bif (b__0 == (0b101 : (BitVec 3)))
-    then true
-    else
-      (bif (b__0 == (0b110 : (BitVec 3)))
-      then true
-      else
-        (bif (b__0 == (0b111 : (BitVec 3)))
-        then true
-        else false)))
+  match_bv arg_ with
+  | 000 => true
+  | 101 => true
+  | 110 => true
+  | 111 => true
+  | _ => false
 
 def vlewidth_bytesnumber_forwards (arg_ : vlewidth) : Int :=
   match arg_ with
@@ -391,6 +333,7 @@ def vlewidth_bytesnumber_forwards_matches (arg_ : vlewidth) : Bool :=
   | VLE16 => true
   | VLE32 => true
   | VLE64 => true
+  | _ => false
 
 /-- Type quantifiers: arg_ : Nat, arg_ ∈ {1, 2, 4, 8} -/
 def vlewidth_bytesnumber_backwards_matches (arg_ : Nat) : Bool :=
@@ -422,6 +365,7 @@ def vlewidth_pow_forwards_matches (arg_ : vlewidth) : Bool :=
   | VLE16 => true
   | VLE32 => true
   | VLE64 => true
+  | _ => false
 
 /-- Type quantifiers: arg_ : Nat, arg_ ∈ {3, 4, 5, 6} -/
 def vlewidth_pow_backwards_matches (arg_ : Nat) : Bool :=
@@ -1008,31 +952,25 @@ def encdec_lsop_forwards (arg_ : vmlsop) : (BitVec 7) :=
   | VSM => (0b0100111 : (BitVec 7))
 
 def encdec_lsop_backwards (arg_ : (BitVec 7)) : SailM vmlsop := do
-  let b__0 := arg_
-  bif (b__0 == (0b0000111 : (BitVec 7)))
-  then (pure VLM)
-  else
+  match_bv arg_ with
+  | 0000111 => do (pure VLM)
+  | 0100111 => do (pure VSM)
+  | _ => do
     (do
-      bif (b__0 == (0b0100111 : (BitVec 7)))
-      then (pure VSM)
-      else
-        (do
-          assert false "Pattern match failure at unknown location"
-          throw Error.Exit))
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def encdec_lsop_forwards_matches (arg_ : vmlsop) : Bool :=
   match arg_ with
   | VLM => true
   | VSM => true
+  | _ => false
 
 def encdec_lsop_backwards_matches (arg_ : (BitVec 7)) : Bool :=
-  let b__0 := arg_
-  bif (b__0 == (0b0000111 : (BitVec 7)))
-  then true
-  else
-    (bif (b__0 == (0b0100111 : (BitVec 7)))
-    then true
-    else false)
+  match_bv arg_ with
+  | 0000111 => true
+  | 0100111 => true
+  | _ => false
 
 /-- Type quantifiers: num_elem : Nat, evl : Nat, num_elem ≥ 0 ∧ evl ≥ 0 -/
 def process_vm (vd_or_vs3 : vregidx) (rs1 : regidx) (num_elem : Nat) (evl : Nat) (op : vmlsop) : SailM ExecutionResult := SailME.run do
@@ -1095,6 +1033,7 @@ def vmtype_mnemonic_forwards_matches (arg_ : vmlsop) : Bool :=
   match arg_ with
   | VLM => true
   | VSM => true
+  | _ => false
 
 def vmtype_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with

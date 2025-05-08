@@ -176,37 +176,27 @@ def encdec_mul_op_forwards (arg_ : mul_op) : SailM (BitVec 3) := do
       throw Error.Exit)
 
 def encdec_mul_op_backwards (arg_ : (BitVec 3)) : SailM mul_op := do
-  let b__0 := arg_
-  bif (b__0 == (0b000 : (BitVec 3)))
-  then
+  match_bv arg_ with
+  | 000 => do
     (pure { high := false
             signed_rs1 := true
             signed_rs2 := true })
-  else
+  | 001 => do
+    (pure { high := true
+            signed_rs1 := true
+            signed_rs2 := true })
+  | 010 => do
+    (pure { high := true
+            signed_rs1 := true
+            signed_rs2 := false })
+  | 011 => do
+    (pure { high := true
+            signed_rs1 := false
+            signed_rs2 := false })
+  | _ => do
     (do
-      bif (b__0 == (0b001 : (BitVec 3)))
-      then
-        (pure { high := true
-                signed_rs1 := true
-                signed_rs2 := true })
-      else
-        (do
-          bif (b__0 == (0b010 : (BitVec 3)))
-          then
-            (pure { high := true
-                    signed_rs1 := true
-                    signed_rs2 := false })
-          else
-            (do
-              bif (b__0 == (0b011 : (BitVec 3)))
-              then
-                (pure { high := true
-                        signed_rs1 := false
-                        signed_rs2 := false })
-              else
-                (do
-                  assert false "Pattern match failure at unknown location"
-                  throw Error.Exit))))
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def encdec_mul_op_forwards_matches (arg_ : mul_op) : Bool :=
   match arg_ with
@@ -217,19 +207,12 @@ def encdec_mul_op_forwards_matches (arg_ : mul_op) : Bool :=
   | _ => false
 
 def encdec_mul_op_backwards_matches (arg_ : (BitVec 3)) : Bool :=
-  let b__0 := arg_
-  bif (b__0 == (0b000 : (BitVec 3)))
-  then true
-  else
-    (bif (b__0 == (0b001 : (BitVec 3)))
-    then true
-    else
-      (bif (b__0 == (0b010 : (BitVec 3)))
-      then true
-      else
-        (bif (b__0 == (0b011 : (BitVec 3)))
-        then true
-        else false)))
+  match_bv arg_ with
+  | 000 => true
+  | 001 => true
+  | 010 => true
+  | 011 => true
+  | _ => false
 
 def mul_mnemonic_backwards (arg_ : String) : SailM mul_op := do
   match arg_ with
@@ -279,11 +262,12 @@ def maybe_not_u_backwards (arg_ : String) : SailM Bool := do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
-/-- Type quantifiers: k_ex352584# : Bool -/
+/-- Type quantifiers: k_ex285033# : Bool -/
 def maybe_not_u_forwards_matches (arg_ : Bool) : Bool :=
   match arg_ with
   | false => true
   | true => true
+  | _ => false
 
 def maybe_not_u_backwards_matches (arg_ : String) : Bool :=
   match arg_ with

@@ -170,31 +170,25 @@ def encdec_rivvfunct6_forwards (arg_ : rivvfunct6) : (BitVec 6) :=
   | IVV_VWREDSUM => (0b110001 : (BitVec 6))
 
 def encdec_rivvfunct6_backwards (arg_ : (BitVec 6)) : SailM rivvfunct6 := do
-  let b__0 := arg_
-  bif (b__0 == (0b110000 : (BitVec 6)))
-  then (pure IVV_VWREDSUMU)
-  else
+  match_bv arg_ with
+  | 110000 => do (pure IVV_VWREDSUMU)
+  | 110001 => do (pure IVV_VWREDSUM)
+  | _ => do
     (do
-      bif (b__0 == (0b110001 : (BitVec 6)))
-      then (pure IVV_VWREDSUM)
-      else
-        (do
-          assert false "Pattern match failure at unknown location"
-          throw Error.Exit))
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def encdec_rivvfunct6_forwards_matches (arg_ : rivvfunct6) : Bool :=
   match arg_ with
   | IVV_VWREDSUMU => true
   | IVV_VWREDSUM => true
+  | _ => false
 
 def encdec_rivvfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
-  let b__0 := arg_
-  bif (b__0 == (0b110000 : (BitVec 6)))
-  then true
-  else
-    (bif (b__0 == (0b110001 : (BitVec 6)))
-    then true
-    else false)
+  match_bv arg_ with
+  | 110000 => true
+  | 110001 => true
+  | _ => false
 
 def rivvtype_mnemonic_backwards (arg_ : String) : SailM rivvfunct6 := do
   match arg_ with
@@ -209,6 +203,7 @@ def rivvtype_mnemonic_forwards_matches (arg_ : rivvfunct6) : Bool :=
   match arg_ with
   | IVV_VWREDSUMU => true
   | IVV_VWREDSUM => true
+  | _ => false
 
 def rivvtype_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -228,41 +223,19 @@ def encdec_rmvvfunct6_forwards (arg_ : rmvvfunct6) : (BitVec 6) :=
   | MVV_VREDMAX => (0b000111 : (BitVec 6))
 
 def encdec_rmvvfunct6_backwards (arg_ : (BitVec 6)) : SailM rmvvfunct6 := do
-  let b__0 := arg_
-  bif (b__0 == (0b000000 : (BitVec 6)))
-  then (pure MVV_VREDSUM)
-  else
+  match_bv arg_ with
+  | 000000 => do (pure MVV_VREDSUM)
+  | 000001 => do (pure MVV_VREDAND)
+  | 000010 => do (pure MVV_VREDOR)
+  | 000011 => do (pure MVV_VREDXOR)
+  | 000100 => do (pure MVV_VREDMINU)
+  | 000101 => do (pure MVV_VREDMIN)
+  | 000110 => do (pure MVV_VREDMAXU)
+  | 000111 => do (pure MVV_VREDMAX)
+  | _ => do
     (do
-      bif (b__0 == (0b000001 : (BitVec 6)))
-      then (pure MVV_VREDAND)
-      else
-        (do
-          bif (b__0 == (0b000010 : (BitVec 6)))
-          then (pure MVV_VREDOR)
-          else
-            (do
-              bif (b__0 == (0b000011 : (BitVec 6)))
-              then (pure MVV_VREDXOR)
-              else
-                (do
-                  bif (b__0 == (0b000100 : (BitVec 6)))
-                  then (pure MVV_VREDMINU)
-                  else
-                    (do
-                      bif (b__0 == (0b000101 : (BitVec 6)))
-                      then (pure MVV_VREDMIN)
-                      else
-                        (do
-                          bif (b__0 == (0b000110 : (BitVec 6)))
-                          then (pure MVV_VREDMAXU)
-                          else
-                            (do
-                              bif (b__0 == (0b000111 : (BitVec 6)))
-                              then (pure MVV_VREDMAX)
-                              else
-                                (do
-                                  assert false "Pattern match failure at unknown location"
-                                  throw Error.Exit))))))))
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def encdec_rmvvfunct6_forwards_matches (arg_ : rmvvfunct6) : Bool :=
   match arg_ with
@@ -274,33 +247,19 @@ def encdec_rmvvfunct6_forwards_matches (arg_ : rmvvfunct6) : Bool :=
   | MVV_VREDMIN => true
   | MVV_VREDMAXU => true
   | MVV_VREDMAX => true
+  | _ => false
 
 def encdec_rmvvfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
-  let b__0 := arg_
-  bif (b__0 == (0b000000 : (BitVec 6)))
-  then true
-  else
-    (bif (b__0 == (0b000001 : (BitVec 6)))
-    then true
-    else
-      (bif (b__0 == (0b000010 : (BitVec 6)))
-      then true
-      else
-        (bif (b__0 == (0b000011 : (BitVec 6)))
-        then true
-        else
-          (bif (b__0 == (0b000100 : (BitVec 6)))
-          then true
-          else
-            (bif (b__0 == (0b000101 : (BitVec 6)))
-            then true
-            else
-              (bif (b__0 == (0b000110 : (BitVec 6)))
-              then true
-              else
-                (bif (b__0 == (0b000111 : (BitVec 6)))
-                then true
-                else false)))))))
+  match_bv arg_ with
+  | 000000 => true
+  | 000001 => true
+  | 000010 => true
+  | 000011 => true
+  | 000100 => true
+  | 000101 => true
+  | 000110 => true
+  | 000111 => true
+  | _ => false
 
 def rmvvtype_mnemonic_backwards (arg_ : String) : SailM rmvvfunct6 := do
   match arg_ with
@@ -327,6 +286,7 @@ def rmvvtype_mnemonic_forwards_matches (arg_ : rmvvfunct6) : Bool :=
   | MVV_VREDMIN => true
   | MVV_VREDMAXU => true
   | MVV_VREDMAX => true
+  | _ => false
 
 def rmvvtype_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with

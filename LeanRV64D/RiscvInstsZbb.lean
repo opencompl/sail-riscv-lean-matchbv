@@ -177,6 +177,7 @@ def zbb_rtypew_mnemonic_forwards_matches (arg_ : bropw_zbb) : Bool :=
   match arg_ with
   | ROLW => true
   | RORW => true
+  | _ => false
 
 def zbb_rtypew_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -211,6 +212,7 @@ def zbb_rtype_mnemonic_forwards_matches (arg_ : brop_zbb) : Bool :=
   | MINU => true
   | ROL => true
   | ROR => true
+  | _ => false
 
 def zbb_rtype_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -240,6 +242,7 @@ def zbb_extop_mnemonic_forwards_matches (arg_ : extop_zbb) : Bool :=
   | SEXTB => true
   | SEXTH => true
   | ZEXTH => true
+  | _ => false
 
 def zbb_extop_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with

@@ -516,7 +516,8 @@ def csr_name_map_backwards (arg_ : String) : SailM (BitVec 12) := do
     (bif (hex_bits_12_backwards_matches mapping0_)
     then
       (match (hex_bits_12_backwards mapping0_) with
-      | reg => (some reg))
+      | reg => (some reg)
+      | _ => none)
     else none)) with
   | .some result => (pure result)
   | _ =>

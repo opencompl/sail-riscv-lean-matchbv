@@ -223,7 +223,7 @@ def f_is_NaN_H (xf16 : (BitVec 16)) : Bool :=
   let (sign, exp, mant) := (fsplit_H xf16)
   ((exp == (ones (n := 5))) && (mant != (zeros (n := 10))))
 
-/-- Type quantifiers: k_ex354229# : Bool -/
+/-- Type quantifiers: k_ex299415# : Bool -/
 def fle_H (v1 : (BitVec 16)) (v2 : (BitVec 16)) (is_quiet : Bool) : (Bool × (BitVec 5)) :=
   let (s1, e1, m1) := (fsplit_H v1)
   let (s2, e2, m2) := (fsplit_H v2)
@@ -280,6 +280,7 @@ def f_bin_rm_type_mnemonic_H_forwards_matches (arg_ : f_bin_rm_op_H) : Bool :=
   | FSUB_H => true
   | FMUL_H => true
   | FDIV_H => true
+  | _ => false
 
 def f_bin_rm_type_mnemonic_H_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -306,6 +307,7 @@ def f_madd_type_mnemonic_H_forwards_matches (arg_ : f_madd_op_H) : Bool :=
   | FMSUB_H => true
   | FNMSUB_H => true
   | FNMADD_H => true
+  | _ => false
 
 def f_madd_type_mnemonic_H_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -334,6 +336,7 @@ def f_bin_f_type_mnemonic_H_forwards_matches (arg_ : f_bin_f_op_H) : Bool :=
   | FSGNJX_H => true
   | FMIN_H => true
   | FMAX_H => true
+  | _ => false
 
 def f_bin_f_type_mnemonic_H_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -359,6 +362,7 @@ def f_bin_x_type_mnemonic_H_forwards_matches (arg_ : f_bin_x_op_H) : Bool :=
   | FEQ_H => true
   | FLT_H => true
   | FLE_H => true
+  | _ => false
 
 def f_bin_x_type_mnemonic_H_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -386,6 +390,7 @@ def f_un_rm_ff_type_mnemonic_H_forwards_matches (arg_ : f_un_rm_ff_op_H) : Bool 
   | FCVT_H_D => true
   | FCVT_S_H => true
   | FCVT_D_H => true
+  | _ => false
 
 def f_un_rm_ff_type_mnemonic_H_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -413,6 +418,7 @@ def f_un_rm_fx_type_mnemonic_H_forwards_matches (arg_ : f_un_rm_fx_op_H) : Bool 
   | FCVT_WU_H => true
   | FCVT_L_H => true
   | FCVT_LU_H => true
+  | _ => false
 
 def f_un_rm_fx_type_mnemonic_H_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -439,6 +445,7 @@ def f_un_rm_xf_type_mnemonic_H_forwards_matches (arg_ : f_un_rm_xf_op_H) : Bool 
   | FCVT_H_WU => true
   | FCVT_H_L => true
   | FCVT_H_LU => true
+  | _ => false
 
 def f_un_rm_xf_type_mnemonic_H_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -459,6 +466,7 @@ def f_un_f_type_mnemonic_H_backwards (arg_ : String) : SailM f_un_f_op_H := do
 def f_un_f_type_mnemonic_H_forwards_matches (arg_ : f_un_f_op_H) : Bool :=
   match arg_ with
   | FMV_H_X => true
+  | _ => false
 
 def f_un_f_type_mnemonic_H_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -478,6 +486,7 @@ def f_un_x_type_mnemonic_H_forwards_matches (arg_ : f_un_x_op_H) : Bool :=
   match arg_ with
   | FMV_X_H => true
   | FCLASS_H => true
+  | _ => false
 
 def f_un_x_type_mnemonic_H_backwards_matches (arg_ : String) : Bool :=
   match arg_ with

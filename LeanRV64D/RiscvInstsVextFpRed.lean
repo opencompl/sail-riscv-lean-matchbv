@@ -174,33 +174,17 @@ def encdec_rfvvfunct6_forwards (arg_ : rfvvfunct6) : (BitVec 6) :=
   | FVV_VFWREDUSUM => (0b110001 : (BitVec 6))
 
 def encdec_rfvvfunct6_backwards (arg_ : (BitVec 6)) : SailM rfvvfunct6 := do
-  let b__0 := arg_
-  bif (b__0 == (0b000011 : (BitVec 6)))
-  then (pure FVV_VFREDOSUM)
-  else
+  match_bv arg_ with
+  | 000011 => do (pure FVV_VFREDOSUM)
+  | 000001 => do (pure FVV_VFREDUSUM)
+  | 000111 => do (pure FVV_VFREDMAX)
+  | 000101 => do (pure FVV_VFREDMIN)
+  | 110011 => do (pure FVV_VFWREDOSUM)
+  | 110001 => do (pure FVV_VFWREDUSUM)
+  | _ => do
     (do
-      bif (b__0 == (0b000001 : (BitVec 6)))
-      then (pure FVV_VFREDUSUM)
-      else
-        (do
-          bif (b__0 == (0b000111 : (BitVec 6)))
-          then (pure FVV_VFREDMAX)
-          else
-            (do
-              bif (b__0 == (0b000101 : (BitVec 6)))
-              then (pure FVV_VFREDMIN)
-              else
-                (do
-                  bif (b__0 == (0b110011 : (BitVec 6)))
-                  then (pure FVV_VFWREDOSUM)
-                  else
-                    (do
-                      bif (b__0 == (0b110001 : (BitVec 6)))
-                      then (pure FVV_VFWREDUSUM)
-                      else
-                        (do
-                          assert false "Pattern match failure at unknown location"
-                          throw Error.Exit))))))
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def encdec_rfvvfunct6_forwards_matches (arg_ : rfvvfunct6) : Bool :=
   match arg_ with
@@ -210,27 +194,17 @@ def encdec_rfvvfunct6_forwards_matches (arg_ : rfvvfunct6) : Bool :=
   | FVV_VFREDMIN => true
   | FVV_VFWREDOSUM => true
   | FVV_VFWREDUSUM => true
+  | _ => false
 
 def encdec_rfvvfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
-  let b__0 := arg_
-  bif (b__0 == (0b000011 : (BitVec 6)))
-  then true
-  else
-    (bif (b__0 == (0b000001 : (BitVec 6)))
-    then true
-    else
-      (bif (b__0 == (0b000111 : (BitVec 6)))
-      then true
-      else
-        (bif (b__0 == (0b000101 : (BitVec 6)))
-        then true
-        else
-          (bif (b__0 == (0b110011 : (BitVec 6)))
-          then true
-          else
-            (bif (b__0 == (0b110001 : (BitVec 6)))
-            then true
-            else false)))))
+  match_bv arg_ with
+  | 000011 => true
+  | 000001 => true
+  | 000111 => true
+  | 000101 => true
+  | 110011 => true
+  | 110001 => true
+  | _ => false
 
 /-- Type quantifiers: num_elem_vs : Nat, SEW : Nat, LMUL_pow : Int, num_elem_vs > 0 ∧
   SEW ∈ {8, 16, 32, 64} -/
@@ -355,6 +329,7 @@ def rfvvtype_mnemonic_forwards_matches (arg_ : rfvvfunct6) : Bool :=
   | FVV_VFREDMIN => true
   | FVV_VFWREDOSUM => true
   | FVV_VFWREDUSUM => true
+  | _ => false
 
 def rfvvtype_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with

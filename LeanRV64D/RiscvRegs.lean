@@ -293,103 +293,40 @@ def reg_name_raw_backwards (arg_ : String) : SailM (BitVec 5) := do
       throw Error.Exit)
 
 def reg_name_raw_forwards_matches (arg_ : (BitVec 5)) : Bool :=
-  let b__0 := arg_
-  bif (b__0 == (0b00000 : (BitVec 5)))
-  then true
-  else
-    (bif (b__0 == (0b00001 : (BitVec 5)))
-    then true
-    else
-      (bif (b__0 == (0b00010 : (BitVec 5)))
-      then true
-      else
-        (bif (b__0 == (0b00011 : (BitVec 5)))
-        then true
-        else
-          (bif (b__0 == (0b00100 : (BitVec 5)))
-          then true
-          else
-            (bif (b__0 == (0b00101 : (BitVec 5)))
-            then true
-            else
-              (bif (b__0 == (0b00110 : (BitVec 5)))
-              then true
-              else
-                (bif (b__0 == (0b00111 : (BitVec 5)))
-                then true
-                else
-                  (bif (b__0 == (0b01000 : (BitVec 5)))
-                  then true
-                  else
-                    (bif (b__0 == (0b01001 : (BitVec 5)))
-                    then true
-                    else
-                      (bif (b__0 == (0b01010 : (BitVec 5)))
-                      then true
-                      else
-                        (bif (b__0 == (0b01011 : (BitVec 5)))
-                        then true
-                        else
-                          (bif (b__0 == (0b01100 : (BitVec 5)))
-                          then true
-                          else
-                            (bif (b__0 == (0b01101 : (BitVec 5)))
-                            then true
-                            else
-                              (bif (b__0 == (0b01110 : (BitVec 5)))
-                              then true
-                              else
-                                (bif (b__0 == (0b01111 : (BitVec 5)))
-                                then true
-                                else
-                                  (bif (b__0 == (0b10000 : (BitVec 5)))
-                                  then true
-                                  else
-                                    (bif (b__0 == (0b10001 : (BitVec 5)))
-                                    then true
-                                    else
-                                      (bif (b__0 == (0b10010 : (BitVec 5)))
-                                      then true
-                                      else
-                                        (bif (b__0 == (0b10011 : (BitVec 5)))
-                                        then true
-                                        else
-                                          (bif (b__0 == (0b10100 : (BitVec 5)))
-                                          then true
-                                          else
-                                            (bif (b__0 == (0b10101 : (BitVec 5)))
-                                            then true
-                                            else
-                                              (bif (b__0 == (0b10110 : (BitVec 5)))
-                                              then true
-                                              else
-                                                (bif (b__0 == (0b10111 : (BitVec 5)))
-                                                then true
-                                                else
-                                                  (bif (b__0 == (0b11000 : (BitVec 5)))
-                                                  then true
-                                                  else
-                                                    (bif (b__0 == (0b11001 : (BitVec 5)))
-                                                    then true
-                                                    else
-                                                      (bif (b__0 == (0b11010 : (BitVec 5)))
-                                                      then true
-                                                      else
-                                                        (bif (b__0 == (0b11011 : (BitVec 5)))
-                                                        then true
-                                                        else
-                                                          (bif (b__0 == (0b11100 : (BitVec 5)))
-                                                          then true
-                                                          else
-                                                            (bif (b__0 == (0b11101 : (BitVec 5)))
-                                                            then true
-                                                            else
-                                                              (bif (b__0 == (0b11110 : (BitVec 5)))
-                                                              then true
-                                                              else
-                                                                (bif (b__0 == (0b11111 : (BitVec 5)))
-                                                                then true
-                                                                else false)))))))))))))))))))))))))))))))
+  match_bv arg_ with
+  | 00000 => true
+  | 00001 => true
+  | 00010 => true
+  | 00011 => true
+  | 00100 => true
+  | 00101 => true
+  | 00110 => true
+  | 00111 => true
+  | 01000 => true
+  | 01001 => true
+  | 01010 => true
+  | 01011 => true
+  | 01100 => true
+  | 01101 => true
+  | 01110 => true
+  | 01111 => true
+  | 10000 => true
+  | 10001 => true
+  | 10010 => true
+  | 10011 => true
+  | 10100 => true
+  | 10101 => true
+  | 10110 => true
+  | 10111 => true
+  | 11000 => true
+  | 11001 => true
+  | 11010 => true
+  | 11011 => true
+  | 11100 => true
+  | 11101 => true
+  | 11110 => true
+  | 11111 => true
+  | _ => false
 
 def reg_name_raw_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -435,7 +372,8 @@ def reg_name_backwards (arg_ : String) : SailM regidx := do
     then
       (do
         match (← (reg_name_raw_backwards mapping0_)) with
-        | i => (pure (some (Regidx i))))
+        | i => (pure (some (Regidx i)))
+        | _ => (pure none))
     else (pure none)) with
   | .some result => (pure result)
   | _ =>
@@ -446,6 +384,7 @@ def reg_name_backwards (arg_ : String) : SailM regidx := do
 def reg_name_forwards_matches (arg_ : regidx) : Bool :=
   match arg_ with
   | .Regidx i => true
+  | _ => false
 
 def reg_name_backwards_matches (arg_ : String) : SailM Bool := do
   let head_exp_ := arg_
@@ -455,7 +394,8 @@ def reg_name_backwards_matches (arg_ : String) : SailM Bool := do
     then
       (do
         match (← (reg_name_raw_backwards mapping0_)) with
-        | i => (pure (some true)))
+        | i => (pure (some true))
+        | _ => (pure none))
     else (pure none)) with
   | .some result => (pure result)
   | none =>
@@ -478,31 +418,16 @@ def creg_name_raw_backwards (arg_ : String) : SailM (BitVec 3) := do
       throw Error.Exit)
 
 def creg_name_raw_forwards_matches (arg_ : (BitVec 3)) : Bool :=
-  let b__0 := arg_
-  bif (b__0 == (0b000 : (BitVec 3)))
-  then true
-  else
-    (bif (b__0 == (0b001 : (BitVec 3)))
-    then true
-    else
-      (bif (b__0 == (0b010 : (BitVec 3)))
-      then true
-      else
-        (bif (b__0 == (0b011 : (BitVec 3)))
-        then true
-        else
-          (bif (b__0 == (0b100 : (BitVec 3)))
-          then true
-          else
-            (bif (b__0 == (0b101 : (BitVec 3)))
-            then true
-            else
-              (bif (b__0 == (0b110 : (BitVec 3)))
-              then true
-              else
-                (bif (b__0 == (0b111 : (BitVec 3)))
-                then true
-                else false)))))))
+  match_bv arg_ with
+  | 000 => true
+  | 001 => true
+  | 010 => true
+  | 011 => true
+  | 100 => true
+  | 101 => true
+  | 110 => true
+  | 111 => true
+  | _ => false
 
 def creg_name_raw_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -524,7 +449,8 @@ def creg_name_backwards (arg_ : String) : SailM cregidx := do
     then
       (do
         match (← (creg_name_raw_backwards mapping0_)) with
-        | i => (pure (some (Cregidx i))))
+        | i => (pure (some (Cregidx i)))
+        | _ => (pure none))
     else (pure none)) with
   | .some result => (pure result)
   | _ =>
@@ -535,6 +461,7 @@ def creg_name_backwards (arg_ : String) : SailM cregidx := do
 def creg_name_forwards_matches (arg_ : cregidx) : Bool :=
   match arg_ with
   | .Cregidx i => true
+  | _ => false
 
 def creg_name_backwards_matches (arg_ : String) : SailM Bool := do
   let head_exp_ := arg_
@@ -544,7 +471,8 @@ def creg_name_backwards_matches (arg_ : String) : SailM Bool := do
     then
       (do
         match (← (creg_name_raw_backwards mapping0_)) with
-        | i => (pure (some true)))
+        | i => (pure (some true))
+        | _ => (pure none))
     else (pure none)) with
   | .some result => (pure result)
   | none =>
@@ -562,10 +490,12 @@ def encdec_reg_backwards (arg_ : (BitVec 5)) : regidx :=
 def encdec_reg_forwards_matches (arg_ : regidx) : Bool :=
   match arg_ with
   | .Regidx r => true
+  | _ => false
 
 def encdec_reg_backwards_matches (arg_ : (BitVec 5)) : Bool :=
   match arg_ with
   | r => true
+  | _ => false
 
 def encdec_creg_forwards (arg_ : cregidx) : (BitVec 3) :=
   match arg_ with
@@ -578,8 +508,10 @@ def encdec_creg_backwards (arg_ : (BitVec 3)) : cregidx :=
 def encdec_creg_forwards_matches (arg_ : cregidx) : Bool :=
   match arg_ with
   | .Cregidx r => true
+  | _ => false
 
 def encdec_creg_backwards_matches (arg_ : (BitVec 3)) : Bool :=
   match arg_ with
   | r => true
+  | _ => false
 

@@ -181,6 +181,7 @@ def zba_rtypeuw_mnemonic_forwards_matches (arg_ : bropw_zba) : Bool :=
   | SH1ADDUW => true
   | SH2ADDUW => true
   | SH3ADDUW => true
+  | _ => false
 
 def zba_rtypeuw_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -205,6 +206,7 @@ def zba_rtype_mnemonic_forwards_matches (arg_ : brop_zba) : Bool :=
   | SH1ADD => true
   | SH2ADD => true
   | SH3ADD => true
+  | _ => false
 
 def zba_rtype_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with

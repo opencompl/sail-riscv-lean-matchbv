@@ -177,6 +177,7 @@ def zicond_mnemonic_forwards_matches (arg_ : zicondop) : Bool :=
   match arg_ with
   | CZERO_EQZ => true
   | CZERO_NEZ => true
+  | _ => false
 
 def zicond_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with

@@ -177,6 +177,7 @@ def zbkb_rtype_mnemonic_forwards_matches (arg_ : brop_zbkb) : Bool :=
   match arg_ with
   | PACK => true
   | PACKH => true
+  | _ => false
 
 def zbkb_rtype_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with

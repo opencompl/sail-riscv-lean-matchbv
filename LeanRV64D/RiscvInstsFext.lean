@@ -174,33 +174,17 @@ def encdec_rounding_mode_forwards (arg_ : rounding_mode) : (BitVec 3) :=
   | RM_DYN => (0b111 : (BitVec 3))
 
 def encdec_rounding_mode_backwards (arg_ : (BitVec 3)) : SailM rounding_mode := do
-  let b__0 := arg_
-  bif (b__0 == (0b000 : (BitVec 3)))
-  then (pure RM_RNE)
-  else
+  match_bv arg_ with
+  | 000 => do (pure RM_RNE)
+  | 001 => do (pure RM_RTZ)
+  | 010 => do (pure RM_RDN)
+  | 011 => do (pure RM_RUP)
+  | 100 => do (pure RM_RMM)
+  | 111 => do (pure RM_DYN)
+  | _ => do
     (do
-      bif (b__0 == (0b001 : (BitVec 3)))
-      then (pure RM_RTZ)
-      else
-        (do
-          bif (b__0 == (0b010 : (BitVec 3)))
-          then (pure RM_RDN)
-          else
-            (do
-              bif (b__0 == (0b011 : (BitVec 3)))
-              then (pure RM_RUP)
-              else
-                (do
-                  bif (b__0 == (0b100 : (BitVec 3)))
-                  then (pure RM_RMM)
-                  else
-                    (do
-                      bif (b__0 == (0b111 : (BitVec 3)))
-                      then (pure RM_DYN)
-                      else
-                        (do
-                          assert false "Pattern match failure at unknown location"
-                          throw Error.Exit))))))
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def encdec_rounding_mode_forwards_matches (arg_ : rounding_mode) : Bool :=
   match arg_ with
@@ -210,27 +194,17 @@ def encdec_rounding_mode_forwards_matches (arg_ : rounding_mode) : Bool :=
   | RM_RUP => true
   | RM_RMM => true
   | RM_DYN => true
+  | _ => false
 
 def encdec_rounding_mode_backwards_matches (arg_ : (BitVec 3)) : Bool :=
-  let b__0 := arg_
-  bif (b__0 == (0b000 : (BitVec 3)))
-  then true
-  else
-    (bif (b__0 == (0b001 : (BitVec 3)))
-    then true
-    else
-      (bif (b__0 == (0b010 : (BitVec 3)))
-      then true
-      else
-        (bif (b__0 == (0b011 : (BitVec 3)))
-        then true
-        else
-          (bif (b__0 == (0b100 : (BitVec 3)))
-          then true
-          else
-            (bif (b__0 == (0b111 : (BitVec 3)))
-            then true
-            else false)))))
+  match_bv arg_ with
+  | 000 => true
+  | 001 => true
+  | 010 => true
+  | 011 => true
+  | 100 => true
+  | 111 => true
+  | _ => false
 
 def frm_mnemonic_backwards (arg_ : String) : SailM rounding_mode := do
   match arg_ with
@@ -253,6 +227,7 @@ def frm_mnemonic_forwards_matches (arg_ : rounding_mode) : Bool :=
   | RM_RUP => true
   | RM_RMM => true
   | RM_DYN => true
+  | _ => false
 
 def frm_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -363,7 +338,7 @@ def feq_quiet_S (v1 : (BitVec 32)) (v2 : (BitVec 32)) : (Bool × (BitVec 5)) :=
     else (zeros (n := 5))
   (result, fflags)
 
-/-- Type quantifiers: k_ex353732# : Bool -/
+/-- Type quantifiers: k_ex298918# : Bool -/
 def flt_S (v1 : (BitVec 32)) (v2 : (BitVec 32)) (is_quiet : Bool) : (Bool × (BitVec 5)) :=
   let (s1, e1, m1) := (fsplit_S v1)
   let (s2, e2, m2) := (fsplit_S v2)
@@ -395,7 +370,7 @@ def flt_S (v1 : (BitVec 32)) (v2 : (BitVec 32)) (is_quiet : Bool) : (Bool × (Bi
       else (zeros (n := 5)))
   (result, fflags)
 
-/-- Type quantifiers: k_ex353800# : Bool -/
+/-- Type quantifiers: k_ex298986# : Bool -/
 def fle_S (v1 : (BitVec 32)) (v2 : (BitVec 32)) (is_quiet : Bool) : (Bool × (BitVec 5)) :=
   let (s1, e1, m1) := (fsplit_S v1)
   let (s2, e2, m2) := (fsplit_S v2)
@@ -449,6 +424,7 @@ def f_madd_type_mnemonic_S_forwards_matches (arg_ : f_madd_op_S) : Bool :=
   | FMSUB_S => true
   | FNMSUB_S => true
   | FNMADD_S => true
+  | _ => false
 
 def f_madd_type_mnemonic_S_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -475,6 +451,7 @@ def f_bin_rm_type_mnemonic_S_forwards_matches (arg_ : f_bin_rm_op_S) : Bool :=
   | FSUB_S => true
   | FMUL_S => true
   | FDIV_S => true
+  | _ => false
 
 def f_bin_rm_type_mnemonic_S_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -501,6 +478,7 @@ def f_un_rm_fx_type_mnemonic_S_forwards_matches (arg_ : f_un_rm_fx_op_S) : Bool 
   | FCVT_WU_S => true
   | FCVT_L_S => true
   | FCVT_LU_S => true
+  | _ => false
 
 def f_un_rm_fx_type_mnemonic_S_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -527,6 +505,7 @@ def f_un_rm_xf_type_mnemonic_S_forwards_matches (arg_ : f_un_rm_xf_op_S) : Bool 
   | FCVT_S_WU => true
   | FCVT_S_L => true
   | FCVT_S_LU => true
+  | _ => false
 
 def f_un_rm_xf_type_mnemonic_S_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -555,6 +534,7 @@ def f_bin_type_mnemonic_f_S_forwards_matches (arg_ : f_bin_op_f_S) : Bool :=
   | FSGNJX_S => true
   | FMIN_S => true
   | FMAX_S => true
+  | _ => false
 
 def f_bin_type_mnemonic_f_S_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -580,6 +560,7 @@ def f_bin_type_mnemonic_x_S_forwards_matches (arg_ : f_bin_op_x_S) : Bool :=
   | FEQ_S => true
   | FLT_S => true
   | FLE_S => true
+  | _ => false
 
 def f_bin_type_mnemonic_x_S_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -601,6 +582,7 @@ def f_un_type_mnemonic_x_S_forwards_matches (arg_ : f_un_op_x_S) : Bool :=
   match arg_ with
   | FCLASS_S => true
   | FMV_X_W => true
+  | _ => false
 
 def f_un_type_mnemonic_x_S_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -619,6 +601,7 @@ def f_un_type_mnemonic_f_S_backwards (arg_ : String) : SailM f_un_op_f_S := do
 def f_un_type_mnemonic_f_S_forwards_matches (arg_ : f_un_op_f_S) : Bool :=
   match arg_ with
   | FMV_W_X => true
+  | _ => false
 
 def f_un_type_mnemonic_f_S_backwards_matches (arg_ : String) : Bool :=
   match arg_ with

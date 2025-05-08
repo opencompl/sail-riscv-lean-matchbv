@@ -164,7 +164,7 @@ open ExceptionType
 open Architecture
 open AccessType
 
-/-- Type quantifiers: k_ex352519# : Bool, k_ex352518# : Bool -/
+/-- Type quantifiers: k_ex284994# : Bool, k_ex284993# : Bool -/
 def aqrl_str (aq : Bool) (rl : Bool) : String :=
   match (aq, rl) with
   | (false, false) => ""
@@ -198,45 +198,20 @@ def encdec_amoop_forwards (arg_ : amoop) : (BitVec 5) :=
   | AMOMAXU => (0b11100 : (BitVec 5))
 
 def encdec_amoop_backwards (arg_ : (BitVec 5)) : SailM amoop := do
-  let b__0 := arg_
-  bif (b__0 == (0b00001 : (BitVec 5)))
-  then (pure AMOSWAP)
-  else
+  match_bv arg_ with
+  | 00001 => do (pure AMOSWAP)
+  | 00000 => do (pure AMOADD)
+  | 00100 => do (pure AMOXOR)
+  | 01100 => do (pure AMOAND)
+  | 01000 => do (pure AMOOR)
+  | 10000 => do (pure AMOMIN)
+  | 10100 => do (pure AMOMAX)
+  | 11000 => do (pure AMOMINU)
+  | 11100 => do (pure AMOMAXU)
+  | _ => do
     (do
-      bif (b__0 == (0b00000 : (BitVec 5)))
-      then (pure AMOADD)
-      else
-        (do
-          bif (b__0 == (0b00100 : (BitVec 5)))
-          then (pure AMOXOR)
-          else
-            (do
-              bif (b__0 == (0b01100 : (BitVec 5)))
-              then (pure AMOAND)
-              else
-                (do
-                  bif (b__0 == (0b01000 : (BitVec 5)))
-                  then (pure AMOOR)
-                  else
-                    (do
-                      bif (b__0 == (0b10000 : (BitVec 5)))
-                      then (pure AMOMIN)
-                      else
-                        (do
-                          bif (b__0 == (0b10100 : (BitVec 5)))
-                          then (pure AMOMAX)
-                          else
-                            (do
-                              bif (b__0 == (0b11000 : (BitVec 5)))
-                              then (pure AMOMINU)
-                              else
-                                (do
-                                  bif (b__0 == (0b11100 : (BitVec 5)))
-                                  then (pure AMOMAXU)
-                                  else
-                                    (do
-                                      assert false "Pattern match failure at unknown location"
-                                      throw Error.Exit)))))))))
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def encdec_amoop_forwards_matches (arg_ : amoop) : Bool :=
   match arg_ with
@@ -249,36 +224,20 @@ def encdec_amoop_forwards_matches (arg_ : amoop) : Bool :=
   | AMOMAX => true
   | AMOMINU => true
   | AMOMAXU => true
+  | _ => false
 
 def encdec_amoop_backwards_matches (arg_ : (BitVec 5)) : Bool :=
-  let b__0 := arg_
-  bif (b__0 == (0b00001 : (BitVec 5)))
-  then true
-  else
-    (bif (b__0 == (0b00000 : (BitVec 5)))
-    then true
-    else
-      (bif (b__0 == (0b00100 : (BitVec 5)))
-      then true
-      else
-        (bif (b__0 == (0b01100 : (BitVec 5)))
-        then true
-        else
-          (bif (b__0 == (0b01000 : (BitVec 5)))
-          then true
-          else
-            (bif (b__0 == (0b10000 : (BitVec 5)))
-            then true
-            else
-              (bif (b__0 == (0b10100 : (BitVec 5)))
-              then true
-              else
-                (bif (b__0 == (0b11000 : (BitVec 5)))
-                then true
-                else
-                  (bif (b__0 == (0b11100 : (BitVec 5)))
-                  then true
-                  else false))))))))
+  match_bv arg_ with
+  | 00001 => true
+  | 00000 => true
+  | 00100 => true
+  | 01100 => true
+  | 01000 => true
+  | 10000 => true
+  | 10100 => true
+  | 11000 => true
+  | 11100 => true
+  | _ => false
 
 def amo_mnemonic_backwards (arg_ : String) : SailM amoop := do
   match arg_ with
@@ -307,6 +266,7 @@ def amo_mnemonic_forwards_matches (arg_ : amoop) : Bool :=
   | AMOMAX => true
   | AMOMINU => true
   | AMOMAXU => true
+  | _ => false
 
 def amo_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with

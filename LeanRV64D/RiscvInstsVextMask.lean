@@ -176,41 +176,19 @@ def encdec_mmfunct6_forwards (arg_ : mmfunct6) : (BitVec 6) :=
   | MM_VMXNOR => (0b011111 : (BitVec 6))
 
 def encdec_mmfunct6_backwards (arg_ : (BitVec 6)) : SailM mmfunct6 := do
-  let b__0 := arg_
-  bif (b__0 == (0b011001 : (BitVec 6)))
-  then (pure MM_VMAND)
-  else
+  match_bv arg_ with
+  | 011001 => do (pure MM_VMAND)
+  | 011101 => do (pure MM_VMNAND)
+  | 011000 => do (pure MM_VMANDN)
+  | 011011 => do (pure MM_VMXOR)
+  | 011010 => do (pure MM_VMOR)
+  | 011110 => do (pure MM_VMNOR)
+  | 011100 => do (pure MM_VMORN)
+  | 011111 => do (pure MM_VMXNOR)
+  | _ => do
     (do
-      bif (b__0 == (0b011101 : (BitVec 6)))
-      then (pure MM_VMNAND)
-      else
-        (do
-          bif (b__0 == (0b011000 : (BitVec 6)))
-          then (pure MM_VMANDN)
-          else
-            (do
-              bif (b__0 == (0b011011 : (BitVec 6)))
-              then (pure MM_VMXOR)
-              else
-                (do
-                  bif (b__0 == (0b011010 : (BitVec 6)))
-                  then (pure MM_VMOR)
-                  else
-                    (do
-                      bif (b__0 == (0b011110 : (BitVec 6)))
-                      then (pure MM_VMNOR)
-                      else
-                        (do
-                          bif (b__0 == (0b011100 : (BitVec 6)))
-                          then (pure MM_VMORN)
-                          else
-                            (do
-                              bif (b__0 == (0b011111 : (BitVec 6)))
-                              then (pure MM_VMXNOR)
-                              else
-                                (do
-                                  assert false "Pattern match failure at unknown location"
-                                  throw Error.Exit))))))))
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def encdec_mmfunct6_forwards_matches (arg_ : mmfunct6) : Bool :=
   match arg_ with
@@ -222,33 +200,19 @@ def encdec_mmfunct6_forwards_matches (arg_ : mmfunct6) : Bool :=
   | MM_VMNOR => true
   | MM_VMORN => true
   | MM_VMXNOR => true
+  | _ => false
 
 def encdec_mmfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
-  let b__0 := arg_
-  bif (b__0 == (0b011001 : (BitVec 6)))
-  then true
-  else
-    (bif (b__0 == (0b011101 : (BitVec 6)))
-    then true
-    else
-      (bif (b__0 == (0b011000 : (BitVec 6)))
-      then true
-      else
-        (bif (b__0 == (0b011011 : (BitVec 6)))
-        then true
-        else
-          (bif (b__0 == (0b011010 : (BitVec 6)))
-          then true
-          else
-            (bif (b__0 == (0b011110 : (BitVec 6)))
-            then true
-            else
-              (bif (b__0 == (0b011100 : (BitVec 6)))
-              then true
-              else
-                (bif (b__0 == (0b011111 : (BitVec 6)))
-                then true
-                else false)))))))
+  match_bv arg_ with
+  | 011001 => true
+  | 011101 => true
+  | 011000 => true
+  | 011011 => true
+  | 011010 => true
+  | 011110 => true
+  | 011100 => true
+  | 011111 => true
+  | _ => false
 
 def mmtype_mnemonic_backwards (arg_ : String) : SailM mmfunct6 := do
   match arg_ with
@@ -275,6 +239,7 @@ def mmtype_mnemonic_forwards_matches (arg_ : mmfunct6) : Bool :=
   | MM_VMNOR => true
   | MM_VMORN => true
   | MM_VMXNOR => true
+  | _ => false
 
 def mmtype_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with

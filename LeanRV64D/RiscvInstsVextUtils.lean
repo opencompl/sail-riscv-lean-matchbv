@@ -173,15 +173,13 @@ def maybe_vmask_forwards_matches (arg_ : String) : SailM Bool := do
   match arg_ with
   | "" => (pure true)
   | _ => throw Error.Exit
+  | _ => (pure false)
 
 def maybe_vmask_backwards_matches (arg_ : (BitVec 1)) : Bool :=
-  let b__0 := arg_
-  bif (b__0 == (0b1 : (BitVec 1)))
-  then true
-  else
-    (bif (b__0 == (0b0 : (BitVec 1)))
-    then true
-    else false)
+  match_bv arg_ with
+  | 1 => true
+  | 0 => true
+  | _ => false
 
 /-- Type quantifiers: EMUL_pow : Int, EEW : Int -/
 def valid_eew_emul (EEW : Int) (EMUL_pow : Int) : Bool :=
@@ -619,23 +617,18 @@ def get_fixed_rounding_incr (vec_elem : (BitVec k_m)) (shift_amount : Nat) : Sai
   else
     (do
       let rounding_mode ← do (pure (_get_Vcsr_vxrm (← readReg vcsr)))
-      let b__0 := rounding_mode
-      bif (b__0 == (0b00 : (BitVec 2)))
-      then (pure (BitVec.slice vec_elem (shift_amount -i 1) 1))
-      else
-        (bif (b__0 == (0b01 : (BitVec 2)))
-        then
-          (pure (bool_to_bits
-              (((BitVec.slice vec_elem (shift_amount -i 1) 1) == (0b1 : (BitVec 1))) && (((BitVec.slice
-                      vec_elem 0 (shift_amount -i 1)) != (zeros (n := (shift_amount -i 1)))) || ((BitVec.slice
-                      vec_elem shift_amount 1) == (0b1 : (BitVec 1)))))))
-        else
-          (bif (b__0 == (0b10 : (BitVec 2)))
-          then (pure (0b0 : (BitVec 1)))
-          else
-            (pure (bool_to_bits
-                ((not ((BitVec.slice vec_elem shift_amount 1) == (0b1 : (BitVec 1)))) && ((BitVec.slice
-                      vec_elem 0 shift_amount) != (zeros (n := shift_amount)))))))))
+      match_bv rounding_mode with
+      | 00 => do (pure (BitVec.slice vec_elem (shift_amount -i 1) 1))
+      | 01 => do
+        (pure (bool_to_bits
+            (((BitVec.slice vec_elem (shift_amount -i 1) 1) == (0b1 : (BitVec 1))) && (((BitVec.slice
+                    vec_elem 0 (shift_amount -i 1)) != (zeros (n := (shift_amount -i 1)))) || ((BitVec.slice
+                    vec_elem shift_amount 1) == (0b1 : (BitVec 1)))))))
+      | 10 => do (pure (0b0 : (BitVec 1)))
+      | _ => do
+        (pure (bool_to_bits
+            ((not ((BitVec.slice vec_elem shift_amount 1) == (0b1 : (BitVec 1)))) && ((BitVec.slice
+                  vec_elem 0 shift_amount) != (zeros (n := shift_amount)))))))
 
 /-- Type quantifiers: len : Nat, k_n : Nat, k_n ≥ len ∧ len > 1 -/
 def unsigned_saturation (len : Nat) (elem : (BitVec k_n)) : SailM (BitVec len) := do

@@ -1006,17 +1006,11 @@ def lowest_supported_privLevel (_ : Unit) : SailM Privilege := do
   else (pure Machine)
 
 def have_privLevel (priv : (BitVec 2)) : SailM Bool := do
-  let b__0 := priv
-  bif (b__0 == (0b00 : (BitVec 2)))
-  then (currentlyEnabled Ext_U)
-  else
-    (do
-      bif (b__0 == (0b01 : (BitVec 2)))
-      then (currentlyEnabled Ext_S)
-      else
-        (bif (b__0 == (0b10 : (BitVec 2)))
-        then (pure false)
-        else (pure true)))
+  match_bv priv with
+  | 00 => do (currentlyEnabled Ext_U)
+  | 01 => do (currentlyEnabled Ext_S)
+  | 10 => do (pure false)
+  | _ => do (pure true)
 
 def undefined_Mstatus (_ : Unit) : SailM (BitVec 64) := do
   (undefined_bitvector 64)
@@ -2341,25 +2335,15 @@ def _set_Vtype_vta (r_ref : (RegisterRef (BitVec (2 ^ 3 * 8)))) (v : (BitVec 1))
   writeRegRef r_ref (_update_Vtype_vta r v)
 
 def get_sew_pow (_ : Unit) : SailM Int := do
-  let b__0 ← do (pure (_get_Vtype_vsew (← readReg vtype)))
-  bif (b__0 == (0b000 : (BitVec 3)))
-  then (pure 3)
-  else
+  match_bv (_get_Vtype_vsew (← readReg vtype)) with
+  | 000 => do (pure 3)
+  | 001 => do (pure 4)
+  | 010 => do (pure 5)
+  | 011 => do (pure 6)
+  | _ => do
     (do
-      bif (b__0 == (0b001 : (BitVec 3)))
-      then (pure 4)
-      else
-        (do
-          bif (b__0 == (0b010 : (BitVec 3)))
-          then (pure 5)
-          else
-            (do
-              bif (b__0 == (0b011 : (BitVec 3)))
-              then (pure 6)
-              else
-                (do
-                  assert false "invalid vsew field in vtype"
-                  throw Error.Exit))))
+      assert false "invalid vsew field in vtype"
+      throw Error.Exit)
 
 def get_sew (_ : Unit) : SailM Int := do
   match (← (get_sew_pow ())) with
@@ -2384,37 +2368,18 @@ def get_sew_bytes (_ : Unit) : SailM Int := do
       (pure 1))
 
 def get_lmul_pow (_ : Unit) : SailM Int := do
-  let b__0 ← do (pure (_get_Vtype_vlmul (← readReg vtype)))
-  bif (b__0 == (0b101 : (BitVec 3)))
-  then (pure (-3))
-  else
+  match_bv (_get_Vtype_vlmul (← readReg vtype)) with
+  | 101 => do (pure (-3))
+  | 110 => do (pure (-2))
+  | 111 => do (pure (-1))
+  | 000 => do (pure 0)
+  | 001 => do (pure 1)
+  | 010 => do (pure 2)
+  | 011 => do (pure 3)
+  | _ => do
     (do
-      bif (b__0 == (0b110 : (BitVec 3)))
-      then (pure (-2))
-      else
-        (do
-          bif (b__0 == (0b111 : (BitVec 3)))
-          then (pure (-1))
-          else
-            (do
-              bif (b__0 == (0b000 : (BitVec 3)))
-              then (pure 0)
-              else
-                (do
-                  bif (b__0 == (0b001 : (BitVec 3)))
-                  then (pure 1)
-                  else
-                    (do
-                      bif (b__0 == (0b010 : (BitVec 3)))
-                      then (pure 2)
-                      else
-                        (do
-                          bif (b__0 == (0b011 : (BitVec 3)))
-                          then (pure 3)
-                          else
-                            (do
-                              assert false "invalid vlmul field in vtype"
-                              throw Error.Exit)))))))
+      assert false "invalid vlmul field in vtype"
+      throw Error.Exit)
 
 def undefined_agtype (_ : Unit) : SailM agtype := do
   (internal_pick [UNDISTURBED, AGNOSTIC])
@@ -2431,10 +2396,9 @@ def num_of_agtype (arg_ : agtype) : Int :=
   | AGNOSTIC => 1
 
 def decode_agtype (ag : (BitVec 1)) : agtype :=
-  let b__0 := ag
-  bif (b__0 == (0b0 : (BitVec 1)))
-  then UNDISTURBED
-  else AGNOSTIC
+  match_bv ag with
+  | 0 => UNDISTURBED
+  | _ => AGNOSTIC
 
 def get_vtype_vma (_ : Unit) : SailM agtype := do
   (pure (decode_agtype (_get_Vtype_vma (← readReg vtype))))
