@@ -45,6 +45,11 @@ jobs:
         opam init --yes --no-setup --shell=sh --compiler=${{ matrix.version }}
         opam install dune
 
+    - name: Install Sail dependences
+      run: |
+        eval $(opam env)
+        (cd sail; opam install sail --deps-only --yes)
+
     - name: Save cached opam
       if: steps.cache-opam-restore.outputs.cache-hit != 'true'
       id: cache-opam-save
@@ -56,7 +61,6 @@ jobs:
     - name: Install Sail
       run: |
         eval $(opam env)
-        (cd sail; opam install sail --deps-only --yes)
         (cd sail; make install)
 
     - name: Build the Sail RISCV Model for Lean
