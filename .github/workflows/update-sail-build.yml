@@ -17,7 +17,7 @@ jobs:
         os: [ubuntu-latest]
 
     runs-on:
-    - nscloud-ubuntu-22.04-amd64-4x16-with-features
+    - namespace-profile-default-24-04
     - nscloud-exp-features:privileged
 
     steps:
