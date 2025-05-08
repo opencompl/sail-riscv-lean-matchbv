@@ -46,6 +46,7 @@ jobs:
         opam install dune
 
     - name: Install Sail dependences
+      if: steps.cache-opam-restore.outputs.cache-hit != 'true'
       run: |
         eval $(opam env)
         (cd sail; opam install sail --deps-only --yes)
