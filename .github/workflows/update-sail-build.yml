@@ -16,7 +16,9 @@ jobs:
         version: [5.2.1]
         os: [ubuntu-latest]
 
-    runs-on: ubuntu-22.04
+    runs-on:
+    - nscloud-ubuntu-22.04-amd64-4x16-with-features
+    - nscloud-exp-features:privileged
 
     steps:
     - uses: actions/checkout@v4
