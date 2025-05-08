@@ -81,6 +81,7 @@ jobs:
 
     - name: Use Lean to build the model and record errors
       run: |
+        . ~/.profile
         cp README.md.template sail-riscv/build/model/Lean_RV64D
         cp report.py sail-riscv/build/model/Lean_RV64D
         cd sail-riscv/build/model/Lean_RV64D
