@@ -59,222 +59,44 @@
 ✔ [60/102] Built LeanRV64D.RiscvVmemTlb
 ⚠ [61/102] Built LeanRV64D.RiscvVmem
 warning: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvVmem.lean:210:20: The `grind` tactic is experimental and still under development. Avoid using it in production projects.
-✖ [62/102] Building LeanRV64D.RiscvVmemUtils
-trace: .> LEAN_PATH=/home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/lib/lean /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-04-07/bin/lean --tstack=400000 -Dweak.linter.style.nameCheck=false /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvVmemUtils.lean -R /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D -o /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/lib/lean/LeanRV64D/RiscvVmemUtils.olean -i /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/lib/lean/LeanRV64D/RiscvVmemUtils.ilean -c /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/ir/LeanRV64D/RiscvVmemUtils.c --json
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvVmemUtils.lean:232:11: unexpected token 'until'; expected ')' or term
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvVmemUtils.lean:231:6: don't know how to synthesize placeholder
-context:
-vaddr✝ : virtaddr
-width : Nat
-data : BitVec (8 * width)
-acc : AccessType Unit
-aq rl res : Bool
-__discr✝¹ : Int × Int
-n bytes first last step : Int
-i✝ : Nat := first.toNat
-finished✝ : Bool := false
-write_success✝ : Bool := true
-vaddr : BitVec (2 ^ 3 * 8) := bits_of_virtaddr vaddr✝
-finished : ?m.2627 vaddr✝ width data acc aq rl res __discr✝¹ n bytes first last step
-i : ?m.2628 vaddr✝ width data acc aq rl res __discr✝¹ n bytes first last step
-write_success : ?m.2629 vaddr✝ width data acc aq rl res __discr✝¹ n bytes first last step
-⊢ Type
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvVmemUtils.lean:231:6: don't know how to synthesize placeholder
-context:
-vaddr✝ : virtaddr
-width : Nat
-data : BitVec (8 * width)
-acc : AccessType Unit
-aq rl res : Bool
-__discr✝¹ : Int × Int
-n bytes first last step : Int
-i✝ : Nat := first.toNat
-finished✝ : Bool := false
-write_success✝ : Bool := true
-vaddr : BitVec (2 ^ 3 * 8) := bits_of_virtaddr vaddr✝
-finished : ?m.2627 vaddr✝ width data acc aq rl res __discr✝¹ n bytes first last step
-i : ?m.2628 vaddr✝ width data acc aq rl res __discr✝¹ n bytes first last step
-write_success : ?m.2629 vaddr✝ width data acc aq rl res __discr✝¹ n bytes first last step
-⊢ Type
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvVmemUtils.lean:231:6: don't know how to synthesize placeholder
-context:
-vaddr✝ : virtaddr
-width : Nat
-data : BitVec (8 * width)
-acc : AccessType Unit
-aq rl res : Bool
-__discr✝¹ : Int × Int
-n bytes first last step : Int
-i✝ : Nat := first.toNat
-finished✝ : Bool := false
-write_success✝ : Bool := true
-vaddr : BitVec (2 ^ 3 * 8) := bits_of_virtaddr vaddr✝
-finished : ?m.2627 vaddr✝ width data acc aq rl res __discr✝¹ n bytes first last step
-i : ?m.2628 vaddr✝ width data acc aq rl res __discr✝¹ n bytes first last step
-write_success : ?m.2629 vaddr✝ width data acc aq rl res __discr✝¹ n bytes first last step
-⊢ Type
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvVmemUtils.lean:231:6: don't know how to synthesize placeholder
-context:
-vaddr✝ : virtaddr
-width : Nat
-data : BitVec (8 * width)
-acc : AccessType Unit
-aq rl res : Bool
-__discr✝¹ : Int × Int
-n bytes first last step : Int
-i✝ : Nat := first.toNat
-finished✝ : Bool := false
-write_success✝ : Bool := true
-vaddr : BitVec (2 ^ 3 * 8) := bits_of_virtaddr vaddr✝
-finished : ?m.2627 vaddr✝ width data acc aq rl res __discr✝¹ n bytes first last step
-i : ?m.2628 vaddr✝ width data acc aq rl res __discr✝¹ n bytes first last step
-write_success : ?m.2629 vaddr✝ width data acc aq rl res __discr✝¹ n bytes first last step
-⊢ Type
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvVmemUtils.lean:231:40: don't know how to synthesize placeholder
-context:
-case m
-vaddr✝ : virtaddr
-width : Nat
-data : BitVec (8 * width)
-acc : AccessType Unit
-aq rl res : Bool
-__discr✝ : Int × Int
-n bytes first last step : Int
-i : Nat := first.toNat
-finished : Bool := false
-write_success : Bool := true
-vaddr : BitVec (2 ^ 3 * 8) := bits_of_virtaddr vaddr✝
-⊢ Type
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvVmemUtils.lean:231:2: don't know how to synthesize placeholder for argument 'α'
-context:
-vaddr✝ : virtaddr
-width : Nat
-data : BitVec (8 * width)
-acc : AccessType Unit
-aq rl res : Bool
-__discr✝ : Int × Int
-n bytes first last step : Int
-i : Nat := first.toNat
-finished : Bool := false
-write_success : Bool := true
-vaddr : BitVec (2 ^ 3 * 8) := bits_of_virtaddr vaddr✝
-⊢ Type
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvVmemUtils.lean:306:11: unexpected token 'until'; expected ')' or term
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvVmemUtils.lean:305:6: don't know how to synthesize placeholder
-context:
-rs : regidx
-offset : BitVec (2 ^ 3 * 8)
-width : Nat
-acc : AccessType Unit
-aq rl res : Bool
-vaddr✝ : virtaddr
-x✝ : PUnit
-__discr✝¹ : Int × Int
-n bytes : Int
-data✝ : BitVec ((fun x y => x * y) ((fun x y => x * y) 8 n) bytes).toNat := zeros
-first last step : Int
-i✝ : Nat := first.toNat
-finished✝ : Bool := false
-vaddr : BitVec (2 ^ 3 * 8) := bits_of_virtaddr vaddr✝
-data : ?m.4795 rs offset width acc aq rl res vaddr✝ x✝ __discr✝¹ n bytes first last step
-finished : ?m.4796 rs offset width acc aq rl res vaddr✝ x✝ __discr✝¹ n bytes first last step
-i : ?m.4797 rs offset width acc aq rl res vaddr✝ x✝ __discr✝¹ n bytes first last step
-⊢ Type
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvVmemUtils.lean:305:6: don't know how to synthesize placeholder
-context:
-rs : regidx
-offset : BitVec (2 ^ 3 * 8)
-width : Nat
-acc : AccessType Unit
-aq rl res : Bool
-vaddr✝ : virtaddr
-x✝ : PUnit
-__discr✝¹ : Int × Int
-n bytes : Int
-data✝ : BitVec ((fun x y => x * y) ((fun x y => x * y) 8 n) bytes).toNat := zeros
-first last step : Int
-i✝ : Nat := first.toNat
-finished✝ : Bool := false
-vaddr : BitVec (2 ^ 3 * 8) := bits_of_virtaddr vaddr✝
-data : ?m.4795 rs offset width acc aq rl res vaddr✝ x✝ __discr✝¹ n bytes first last step
-finished : ?m.4796 rs offset width acc aq rl res vaddr✝ x✝ __discr✝¹ n bytes first last step
-i : ?m.4797 rs offset width acc aq rl res vaddr✝ x✝ __discr✝¹ n bytes first last step
-⊢ Type
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvVmemUtils.lean:305:6: don't know how to synthesize placeholder
-context:
-rs : regidx
-offset : BitVec (2 ^ 3 * 8)
-width : Nat
-acc : AccessType Unit
-aq rl res : Bool
-vaddr✝ : virtaddr
-x✝ : PUnit
-__discr✝¹ : Int × Int
-n bytes : Int
-data✝ : BitVec ((fun x y => x * y) ((fun x y => x * y) 8 n) bytes).toNat := zeros
-first last step : Int
-i✝ : Nat := first.toNat
-finished✝ : Bool := false
-vaddr : BitVec (2 ^ 3 * 8) := bits_of_virtaddr vaddr✝
-data : ?m.4795 rs offset width acc aq rl res vaddr✝ x✝ __discr✝¹ n bytes first last step
-finished : ?m.4796 rs offset width acc aq rl res vaddr✝ x✝ __discr✝¹ n bytes first last step
-i : ?m.4797 rs offset width acc aq rl res vaddr✝ x✝ __discr✝¹ n bytes first last step
-⊢ Type
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvVmemUtils.lean:305:6: don't know how to synthesize placeholder
-context:
-rs : regidx
-offset : BitVec (2 ^ 3 * 8)
-width : Nat
-acc : AccessType Unit
-aq rl res : Bool
-vaddr✝ : virtaddr
-x✝ : PUnit
-__discr✝¹ : Int × Int
-n bytes : Int
-data✝ : BitVec ((fun x y => x * y) ((fun x y => x * y) 8 n) bytes).toNat := zeros
-first last step : Int
-i✝ : Nat := first.toNat
-finished✝ : Bool := false
-vaddr : BitVec (2 ^ 3 * 8) := bits_of_virtaddr vaddr✝
-data : ?m.4795 rs offset width acc aq rl res vaddr✝ x✝ __discr✝¹ n bytes first last step
-finished : ?m.4796 rs offset width acc aq rl res vaddr✝ x✝ __discr✝¹ n bytes first last step
-i : ?m.4797 rs offset width acc aq rl res vaddr✝ x✝ __discr✝¹ n bytes first last step
-⊢ Type
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvVmemUtils.lean:305:31: don't know how to synthesize placeholder
-context:
-case m
-rs : regidx
-offset : BitVec (2 ^ 3 * 8)
-width : Nat
-acc : AccessType Unit
-aq rl res : Bool
-vaddr✝ : virtaddr
-x✝ : PUnit
-__discr✝ : Int × Int
-n bytes : Int
-data : BitVec ((fun x y => x * y) ((fun x y => x * y) 8 n) bytes).toNat := zeros
-first last step : Int
-i : Nat := first.toNat
-finished : Bool := false
-vaddr : BitVec (2 ^ 3 * 8) := bits_of_virtaddr vaddr✝
-⊢ Type
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvVmemUtils.lean:305:2: don't know how to synthesize placeholder for argument 'α'
-context:
-rs : regidx
-offset : BitVec (2 ^ 3 * 8)
-width : Nat
-acc : AccessType Unit
-aq rl res : Bool
-vaddr✝ : virtaddr
-x✝ : PUnit
-__discr✝ : Int × Int
-n bytes : Int
-data : BitVec ((fun x y => x * y) ((fun x y => x * y) 8 n) bytes).toNat := zeros
-first last step : Int
-i : Nat := first.toNat
-finished : Bool := false
-vaddr : BitVec (2 ^ 3 * 8) := bits_of_virtaddr vaddr✝
-⊢ Type
-error: Lean exited with code 1
-Some required builds logged failures:
-- LeanRV64D.RiscvVmemUtils
+✔ [62/102] Built LeanRV64D.RiscvVmemUtils
+✔ [63/102] Built LeanRV64D.RiscvTypesKext
+✔ [64/102] Built LeanRV64D.RiscvZvkUtils
+✔ [65/102] Built LeanRV64D.RiscvInstsBase
+✔ [66/102] Built LeanRV64D.RiscvInstsAext
+✔ [67/102] Built LeanRV64D.RiscvInstsMext
+✔ [68/102] Built LeanRV64D.RiscvInstsZicsr
+✔ [69/102] Built LeanRV64D.RiscvInstsFext
+✔ [70/102] Built LeanRV64D.RiscvInstsDext
+✔ [71/102] Built LeanRV64D.RiscvInstsZba
+✔ [72/102] Built LeanRV64D.RiscvInstsZbb
+✔ [73/102] Built LeanRV64D.RiscvInstsZbs
+✔ [74/102] Built LeanRV64D.RiscvInstsZfh
+✔ [75/102] Built LeanRV64D.RiscvInstsZfa
+✔ [76/102] Built LeanRV64D.RiscvInstsZbkb
+✔ [77/102] Built LeanRV64D.RiscvInstsZicond
+✔ [78/102] Built LeanRV64D.RiscvInstsVextUtils
+✔ [79/102] Built LeanRV64D.RiscvInstsVextFpUtils
+✔ [80/102] Built LeanRV64D.RiscvInstsVextVset
+✔ [81/102] Built LeanRV64D.RiscvInstsVextArith
+✔ [82/102] Built LeanRV64D.RiscvInstsVextFp
+✔ [83/102] Built LeanRV64D.RiscvInstsVextMem
+✔ [84/102] Built LeanRV64D.RiscvInstsVextMask
+✔ [85/102] Built LeanRV64D.RiscvInstsVextVm
+✔ [86/102] Built LeanRV64D.RiscvInstsVextFpVm
+✔ [87/102] Built LeanRV64D.RiscvInstsVextRed
+✔ [88/102] Built LeanRV64D.RiscvInstsVextFpRed
+✔ [89/102] Built LeanRV64D.RiscvInstsZicbom
+✔ [90/102] Built LeanRV64D.RiscvInstsZicboz
+✔ [91/102] Built LeanRV64D.RiscvInstsZvknhab
+✔ [92/102] Built LeanRV64D.RiscvInstsEnd
+✔ [93/102] Built LeanRV64D.RiscvCsrEnd
+✔ [94/102] Built LeanRV64D.RiscvStepCommon
+✔ [95/102] Built LeanRV64D.RiscvStepExt
+✔ [96/102] Built LeanRV64D.RiscvDecodeExt
+✔ [97/102] Built LeanRV64D.RiscvFetch
+✔ [98/102] Built LeanRV64D.RiscvStep
+✔ [99/102] Built LeanRV64D.RiscvTermination
+✔ [100/102] Built LeanRV64D.Main
+✔ [101/102] Built LeanRV64D
+Build completed successfully.
