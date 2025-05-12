@@ -219,7 +219,7 @@ def misaligned_order (n : Int) : (Int × Int × Int) :=
   then ((n -i 1), 0, (-1))
   else (0, (n -i 1), 1)
 
-/-- Type quantifiers: k_ex284127# : Bool, k_ex284126# : Bool, k_ex284125# : Bool, width : Nat, width
+/-- Type quantifiers: k_ex284091# : Bool, k_ex284090# : Bool, k_ex284089# : Bool, width : Nat, width
   ∈ {1, 2, 4, 8} ∧ width ≤ xlen_bytes ∨ width ≤ flen_bytes -/
 def vmem_write_addr (vaddr : virtaddr) (width : Nat) (data : (BitVec (8 * width))) (acc : (AccessType Unit)) (aq : Bool) (rl : Bool) (res : Bool) : SailM (Result Bool ExecutionResult) := SailME.run do
   let (n, bytes) ← do (split_misaligned vaddr width)
@@ -276,7 +276,7 @@ def check_misaligned (vaddr : virtaddr) (width : word_width) : Bool :=
   then false
   else (not (is_aligned_vaddr vaddr (size_bytes_forwards width)))
 
-/-- Type quantifiers: k_ex284173# : Bool, k_ex284172# : Bool, k_ex284171# : Bool, width : Nat, width
+/-- Type quantifiers: k_ex284137# : Bool, k_ex284136# : Bool, k_ex284135# : Bool, width : Nat, width
   ∈ {1, 2, 4, 8} ∧ width ≤ xlen_bytes ∨ width ≤ flen_bytes -/
 def vmem_read (rs : regidx) (offset : (BitVec (2 ^ 3 * 8))) (width : Nat) (acc : (AccessType Unit)) (aq : Bool) (rl : Bool) (res : Bool) : SailM (Result (BitVec (8 * width)) ExecutionResult) := SailME.run do
   let vaddr ← (( do
@@ -342,7 +342,7 @@ def vmem_read (rs : regidx) (offset : (BitVec (2 ^ 3 * 8))) (width : Nat) (acc :
     ((BitVec (8 * n * bytes)) × Bool × Nat) )
   (pure (Ok data))
 
-/-- Type quantifiers: k_ex284203# : Bool, k_ex284202# : Bool, k_ex284201# : Bool, width : Nat, width
+/-- Type quantifiers: k_ex284167# : Bool, k_ex284166# : Bool, k_ex284165# : Bool, width : Nat, width
   ∈ {1, 2, 4, 8} ∧ width ≤ xlen_bytes ∨ width ≤ flen_bytes -/
 def vmem_write (rs_addr : regidx) (offset : (BitVec (2 ^ 3 * 8))) (width : Nat) (data : (BitVec (8 * width))) (acc : (AccessType Unit)) (aq : Bool) (rl : Bool) (res : Bool) : SailM (Result Bool ExecutionResult) := SailME.run do
   let vaddr ← (( do

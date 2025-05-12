@@ -690,14 +690,6 @@ def htif_store (app_0 : physaddr) (width : Nat) (data : (BitVec (8 * width))) : 
   else (pure ())
   (pure (Ok true))
 
-def htif_tick (_ : Unit) : SailM Unit := do
-  bif (get_config_print_platform ())
-  then
-    (pure (print_endline
-        (HAppend.hAppend "htif::tick " (BitVec.toFormatted (← readReg htif_tohost)))))
-  else (pure ())
-  writeReg htif_tohost (← readReg htif_tohost)
-
 /-- Type quantifiers: width : Nat, 0 < width ∧ width ≤ max_mem_access -/
 def within_mmio_readable (addr : physaddr) (width : Nat) : Bool :=
   ((within_clint addr width) || ((within_htif_readable addr width) && (1 ≤b width)))
@@ -736,9 +728,6 @@ def init_platform (_ : Unit) : SailM Unit := do
   writeReg htif_exit_code (zeros (n := 64))
   writeReg htif_cmd_write 0#1
   writeReg htif_payload_writes (zeros (n := 4))
-
-def tick_platform (_ : Unit) : SailM Unit := do
-  (htif_tick ())
 
 def handle_illegal (instbits : (BitVec 32)) : SailM Unit := do
   let info :=

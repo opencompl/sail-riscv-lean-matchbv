@@ -42088,7 +42088,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec (2 ^ 3 * 8))) : SailM (BitVec
     (internal_error "riscv_csr_end.sail" 23
       (HAppend.hAppend "Write to CSR that does not exist: " (BitVec.toFormatted csr)))
 
-/-- Type quantifiers: k_ex298786# : Bool -/
+/-- Type quantifiers: k_ex298750# : Bool -/
 def doCSR (csr : (BitVec 12)) (rs1_val : (BitVec (2 ^ 3 * 8))) (rd : regidx) (op : csrop) (is_CSR_Write : Bool) : SailM ExecutionResult := do
   bif (not (← (check_CSR csr (← readReg cur_privilege) is_CSR_Write)))
   then (pure (Illegal_Instruction ()))
