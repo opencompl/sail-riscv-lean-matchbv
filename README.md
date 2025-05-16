@@ -8,17 +8,16 @@ is still work-in-progress. As a result, our semantics are still full of warnings
 and errors. Similarly, our output is not yet polished for readability.
 # Statistics
 
-Lines: 125706  
+Lines: 125708  
 Definitions: 3667  
 Inductive definitions: 159  
 Abbreviations: 136  
 
 # Warnings and Errors
 
-Errors found: 2  
-Warnings found: 0  
+Errors found: 1  
+Warnings found: 1  
 
 ## Error Classes
 
-- 1x failed to synthesize
-- 1x Lean exited with code 1
+- 1x Lean exited with code 137
