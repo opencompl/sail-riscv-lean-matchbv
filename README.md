@@ -15,9 +15,8 @@ Abbreviations: 136
 
 # Warnings and Errors
 
-Errors found: 1  
-Warnings found: 1  
+Errors found: 0  
+Warnings found: 0  
 
 ## Error Classes
 
-- 1x Lean exited with code 137
